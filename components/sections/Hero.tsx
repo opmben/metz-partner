@@ -143,7 +143,7 @@ export function Hero() {
       <div
         className="container-site"
         style={{
-          paddingTop: '7rem',
+          paddingTop: '6rem',
           paddingBottom: '6rem',
           display: 'flex',
           flexDirection: 'column',
