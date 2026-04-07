@@ -2,19 +2,7 @@
 import { useEffect, useState } from 'react'
 import { motion, useReducedMotion } from 'framer-motion'
 import { slideUpClip, fadeIn, fadeUp } from '@/lib/animations'
-
-const orb1Animation = {
-  animate: { x: [0, -60, 40, 0], y: [0, 40, -30, 0], scale: [1, 1.1, 0.95, 1] },
-  transition: { duration: 12, repeat: Infinity, ease: 'easeInOut' as const },
-}
-const orb2Animation = {
-  animate: { x: [0, 50, -30, 0], y: [0, -40, 30, 0], scale: [1, 0.95, 1.08, 1] },
-  transition: { duration: 15, repeat: Infinity, ease: 'easeInOut' as const },
-}
-const orb3Animation = {
-  animate: { x: [0, -30, 20, 0], y: [0, 30, -20, 0], scale: [1, 1.05, 0.98, 1] },
-  transition: { duration: 18, repeat: Infinity, ease: 'easeInOut' as const },
-}
+import Silk from '@/components/Silk'
 
 export function Hero() {
   const [mounted, setMounted] = useState(false)
@@ -40,71 +28,34 @@ export function Hero() {
         overflow: 'hidden',
       }}
     >
-      {/* Grid background */}
+      {/* Silk background */}
       <div
         aria-hidden="true"
         style={{
           position: 'absolute',
           inset: 0,
-          backgroundImage:
-            'linear-gradient(rgba(240,237,232,0.025) 1px, transparent 1px), linear-gradient(90deg, rgba(240,237,232,0.025) 1px, transparent 1px)',
-          backgroundSize: '80px 80px',
+          pointerEvents: 'none',
+        }}
+      >
+        <Silk
+          speed={5}
+          scale={1}
+          color="#7B7481"
+          noiseIntensity={1.5}
+          rotation={0}
+        />
+      </div>
+
+      {/* Dark overlay so text stays legible */}
+      <div
+        aria-hidden="true"
+        style={{
+          position: 'absolute',
+          inset: 0,
+          background: 'linear-gradient(to bottom, rgba(8,8,8,0.55) 0%, rgba(8,8,8,0.3) 50%, rgba(8,8,8,0.75) 100%)',
+          pointerEvents: 'none',
         }}
       />
-
-      {/* Color orbs */}
-      {mounted && !shouldReduce && (
-        <>
-          <motion.div
-            aria-hidden="true"
-            animate={orb1Animation.animate}
-            transition={orb1Animation.transition}
-            style={{
-              position: 'absolute',
-              top: '-10%',
-              right: '-5%',
-              width: '60vw',
-              height: '60vw',
-              borderRadius: '50%',
-              background: 'radial-gradient(circle, rgba(200,255,0,0.12), transparent 70%)',
-              filter: 'blur(120px)',
-              pointerEvents: 'none',
-            }}
-          />
-          <motion.div
-            aria-hidden="true"
-            animate={orb2Animation.animate}
-            transition={orb2Animation.transition}
-            style={{
-              position: 'absolute',
-              bottom: '10%',
-              left: '-10%',
-              width: '50vw',
-              height: '50vw',
-              borderRadius: '50%',
-              background: 'radial-gradient(circle, rgba(255,107,53,0.09), transparent 70%)',
-              filter: 'blur(120px)',
-              pointerEvents: 'none',
-            }}
-          />
-          <motion.div
-            aria-hidden="true"
-            animate={orb3Animation.animate}
-            transition={orb3Animation.transition}
-            style={{
-              position: 'absolute',
-              top: '30%',
-              left: '40%',
-              width: '40vw',
-              height: '40vw',
-              borderRadius: '50%',
-              background: 'radial-gradient(circle, rgba(120,80,255,0.07), transparent 70%)',
-              filter: 'blur(120px)',
-              pointerEvents: 'none',
-            }}
-          />
-        </>
-      )}
 
       {/* Diagonal marquee background text */}
       {mounted && (
