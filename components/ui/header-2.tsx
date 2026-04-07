@@ -1,6 +1,7 @@
 'use client';
 import React from 'react';
 import Link from 'next/link';
+import Image from 'next/image';
 import { Button, buttonVariants } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
 import { MenuToggleIcon } from '@/components/ui/menu-toggle-icon';
@@ -60,19 +61,21 @@ export function Header() {
                     { 'md:h-14': scrolled },
                 )}
             >
-                {/* Wordmark */}
+                {/* Logo */}
                 <Link
                     href="/"
                     onClick={() => setOpen(false)}
-                    style={{
-                        fontFamily: 'var(--font-display)',
-                        fontSize: '1.2rem',
-                        color: 'var(--text)',
-                        textDecoration: 'none',
-                        letterSpacing: '-0.01em',
-                    }}
+                    style={{ display: 'flex', alignItems: 'center', flexShrink: 0 }}
+                    aria-label="Metz & Partner – Startseite"
                 >
-                    Metz & Partner
+                    <Image
+                        src="/logo.png"
+                        alt="Metz & Partner Logo"
+                        width={44}
+                        height={44}
+                        style={{ width: 'auto', height: 44 }}
+                        priority
+                    />
                 </Link>
 
                 {/* Desktop nav */}
