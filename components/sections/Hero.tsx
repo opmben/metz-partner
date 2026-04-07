@@ -144,7 +144,7 @@ export function Hero() {
         className="container-site"
         style={{
           paddingTop: '6rem',
-          paddingBottom: '6rem',
+          paddingBottom: '10rem',
           display: 'flex',
           flexDirection: 'column',
           gap: '3rem',
