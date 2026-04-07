@@ -223,23 +223,6 @@ export function Hero() {
           style={{ gap: '2rem', maxWidth: 680 }}
           className="flex flex-col md:flex-row md:items-end md:justify-between md:max-w-none"
         >
-          <motion.p
-            variants={shouldReduce ? undefined : fadeUp}
-            initial={shouldReduce ? undefined : 'hidden'}
-            animate={shouldReduce ? undefined : 'visible'}
-            transition={{ delay: 1.1 }}
-            style={{
-              fontSize: '1rem',
-              fontWeight: 300,
-              color: 'var(--muted)',
-              lineHeight: 1.75,
-              maxWidth: 380,
-            }}
-          >
-            Wir sind Benedikt und Maximilian — zwei Gründer aus Koblenz,
-            die Websites bauen, die nicht nur gut aussehen,
-            sondern echte Ergebnisse liefern.
-          </motion.p>
 
           <motion.div
             variants={shouldReduce ? undefined : fadeUp}
