@@ -1,15 +1,16 @@
 'use client'
-import { useRef, useState } from 'react'
+import { useRef } from 'react'
 import { motion, useInView, useReducedMotion } from 'framer-motion'
 import { fadeUp, staggerContainer } from '@/lib/animations'
 import { SectionLabel } from '@/components/shared/SectionLabel'
+import BorderGlow from '@/components/BorderGlow'
 
 const steps = [
   {
     number: '01',
     title: 'Erstes Gespräch',
     meta: 'Calendly-Call oder Telefonat',
-    duration: 'kostenlos · 30 Minuten',
+    duration: 'Kostenlos · 30 Minuten',
     body: 'Wir lernen Ihr Unternehmen kennen, stellen Fragen, hören zu. Kein Pitch. Kein Druck.',
   },
   {
@@ -35,93 +36,6 @@ const steps = [
   },
 ]
 
-function ProcessRow({ step, index }: { step: typeof steps[0]; index: number }) {
-  const [hovered, setHovered] = useState(false)
-
-  return (
-    <div
-      onMouseEnter={() => setHovered(true)}
-      onMouseLeave={() => setHovered(false)}
-      style={{
-        padding: '2.5rem 0',
-        borderBottom: '1px solid var(--border)',
-        cursor: 'default',
-      }}
-      className="grid grid-cols-[80px_1fr] gap-8 md:grid-cols-[80px_1fr_1fr]"
-    >
-      {/* Number */}
-      <div
-        style={{
-          fontFamily: 'var(--font-display)',
-          fontSize: '3.5rem',
-          fontWeight: 400,
-          fontStyle: 'italic',
-          lineHeight: 1,
-          color: hovered ? 'var(--accent)' : 'rgba(240,237,232,0.08)',
-          transition: 'color 0.3s ease',
-          userSelect: 'none',
-          paddingTop: '0.25rem',
-        }}
-      >
-        {step.number}
-      </div>
-
-      {/* Left info */}
-      <div>
-        <h3
-          style={{
-            fontFamily: 'var(--font-display)',
-            fontSize: '1.5rem',
-            fontWeight: 400,
-            fontStyle: 'italic',
-            color: 'var(--text)',
-            marginBottom: '0.4rem',
-            lineHeight: 1.2,
-          }}
-        >
-          {step.title}
-        </h3>
-        <p
-          style={{
-            fontSize: '0.8rem',
-            fontWeight: 300,
-            color: 'var(--muted)',
-            lineHeight: 1.6,
-          }}
-        >
-          {step.meta}
-        </p>
-      </div>
-
-      {/* Right detail */}
-      <div className="hidden md:block" style={{ paddingLeft: '1rem' }}>
-        <p
-          style={{
-            fontSize: '0.7rem',
-            fontWeight: 400,
-            textTransform: 'uppercase',
-            letterSpacing: '0.1em',
-            color: 'var(--accent)',
-            marginBottom: '0.5rem',
-          }}
-        >
-          {step.duration}
-        </p>
-        <p
-          style={{
-            fontSize: '0.875rem',
-            fontWeight: 300,
-            color: 'var(--muted)',
-            lineHeight: 1.7,
-          }}
-        >
-          {step.body}
-        </p>
-      </div>
-    </div>
-  )
-}
-
 export function Process() {
   const ref = useRef(null)
   const isInView = useInView(ref, { once: true, margin: '-80px' })
@@ -130,10 +44,7 @@ export function Process() {
   return (
     <section
       id="prozess"
-      style={{
-        paddingTop: '5rem',
-        paddingBottom: '5rem',
-      }}
+      style={{ paddingTop: '5rem', paddingBottom: '5rem' }}
       className="md:py-32"
     >
       <div className="container-site">
@@ -154,10 +65,98 @@ export function Process() {
             Kein Rätselraten. Kein Warten.
           </motion.h2>
 
-          <div>
-            {steps.map((step, i) => (
+          <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
+            {steps.map((step) => (
               <motion.div key={step.number} variants={shouldReduce ? undefined : fadeUp}>
-                <ProcessRow step={step} index={i} />
+                <BorderGlow
+                  glowColor="73 100 50"
+                  backgroundColor="var(--surface)"
+                  borderRadius={4}
+                  glowRadius={40}
+                  glowIntensity={0.9}
+                  edgeSensitivity={30}
+                  coneSpread={25}
+                  colors={['#C8FF00', '#FF6B35', '#111111']}
+                  fillOpacity={0.15}
+                  className="h-full w-full"
+                >
+                  <div
+                    style={{
+                      padding: '2.5rem',
+                      display: 'flex',
+                      flexDirection: 'column',
+                      gap: '1.25rem',
+                      height: '100%',
+                    }}
+                  >
+                    {/* Number */}
+                    <span
+                      style={{
+                        fontFamily: 'var(--font-display)',
+                        fontSize: '3.5rem',
+                        fontWeight: 400,
+                        fontStyle: 'italic',
+                        lineHeight: 1,
+                        color: 'rgba(240,237,232,0.07)',
+                        userSelect: 'none',
+                      }}
+                    >
+                      {step.number}
+                    </span>
+
+                    {/* Title + meta */}
+                    <div style={{ display: 'flex', flexDirection: 'column', gap: '0.35rem' }}>
+                      <h3
+                        style={{
+                          fontFamily: 'var(--font-display)',
+                          fontSize: '1.5rem',
+                          fontWeight: 400,
+                          fontStyle: 'italic',
+                          color: 'var(--text)',
+                          lineHeight: 1.2,
+                        }}
+                      >
+                        {step.title}
+                      </h3>
+                      <p
+                        style={{
+                          fontSize: '0.8rem',
+                          fontWeight: 300,
+                          color: 'var(--muted)',
+                          lineHeight: 1.6,
+                        }}
+                      >
+                        {step.meta}
+                      </p>
+                    </div>
+
+                    {/* Duration badge */}
+                    <p
+                      style={{
+                        fontSize: '0.7rem',
+                        fontWeight: 400,
+                        textTransform: 'uppercase',
+                        letterSpacing: '0.1em',
+                        color: 'var(--accent)',
+                      }}
+                    >
+                      {step.duration}
+                    </p>
+
+                    {/* Body */}
+                    <p
+                      style={{
+                        fontSize: '0.875rem',
+                        fontWeight: 300,
+                        color: 'var(--muted)',
+                        lineHeight: 1.75,
+                        marginTop: 'auto',
+                      }}
+                    >
+                      {step.body}
+                    </p>
+                  </div>
+                </BorderGlow>
               </motion.div>
             ))}
           </div>

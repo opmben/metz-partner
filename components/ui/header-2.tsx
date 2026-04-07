@@ -3,6 +3,7 @@ import React from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import { Button, buttonVariants } from '@/components/ui/button';
+import StarBorder from '@/components/StarBorder';
 import { cn } from '@/lib/utils';
 import { MenuToggleIcon } from '@/components/ui/menu-toggle-icon';
 import { useScroll } from '@/components/ui/use-scroll';
@@ -51,7 +52,7 @@ export function Header() {
                 background: open
                     ? 'rgba(8,8,8,0.97)'
                     : scrolled
-                    ? 'rgba(8,8,8,0.88)'
+                    ? 'rgba(8,8,8,0.55)'
                     : 'transparent',
             }}
         >
@@ -69,7 +70,7 @@ export function Header() {
                     aria-label="Metz & Partner – Startseite"
                 >
                     <Image
-                        src="/logo.png"
+                        src="/font2 tra 2.png"
                         alt="Metz & Partner Logo"
                         width={44}
                         height={44}
@@ -94,11 +95,13 @@ export function Header() {
 
                 {/* Desktop CTA */}
                 <div className="hidden md:block">
-                    <Button asChild>
-                        <Link href="/#kontakt" onClick={() => handleNavClick('/#kontakt')}>
-                            Projekt anfragen
-                        </Link>
-                    </Button>
+                    <StarBorder
+                        as={Link}
+                        href="/#kontakt"
+                        onClick={() => handleNavClick('/#kontakt')}
+                    >
+                        Projekt anfragen
+                    </StarBorder>
                 </div>
 
                 {/* Mobile menu toggle */}
@@ -119,7 +122,7 @@ export function Header() {
                     'fixed top-[72px] right-0 bottom-0 left-0 z-50 flex flex-col overflow-hidden border-t border-[var(--border)] md:hidden',
                     open ? 'block' : 'hidden',
                 )}
-                style={{ background: 'rgba(8,8,8,0.97)' }}
+                style={{ background: 'rgba(8,8,8,0.75)' }}
             >
                 <div
                     data-slot={open ? 'open' : 'closed'}
@@ -154,15 +157,14 @@ export function Header() {
                     </div>
 
                     <div>
-                        <Button
+                        <StarBorder
+                            as={Link}
+                            href="/#kontakt"
+                            onClick={() => handleNavClick('/#kontakt')}
                             className="w-full"
-                            asChild
-                            size="lg"
                         >
-                            <Link href="/#kontakt" onClick={() => handleNavClick('/#kontakt')}>
-                                Projekt anfragen →
-                            </Link>
-                        </Button>
+                            Projekt anfragen →
+                        </StarBorder>
                     </div>
                 </div>
             </div>

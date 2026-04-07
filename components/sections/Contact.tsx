@@ -6,7 +6,8 @@ import { z } from 'zod'
 import { motion, useInView, useReducedMotion, AnimatePresence } from 'framer-motion'
 import { fadeUp, staggerContainer, fadeIn } from '@/lib/animations'
 import { SectionLabel } from '@/components/shared/SectionLabel'
-import { Mail } from 'lucide-react'
+import { Mail, Phone } from 'lucide-react'
+import StarBorder from '@/components/StarBorder'
 
 const schema = z.object({
   name: z.string().min(2, 'Bitte geben Sie Ihren Namen ein.'),
@@ -162,38 +163,15 @@ export function Contact() {
 
               {/* Calendly CTA */}
               <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
-                <a
+                <StarBorder
+                  as="a"
                   href="https://calendly.com/metzundpartner"
                   target="_blank"
                   rel="noopener noreferrer"
-                  style={{
-                    background: 'var(--accent)',
-                    color: 'var(--bg)',
-                    fontFamily: 'var(--font-ui)',
-                    fontSize: '0.8rem',
-                    fontWeight: 500,
-                    textTransform: 'uppercase',
-                    letterSpacing: '0.08em',
-                    padding: '0.9rem 2rem',
-                    borderRadius: 100,
-                    textDecoration: 'none',
-                    transition: 'transform 0.2s ease',
-                    display: 'inline-flex',
-                    alignItems: 'center',
-                    gap: '0.5rem',
-                    alignSelf: 'flex-start',
-                  }}
-                  onMouseEnter={(e) => {
-                    ;(e.currentTarget as HTMLAnchorElement).style.transform =
-                      'scale(1.04) translateY(-2px)'
-                  }}
-                  onMouseLeave={(e) => {
-                    ;(e.currentTarget as HTMLAnchorElement).style.transform =
-                      'scale(1) translateY(0)'
-                  }}
                 >
-                  📞 Kostenlosen Call buchen →
-                </a>
+                  <Phone size={14} />
+                  Kostenlosen Call buchen →
+                </StarBorder>
 
                 <a
                   href="mailto:hallo@metzundpartner.de"
@@ -368,37 +346,13 @@ export function Contact() {
                       {errors.dsgvo && <p style={errorStyle}>{errors.dsgvo.message}</p>}
                     </div>
 
-                    <button
+                    <StarBorder
+                      as="button"
                       type="submit"
                       disabled={loading}
-                      style={{
-                        background: loading ? 'var(--surface-2)' : 'var(--accent)',
-                        color: loading ? 'var(--muted)' : 'var(--bg)',
-                        fontFamily: 'var(--font-ui)',
-                        fontSize: '0.8rem',
-                        fontWeight: 500,
-                        textTransform: 'uppercase',
-                        letterSpacing: '0.08em',
-                        padding: '0.9rem 2rem',
-                        borderRadius: 100,
-                        border: 'none',
-                        cursor: loading ? 'wait' : 'pointer',
-                        transition: 'transform 0.2s ease, background 0.2s ease',
-                        alignSelf: 'flex-start',
-                      }}
-                      onMouseEnter={(e) => {
-                        if (!loading) {
-                          ;(e.currentTarget as HTMLButtonElement).style.transform =
-                            'scale(1.04) translateY(-2px)'
-                        }
-                      }}
-                      onMouseLeave={(e) => {
-                        ;(e.currentTarget as HTMLButtonElement).style.transform =
-                          'scale(1) translateY(0)'
-                      }}
                     >
                       {loading ? 'Wird gesendet…' : 'Nachricht senden →'}
-                    </button>
+                    </StarBorder>
                   </motion.form>
                 )}
               </AnimatePresence>
