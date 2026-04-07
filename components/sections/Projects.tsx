@@ -33,13 +33,8 @@ export function Projects() {
         >
           {/* Header */}
           <div
-            style={{
-              display: 'flex',
-              flexDirection: 'column',
-              gap: '1.25rem',
-              marginBottom: '3rem',
-            }}
-            className="md:flex-row md:items-end md:justify-between"
+            style={{ gap: '1.25rem', marginBottom: '3rem' }}
+            className="flex flex-col md:flex-row md:items-end md:justify-between"
           >
             <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
               <motion.div variants={shouldReduce ? undefined : fadeUp}>
@@ -55,18 +50,12 @@ export function Projects() {
           {featured && (
             <motion.div
               variants={shouldReduce ? undefined : staggerContainer(0.1)}
-              style={{
-                display: 'grid',
-                gridTemplateColumns: '1fr',
-                gap: '1rem',
-                marginBottom: '2rem',
-              }}
-              className="md:grid-cols-3"
+              style={{ marginBottom: '2rem' }}
+              className="grid grid-cols-1 gap-4 md:grid-cols-3"
             >
               {/* Featured — 2/3 width */}
               <motion.div
                 variants={shouldReduce ? undefined : scaleIn}
-                style={{ gridColumn: '1', gridRow: '1' }}
                 className="md:col-span-2"
               >
                 <ProjectCard project={featured} featured />
@@ -78,10 +67,8 @@ export function Projects() {
                   display: 'flex',
                   flexDirection: 'column',
                   gap: '1rem',
-                  gridColumn: '1',
-                  gridRow: '2',
                 }}
-                className="md:col-span-1 md:row-span-1"
+                className="md:col-span-1"
               >
                 {secondary.map((project) => (
                   <motion.div key={project.slug} variants={shouldReduce ? undefined : scaleIn}>

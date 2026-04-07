@@ -44,14 +44,7 @@ export function FounderBar() {
           </motion.div>
 
           {/* Founder cards */}
-          <div
-            style={{
-              display: 'grid',
-              gridTemplateColumns: '1fr',
-              gap: '0',
-            }}
-            className="md:grid-cols-2"
-          >
+          <div className="grid grid-cols-1 md:grid-cols-2">
             {founders.map((founder, i) => (
               <motion.div
                 key={founder.name}

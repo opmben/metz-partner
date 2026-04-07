@@ -56,12 +56,8 @@ export function Footer() {
 
           {/* Bottom row */}
           <div
-            style={{
-              display: 'flex',
-              flexDirection: 'column',
-              gap: '1rem',
-            }}
-            className="md:flex-row md:items-center md:justify-between"
+            style={{ gap: '1rem' }}
+            className="flex flex-col md:flex-row md:items-center md:justify-between"
           >
             <nav style={{ display: 'flex', flexWrap: 'wrap', gap: '1.5rem' }}>
               {footerLinks.map((link) => (

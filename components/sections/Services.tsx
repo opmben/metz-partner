@@ -117,12 +117,9 @@ export function Services() {
           <motion.div
             variants={shouldReduce ? undefined : staggerContainer(0.1)}
             style={{
-              display: 'grid',
-              gridTemplateColumns: '1fr',
-              gap: '0',
               border: '1px solid var(--border)',
             }}
-            className="md:grid-cols-3"
+            className="grid grid-cols-1 md:grid-cols-3"
           >
             {services.map((service) => (
               <motion.div key={service.number} variants={shouldReduce ? undefined : fadeUp}>

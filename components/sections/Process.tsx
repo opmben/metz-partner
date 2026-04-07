@@ -43,14 +43,11 @@ function ProcessRow({ step, index }: { step: typeof steps[0]; index: number }) {
       onMouseEnter={() => setHovered(true)}
       onMouseLeave={() => setHovered(false)}
       style={{
-        display: 'grid',
-        gridTemplateColumns: '80px 1fr',
-        gap: '2rem',
         padding: '2.5rem 0',
         borderBottom: '1px solid var(--border)',
         cursor: 'default',
       }}
-      className="md:grid-cols-[80px_1fr_1fr]"
+      className="grid grid-cols-[80px_1fr] gap-8 md:grid-cols-[80px_1fr_1fr]"
     >
       {/* Number */}
       <div

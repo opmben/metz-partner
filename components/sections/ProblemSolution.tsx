@@ -48,13 +48,8 @@ export function ProblemSolution() {
 
           {/* Two-column problem / solution */}
           <div
-            style={{
-              display: 'grid',
-              gridTemplateColumns: '1fr',
-              gap: '3rem',
-              marginBottom: '5rem',
-            }}
-            className="md:grid-cols-2 md:gap-16"
+            style={{ marginBottom: '5rem' }}
+            className="grid grid-cols-1 gap-12 md:grid-cols-2 md:gap-16"
           >
             {/* Problem */}
             <motion.div variants={shouldReduce ? undefined : fadeUp}>
@@ -121,12 +116,10 @@ export function ProblemSolution() {
             initial={shouldReduce ? undefined : 'hidden'}
             animate={shouldReduce ? undefined : isInView ? 'visible' : 'hidden'}
             style={{
-              display: 'grid',
-              gridTemplateColumns: '1fr',
               gap: '1px',
               background: 'var(--border)',
             }}
-            className="md:grid-cols-3"
+            className="grid grid-cols-1 md:grid-cols-3"
           >
             {proofPoints.map((point) => (
               <motion.div

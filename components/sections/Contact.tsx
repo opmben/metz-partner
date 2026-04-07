@@ -127,14 +127,7 @@ export function Contact() {
             Erzählen Sie uns von Ihrem Projekt.
           </motion.h2>
 
-          <div
-            style={{
-              display: 'grid',
-              gridTemplateColumns: '1fr',
-              gap: '4rem',
-            }}
-            className="md:grid-cols-2 md:gap-16"
-          >
+          <div className="grid grid-cols-1 gap-16 md:grid-cols-2">
             {/* Left — Context */}
             <motion.div
               variants={shouldReduce ? undefined : fadeUp}

@@ -220,13 +220,8 @@ export function Hero() {
 
         {/* Subline + CTAs */}
         <div
-          style={{
-            display: 'flex',
-            flexDirection: 'column',
-            gap: '2rem',
-            maxWidth: 680,
-          }}
-          className="md:flex-row md:items-end md:justify-between md:max-w-none"
+          style={{ gap: '2rem', maxWidth: 680 }}
+          className="flex flex-col md:flex-row md:items-end md:justify-between md:max-w-none"
         >
           <motion.p
             variants={shouldReduce ? undefined : fadeUp}
