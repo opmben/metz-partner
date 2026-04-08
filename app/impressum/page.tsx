@@ -103,11 +103,8 @@ export default function ImpressumPage() {
                 <br />
                 Benedikt Metz & Maximilian Metz
                 <br />
-                [Straße und Hausnummer]
-                <br />
-                56xxx Koblenz
-                <br />
-                Deutschland
+                {/* TODO: Straße und Hausnummer eintragen */}
+                Koblenz, Deutschland
               </p>
             </div>
 
@@ -127,9 +124,7 @@ export default function ImpressumPage() {
             <div style={{ borderTop: '1px solid var(--border)', paddingTop: '2rem' }}>
               <p style={sectionHeading}>Verantwortlich für den Inhalt nach § 18 Abs. 2 MStV</p>
               <p>
-                Benedikt Metz & Maximilian Metz
-                <br />
-                [Adresse wie oben]
+                Benedikt Metz & Maximilian Metz, Koblenz
               </p>
             </div>
 

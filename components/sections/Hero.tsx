@@ -1,5 +1,5 @@
 'use client'
-import { useEffect, useState } from 'react'
+import { useSyncExternalStore } from 'react'
 import { motion, useReducedMotion } from 'framer-motion'
 import { slideUpClip, fadeIn, fadeUp } from '@/lib/animations'
 import StarBorder from '@/components/StarBorder'
@@ -13,13 +13,15 @@ const orb2Animation = {
   transition: { duration: 20, repeat: Infinity, ease: 'easeInOut' as const },
 }
 
-export function Hero() {
-  const [mounted, setMounted] = useState(false)
-  const shouldReduce = useReducedMotion()
+// useSyncExternalStore is the React 18 canonical pattern for client-only
+// rendering without triggering the react-hooks/set-state-in-effect lint rule.
+const subscribe = () => () => {}
+const getClientSnapshot = () => true
+const getServerSnapshot = () => false
 
-  useEffect(() => {
-    setMounted(true)
-  }, [])
+export function Hero() {
+  const mounted = useSyncExternalStore(subscribe, getClientSnapshot, getServerSnapshot)
+  const shouldReduce = useReducedMotion()
 
   const scrollTo = (id: string) => (e: React.MouseEvent) => {
     e.preventDefault()

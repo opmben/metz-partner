@@ -1,11 +1,10 @@
 import type { Metadata } from 'next'
 import { notFound } from 'next/navigation'
 import Image from 'next/image'
-import Link from 'next/link'
 import { Navigation } from '@/components/shared/Navigation'
 import { Footer } from '@/components/shared/Footer'
 import { projects } from '@/lib/data/projects'
-import StarBorder from '@/components/StarBorder'
+import { ProjectCTA } from '@/components/shared/ProjectCTA'
 
 interface Props {
   params: Promise<{ slug: string }>
@@ -298,32 +297,10 @@ export default async function ProjectPage({ params }: Props) {
                 Kostenlos und unverbindlich — direkt mit Benedikt oder Maximilian.
               </p>
             </div>
-            <div style={{ display: 'flex', gap: '1.5rem', alignItems: 'center', flexShrink: 0 }}>
-              <StarBorder as="a" href="/#kontakt">
-                Projekt anfragen
-              </StarBorder>
-              {nextProject && (
-                <Link
-                  href={`/projekte/${nextProject.slug}`}
-                  style={{
-                    color: 'var(--muted)',
-                    fontSize: '0.875rem',
-                    fontWeight: 300,
-                    textDecoration: 'none',
-                    transition: 'color 0.2s ease',
-                    whiteSpace: 'nowrap',
-                  }}
-                  onMouseEnter={(e) => {
-                    (e.currentTarget as HTMLAnchorElement).style.color = 'var(--text)'
-                  }}
-                  onMouseLeave={(e) => {
-                    (e.currentTarget as HTMLAnchorElement).style.color = 'var(--muted)'
-                  }}
-                >
-                  Nächstes Projekt →
-                </Link>
-              )}
-            </div>
+            <ProjectCTA
+              nextSlug={nextProject?.slug}
+              nextName={nextProject?.name}
+            />
           </div>
         </div>
       </main>

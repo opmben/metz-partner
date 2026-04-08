@@ -20,7 +20,7 @@ const sections = [
   {
     title: 'Verantwortlicher',
     content:
-      'Verantwortlich für die Datenverarbeitung auf dieser Website ist: Metz & Partner GbR, Benedikt Metz & Maximilian Metz, [Adresse], Koblenz. E-Mail: hallo@metzundpartner.de',
+      'Verantwortlich für die Datenverarbeitung auf dieser Website ist: Metz & Partner GbR, Benedikt Metz & Maximilian Metz, Koblenz. E-Mail: hallo@metzundpartner.de',
   },
   {
     title: 'Erhebung und Speicherung personenbezogener Daten',
@@ -30,17 +30,22 @@ const sections = [
   {
     title: 'Kontaktformular',
     content:
-      'Wenn Sie uns per Kontaktformular Anfragen zukommen lassen, werden Ihre Angaben aus dem Anfrageformular inklusive der von Ihnen dort angegebenen Kontaktdaten zwecks Bearbeitung der Anfrage und für den Fall von Anschlussfragen bei uns gespeichert. Diese Daten geben wir nicht ohne Ihre Einwilligung weiter. Rechtsgrundlage ist Art. 6 Abs. 1 lit. b DSGVO.',
+      'Wenn Sie uns per Kontaktformular Anfragen zukommen lassen, werden Ihre Angaben zwecks Bearbeitung der Anfrage und für den Fall von Anschlussfragen bei uns gespeichert. Die Übertragung erfolgt verschlüsselt. Rechtsgrundlage ist Art. 6 Abs. 1 lit. b DSGVO. Daten werden nicht ohne Ihre Einwilligung an Dritte weitergegeben.',
+  },
+  {
+    title: 'E-Mail-Versand (Resend)',
+    content:
+      'Für den technischen Versand von Kontaktformular-Benachrichtigungen nutzen wir den Dienst Resend (Resend Inc., San Francisco, USA). Ihre eingegebenen Daten (Name, E-Mail-Adresse, Nachricht) werden zur Weiterleitung an uns an Resend übermittelt. Resend verarbeitet diese Daten ausschließlich zur Zustellung der E-Mail. Weitere Informationen finden Sie unter resend.com/privacy.',
   },
   {
     title: 'Calendly',
     content:
-      'Für die Buchung von Terminen nutzen wir den Dienst Calendly (Calendly LLC, Atlanta, USA). Wenn Sie einen Termin buchen, werden die von Ihnen angegebenen Daten an Calendly übermittelt. Weitere Informationen finden Sie in der Datenschutzerklärung von Calendly unter calendly.com/privacy.',
+      'Für die Buchung von Terminen nutzen wir den Dienst Calendly (Calendly LLC, Atlanta, USA). Wenn Sie einen Termin buchen, werden die von Ihnen angegebenen Daten an Calendly übermittelt. Weitere Informationen finden Sie unter calendly.com/privacy.',
   },
   {
     title: 'Analyse / Statistik',
     content:
-      'Diese Website verwendet Plausible Analytics, einen datenschutzfreundlichen Analysedienst ohne Cookies und ohne personenbezogene Daten. Es wird kein Tracking über Geräte oder Websites hinweg durchgeführt. Ein Cookie-Banner ist daher nicht erforderlich.',
+      'Diese Website verwendet derzeit kein Analyse-Tool. Es werden keine personenbezogenen Nutzungsdaten erhoben, gespeichert oder weitergegeben. Ein Cookie-Banner ist nicht erforderlich.',
   },
   {
     title: 'Google Fonts',

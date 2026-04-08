@@ -1,36 +1,108 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Metz & Partner — Agency Website
+
+Website for Metz & Partner, a web design and development studio based in Koblenz, Germany. Built and maintained by Benedikt and Maximilian Metz.
+
+## Stack
+
+| Layer | Technology |
+|---|---|
+| Framework | Next.js 16 (App Router) |
+| Language | TypeScript (strict) |
+| Styling | Tailwind CSS + CSS variables |
+| Animation | Framer Motion |
+| Forms | React Hook Form + Zod |
+| Email | Resend |
+| Fonts | Instrument Serif + DM Sans (via `next/font`) |
+| Icons | Lucide React |
 
 ## Getting Started
 
-First, run the development server:
-
 ```bash
+npm install
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Open [http://localhost:3000](http://localhost:3000).
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Environment Variables
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+Create `.env.local` in the project root:
 
-## Learn More
+```env
+# Required for contact form email delivery
+RESEND_API_KEY=re_xxxxxxxxxxxx
+```
 
-To learn more about Next.js, take a look at the following resources:
+Get a key at [resend.com](https://resend.com). Once you verify your sending domain (`metzundpartner.de`), update the `from` address in `app/api/contact/route.ts` from `onboarding@resend.dev` to `website@metzundpartner.de`.
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+Without `RESEND_API_KEY`, the contact form returns a graceful error directing users to the direct email address.
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+## Project Structure
 
-## Deploy on Vercel
+```
+app/
+  page.tsx                  Homepage (all sections assembled)
+  api/contact/route.ts      Contact form POST endpoint (Resend)
+  projekte/
+    page.tsx                All projects grid
+    [slug]/page.tsx         Case study detail page
+  impressum/page.tsx
+  datenschutz/page.tsx
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+components/
+  sections/                 One file per homepage section
+    Hero.tsx
+    ProblemSolution.tsx
+    Projects.tsx
+    Services.tsx
+    Process.tsx
+    Manifesto.tsx
+    Contact.tsx
+    ProjetteGrid.tsx        Used by /projekte page
+  shared/
+    Navigation.tsx (header-2.tsx)
+    Footer.tsx
+    ProjectCard.tsx
+    ProjectCTA.tsx
+    SectionLabel.tsx
+    ScrollReveal.tsx
+  ui/                       shadcn base components
+  BorderGlow.tsx            React Bits cursor-glow card wrapper
+  StarBorder.tsx            React Bits animated-border button
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+lib/
+  data/projects.ts          Project data — update here when adding new work
+  animations.ts             Shared Framer Motion variants
+
+public/
+  projekte/                 Project screenshots — add here, then set imageReady: true in projects.ts
+  font2 tra 2.png           Logo image
+```
+
+## Adding a New Project
+
+1. Add a screenshot to `public/projekte/your-project.jpg`
+2. Add an entry to `lib/data/projects.ts` — set `imageReady: true`
+3. Fill in `challenge`, `approach`, `clientContext`, and `additionalImages`
+4. The project will appear on the homepage grid and at `/projekte/your-slug`
+
+## Commands
+
+```bash
+npm run dev      # Development server
+npm run build    # Production build
+npm run lint     # ESLint (must pass before commit)
+npx tsc --noEmit # Type check
+```
+
+## Deployment
+
+Deployed on Vercel. Push to `main` triggers automatic deployment.
+
+Set `RESEND_API_KEY` in the Vercel project environment variables (Settings → Environment Variables).
+
+## Legal
+
+- **Impressum address**: Add the full street address to `app/impressum/page.tsx` before going live
+- **Datenschutz**: Review before launch — currently reflects Resend, Calendly, and no analytics
+- **Domain**: `metzundpartner.de` — update metadata in `app/layout.tsx` once confirmed
