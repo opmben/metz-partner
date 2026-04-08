@@ -221,15 +221,32 @@ export function Hero() {
 
         {/* Subline + CTAs */}
         <div
-          style={{ gap: '2rem', maxWidth: 680 }}
+          style={{ gap: '2.5rem', maxWidth: 680 }}
           className="flex flex-col md:flex-row md:items-end md:justify-between md:max-w-none"
         >
+          {/* Founder subline */}
+          <motion.p
+            variants={shouldReduce ? undefined : fadeUp}
+            initial={shouldReduce ? undefined : 'hidden'}
+            animate={shouldReduce ? undefined : 'visible'}
+            transition={{ delay: 1.1 }}
+            style={{
+              fontFamily: 'var(--font-ui)',
+              fontSize: '0.95rem',
+              fontWeight: 300,
+              lineHeight: 1.75,
+              color: 'var(--muted)',
+              maxWidth: 380,
+            }}
+          >
+            Wir sind <span style={{ color: 'var(--text)' }}>Benedikt und Maximilian</span> — zwei Gründer aus Koblenz, die Websites bauen, die nicht nur gut aussehen, sondern echte Ergebnisse liefern.
+          </motion.p>
 
           <motion.div
             variants={shouldReduce ? undefined : fadeUp}
             initial={shouldReduce ? undefined : 'hidden'}
             animate={shouldReduce ? undefined : 'visible'}
-            transition={{ delay: 1.25 }}
+            transition={{ delay: 1.3 }}
             style={{ display: 'flex', gap: '1rem', alignItems: 'center', flexShrink: 0 }}
           >
             <StarBorder

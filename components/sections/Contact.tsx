@@ -73,6 +73,7 @@ export function Contact() {
   const shouldReduce = useReducedMotion()
   const [submitted, setSubmitted] = useState(false)
   const [loading, setLoading] = useState(false)
+  const [submitError, setSubmitError] = useState<string | null>(null)
 
   const {
     register,
@@ -80,12 +81,26 @@ export function Contact() {
     formState: { errors },
   } = useForm<FormData>({ resolver: zodResolver(schema) })
 
-  const onSubmit = async (_data: FormData) => {
+  const onSubmit = async (data: FormData) => {
     setLoading(true)
-    // Simulate async submit — replace with actual API call
-    await new Promise((r) => setTimeout(r, 1200))
-    setLoading(false)
-    setSubmitted(true)
+    setSubmitError(null)
+    try {
+      const res = await fetch('/api/contact', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(data),
+      })
+      const json = await res.json()
+      if (!res.ok) {
+        setSubmitError(json.error ?? 'Etwas ist schiefgelaufen. Bitte versuchen Sie es erneut.')
+        return
+      }
+      setSubmitted(true)
+    } catch {
+      setSubmitError('Verbindungsfehler. Bitte versuchen Sie es erneut oder schreiben Sie direkt an hallo@metzundpartner.de')
+    } finally {
+      setLoading(false)
+    }
   }
 
   const focusStyle = (el: HTMLInputElement | HTMLTextAreaElement | null) => {
@@ -353,6 +368,12 @@ export function Contact() {
                     >
                       {loading ? 'Wird gesendet…' : 'Nachricht senden →'}
                     </StarBorder>
+
+                    {submitError && (
+                      <p style={{ fontSize: '0.8rem', color: '#FF6B6B', lineHeight: 1.6 }}>
+                        {submitError}
+                      </p>
+                    )}
                   </motion.form>
                 )}
               </AnimatePresence>

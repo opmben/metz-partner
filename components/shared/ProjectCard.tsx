@@ -12,6 +12,9 @@ interface ProjectCardProps {
 
 export function ProjectCard({ project, featured = false }: ProjectCardProps) {
   const [hovered, setHovered] = useState(false)
+  const [imgError, setImgError] = useState(false)
+
+  const showPlaceholder = !project.imageReady || imgError
 
   return (
     <Link href={`/projekte/${project.slug}`} className="block">
@@ -27,19 +30,46 @@ export function ProjectCard({ project, featured = false }: ProjectCardProps) {
           borderRadius: 4,
         }}
       >
-        {/* Image */}
+        {/* Image or placeholder */}
         <motion.div
           style={{ position: 'absolute', inset: 0 }}
           animate={{ scale: hovered ? 1.06 : 1 }}
           transition={{ duration: 0.8, ease: [0.25, 0.46, 0.45, 0.94] }}
         >
-          <Image
-            src={project.coverImage}
-            alt={`Screenshot der Website für ${project.name}`}
-            fill
-            sizes={featured ? '(min-width: 1024px) 66vw, 100vw' : '(min-width: 1024px) 33vw, 100vw'}
-            style={{ objectFit: 'cover' }}
-          />
+          {showPlaceholder ? (
+            <div
+              style={{
+                width: '100%',
+                height: '100%',
+                background: 'linear-gradient(135deg, var(--surface) 0%, var(--surface-2) 100%)',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+              }}
+            >
+              <span
+                style={{
+                  fontFamily: 'var(--font-ui)',
+                  fontSize: '0.65rem',
+                  fontWeight: 400,
+                  textTransform: 'uppercase',
+                  letterSpacing: '0.14em',
+                  color: 'var(--border-hover)',
+                }}
+              >
+                Screenshot folgt
+              </span>
+            </div>
+          ) : (
+            <Image
+              src={project.coverImage}
+              alt={`Screenshot der Website für ${project.name}`}
+              fill
+              sizes={featured ? '(min-width: 1024px) 66vw, 100vw' : '(min-width: 1024px) 33vw, 100vw'}
+              style={{ objectFit: 'cover' }}
+              onError={() => setImgError(true)}
+            />
+          )}
         </motion.div>
 
         {/* Gradient overlay */}
