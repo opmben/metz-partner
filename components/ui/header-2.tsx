@@ -3,7 +3,6 @@ import React from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import { Button, buttonVariants } from '@/components/ui/button';
-import StarBorder from '@/components/StarBorder';
 import { cn } from '@/lib/utils';
 import { MenuToggleIcon } from '@/components/ui/menu-toggle-icon';
 import { useScroll } from '@/components/ui/use-scroll';
@@ -95,13 +94,11 @@ export function Header() {
 
                 {/* Desktop CTA */}
                 <div className="hidden md:block">
-                    <StarBorder
-                        as={Link}
-                        href="/#kontakt"
-                        onClick={() => handleNavClick('/#kontakt')}
-                    >
-                        Projekt anfragen
-                    </StarBorder>
+                    <Button asChild>
+                        <Link href="/#kontakt" onClick={() => handleNavClick('/#kontakt')}>
+                            Projekt anfragen
+                        </Link>
+                    </Button>
                 </div>
 
                 {/* Mobile menu toggle */}
@@ -157,14 +154,11 @@ export function Header() {
                     </div>
 
                     <div>
-                        <StarBorder
-                            as={Link}
-                            href="/#kontakt"
-                            onClick={() => handleNavClick('/#kontakt')}
-                            className="w-full"
-                        >
-                            Projekt anfragen →
-                        </StarBorder>
+                        <Button asChild size="lg" className="w-full">
+                            <Link href="/#kontakt" onClick={() => handleNavClick('/#kontakt')}>
+                                Projekt anfragen →
+                            </Link>
+                        </Button>
                     </div>
                 </div>
             </div>
