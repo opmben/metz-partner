@@ -6,15 +6,11 @@ import StarBorder from '@/components/StarBorder'
 
 const orb1Animation = {
   animate: { x: [0, -60, 40, 0], y: [0, 40, -30, 0], scale: [1, 1.1, 0.95, 1] },
-  transition: { duration: 12, repeat: Infinity, ease: 'easeInOut' as const },
+  transition: { duration: 16, repeat: Infinity, ease: 'easeInOut' as const },
 }
 const orb2Animation = {
   animate: { x: [0, 50, -30, 0], y: [0, -40, 30, 0], scale: [1, 0.95, 1.08, 1] },
-  transition: { duration: 15, repeat: Infinity, ease: 'easeInOut' as const },
-}
-const orb3Animation = {
-  animate: { x: [0, -30, 20, 0], y: [0, 30, -20, 0], scale: [1, 1.05, 0.98, 1] },
-  transition: { duration: 18, repeat: Infinity, ease: 'easeInOut' as const },
+  transition: { duration: 20, repeat: Infinity, ease: 'easeInOut' as const },
 }
 
 export function Hero() {
@@ -48,12 +44,12 @@ export function Hero() {
           position: 'absolute',
           inset: 0,
           backgroundImage:
-            'linear-gradient(rgba(240,237,232,0.025) 1px, transparent 1px), linear-gradient(90deg, rgba(240,237,232,0.025) 1px, transparent 1px)',
+            'linear-gradient(rgba(240,237,232,0.02) 1px, transparent 1px), linear-gradient(90deg, rgba(240,237,232,0.02) 1px, transparent 1px)',
           backgroundSize: '80px 80px',
         }}
       />
 
-      {/* Color orbs */}
+      {/* Color orbs — two brand colours only, kept subtle */}
       {mounted && !shouldReduce && (
         <>
           <motion.div
@@ -67,8 +63,8 @@ export function Hero() {
               width: '60vw',
               height: '60vw',
               borderRadius: '50%',
-              background: 'radial-gradient(circle, rgba(200,255,0,0.12), transparent 70%)',
-              filter: 'blur(120px)',
+              background: 'radial-gradient(circle, rgba(200,255,0,0.08), transparent 70%)',
+              filter: 'blur(140px)',
               pointerEvents: 'none',
             }}
           />
@@ -83,61 +79,12 @@ export function Hero() {
               width: '50vw',
               height: '50vw',
               borderRadius: '50%',
-              background: 'radial-gradient(circle, rgba(255,107,53,0.09), transparent 70%)',
-              filter: 'blur(120px)',
-              pointerEvents: 'none',
-            }}
-          />
-          <motion.div
-            aria-hidden="true"
-            animate={orb3Animation.animate}
-            transition={orb3Animation.transition}
-            style={{
-              position: 'absolute',
-              top: '30%',
-              left: '40%',
-              width: '40vw',
-              height: '40vw',
-              borderRadius: '50%',
-              background: 'radial-gradient(circle, rgba(120,80,255,0.07), transparent 70%)',
-              filter: 'blur(120px)',
+              background: 'radial-gradient(circle, rgba(255,107,53,0.06), transparent 70%)',
+              filter: 'blur(140px)',
               pointerEvents: 'none',
             }}
           />
         </>
-      )}
-
-      {/* Diagonal marquee background text */}
-      {mounted && (
-        <div
-          aria-hidden="true"
-          style={{
-            position: 'absolute',
-            inset: 0,
-            overflow: 'hidden',
-            pointerEvents: 'none',
-          }}
-        >
-          <div
-            style={{
-              position: 'absolute',
-              top: '50%',
-              left: '-10%',
-              width: '120%',
-              transform: 'rotate(-12deg)',
-              opacity: 0.05,
-              fontFamily: 'var(--font-display)',
-              fontSize: 'clamp(3rem, 5vw, 6rem)',
-              fontStyle: 'italic',
-              color: 'var(--text)',
-              whiteSpace: 'nowrap',
-              userSelect: 'none',
-              animation: 'marqueeScroll 30s linear infinite',
-            }}
-          >
-            Design · Entwicklung · Ergebnisse · Design · Entwicklung · Ergebnisse · Design · Entwicklung · Ergebnisse ·
-          </div>
-        </div>
       )}
 
       {/* Main content */}
@@ -176,7 +123,7 @@ export function Hero() {
                 background: 'var(--accent)',
                 display: 'block',
                 boxShadow: '0 0 8px var(--accent)',
-                animation: mounted && !shouldReduce ? 'pulse 2s ease-in-out infinite' : 'none',
+                animation: mounted && !shouldReduce ? 'pulse 2.5s ease-in-out infinite' : 'none',
               }}
             />
             <span
@@ -219,12 +166,11 @@ export function Hero() {
           ))}
         </div>
 
-        {/* Subline + CTAs */}
+        {/* Founder subline + CTAs */}
         <div
           style={{ gap: '2.5rem', maxWidth: 680 }}
           className="flex flex-col md:flex-row md:items-end md:justify-between md:max-w-none"
         >
-          {/* Founder subline */}
           <motion.p
             variants={shouldReduce ? undefined : fadeUp}
             initial={shouldReduce ? undefined : 'hidden'}
@@ -239,7 +185,9 @@ export function Hero() {
               maxWidth: 380,
             }}
           >
-            Wir sind <span style={{ color: 'var(--text)' }}>Benedikt und Maximilian</span> — zwei Gründer aus Koblenz, die Websites bauen, die nicht nur gut aussehen, sondern echte Ergebnisse liefern.
+            Wir sind <span style={{ color: 'var(--text)' }}>Benedikt und Maximilian</span> — zwei
+            Gründer aus Koblenz, die Websites bauen, die nicht nur gut aussehen, sondern echte
+            Ergebnisse liefern.
           </motion.p>
 
           <motion.div
@@ -249,11 +197,7 @@ export function Hero() {
             transition={{ delay: 1.3 }}
             style={{ display: 'flex', gap: '1rem', alignItems: 'center', flexShrink: 0 }}
           >
-            <StarBorder
-              as="a"
-              href="#projekte"
-              onClick={scrollTo('#projekte')}
-            >
+            <StarBorder as="a" href="#projekte" onClick={scrollTo('#projekte')}>
               Unsere Arbeiten
             </StarBorder>
             <a
@@ -321,16 +265,12 @@ export function Hero() {
       <style>{`
         @keyframes pulse {
           0%, 100% { opacity: 1; box-shadow: 0 0 8px var(--accent); }
-          50% { opacity: 0.6; box-shadow: 0 0 16px var(--accent); }
+          50% { opacity: 0.5; box-shadow: 0 0 14px var(--accent); }
         }
         @keyframes scrollLine {
           0% { transform: scaleY(0); transform-origin: top; opacity: 1; }
           50% { transform: scaleY(1); transform-origin: top; opacity: 1; }
           100% { transform: scaleY(1); transform-origin: bottom; opacity: 0; }
-        }
-        @keyframes marqueeScroll {
-          0% { transform: rotate(-12deg) translateX(0); }
-          100% { transform: rotate(-12deg) translateX(-33.33%); }
         }
       `}</style>
     </section>

@@ -19,7 +19,7 @@ const StarBorder = ({
   as: Component = 'button',
   className = '',
   color = 'var(--accent)',
-  speed = '5s',
+  speed = '8s',
   thickness = 1,
   borderRadius = '100px',
   children,
