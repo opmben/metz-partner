@@ -1,17 +1,24 @@
 'use client'
 import { useRef } from 'react'
 import { motion, useInView, useReducedMotion } from 'framer-motion'
+import { Gauge, CalendarCheck } from 'lucide-react'
 import { fadeUp, staggerContainer } from '@/lib/animations'
 import { SectionLabel } from '@/components/shared/SectionLabel'
 
 const supporting = [
   {
+    icon: Gauge,
     title: 'Schnell, mobil, gefunden',
     body: 'Pagespeed 90+, mobiloptimiert, SEO-ready — kein Add-on, kein Extra. Das ist unser Standard von Tag 1.',
+    accentColor: 'var(--accent)',
+    accentBg: 'rgba(200,255,0,0.08)',
   },
   {
+    icon: CalendarCheck,
     title: 'Fertig in Wochen',
     body: 'Nicht in Monaten. Sie erhalten von Tag 1 einen konkreten Zeitplan und wissen immer, wo Ihre Website steht.',
+    accentColor: 'var(--accent-warm)',
+    accentBg: 'rgba(255,107,53,0.08)',
   },
 ]
 
@@ -25,7 +32,7 @@ export function ProblemSolution() {
       style={{ paddingTop: '5rem', paddingBottom: '5rem' }}
       className="md:py-32"
     >
-      <div className="container-site">
+      <div className="container-site" style={{ overflow: 'hidden' }}>
         <motion.div
           ref={ref}
           variants={shouldReduce ? undefined : staggerContainer(0.08)}
@@ -64,8 +71,8 @@ export function ProblemSolution() {
                   lineHeight: 1.4,
                 }}
               >
-                Die meisten Unternehmenswebsites in der Region sind veraltet, langsam, und generisch.
-                Sie kosten Geld — und bringen keins.
+                Die meisten Unternehmenswebsites in der Region sind veraltet, langsam, und
+                generisch. Sie kosten Geld — und bringen keins.
               </p>
             </motion.div>
 
@@ -92,17 +99,22 @@ export function ProblemSolution() {
                   lineHeight: 1.3,
                 }}
               >
-                Wir bauen Websites, die für Sie arbeiten. Nicht als Visitenkarte.
-                Als Ihr bester Mitarbeiter.
+                Wir bauen Websites, die für Sie arbeiten. Nicht als Visitenkarte. Als Ihr bester
+                Mitarbeiter.
               </p>
             </motion.div>
           </div>
 
-          {/* Proof points — asymmetric */}
+          {/* Proof points */}
           <div
-            style={{ display: 'flex', flexDirection: 'column', gap: '1px', background: 'var(--border)' }}
+            style={{
+              display: 'flex',
+              flexDirection: 'column',
+              gap: '1px',
+              background: 'var(--border)',
+            }}
           >
-            {/* Primary — full width, dominant */}
+            {/* Primary — full width */}
             <motion.div
               variants={shouldReduce ? undefined : fadeUp}
               style={{
@@ -111,7 +123,6 @@ export function ProblemSolution() {
                 overflow: 'hidden',
               }}
             >
-              {/* Accent top bar */}
               <div
                 style={{
                   position: 'absolute',
@@ -162,10 +173,9 @@ export function ProblemSolution() {
                   }}
                   className="md:mt-0"
                 >
-                  Sie sprechen immer mit Benedikt oder Maximilian —
-                  nicht mit einem Account Manager, nicht mit einem Junior.
-                  Die Menschen, die Ihre Website bauen, sind Ihre Ansprechpartner.
-                  Von der ersten Anfrage bis zum Launch.
+                  Sie sprechen immer mit Benedikt oder Maximilian — nicht mit einem Account
+                  Manager, nicht mit einem Junior. Die Menschen, die Ihre Website bauen, sind Ihre
+                  Ansprechpartner. Von der ersten Anfrage bis zum Launch.
                 </p>
               </div>
             </motion.div>
@@ -175,50 +185,72 @@ export function ProblemSolution() {
               style={{ display: 'grid', gap: '1px', background: 'var(--border)' }}
               className="grid-cols-1 md:grid md:grid-cols-2"
             >
-              {supporting.map((point) => (
-                <motion.div
-                  key={point.title}
-                  variants={shouldReduce ? undefined : fadeUp}
-                  style={{
-                    background: 'var(--bg)',
-                    padding: '2.5rem',
-                    position: 'relative',
-                  }}
-                >
-                  <div
+              {supporting.map((point) => {
+                const Icon = point.icon
+                return (
+                  <motion.div
+                    key={point.title}
+                    variants={shouldReduce ? undefined : fadeUp}
                     style={{
-                      position: 'absolute',
-                      top: 0,
-                      left: 0,
-                      right: 0,
-                      height: 1,
-                      background: 'var(--border-hover)',
-                    }}
-                  />
-                  <h4
-                    style={{
-                      fontFamily: 'var(--font-display)',
-                      fontSize: '1.25rem',
-                      fontWeight: 400,
-                      fontStyle: 'italic',
-                      color: 'var(--text)',
-                      marginBottom: '0.75rem',
+                      background: 'var(--bg)',
+                      padding: '2.5rem',
+                      position: 'relative',
                     }}
                   >
-                    {point.title}
-                  </h4>
-                  <p
-                    style={{
-                      fontSize: '0.875rem',
-                      fontWeight: 300,
-                      color: 'var(--muted)',
-                      lineHeight: 1.75,
-                    }}
-                  >
-                    {point.body}
-                  </p>
-                </motion.div>
-              ))}
+                    {/* Top border line */}
+                    <div
+                      style={{
+                        position: 'absolute',
+                        top: 0,
+                        left: 0,
+                        right: 0,
+                        height: 1,
+                        background: 'var(--border-hover)',
+                      }}
+                    />
+
+                    {/* Icon */}
+                    <div
+                      style={{
+                        width: 36,
+                        height: 36,
+                        borderRadius: 8,
+                        background: point.accentBg,
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        marginBottom: '1.25rem',
+                        color: point.accentColor,
+                      }}
+                    >
+                      <Icon size={17} />
+                    </div>
+
+                    <h4
+                      style={{
+                        fontFamily: 'var(--font-display)',
+                        fontSize: '1.25rem',
+                        fontWeight: 400,
+                        fontStyle: 'italic',
+                        color: 'var(--text)',
+                        marginBottom: '0.75rem',
+                      }}
+                    >
+                      {point.title}
+                    </h4>
+                    <p
+                      style={{
+                        fontSize: '0.875rem',
+                        fontWeight: 300,
+                        color: 'var(--muted)',
+                        lineHeight: 1.75,
+                      }}
+                    >
+                      {point.body}
+                    </p>
+                  </motion.div>
+                )
+              })}
             </div>
           </div>
         </motion.div>
