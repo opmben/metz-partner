@@ -211,6 +211,72 @@ export function Contact() {
                   hallo@metzundpartner.de
                 </a>
               </div>
+
+              {/* What happens next */}
+              <div
+                style={{
+                  paddingTop: '2rem',
+                  borderTop: '1px solid var(--border)',
+                  display: 'flex',
+                  flexDirection: 'column',
+                  gap: '1rem',
+                }}
+              >
+                <p
+                  style={{
+                    fontSize: '0.65rem',
+                    fontWeight: 400,
+                    textTransform: 'uppercase',
+                    letterSpacing: '0.12em',
+                    color: 'var(--muted)',
+                  }}
+                >
+                  Was als nächstes passiert
+                </p>
+                {[
+                  {
+                    step: '1',
+                    text: 'Benedikt oder Maximilian liest Ihre Nachricht persönlich.',
+                  },
+                  {
+                    step: '2',
+                    text: 'Wir melden uns innerhalb von 24 Stunden — per E-Mail oder Telefon, ganz wie Sie möchten.',
+                  },
+                  {
+                    step: '3',
+                    text: 'Wir klären gemeinsam, ob und wie wir helfen können. Kein Druck, kein Pitch.',
+                  },
+                ].map(({ step, text }) => (
+                  <div
+                    key={step}
+                    style={{ display: 'flex', gap: '1rem', alignItems: 'flex-start' }}
+                  >
+                    <span
+                      style={{
+                        fontFamily: 'var(--font-display)',
+                        fontSize: '0.9rem',
+                        fontStyle: 'italic',
+                        color: 'var(--accent)',
+                        flexShrink: 0,
+                        lineHeight: 1.6,
+                        minWidth: '1rem',
+                      }}
+                    >
+                      {step}
+                    </span>
+                    <p
+                      style={{
+                        fontSize: '0.875rem',
+                        fontWeight: 300,
+                        color: 'var(--muted)',
+                        lineHeight: 1.7,
+                      }}
+                    >
+                      {text}
+                    </p>
+                  </div>
+                ))}
+              </div>
             </motion.div>
 
             {/* Right — Form */}
@@ -254,10 +320,11 @@ export function Contact() {
                         color: 'var(--text)',
                       }}
                     >
-                      Danke —
+                      Danke für Ihre Nachricht.
                     </p>
-                    <p style={{ fontSize: '0.95rem', color: 'var(--muted)', lineHeight: 1.7 }}>
-                      Wir melden uns innerhalb von 24 Stunden bei Ihnen.
+                    <p style={{ fontSize: '0.95rem', color: 'var(--muted)', lineHeight: 1.75 }}>
+                      Benedikt oder Maximilian meldet sich persönlich bei Ihnen —
+                      in der Regel innerhalb von 24 Stunden.
                     </p>
                   </motion.div>
                 ) : (
@@ -368,6 +435,17 @@ export function Contact() {
                     >
                       {loading ? 'Wird gesendet…' : 'Nachricht senden →'}
                     </StarBorder>
+
+                    <p
+                      style={{
+                        fontSize: '0.75rem',
+                        fontWeight: 300,
+                        color: 'var(--muted)',
+                        lineHeight: 1.6,
+                      }}
+                    >
+                      Unverbindlich. Kein Pitch. Kein Verkaufsdruck.
+                    </p>
 
                     {submitError && (
                       <p style={{ fontSize: '0.8rem', color: '#FF6B6B', lineHeight: 1.6 }}>
