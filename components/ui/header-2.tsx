@@ -73,6 +73,7 @@ export function Header() {
                         alt="Metz & Partner Logo"
                         width={180}
                         height={44}
+                        style={{ height: '28px', width: 'auto' }}
                         priority
                     />
                 </Link>
