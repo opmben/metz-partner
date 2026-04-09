@@ -1,9 +1,8 @@
 'use client'
-import { useRef } from 'react'
+import { useRef, useState } from 'react'
 import { motion, useInView, useReducedMotion } from 'framer-motion'
 import { fadeUp, staggerContainer } from '@/lib/animations'
 import { SectionLabel } from '@/components/shared/SectionLabel'
-import BorderGlow from '@/components/BorderGlow'
 
 const steps = [
   {
@@ -32,9 +31,106 @@ const steps = [
     title: 'Launch & Übergabe',
     meta: 'Live-Schaltung, Einweisung, Übergabe',
     duration: '1–2 Tage',
-    body: 'Ihre Website ist online. Sie wissen, wie Sie sie selbst pflegen können.',
+    body: 'Ihre Website ist online. Wir zeigen Ihnen, wie Sie sie selbst pflegen können — und bleiben für Fragen da.',
   },
 ]
+
+function ProcessRow({
+  step,
+  shouldReduce,
+}: {
+  step: (typeof steps)[0]
+  shouldReduce: boolean | null
+}) {
+  const [hovered, setHovered] = useState(false)
+
+  return (
+    <motion.div
+      variants={shouldReduce ? undefined : fadeUp}
+      onMouseEnter={() => setHovered(true)}
+      onMouseLeave={() => setHovered(false)}
+      style={{
+        borderBottom: '1px solid var(--border)',
+        padding: '2.25rem 0',
+        cursor: 'default',
+      }}
+    >
+      <div className="grid grid-cols-1 gap-4 md:grid-cols-[80px_1fr_1fr_1fr] md:items-start md:gap-8">
+        {/* Number */}
+        <motion.span
+          animate={{
+            color: hovered && !shouldReduce ? 'var(--accent)' : 'rgba(240,237,232,0.08)',
+          }}
+          transition={{ duration: 0.3, ease: 'easeOut' }}
+          style={{
+            fontFamily: 'var(--font-display)',
+            fontSize: '3rem',
+            fontWeight: 400,
+            fontStyle: 'italic',
+            lineHeight: 1,
+            display: 'block',
+            userSelect: 'none',
+          }}
+        >
+          {step.number}
+        </motion.span>
+
+        {/* Title + meta */}
+        <div>
+          <h3
+            style={{
+              fontFamily: 'var(--font-display)',
+              fontSize: '1.25rem',
+              fontWeight: 400,
+              fontStyle: 'italic',
+              color: 'var(--text)',
+              lineHeight: 1.2,
+              marginBottom: '0.4rem',
+            }}
+          >
+            {step.title}
+          </h3>
+          <p
+            style={{
+              fontSize: '0.78rem',
+              fontWeight: 300,
+              color: 'var(--muted)',
+              lineHeight: 1.5,
+            }}
+          >
+            {step.meta}
+          </p>
+        </div>
+
+        {/* Duration */}
+        <p
+          style={{
+            fontSize: '0.7rem',
+            fontWeight: 400,
+            textTransform: 'uppercase',
+            letterSpacing: '0.1em',
+            color: 'var(--accent)',
+            paddingTop: '0.25rem',
+          }}
+        >
+          {step.duration}
+        </p>
+
+        {/* Body */}
+        <p
+          style={{
+            fontSize: '0.875rem',
+            fontWeight: 300,
+            color: 'var(--muted)',
+            lineHeight: 1.75,
+          }}
+        >
+          {step.body}
+        </p>
+      </div>
+    </motion.div>
+  )
+}
 
 export function Process() {
   const ref = useRef(null)
@@ -44,7 +140,11 @@ export function Process() {
   return (
     <section
       id="prozess"
-      style={{ paddingTop: '5rem', paddingBottom: '5rem' }}
+      style={{
+        paddingTop: '5rem',
+        paddingBottom: '5rem',
+        borderTop: '1px solid var(--border)',
+      }}
       className="md:py-32"
     >
       <div className="container-site">
@@ -65,101 +165,15 @@ export function Process() {
             Kein Rätselraten. Kein Warten.
           </motion.h2>
 
-          <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
+          {/* Horizontal step list */}
+          <motion.div
+            variants={shouldReduce ? undefined : staggerContainer(0.07)}
+            style={{ borderTop: '1px solid var(--border)' }}
+          >
             {steps.map((step) => (
-              <motion.div key={step.number} variants={shouldReduce ? undefined : fadeUp}>
-                <BorderGlow
-                  glowColor="73 100 50"
-                  backgroundColor="var(--surface)"
-                  borderRadius={4}
-                  glowRadius={40}
-                  glowIntensity={0.9}
-                  edgeSensitivity={30}
-                  coneSpread={25}
-                  colors={['#C8FF00', '#FF6B35', '#111111']}
-                  fillOpacity={0.15}
-                  className="h-full w-full"
-                >
-                  <div
-                    style={{
-                      padding: '2.5rem',
-                      display: 'flex',
-                      flexDirection: 'column',
-                      gap: '1.25rem',
-                      height: '100%',
-                    }}
-                  >
-                    {/* Number */}
-                    <span
-                      style={{
-                        fontFamily: 'var(--font-display)',
-                        fontSize: '3.5rem',
-                        fontWeight: 400,
-                        fontStyle: 'italic',
-                        lineHeight: 1,
-                        color: 'rgba(240,237,232,0.07)',
-                        userSelect: 'none',
-                      }}
-                    >
-                      {step.number}
-                    </span>
-
-                    {/* Title + meta */}
-                    <div style={{ display: 'flex', flexDirection: 'column', gap: '0.35rem' }}>
-                      <h3
-                        style={{
-                          fontFamily: 'var(--font-display)',
-                          fontSize: '1.5rem',
-                          fontWeight: 400,
-                          fontStyle: 'italic',
-                          color: 'var(--text)',
-                          lineHeight: 1.2,
-                        }}
-                      >
-                        {step.title}
-                      </h3>
-                      <p
-                        style={{
-                          fontSize: '0.8rem',
-                          fontWeight: 300,
-                          color: 'var(--muted)',
-                          lineHeight: 1.6,
-                        }}
-                      >
-                        {step.meta}
-                      </p>
-                    </div>
-
-                    {/* Duration badge */}
-                    <p
-                      style={{
-                        fontSize: '0.7rem',
-                        fontWeight: 400,
-                        textTransform: 'uppercase',
-                        letterSpacing: '0.1em',
-                        color: 'var(--accent)',
-                      }}
-                    >
-                      {step.duration}
-                    </p>
-
-                    {/* Body */}
-                    <p
-                      style={{
-                        fontSize: '0.875rem',
-                        fontWeight: 300,
-                        color: 'var(--muted)',
-                        lineHeight: 1.75,
-                        marginTop: 'auto',
-                      }}
-                    >
-                      {step.body}
-                    </p>
-                  </div>
-                </BorderGlow>
-              </motion.div>
+              <ProcessRow key={step.number} step={step} shouldReduce={shouldReduce} />
             ))}
-          </div>
+          </motion.div>
         </motion.div>
       </div>
     </section>

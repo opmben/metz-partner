@@ -7,7 +7,6 @@ import { motion, useInView, useReducedMotion, AnimatePresence } from 'framer-mot
 import { fadeUp, staggerContainer, fadeIn } from '@/lib/animations'
 import { SectionLabel } from '@/components/shared/SectionLabel'
 import { Mail, Phone } from 'lucide-react'
-import StarBorder from '@/components/StarBorder'
 
 const schema = z.object({
   name: z.string().min(2, 'Bitte geben Sie Ihren Namen ein.'),
@@ -176,17 +175,36 @@ export function Contact() {
                 <span style={{ color: 'var(--muted)' }}>Wir antworten innerhalb von 24 Stunden.</span>
               </p>
 
-              {/* Calendly CTA */}
+              {/* Calendly CTA — primary action */}
               <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
-                <StarBorder
-                  as="a"
+                <motion.a
                   href="https://calendly.com/metzundpartner"
                   target="_blank"
                   rel="noopener noreferrer"
+                  whileHover={shouldReduce ? undefined : { scale: 1.03, y: -2 }}
+                  whileTap={shouldReduce ? undefined : { scale: 0.97 }}
+                  transition={{ duration: 0.2 }}
+                  style={{
+                    display: 'inline-flex',
+                    alignItems: 'center',
+                    gap: '0.6rem',
+                    background: 'var(--accent)',
+                    color: 'var(--bg)',
+                    fontFamily: 'var(--font-ui)',
+                    fontSize: '0.8rem',
+                    fontWeight: 500,
+                    textTransform: 'uppercase',
+                    letterSpacing: '0.1em',
+                    padding: '0.9rem 2rem',
+                    borderRadius: 100,
+                    textDecoration: 'none',
+                    cursor: 'pointer',
+                    alignSelf: 'flex-start',
+                  }}
                 >
-                  <Phone size={14} />
+                  <Phone size={13} />
                   Kostenlosen Call buchen →
-                </StarBorder>
+                </motion.a>
 
                 <a
                   href="mailto:hallo@metzundpartner.de"
@@ -428,13 +446,35 @@ export function Contact() {
                       {errors.dsgvo && <p style={errorStyle}>{errors.dsgvo.message}</p>}
                     </div>
 
-                    <StarBorder
-                      as="button"
+                    <motion.button
                       type="submit"
                       disabled={loading}
+                      whileHover={shouldReduce || loading ? undefined : { scale: 1.02, y: -1 }}
+                      whileTap={shouldReduce ? undefined : { scale: 0.97 }}
+                      transition={{ duration: 0.2 }}
+                      style={{
+                        display: 'inline-flex',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        gap: '0.5rem',
+                        background: 'transparent',
+                        border: '1px solid var(--accent)',
+                        color: 'var(--accent)',
+                        fontFamily: 'var(--font-ui)',
+                        fontSize: '0.8rem',
+                        fontWeight: 500,
+                        textTransform: 'uppercase',
+                        letterSpacing: '0.1em',
+                        padding: '0.9rem 2rem',
+                        borderRadius: 100,
+                        cursor: loading ? 'default' : 'pointer',
+                        opacity: loading ? 0.6 : 1,
+                        transition: 'opacity 0.2s ease',
+                        alignSelf: 'flex-start',
+                      }}
                     >
                       {loading ? 'Wird gesendet…' : 'Nachricht senden →'}
-                    </StarBorder>
+                    </motion.button>
 
                     <p
                       style={{

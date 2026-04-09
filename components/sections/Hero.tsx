@@ -17,226 +17,184 @@ const subscribe = () => () => {}
 const getClientSnapshot = () => true
 const getServerSnapshot = () => false
 
-function BrowserMockup({ shouldReduce }: { shouldReduce: boolean | null }) {
+// Placeholder for a real project screenshot in a laptop device frame.
+// Replace the inner screen content with next/image once screenshots are ready.
+function DeviceMockup({ shouldReduce }: { shouldReduce: boolean | null }) {
   return (
     <motion.div
-      animate={shouldReduce ? undefined : { y: [0, -10, 0] }}
-      transition={{ duration: 5.5, repeat: Infinity, ease: 'easeInOut' }}
-      style={{
-        background: 'var(--surface)',
-        border: '1px solid var(--border)',
-        borderRadius: 12,
-        overflow: 'hidden',
-        boxShadow: '0 48px 96px rgba(0,0,0,0.55), 0 0 0 1px rgba(240,237,232,0.03)',
-      }}
+      animate={shouldReduce ? undefined : { y: [0, -8, 0] }}
+      transition={{ duration: 6, repeat: Infinity, ease: 'easeInOut' }}
+      style={{ position: 'relative' }}
     >
-      {/* Browser chrome */}
+      {/* Laptop body */}
       <div
         style={{
-          padding: '0.75rem 1rem',
-          borderBottom: '1px solid var(--border)',
-          display: 'flex',
-          alignItems: 'center',
-          gap: '0.75rem',
           background: 'var(--surface-2)',
+          border: '1px solid rgba(240,237,232,0.09)',
+          borderRadius: 12,
+          padding: '10px 10px 0',
+          boxShadow: '0 48px 100px rgba(0,0,0,0.65), 0 0 0 1px rgba(240,237,232,0.04)',
         }}
       >
-        <div style={{ display: 'flex', gap: '0.35rem' }}>
-          {['rgba(255,107,53,0.75)', 'rgba(255,200,50,0.5)', 'rgba(200,255,0,0.45)'].map((c, i) => (
-            <div
-              key={i}
-              style={{ width: 9, height: 9, borderRadius: '50%', background: c }}
-            />
-          ))}
-        </div>
+        {/* Screen bezel */}
         <div
           style={{
-            flex: 1,
-            background: 'var(--bg)',
-            borderRadius: 6,
-            padding: '0.3rem 0.75rem',
-            display: 'flex',
-            alignItems: 'center',
-            gap: '0.5rem',
+            background: '#040404',
+            borderRadius: '6px 6px 0 0',
+            overflow: 'hidden',
+            position: 'relative',
+            aspectRatio: '16/10',
           }}
         >
+          {/* === REPLACE THIS BLOCK WITH next/image screenshot when ready === */}
+          {/* Ambient glows */}
           <div
+            aria-hidden="true"
             style={{
-              width: 8,
-              height: 8,
+              position: 'absolute',
+              top: '10%',
+              left: '20%',
+              width: '50%',
+              height: '55%',
               borderRadius: '50%',
-              background: 'rgba(200,255,0,0.6)',
+              background: 'radial-gradient(circle, rgba(200,255,0,0.08), transparent 70%)',
+              filter: 'blur(40px)',
             }}
           />
-          <span
-            style={{
-              fontSize: '0.6rem',
-              fontFamily: 'monospace',
-              color: 'var(--muted)',
-              letterSpacing: '0.02em',
-            }}
-          >
-            metzundpartner.de
-          </span>
-        </div>
-      </div>
-
-      {/* Site preview */}
-      <div
-        style={{
-          position: 'relative',
-          aspectRatio: '16/10',
-          overflow: 'hidden',
-          background: '#090909',
-        }}
-      >
-        {/* Ambient glows */}
-        <div
-          style={{
-            position: 'absolute',
-            top: '15%',
-            left: '20%',
-            width: '55%',
-            height: '60%',
-            borderRadius: '50%',
-            background: 'radial-gradient(circle, rgba(200,255,0,0.1), transparent 70%)',
-            filter: 'blur(32px)',
-          }}
-        />
-        <div
-          style={{
-            position: 'absolute',
-            bottom: '5%',
-            right: '5%',
-            width: '30%',
-            height: '35%',
-            borderRadius: '50%',
-            background: 'radial-gradient(circle, rgba(255,107,53,0.07), transparent 70%)',
-            filter: 'blur(24px)',
-          }}
-        />
-
-        {/* Grid */}
-        <div
-          style={{
-            position: 'absolute',
-            inset: 0,
-            backgroundImage:
-              'linear-gradient(rgba(240,237,232,0.018) 1px, transparent 1px), linear-gradient(90deg, rgba(240,237,232,0.018) 1px, transparent 1px)',
-            backgroundSize: '20px 20px',
-          }}
-        />
-
-        {/* Skeleton */}
-        <div style={{ padding: '1.2rem', position: 'relative' }}>
-          {/* Nav skeleton */}
           <div
+            aria-hidden="true"
             style={{
-              display: 'flex',
-              justifyContent: 'space-between',
-              alignItems: 'center',
-              marginBottom: '1.4rem',
-              paddingBottom: '0.65rem',
-              borderBottom: '1px solid rgba(240,237,232,0.05)',
+              position: 'absolute',
+              bottom: '5%',
+              right: '10%',
+              width: '35%',
+              height: '40%',
+              borderRadius: '50%',
+              background: 'radial-gradient(circle, rgba(255,107,53,0.06), transparent 70%)',
+              filter: 'blur(30px)',
             }}
-          >
+          />
+          {/* Grid */}
+          <div
+            aria-hidden="true"
+            style={{
+              position: 'absolute',
+              inset: 0,
+              backgroundImage:
+                'linear-gradient(rgba(240,237,232,0.022) 1px, transparent 1px), linear-gradient(90deg, rgba(240,237,232,0.022) 1px, transparent 1px)',
+              backgroundSize: '28px 28px',
+            }}
+          />
+          {/* Wireframe skeleton — stands in for real screenshot */}
+          <div style={{ padding: '1.2rem', position: 'relative' }}>
+            {/* Nav skeleton */}
             <div
               style={{
-                width: 52,
-                height: 8,
-                borderRadius: 4,
-                background: 'rgba(240,237,232,0.28)',
+                display: 'flex',
+                justifyContent: 'space-between',
+                alignItems: 'center',
+                marginBottom: '1.4rem',
+                paddingBottom: '0.65rem',
+                borderBottom: '1px solid rgba(240,237,232,0.05)',
               }}
-            />
-            <div style={{ display: 'flex', gap: '0.4rem' }}>
-              {[36, 28, 40, 32].map((w, i) => (
+            >
+              <div style={{ width: 52, height: 7, borderRadius: 4, background: 'rgba(240,237,232,0.25)' }} />
+              <div style={{ display: 'flex', gap: '0.4rem' }}>
+                {[34, 26, 38, 30].map((w, i) => (
+                  <div key={i} style={{ width: w, height: 4, borderRadius: 2, background: 'rgba(240,237,232,0.09)' }} />
+                ))}
+              </div>
+              <div style={{ width: 46, height: 16, borderRadius: 8, background: 'rgba(200,255,0,0.36)' }} />
+            </div>
+            {/* Hero headline blocks */}
+            <div style={{ marginBottom: '1.1rem' }}>
+              {[76, 57, 38].map((pct, i) => (
                 <div
                   key={i}
                   style={{
-                    width: w,
-                    height: 4,
-                    borderRadius: 2,
-                    background: 'rgba(240,237,232,0.1)',
+                    width: `${pct}%`,
+                    height: i === 2 ? 9 : 10,
+                    borderRadius: 3,
+                    background: i === 2 ? 'rgba(200,255,0,0.36)' : `rgba(240,237,232,${0.22 - i * 0.04})`,
+                    marginBottom: '0.5rem',
                   }}
                 />
               ))}
+              <div style={{ display: 'flex', gap: '0.5rem', marginTop: '0.5rem' }}>
+                <div style={{ width: 58, height: 17, borderRadius: 9, background: 'rgba(200,255,0,0.5)' }} />
+                <div style={{ width: 48, height: 17, borderRadius: 9, background: 'rgba(240,237,232,0.06)', border: '1px solid rgba(240,237,232,0.1)' }} />
+              </div>
             </div>
-            <div
-              style={{
-                width: 46,
-                height: 16,
-                borderRadius: 8,
-                background: 'rgba(200,255,0,0.38)',
-              }}
-            />
-          </div>
-
-          {/* Hero text skeleton */}
-          <div style={{ marginBottom: '1.1rem' }}>
-            <div
-              style={{
-                width: '76%',
-                height: 10,
-                borderRadius: 3,
-                background: 'rgba(240,237,232,0.22)',
-                marginBottom: '0.5rem',
-              }}
-            />
-            <div
-              style={{
-                width: '58%',
-                height: 10,
-                borderRadius: 3,
-                background: 'rgba(240,237,232,0.17)',
-                marginBottom: '0.5rem',
-              }}
-            />
-            <div
-              style={{
-                width: '38%',
-                height: 10,
-                borderRadius: 3,
-                background: 'rgba(200,255,0,0.38)',
-                marginBottom: '0.9rem',
-              }}
-            />
-            <div style={{ display: 'flex', gap: '0.5rem' }}>
-              <div
-                style={{
-                  width: 58,
-                  height: 17,
-                  borderRadius: 9,
-                  background: 'rgba(200,255,0,0.52)',
-                }}
-              />
-              <div
-                style={{
-                  width: 48,
-                  height: 17,
-                  borderRadius: 9,
-                  background: 'rgba(240,237,232,0.06)',
-                  border: '1px solid rgba(240,237,232,0.1)',
-                }}
-              />
+            {/* Content cards */}
+            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: '0.5rem' }}>
+              {[0.07, 0.05, 0.06].map((op, i) => (
+                <div key={i} style={{ height: 44, borderRadius: 3, background: `rgba(240,237,232,${op})`, border: '1px solid rgba(240,237,232,0.04)' }} />
+              ))}
             </div>
           </div>
+          {/* === END REPLACE BLOCK === */}
 
-          {/* Cards row */}
-          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: '0.5rem' }}>
-            {[0.08, 0.05, 0.07].map((op, i) => (
-              <div
-                key={i}
-                style={{
-                  height: 48,
-                  borderRadius: 3,
-                  background: `rgba(240,237,232,${op})`,
-                  border: '1px solid rgba(240,237,232,0.04)',
-                }}
-              />
-            ))}
+          {/* "Referenzscreenshot folgt" badge */}
+          <div
+            style={{
+              position: 'absolute',
+              top: '0.75rem',
+              right: '0.75rem',
+              background: 'rgba(8,8,8,0.8)',
+              border: '1px solid rgba(240,237,232,0.08)',
+              borderRadius: 100,
+              padding: '0.28rem 0.75rem',
+              backdropFilter: 'blur(8px)',
+            }}
+          >
+            <span
+              style={{
+                fontSize: '0.52rem',
+                textTransform: 'uppercase',
+                letterSpacing: '0.12em',
+                color: 'rgba(240,237,232,0.3)',
+                fontFamily: 'var(--font-ui)',
+              }}
+            >
+              Screenshot folgt
+            </span>
           </div>
         </div>
+
+        {/* Laptop chin */}
+        <div
+          style={{
+            height: 14,
+            background: 'var(--surface-2)',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+          }}
+        >
+          <div style={{ width: 32, height: 3, borderRadius: 2, background: 'rgba(240,237,232,0.08)' }} />
+        </div>
       </div>
+
+      {/* Laptop base */}
+      <div
+        style={{
+          height: 10,
+          marginTop: -1,
+          background: 'var(--surface)',
+          borderRadius: '0 0 8px 8px',
+          border: '1px solid rgba(240,237,232,0.07)',
+          borderTop: 'none',
+        }}
+      />
+
+      {/* Desk reflection */}
+      <div
+        style={{
+          height: 2,
+          margin: '0 16px',
+          background: 'linear-gradient(to right, transparent, rgba(240,237,232,0.05), transparent)',
+        }}
+      />
     </motion.div>
   )
 }
@@ -487,7 +445,7 @@ export function Hero() {
               transition={{ delay: 0.9 }}
               style={{ position: 'relative', padding: '2.5rem 2.5rem 3rem 1rem' }}
             >
-              <BrowserMockup shouldReduce={shouldReduce} />
+              <DeviceMockup shouldReduce={shouldReduce} />
 
               {/* Floating badge: Pagespeed — top right */}
               <motion.div

@@ -73,10 +73,43 @@ function ServiceCard({ service }: { service: typeof services[0] }) {
           fontWeight: 300,
           color: 'var(--muted)',
           lineHeight: 1.75,
+          marginBottom: '1.5rem',
         }}
       >
         {service.body}
       </p>
+
+      {/* Deliverables */}
+      <ul style={{ listStyle: 'none', padding: 0, margin: 0, display: 'flex', flexDirection: 'column', gap: '0.55rem' }}>
+        {service.deliverables.map((item) => (
+          <li
+            key={item}
+            style={{
+              display: 'flex',
+              alignItems: 'baseline',
+              gap: '0.65rem',
+              fontSize: '0.8rem',
+              fontWeight: 300,
+              color: 'rgba(240,237,232,0.5)',
+              lineHeight: 1.5,
+            }}
+          >
+            <span
+              style={{
+                display: 'block',
+                width: 4,
+                height: 4,
+                borderRadius: '50%',
+                background: 'var(--accent)',
+                flexShrink: 0,
+                opacity: 0.6,
+                marginTop: '0.35em',
+              }}
+            />
+            {item}
+          </li>
+        ))}
+      </ul>
     </div>
   )
 }
