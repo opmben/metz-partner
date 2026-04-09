@@ -69,11 +69,10 @@ export function Header() {
                     aria-label="Metz & Partner – Startseite"
                 >
                     <Image
-                        src="/font2 tra 2.png"
+                        src="/font2 tra 2.svg"
                         alt="Metz & Partner Logo"
-                        width={44}
+                        width={180}
                         height={44}
-                        style={{ width: 'auto', height: 44 }}
                         priority
                     />
                 </Link>
