@@ -19,10 +19,10 @@ export interface Project {
 export const projects: Project[] = [
   {
     slug: 'fahrschule-rhein-hunsrueck',
-    name: 'Fahrschule Rhein-Hunsrück',
+    name: 'Fahrschule Dirk Arnold',
     category: 'Bildung',
     serviceType: 'Website',
-    coverImage: '/projekte/fahrschule-rhein-hunsrueck.png',
+    coverImage: '/projekte/Fahrschule-DA.png',
     featured: true,
     imageReady: true,
     year: '2026',
