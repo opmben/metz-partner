@@ -4,12 +4,9 @@ import {
   motion,
   useInView,
   useReducedMotion,
-  useScroll,
-  useTransform,
 } from 'framer-motion'
 import { useRef } from 'react'
 import { ArrowRight } from 'lucide-react'
-import { fadeUp, blurIn } from '@/lib/animations'
 
 const navLinks = [
   { label: 'Projekte', href: '/projekte' },
@@ -29,25 +26,25 @@ export function Footer() {
   const ctaInView = useInView(ctaRef, { once: true, margin: '-80px' })
   const shouldReduce = useReducedMotion()
 
-  const { scrollYProgress } = useScroll({
-    target: ctaRef,
-    offset: ['start end', 'end end'],
-  })
-  const ctaScale = useTransform(scrollYProgress, [0, 1], [0.95, 1])
-  const ctaOpacity = useTransform(scrollYProgress, [0, 0.5], [0, 1])
-
   return (
     <footer style={{ borderTop: '1px solid var(--border)', position: 'relative' }}>
       {/* ── Closing CTA — cinematic reveal ── */}
       <motion.div
         ref={ctaRef}
         className="container-site"
+        initial={shouldReduce ? undefined : { opacity: 0, scale: 0.95 }}
+        animate={
+          shouldReduce
+            ? undefined
+            : ctaInView
+              ? { opacity: 1, scale: 1 }
+              : { opacity: 0, scale: 0.95 }
+        }
+        transition={{ duration: 0.85, ease: [0.16, 1, 0.3, 1] }}
         style={{
           paddingTop: '6rem',
           paddingBottom: '6rem',
           borderBottom: '1px solid var(--border)',
-          scale: shouldReduce ? 1 : ctaScale,
-          opacity: shouldReduce ? 1 : ctaOpacity,
         }}
       >
         <div
