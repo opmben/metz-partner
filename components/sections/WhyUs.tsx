@@ -283,7 +283,7 @@ function DifferentiatorCard({
           fontFamily: 'var(--font-display)',
           fontSize: '1.3rem',
           fontWeight: 400,
-          fontStyle: 'italic',
+          fontStyle: 'normal',
           color: 'var(--text)',
           lineHeight: 1.2,
           marginBottom: '1rem',
