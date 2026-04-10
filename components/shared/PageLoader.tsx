@@ -53,35 +53,18 @@ export function PageLoader() {
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'center',
-              flexDirection: 'column',
-              gap: '0.75rem',
               pointerEvents: 'none',
             }}
           >
-            <motion.p
+            <motion.img
+              src="/font2 tra 2.svg"
+              alt="Metz & Partner"
               initial={{ opacity: 0, y: 10 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
+              transition={{ duration: 0.55, ease: [0.16, 1, 0.3, 1] }}
               style={{
-                fontFamily: 'var(--font-display)',
-                fontStyle: 'italic',
-                fontSize: 'clamp(2.2rem, 5vw, 4rem)',
-                color: 'var(--text)',
-                letterSpacing: '-0.02em',
-                lineHeight: 1,
-              }}
-            >
-              Metz & Partner
-            </motion.p>
-            <motion.div
-              initial={{ scaleX: 0 }}
-              animate={{ scaleX: 1 }}
-              transition={{ duration: 0.6, delay: 0.25, ease: [0.16, 1, 0.3, 1] }}
-              style={{
-                width: '3rem',
-                height: '1px',
-                background: 'var(--accent)',
-                originX: 0,
+                width: 'clamp(200px, 40vw, 380px)',
+                height: 'auto',
               }}
             />
           </motion.div>
