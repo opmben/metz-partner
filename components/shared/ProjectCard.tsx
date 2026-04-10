@@ -2,7 +2,7 @@
 import { useState } from 'react'
 import Link from 'next/link'
 import Image from 'next/image'
-import { motion } from 'framer-motion'
+import { motion, useReducedMotion } from 'framer-motion'
 import type { Project } from '@/lib/data/projects'
 
 interface ProjectCardProps {
@@ -63,6 +63,7 @@ function PlaceholderArt({
 }) {
   const theme = categoryThemes[project.category] ?? defaultTheme
   const pad = featured ? '1.4rem' : '1rem'
+  const shouldReduce = useReducedMotion()
 
   return (
     <div
@@ -74,8 +75,18 @@ function PlaceholderArt({
         background: theme.bg,
       }}
     >
-      {/* Ambient glows */}
-      <div
+      {/* Ambient glows — animated drift */}
+      <motion.div
+        animate={shouldReduce ? undefined : {
+          x: [0, 15, -10, 0],
+          y: [0, -10, 8, 0],
+          scale: [1, 1.08, 0.95, 1],
+        }}
+        transition={shouldReduce ? undefined : {
+          duration: 10,
+          repeat: Infinity,
+          ease: 'easeInOut',
+        }}
         style={{
           position: 'absolute',
           top: '10%',
@@ -88,7 +99,17 @@ function PlaceholderArt({
           pointerEvents: 'none',
         }}
       />
-      <div
+      <motion.div
+        animate={shouldReduce ? undefined : {
+          x: [0, -12, 8, 0],
+          y: [0, 8, -6, 0],
+          scale: [1, 0.94, 1.06, 1],
+        }}
+        transition={shouldReduce ? undefined : {
+          duration: 13,
+          repeat: Infinity,
+          ease: 'easeInOut',
+        }}
         style={{
           position: 'absolute',
           bottom: '10%',
@@ -102,8 +123,16 @@ function PlaceholderArt({
         }}
       />
 
-      {/* Grid lines */}
-      <div
+      {/* Grid lines — slow drift */}
+      <motion.div
+        animate={shouldReduce ? undefined : {
+          backgroundPosition: ['0px 0px', `${featured ? 36 : 28}px ${featured ? 36 : 28}px`],
+        }}
+        transition={shouldReduce ? undefined : {
+          duration: 20,
+          repeat: Infinity,
+          ease: 'linear',
+        }}
         style={{
           position: 'absolute',
           inset: 0,
@@ -174,8 +203,10 @@ function PlaceholderArt({
               }}
             />
           ))}
-          {/* CTA button skeleton */}
-          <div
+          {/* CTA button skeleton — subtle pulse */}
+          <motion.div
+            animate={shouldReduce ? undefined : { opacity: [0.7, 0.45, 0.7] }}
+            transition={shouldReduce ? undefined : { duration: 3, repeat: Infinity, ease: 'easeInOut' }}
             style={{
               display: 'inline-block',
               marginTop: featured ? '0.5rem' : '0.3rem',
@@ -183,7 +214,6 @@ function PlaceholderArt({
               height: featured ? 20 : 15,
               borderRadius: 10,
               background: theme.accentBar,
-              opacity: 0.7,
             }}
           />
         </div>

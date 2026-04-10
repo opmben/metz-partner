@@ -1,79 +1,110 @@
 'use client'
 import { useEffect, useState } from 'react'
-import { useCursorPosition } from '@/lib/hooks/useCursorPosition'
+import { motion, useMotionValue, useSpring } from 'framer-motion'
 
 export function CustomCursor() {
-  const { x, y } = useCursorPosition()
   const [isPointer, setIsPointer] = useState(false)
   const [isVisible, setIsVisible] = useState(false)
+  const [isPointerDevice, setIsPointerDevice] = useState(false)
+
+  // Raw cursor position
+  const cursorX = useMotionValue(-100)
+  const cursorY = useMotionValue(-100)
+
+  // Dot follows tightly
+  const dotX = useSpring(cursorX, { stiffness: 800, damping: 40, mass: 0.2 })
+  const dotY = useSpring(cursorY, { stiffness: 800, damping: 40, mass: 0.2 })
+
+  // Ring follows with lag — creates the trailing effect
+  const ringX = useSpring(cursorX, { stiffness: 180, damping: 25, mass: 0.5 })
+  const ringY = useSpring(cursorY, { stiffness: 180, damping: 25, mass: 0.5 })
+
+  // Ring size springs
+  const ringSize = useSpring(32, { stiffness: 300, damping: 20 })
+  const ringBorderOpacity = useSpring(0.35, { stiffness: 200, damping: 20 })
 
   useEffect(() => {
-    const onEnter = () => setIsVisible(true)
-    const onLeave = () => setIsVisible(false)
-    window.addEventListener('mouseenter', onEnter)
-    window.addEventListener('mouseleave', onLeave)
+    // Only render on fine pointer devices
+    if (!window.matchMedia('(pointer: fine)').matches) return
+    setIsPointerDevice(true)
 
     const onMove = (e: MouseEvent) => {
+      cursorX.set(e.clientX)
+      cursorY.set(e.clientY)
+
       const target = e.target as HTMLElement
       const tag = target.tagName.toLowerCase()
       const cursor = window.getComputedStyle(target).cursor
-      setIsPointer(
+      const isInteractive =
         cursor === 'pointer' ||
-          tag === 'a' ||
-          tag === 'button' ||
-          target.getAttribute('role') === 'button'
-      )
+        tag === 'a' ||
+        tag === 'button' ||
+        target.closest('a') !== null ||
+        target.closest('button') !== null ||
+        target.getAttribute('role') === 'button'
+
+      setIsPointer(isInteractive)
     }
+
+    const onEnter = () => setIsVisible(true)
+    const onLeave = () => setIsVisible(false)
+
     window.addEventListener('mousemove', onMove)
+    window.addEventListener('mouseenter', onEnter)
+    window.addEventListener('mouseleave', onLeave)
 
     return () => {
+      window.removeEventListener('mousemove', onMove)
       window.removeEventListener('mouseenter', onEnter)
       window.removeEventListener('mouseleave', onLeave)
-      window.removeEventListener('mousemove', onMove)
     }
-  }, [])
+  }, [cursorX, cursorY])
 
-  // Only render on pointer devices
-  if (typeof window !== 'undefined' && !window.matchMedia('(pointer: fine)').matches) {
-    return null
-  }
+  // Update spring targets when pointer state changes
+  useEffect(() => {
+    ringSize.set(isPointer ? 56 : 32)
+    ringBorderOpacity.set(isPointer ? 0.6 : 0.35)
+  }, [isPointer, ringSize, ringBorderOpacity])
+
+  if (!isPointerDevice) return null
 
   return (
     <>
       {/* Dot */}
-      <div
+      <motion.div
         style={{
           position: 'fixed',
-          left: x,
-          top: y,
+          left: dotX,
+          top: dotY,
           width: 8,
           height: 8,
           borderRadius: '50%',
           background: 'var(--accent)',
-          transform: 'translate(-50%, -50%)',
+          translateX: '-50%',
+          translateY: '-50%',
           pointerEvents: 'none',
           zIndex: 9999,
           mixBlendMode: 'exclusion',
           opacity: isVisible ? (isPointer ? 0 : 1) : 0,
-          transition: 'opacity 0.2s ease',
         }}
       />
       {/* Ring */}
-      <div
+      <motion.div
         style={{
           position: 'fixed',
-          left: x,
-          top: y,
-          width: isPointer ? 56 : 32,
-          height: isPointer ? 56 : 32,
+          left: ringX,
+          top: ringY,
+          width: ringSize,
+          height: ringSize,
           borderRadius: '50%',
-          border: `1px solid rgba(200, 255, 0, ${isPointer ? 0.6 : 0.35})`,
-          transform: 'translate(-50%, -50%)',
+          border: '1px solid var(--accent)',
+          borderColor: `rgba(200, 255, 0, ${isPointer ? 0.6 : 0.35})`,
+          translateX: '-50%',
+          translateY: '-50%',
           pointerEvents: 'none',
           zIndex: 9998,
           mixBlendMode: 'exclusion',
           opacity: isVisible ? 1 : 0,
-          transition: 'width 0.35s ease, height 0.35s ease, opacity 0.2s ease, border-color 0.2s ease',
         }}
       />
     </>

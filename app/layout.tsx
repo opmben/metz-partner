@@ -2,6 +2,7 @@ import type { Metadata } from 'next'
 import { Instrument_Serif, DM_Sans } from 'next/font/google'
 import './globals.css'
 import { CustomCursor } from '@/components/shared/CustomCursor'
+import { SmoothScroll } from '@/components/shared/SmoothScroll'
 
 const instrumentSerif = Instrument_Serif({
   weight: ['400'],
@@ -51,8 +52,10 @@ export default function RootLayout({
       className={`${instrumentSerif.variable} ${dmSans.variable}`}
     >
       <body>
-        <CustomCursor />
-        {children}
+        <SmoothScroll>
+          <CustomCursor />
+          {children}
+        </SmoothScroll>
       </body>
     </html>
   )

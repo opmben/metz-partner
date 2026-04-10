@@ -9,6 +9,7 @@ import { Services } from '@/components/sections/Services'
 import { WhyUs } from '@/components/sections/WhyUs'
 import { Process } from '@/components/sections/Process'
 import { FAQ } from '@/components/sections/FAQ'
+import { Manifesto } from '@/components/sections/Manifesto'
 import { Contact } from '@/components/sections/Contact'
 
 export default function Home() {
@@ -28,7 +29,8 @@ export default function Home() {
         <Process />
         <SectionDivider glow="accent" />
         <FAQ />
-        <SectionDivider glow="subtle" height={80} />
+        <Manifesto />
+        <SectionDivider glow="accent" height={80} />
         <Contact />
       </main>
       <Footer />
