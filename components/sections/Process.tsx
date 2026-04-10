@@ -119,7 +119,7 @@ function ProcessRow({
               fontFamily: 'var(--font-display)',
               fontSize: 'clamp(1.1rem, 1.6vw, 1.35rem)',
               fontWeight: 400,
-              fontStyle: 'italic',
+              fontStyle: 'normal',
               color: 'var(--text)',
               lineHeight: 1.2,
               marginBottom: '0.4rem',
