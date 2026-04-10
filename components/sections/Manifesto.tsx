@@ -12,10 +12,14 @@ export function Manifesto() {
   })
 
   // Each text segment brightens sequentially as the section scrolls through
-  const opacity1 = useTransform(scrollYProgress, [0, 0.25], [0.12, 1])
-  const opacity2 = useTransform(scrollYProgress, [0.22, 0.5], [0.12, 1])
-  const opacity3 = useTransform(scrollYProgress, [0.45, 0.72], [0.12, 1])
+  const opacity1 = useTransform(scrollYProgress, [0, 0.25], [0.1, 1])
+  const opacity2 = useTransform(scrollYProgress, [0.22, 0.5], [0.1, 1])
+  const opacity3 = useTransform(scrollYProgress, [0.45, 0.72], [0.1, 1])
   const ctaOpacity = useTransform(scrollYProgress, [0.55, 0.82], [0, 1])
+  const ctaY = useTransform(scrollYProgress, [0.55, 0.82], [20, 0])
+
+  // Background oversized type parallax
+  const bgTextY = useTransform(scrollYProgress, [0, 1], [60, -60])
 
   const scrollTo = (e: React.MouseEvent) => {
     e.preventDefault()
@@ -26,14 +30,58 @@ export function Manifesto() {
     <section
       ref={sectionRef}
       style={{
-        paddingTop: '9rem',
-        paddingBottom: '9rem',
+        paddingTop: '10rem',
+        paddingBottom: '10rem',
         position: 'relative',
         overflow: 'hidden',
         textAlign: 'center',
       }}
-      className="md:py-48"
     >
+      {/* Oversized background type — depth layer */}
+      {!shouldReduce && (
+        <motion.div
+          aria-hidden="true"
+          style={{
+            position: 'absolute',
+            inset: 0,
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            y: bgTextY,
+            pointerEvents: 'none',
+            userSelect: 'none',
+          }}
+        >
+          <span
+            style={{
+              fontFamily: 'var(--font-display)',
+              fontStyle: 'italic',
+              fontSize: 'clamp(12rem, 30vw, 32rem)',
+              lineHeight: 0.85,
+              color: 'transparent',
+              WebkitTextStroke: '1px rgba(240,237,232,0.04)',
+              whiteSpace: 'nowrap',
+              letterSpacing: '-0.04em',
+            }}
+          >
+            Eindruck
+          </span>
+        </motion.div>
+      )}
+
+      {/* Top rule */}
+      <div
+        aria-hidden="true"
+        style={{
+          position: 'absolute',
+          top: 0,
+          left: '10%',
+          right: '10%',
+          height: '1px',
+          background: 'linear-gradient(90deg, transparent, rgba(240,237,232,0.07) 30%, rgba(240,237,232,0.07) 70%, transparent)',
+        }}
+      />
+
       {/* Radial glow — centred */}
       <div
         aria-hidden="true"
@@ -42,11 +90,13 @@ export function Manifesto() {
           top: '50%',
           left: '50%',
           transform: 'translate(-50%, -50%)',
-          width: '70vw',
-          height: '70vw',
+          width: '80vw',
+          height: '80vw',
+          maxWidth: 1200,
+          maxHeight: 1200,
           borderRadius: '50%',
-          background: 'radial-gradient(circle, rgba(200,255,0,0.055), transparent 70%)',
-          filter: 'blur(90px)',
+          background: 'radial-gradient(circle, rgba(200,255,0,0.045), transparent 65%)',
+          filter: 'blur(100px)',
           pointerEvents: 'none',
         }}
       />
@@ -57,13 +107,12 @@ export function Manifesto() {
             display: 'flex',
             flexDirection: 'column',
             alignItems: 'center',
-            gap: '3.5rem',
+            gap: '4rem',
           }}
         >
           {/* Manifesto text */}
-          <div className="display-manifesto" style={{ maxWidth: 880 }}>
+          <div className="display-manifesto" style={{ maxWidth: 920, position: 'relative' }}>
             {shouldReduce ? (
-              // Static fallback for reduced-motion
               <>
                 <span>Ihre Website ist oft der </span>
                 <em style={{ color: 'var(--accent)' }}>erste Eindruck</em>
@@ -76,7 +125,6 @@ export function Manifesto() {
                 </span>
               </>
             ) : (
-              // Scroll-linked reveal
               <>
                 <motion.span style={{ opacity: opacity1 }}>
                   Ihre Website ist oft der{' '}
@@ -96,6 +144,16 @@ export function Manifesto() {
               </>
             )}
           </div>
+
+          {/* Accent divider */}
+          <motion.div
+            style={{
+              width: 1,
+              height: 56,
+              background: 'linear-gradient(to bottom, rgba(200,255,0,0.6), transparent)',
+              opacity: shouldReduce ? 1 : ctaOpacity,
+            }}
+          />
 
           {/* CTA */}
           {shouldReduce ? (
@@ -135,8 +193,10 @@ export function Manifesto() {
                 textDecoration: 'none',
                 display: 'inline-block',
                 opacity: ctaOpacity,
+                y: ctaY,
+                boxShadow: '0 0 40px rgba(200,255,0,0.18)',
               }}
-              whileHover={{ scale: 1.04, y: -2 }}
+              whileHover={{ scale: 1.04, y: -3 }}
               whileTap={{ scale: 0.97 }}
               transition={{ duration: 0.2 }}
             >

@@ -1,8 +1,8 @@
 'use client'
-import { useState } from 'react'
+import { useState, useRef } from 'react'
 import Link from 'next/link'
 import Image from 'next/image'
-import { motion, useReducedMotion } from 'framer-motion'
+import { motion, useMotionValue, useSpring, useReducedMotion } from 'framer-motion'
 import type { Project } from '@/lib/data/projects'
 
 interface ProjectCardProps {
@@ -304,14 +304,46 @@ function PlaceholderArt({
 export function ProjectCard({ project, featured = false }: ProjectCardProps) {
   const [hovered, setHovered] = useState(false)
   const [imgError, setImgError] = useState(false)
+  const shouldReduce = useReducedMotion()
+  const cardRef = useRef<HTMLDivElement>(null)
+
+  // Cursor-tracked parallax values
+  const mouseX = useMotionValue(0)
+  const mouseY = useMotionValue(0)
+  const rotateX = useSpring(useMotionValue(0), { stiffness: 180, damping: 20 })
+  const rotateY = useSpring(useMotionValue(0), { stiffness: 180, damping: 20 })
+  // Inner content shifts slightly opposite to tilt — parallax layers
+  const contentX = useSpring(mouseX, { stiffness: 120, damping: 18 })
+  const contentY = useSpring(mouseY, { stiffness: 120, damping: 18 })
+
+  const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
+    if (shouldReduce || !cardRef.current) return
+    const rect = cardRef.current.getBoundingClientRect()
+    const nx = ((e.clientX - rect.left) / rect.width - 0.5) * 2
+    const ny = ((e.clientY - rect.top) / rect.height - 0.5) * 2
+    mouseX.set(nx * 8)
+    mouseY.set(ny * 8)
+    rotateX.set(-ny * 6)
+    rotateY.set(nx * 6)
+  }
+
+  const handleMouseLeave = () => {
+    mouseX.set(0)
+    mouseY.set(0)
+    rotateX.set(0)
+    rotateY.set(0)
+  }
 
   const showPlaceholder = !project.imageReady || imgError
 
   return (
-    <Link href={`/projekte/${project.slug}`} className="block" style={{ cursor: 'pointer' }}>
+    <Link href={`/projekte/${project.slug}`} className="block" style={{ cursor: 'pointer', perspective: 800 }}>
       <motion.div
+        ref={cardRef}
         onHoverStart={() => setHovered(true)}
-        onHoverEnd={() => setHovered(false)}
+        onHoverEnd={() => { setHovered(false); handleMouseLeave() }}
+        onMouseMove={handleMouseMove}
+        onMouseLeave={handleMouseLeave}
         style={{
           position: 'relative',
           background: 'var(--surface)',
@@ -319,13 +351,18 @@ export function ProjectCard({ project, featured = false }: ProjectCardProps) {
           cursor: 'pointer',
           aspectRatio: featured ? '4/3' : '16/10',
           borderRadius: 4,
+          rotateX: shouldReduce ? 0 : rotateX,
+          rotateY: shouldReduce ? 0 : rotateY,
+          transformStyle: 'preserve-3d',
         }}
+        animate={{ scale: hovered ? 1.01 : 1 }}
+        transition={{ duration: 0.4, ease: [0.16, 1, 0.3, 1] }}
       >
-        {/* Image or placeholder */}
+        {/* Image / placeholder — deepest layer, scales on hover */}
         <motion.div
           style={{ position: 'absolute', inset: 0 }}
-          animate={{ scale: hovered ? 1.04 : 1 }}
-          transition={{ duration: 0.9, ease: [0.25, 0.46, 0.45, 0.94] }}
+          animate={{ scale: hovered ? 1.07 : 1 }}
+          transition={{ duration: 1.1, ease: [0.25, 0.46, 0.45, 0.94] }}
         >
           {showPlaceholder ? (
             <PlaceholderArt project={project} featured={featured} />
@@ -345,19 +382,32 @@ export function ProjectCard({ project, featured = false }: ProjectCardProps) {
           )}
         </motion.div>
 
-        {/* Gradient overlay */}
-        <div
-          style={{
-            position: 'absolute',
-            inset: 0,
+        {/* Gradient overlay — deepens on hover */}
+        <motion.div
+          style={{ position: 'absolute', inset: 0 }}
+          animate={{
             background: hovered
-              ? 'linear-gradient(to top, rgba(8,8,8,0.94) 0%, rgba(8,8,8,0.25) 60%, transparent 100%)'
+              ? 'linear-gradient(to top, rgba(8,8,8,0.96) 0%, rgba(8,8,8,0.3) 55%, transparent 100%)'
               : 'linear-gradient(to top, rgba(8,8,8,0.88) 0%, transparent 55%)',
-            transition: 'background 0.4s ease',
           }}
+          transition={{ duration: 0.4 }}
         />
 
-        {/* Center hover pill */}
+        {/* Cursor-following radial shine */}
+        {!shouldReduce && (
+          <motion.div
+            animate={{ opacity: hovered ? 1 : 0 }}
+            transition={{ duration: 0.3 }}
+            style={{
+              position: 'absolute',
+              inset: 0,
+              background: 'radial-gradient(circle at 50% 50%, rgba(200,255,0,0.07) 0%, transparent 60%)',
+              pointerEvents: 'none',
+            }}
+          />
+        )}
+
+        {/* Center hover pill — floats slightly above via parallax */}
         <motion.div
           style={{
             position: 'absolute',
@@ -365,9 +415,11 @@ export function ProjectCard({ project, featured = false }: ProjectCardProps) {
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'center',
+            x: shouldReduce ? 0 : contentX,
+            y: shouldReduce ? 0 : contentY,
           }}
-          animate={{ opacity: hovered ? 1 : 0, scale: hovered ? 1 : 0.82 }}
-          transition={{ duration: 0.28 }}
+          animate={{ opacity: hovered ? 1 : 0, scale: hovered ? 1 : 0.78 }}
+          transition={{ duration: 0.3, ease: [0.16, 1, 0.3, 1] }}
         >
           <span
             style={{
@@ -380,13 +432,14 @@ export function ProjectCard({ project, featured = false }: ProjectCardProps) {
               letterSpacing: '0.09em',
               padding: '0.7rem 1.6rem',
               borderRadius: 100,
+              boxShadow: '0 4px 24px rgba(200,255,0,0.35)',
             }}
           >
             Ansehen →
           </span>
         </motion.div>
 
-        {/* Project info */}
+        {/* Project info — slides up on hover */}
         <motion.div
           style={{
             position: 'absolute',
@@ -395,10 +448,12 @@ export function ProjectCard({ project, featured = false }: ProjectCardProps) {
             right: 0,
             padding: featured ? '2rem' : '1.5rem',
           }}
-          animate={{ y: hovered ? 0 : 6 }}
-          transition={{ duration: 0.4, ease: 'easeOut' }}
+          animate={{ y: hovered ? 0 : 8, opacity: hovered ? 1 : 0.85 }}
+          transition={{ duration: 0.45, ease: 'easeOut' }}
         >
-          <p
+          <motion.p
+            animate={{ x: hovered ? 0 : -4, opacity: hovered ? 1 : 0.7 }}
+            transition={{ duration: 0.35, delay: 0.05 }}
             style={{
               fontSize: '0.68rem',
               fontWeight: 400,
@@ -409,11 +464,26 @@ export function ProjectCard({ project, featured = false }: ProjectCardProps) {
             }}
           >
             {project.category} · {project.serviceType}
-          </p>
+          </motion.p>
           <h3 className="display-card" style={{ color: 'var(--text)' }}>
             {project.name}
           </h3>
         </motion.div>
+
+        {/* Top edge accent line — reveals on hover */}
+        <motion.div
+          style={{
+            position: 'absolute',
+            top: 0,
+            left: 0,
+            right: 0,
+            height: 2,
+            background: 'var(--accent)',
+            originX: 0,
+          }}
+          animate={{ scaleX: hovered ? 1 : 0, opacity: hovered ? 0.7 : 0 }}
+          transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
+        />
       </motion.div>
     </Link>
   )

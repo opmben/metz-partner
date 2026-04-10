@@ -10,6 +10,7 @@ import {
 } from 'framer-motion'
 import { fadeIn, fadeUp, blurIn, charReveal, charContainer } from '@/lib/animations'
 import { ArrowRight } from 'lucide-react'
+import { HeroCanvasDynamic } from '@/components/shared/HeroCanvasDynamic'
 
 /* ── hydration gate ── */
 const subscribe = () => () => {}
@@ -226,6 +227,9 @@ export function Hero() {
           y: shouldReduce ? 0 : gridParallax,
         }}
       />
+
+      {/* Three.js wireframe — right half, SSR-safe */}
+      {mounted && !shouldReduce && <HeroCanvasDynamic />}
 
       {/* Colour orbs — deeper, richer, 3 layers */}
       {mounted && !shouldReduce && (
@@ -672,6 +676,8 @@ export function Hero() {
         }}
       />
 
+      {/* Sentinel: StickyCTA watches this — becomes visible when scrolled past */}
+      <div id="__hero_sentinel" style={{ position: 'absolute', bottom: 0, height: 1, width: 1, pointerEvents: 'none' }} />
       <style>{`
         @keyframes heroPulse {
           0%, 100% { opacity: 1; box-shadow: 0 0 8px var(--accent); }

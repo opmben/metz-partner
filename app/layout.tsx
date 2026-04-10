@@ -3,6 +3,9 @@ import { Instrument_Serif, DM_Sans } from 'next/font/google'
 import './globals.css'
 import { CustomCursor } from '@/components/shared/CustomCursor'
 import { SmoothScroll } from '@/components/shared/SmoothScroll'
+import { StickyCTA } from '@/components/shared/StickyCTA'
+import { PageLoader } from '@/components/shared/PageLoader'
+import { ScrollProgress } from '@/components/shared/ScrollProgress'
 
 const instrumentSerif = Instrument_Serif({
   weight: ['400'],
@@ -53,7 +56,10 @@ export default function RootLayout({
     >
       <body>
         <SmoothScroll>
+          <PageLoader />
+          <ScrollProgress />
           <CustomCursor />
+          <StickyCTA />
           {children}
         </SmoothScroll>
       </body>

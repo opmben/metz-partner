@@ -126,15 +126,14 @@ function FounderCard({ founder }: { founder: (typeof founders)[0] }) {
           }}
         />
 
-        {/* Initial — dramatic scale */}
+        {/* Initial — dramatic scale + ambient float */}
         <motion.span
-          animate={{
-            scale: hovered ? 1.1 : 1,
-            color: hovered
-              ? 'rgba(240,237,232,0.12)'
-              : 'rgba(240,237,232,0.06)',
-          }}
-          transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
+          animate={shouldReduce ? undefined : hovered
+            ? { scale: 1.1, color: 'rgba(240,237,232,0.12)', y: 0 }
+            : { scale: [1, 1.03, 1], color: 'rgba(240,237,232,0.06)', y: [0, -6, 0] }}
+          transition={hovered
+            ? { duration: 0.5, ease: [0.16, 1, 0.3, 1] }
+            : { duration: 5, repeat: Infinity, ease: 'easeInOut' }}
           style={{
             position: 'relative',
             fontFamily: 'var(--font-display)',

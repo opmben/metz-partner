@@ -197,8 +197,11 @@ export function Contact() {
   const {
     register,
     handleSubmit,
+    watch,
     formState: { errors },
   } = useForm<FormData>({ resolver: zodResolver(schema) })
+
+  const messageValue = watch('message', '')
 
   const onSubmit = async (data: FormData) => {
     setLoading(true)
@@ -584,16 +587,33 @@ export function Contact() {
                     </FormField>
 
                     <FormField label="Kurze Projektbeschreibung *" error={errors.message?.message} shouldReduce={shouldReduce}>
-                      <textarea
-                        {...register('message')}
-                        placeholder="Wir sind ein Handwerksbetrieb aus Koblenz und suchen eine neue Website…"
-                        rows={4}
-                        style={{ ...inputBase, resize: 'vertical' }}
-                        ref={(el) => {
-                          register('message').ref(el)
-                          if (el) focusBind(el as unknown as HTMLInputElement)
-                        }}
-                      />
+                      <div style={{ position: 'relative' }}>
+                        <textarea
+                          {...register('message')}
+                          placeholder="Wir sind ein Handwerksbetrieb aus Koblenz und suchen eine neue Website…"
+                          rows={4}
+                          style={{ ...inputBase, resize: 'vertical', paddingBottom: '2rem' }}
+                          ref={(el) => {
+                            register('message').ref(el)
+                            if (el) focusBind(el as unknown as HTMLInputElement)
+                          }}
+                        />
+                        <span
+                          style={{
+                            position: 'absolute',
+                            bottom: '0.5rem',
+                            right: '0.75rem',
+                            fontSize: '0.65rem',
+                            fontFamily: 'var(--font-ui)',
+                            color: (messageValue?.length ?? 0) >= 20 ? 'var(--accent)' : 'var(--muted)',
+                            letterSpacing: '0.06em',
+                            transition: 'color 0.3s ease',
+                            pointerEvents: 'none',
+                          }}
+                        >
+                          {messageValue?.length ?? 0} Zeichen
+                        </span>
+                      </div>
                     </FormField>
 
                     {/* DSGVO */}

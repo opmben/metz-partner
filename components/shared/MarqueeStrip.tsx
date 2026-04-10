@@ -1,5 +1,5 @@
 'use client'
-import { useRef } from 'react'
+import { useRef, useState } from 'react'
 import { motion, useInView, useReducedMotion } from 'framer-motion'
 
 interface MarqueeStripProps {
@@ -62,6 +62,7 @@ export function MarqueeStrip({
   const ref = useRef(null)
   const isInView = useInView(ref, { once: true, margin: '-40px' })
   const shouldReduce = useReducedMotion()
+  const [paused, setPaused] = useState(false)
 
   const sep = separators[separator]
   const text = items.join(sep) + sep
@@ -73,12 +74,15 @@ export function MarqueeStrip({
   return (
     <div
       ref={ref}
+      onMouseEnter={() => setPaused(true)}
+      onMouseLeave={() => setPaused(false)}
       style={{
         overflow: 'hidden',
         padding: variant === 'display' ? '2.5rem 0' : '1.25rem 0',
         borderTop: '1px solid var(--border)',
         borderBottom: '1px solid var(--border)',
         position: 'relative',
+        cursor: 'default',
       }}
     >
       {/* Left/right fade masks */}
@@ -131,7 +135,7 @@ export function MarqueeStrip({
               ? undefined
               : {
                   x: {
-                    duration: speed,
+                    duration: paused ? speed * 999 : speed,
                     repeat: Infinity,
                     ease: 'linear',
                   },

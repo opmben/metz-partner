@@ -27,8 +27,10 @@ const StarBorder = ({
   disabled,
   ...rest
 }: StarBorderProps) => {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const El = Component as any
   return (
-    <Component
+    <El
       className={`star-border-container${disabled ? ' star-border-disabled' : ''} ${className}`}
       style={{ padding: `${thickness}px 0`, borderRadius, ...style }}
       disabled={disabled}
@@ -51,7 +53,7 @@ const StarBorder = ({
       <div className="inner-content" style={{ borderRadius }}>
         {children}
       </div>
-    </Component>
+    </El>
   )
 }
 
