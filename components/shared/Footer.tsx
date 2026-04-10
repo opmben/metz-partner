@@ -1,8 +1,15 @@
 'use client'
 import Link from 'next/link'
-import { motion, useInView, useReducedMotion } from 'framer-motion'
+import {
+  motion,
+  useInView,
+  useReducedMotion,
+  useScroll,
+  useTransform,
+} from 'framer-motion'
 import { useRef } from 'react'
 import { ArrowRight } from 'lucide-react'
+import { fadeUp, blurIn } from '@/lib/animations'
 
 const navLinks = [
   { label: 'Projekte', href: '/projekte' },
@@ -17,62 +24,91 @@ const legalLinks = [
 
 export function Footer() {
   const ref = useRef(null)
+  const ctaRef = useRef(null)
   const isInView = useInView(ref, { once: true, margin: '-60px' })
+  const ctaInView = useInView(ctaRef, { once: true, margin: '-80px' })
   const shouldReduce = useReducedMotion()
 
+  const { scrollYProgress } = useScroll({
+    target: ctaRef,
+    offset: ['start end', 'end end'],
+  })
+  const ctaScale = useTransform(scrollYProgress, [0, 1], [0.95, 1])
+  const ctaOpacity = useTransform(scrollYProgress, [0, 0.5], [0, 1])
+
   return (
-    <footer style={{ borderTop: '1px solid var(--border)' }}>
-      {/* ── Closing CTA ── */}
-      <div
-        ref={ref}
+    <footer style={{ borderTop: '1px solid var(--border)', position: 'relative' }}>
+      {/* ── Closing CTA — cinematic reveal ── */}
+      <motion.div
+        ref={ctaRef}
         className="container-site"
         style={{
-          paddingTop: '5rem',
-          paddingBottom: '5rem',
+          paddingTop: '6rem',
+          paddingBottom: '6rem',
           borderBottom: '1px solid var(--border)',
+          scale: shouldReduce ? 1 : ctaScale,
+          opacity: shouldReduce ? 1 : ctaOpacity,
         }}
       >
-        <motion.div
-          initial={shouldReduce ? undefined : { opacity: 0, y: 24 }}
-          animate={shouldReduce ? undefined : isInView ? { opacity: 1, y: 0 } : {}}
-          transition={{ duration: 0.85, ease: [0.16, 1, 0.3, 1] }}
-          className="flex flex-col md:flex-row md:items-end md:justify-between"
-          style={{ gap: '2.5rem' }}
+        <div
+          className="flex flex-col items-center text-center"
+          style={{ gap: '2.5rem', maxWidth: 600, margin: '0 auto' }}
         >
-          <div style={{ maxWidth: 520 }}>
-            <p
-              style={{
-                fontFamily: 'var(--font-display)',
-                fontSize: 'clamp(1.6rem, 3vw, 2.5rem)',
-                fontWeight: 400,
-                fontStyle: 'italic',
-                color: 'var(--text)',
-                lineHeight: 1.15,
-                marginBottom: '1rem',
-                letterSpacing: '-0.02em',
-              }}
-            >
-              Bereit für eine Website,
-              <br />
-              die wirklich für Sie arbeitet?
-            </p>
-            <p
-              style={{
-                fontSize: '0.95rem',
-                fontWeight: 300,
-                color: 'var(--muted)',
-                lineHeight: 1.7,
-              }}
-            >
-              Kein Pitch. Kein Druck. Nur ein ehrliches Gespräch — kostenlos, 30 Minuten.
-            </p>
-          </div>
+          {/* Decorative dot */}
+          <motion.div
+            initial={shouldReduce ? undefined : { scale: 0 }}
+            animate={shouldReduce ? undefined : ctaInView ? { scale: 1 } : { scale: 0 }}
+            transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
+            style={{
+              width: 8,
+              height: 8,
+              borderRadius: '50%',
+              background: 'var(--accent)',
+              boxShadow: '0 0 20px rgba(200,255,0,0.3)',
+            }}
+          />
+
+          <motion.p
+            initial={shouldReduce ? undefined : { opacity: 0, y: 20 }}
+            animate={shouldReduce ? undefined : ctaInView ? { opacity: 1, y: 0 } : {}}
+            transition={{ duration: 0.85, delay: 0.1, ease: [0.16, 1, 0.3, 1] }}
+            style={{
+              fontFamily: 'var(--font-display)',
+              fontSize: 'clamp(1.8rem, 3.5vw, 3rem)',
+              fontWeight: 400,
+              fontStyle: 'italic',
+              color: 'var(--text)',
+              lineHeight: 1.15,
+              letterSpacing: '-0.02em',
+            }}
+          >
+            Bereit für eine Website,
+            <br />
+            die wirklich{' '}
+            <span style={{ color: 'var(--accent)' }}>für Sie arbeitet?</span>
+          </motion.p>
+
+          <motion.p
+            initial={shouldReduce ? undefined : { opacity: 0 }}
+            animate={shouldReduce ? undefined : ctaInView ? { opacity: 1 } : {}}
+            transition={{ duration: 0.6, delay: 0.3 }}
+            style={{
+              fontSize: '0.95rem',
+              fontWeight: 300,
+              color: 'var(--muted)',
+              lineHeight: 1.7,
+            }}
+          >
+            Kein Pitch. Kein Druck. Nur ein ehrliches Gespräch — kostenlos, 30 Minuten.
+          </motion.p>
 
           <motion.a
             href="/#kontakt"
-            whileHover={shouldReduce ? undefined : { scale: 1.04, y: -2 }}
+            initial={shouldReduce ? undefined : { opacity: 0, y: 10 }}
+            animate={shouldReduce ? undefined : ctaInView ? { opacity: 1, y: 0 } : {}}
+            transition={{ duration: 0.6, delay: 0.4, ease: [0.16, 1, 0.3, 1] }}
+            whileHover={shouldReduce ? undefined : { scale: 1.05, y: -3 }}
             whileTap={shouldReduce ? undefined : { scale: 0.97 }}
-            transition={{ duration: 0.2 }}
             style={{
               background: 'var(--accent)',
               color: 'var(--bg)',
@@ -81,24 +117,25 @@ export function Footer() {
               fontWeight: 500,
               textTransform: 'uppercase',
               letterSpacing: '0.1em',
-              padding: '0.9rem 2rem',
+              padding: '1rem 2.5rem',
               borderRadius: 100,
               textDecoration: 'none',
               display: 'inline-flex',
               alignItems: 'center',
-              gap: '0.5rem',
-              flexShrink: 0,
+              gap: '0.6rem',
               cursor: 'pointer',
+              boxShadow: '0 0 50px rgba(200,255,0,0.12)',
             }}
           >
             Projekt anfragen
             <ArrowRight size={14} />
           </motion.a>
-        </motion.div>
-      </div>
+        </div>
+      </motion.div>
 
       {/* ── Brand + nav ── */}
       <div
+        ref={ref}
         className="container-site"
         style={{
           paddingTop: '3rem',
@@ -106,7 +143,10 @@ export function Footer() {
           borderBottom: '1px solid var(--border)',
         }}
       >
-        <div
+        <motion.div
+          initial={shouldReduce ? undefined : { opacity: 0, y: 16 }}
+          animate={shouldReduce ? undefined : isInView ? { opacity: 1, y: 0 } : {}}
+          transition={{ duration: 0.85, ease: [0.16, 1, 0.3, 1] }}
           style={{ gap: '2rem' }}
           className="flex flex-col md:flex-row md:items-end md:justify-between"
         >
@@ -169,7 +209,7 @@ export function Footer() {
               </Link>
             ))}
           </nav>
-        </div>
+        </motion.div>
       </div>
 
       {/* ── Legal row ── */}

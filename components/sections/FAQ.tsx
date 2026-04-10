@@ -2,7 +2,7 @@
 import { useRef, useState } from 'react'
 import { motion, useInView, useReducedMotion, AnimatePresence } from 'framer-motion'
 import { ChevronDown } from 'lucide-react'
-import { fadeUp, staggerContainer } from '@/lib/animations'
+import { fadeUp, staggerContainer, clipRevealUp } from '@/lib/animations'
 import { SectionLabel } from '@/components/shared/SectionLabel'
 
 const faqs = [
@@ -14,27 +14,27 @@ const faqs = [
   {
     question: 'Wie lange dauert die Entwicklung?',
     answer:
-      'Von der ersten Absprache bis zum Launch vergehen in der Regel 2 bis 4 Wochen. Komplexere Projekte können etwas länger dauern — aber Sie wissen von Tag 1, wie der Zeitplan aussieht. Wir arbeiten nicht in die Stille, sondern halten Sie kontinuierlich auf dem Laufenden.',
+      'Von der ersten Absprache bis zum Launch vergehen in der Regel 2 bis 4 Wochen. Komplexere Projekte können etwas länger dauern — aber Sie wissen von Tag 1, wie der Zeitplan aussieht.',
   },
   {
     question: 'Muss ich Texte und Bilder selbst liefern?',
     answer:
-      'Idealerweise ja — Sie kennen Ihr Unternehmen am besten. Wir helfen Ihnen aber dabei: mit konkreten Vorlage-Fragen für Texte und einem klaren Briefing für Fotos. Wer möchte, gibt uns eine grobe Richtung — wir formulieren daraus etwas Fertiges.',
+      'Idealerweise ja — Sie kennen Ihr Unternehmen am besten. Wir helfen Ihnen aber dabei: mit konkreten Vorlage-Fragen für Texte und einem klaren Briefing für Fotos.',
   },
   {
     question: 'Kann ich die Website nach dem Launch selbst bearbeiten?',
     answer:
-      'Ja. Wir bauen jede Website so, dass Sie einfache Änderungen selbst vornehmen können. Nach dem Launch zeigen wir Ihnen in einer persönlichen 30-minütigen Einweisung, wie das funktioniert. Für alles Weitere sind wir direkt per Nachricht erreichbar.',
+      'Ja. Wir bauen jede Website so, dass Sie einfache Änderungen selbst vornehmen können. Nach dem Launch zeigen wir Ihnen in einer persönlichen 30-minütigen Einweisung, wie das funktioniert.',
   },
   {
     question: 'Wer arbeitet an meiner Website?',
     answer:
-      'Benedikt und Maximilian — wir beide. Niemand sonst. Kein ausgelagertes Team, kein Junior, der die Arbeit macht, während jemand anderes mit Ihnen spricht. Was wir zusagen, liefern wir selbst.',
+      'Benedikt und Maximilian — wir beide. Niemand sonst. Kein ausgelagertes Team, kein Junior, der die Arbeit macht, während jemand anderes mit Ihnen spricht.',
   },
   {
     question: 'Was ist im Preis inbegriffen?',
     answer:
-      'Design, Entwicklung, zwei Feedback-Runden, Launch-Setup und eine persönliche Einweisung. SEO-Grundstruktur — Meta-Tags, Sitemaps, strukturierte URLs — ist immer dabei. Was nicht inbegriffen ist: laufendes Hosting (das zahlen Sie direkt bei einem Anbieter Ihrer Wahl) und monatliche Pflege-Pakete, die wir aktuell nicht anbieten.',
+      'Design, Entwicklung, zwei Feedback-Runden, Launch-Setup und eine persönliche Einweisung. SEO-Grundstruktur ist immer dabei. Laufendes Hosting zahlen Sie direkt bei einem Anbieter Ihrer Wahl.',
   },
 ]
 
@@ -48,14 +48,32 @@ function FAQItem({
   shouldReduce: boolean | null
 }) {
   const [open, setOpen] = useState(false)
+  const [hovered, setHovered] = useState(false)
 
   return (
     <motion.div
       variants={shouldReduce ? undefined : fadeUp}
+      onMouseEnter={() => setHovered(true)}
+      onMouseLeave={() => setHovered(false)}
       style={{
         borderBottom: '1px solid var(--border)',
+        position: 'relative',
       }}
     >
+      {/* Hover glow */}
+      <motion.div
+        aria-hidden="true"
+        animate={{ opacity: hovered && !shouldReduce ? 1 : 0 }}
+        transition={{ duration: 0.3 }}
+        style={{
+          position: 'absolute',
+          inset: 0,
+          background:
+            'linear-gradient(90deg, rgba(200,255,0,0.02) 0%, transparent 50%)',
+          pointerEvents: 'none',
+        }}
+      />
+
       <button
         onClick={() => setOpen(!open)}
         style={{
@@ -64,27 +82,35 @@ function FAQItem({
           alignItems: 'center',
           justifyContent: 'space-between',
           gap: '1.5rem',
-          padding: '1.75rem 0',
+          padding: '2rem 0',
           background: 'none',
           border: 'none',
           cursor: 'pointer',
           textAlign: 'left',
+          position: 'relative',
         }}
         aria-expanded={open}
       >
         <div style={{ display: 'flex', alignItems: 'baseline', gap: '1.25rem' }}>
-          <span
+          <motion.span
+            animate={{
+              color: open
+                ? 'var(--accent)'
+                : hovered
+                  ? 'rgba(240,237,232,0.5)'
+                  : 'var(--muted)',
+            }}
+            transition={{ duration: 0.3 }}
             style={{
               fontFamily: 'var(--font-display)',
               fontSize: '0.8rem',
               fontStyle: 'italic',
-              color: 'var(--muted)',
               flexShrink: 0,
               lineHeight: 1,
             }}
           >
             {String(index + 1).padStart(2, '0')}
-          </span>
+          </motion.span>
           <span
             style={{
               fontFamily: 'var(--font-display)',
@@ -100,8 +126,8 @@ function FAQItem({
         </div>
         <motion.div
           animate={{ rotate: open ? 180 : 0 }}
-          transition={{ duration: 0.3, ease: [0.16, 1, 0.3, 1] }}
-          style={{ flexShrink: 0, color: 'var(--muted)' }}
+          transition={{ duration: 0.4, ease: [0.16, 1, 0.3, 1] }}
+          style={{ flexShrink: 0, color: open ? 'var(--accent)' : 'var(--muted)' }}
         >
           <ChevronDown size={18} />
         </motion.div>
@@ -114,12 +140,12 @@ function FAQItem({
             initial={shouldReduce ? { opacity: 0 } : { height: 0, opacity: 0 }}
             animate={shouldReduce ? { opacity: 1 } : { height: 'auto', opacity: 1 }}
             exit={shouldReduce ? { opacity: 0 } : { height: 0, opacity: 0 }}
-            transition={{ duration: 0.4, ease: [0.16, 1, 0.3, 1] }}
+            transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
             style={{ overflow: 'hidden' }}
           >
             <p
               style={{
-                paddingBottom: '1.75rem',
+                paddingBottom: '2rem',
                 paddingLeft: 'calc(0.8rem + 1.25rem + 1.25rem)',
                 fontSize: '0.95rem',
                 fontWeight: 300,
@@ -157,19 +183,21 @@ export function FAQ() {
         >
           {/* Header */}
           <div
-            style={{ marginBottom: '3rem' }}
+            style={{ marginBottom: '3.5rem' }}
             className="flex flex-col gap-4 md:flex-row md:items-end md:justify-between"
           >
             <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
               <motion.div variants={shouldReduce ? undefined : fadeUp}>
                 <SectionLabel>Häufige Fragen</SectionLabel>
               </motion.div>
-              <motion.h2
-                className="display-section"
-                variants={shouldReduce ? undefined : fadeUp}
-              >
-                Alles Wichtige, bevor Sie anfragen.
-              </motion.h2>
+              <div style={{ overflow: 'hidden' }}>
+                <motion.h2
+                  className="display-section"
+                  variants={shouldReduce ? undefined : clipRevealUp}
+                >
+                  Alles Wichtige, bevor Sie anfragen.
+                </motion.h2>
+              </div>
             </div>
             <motion.p
               variants={shouldReduce ? undefined : fadeUp}

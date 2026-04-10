@@ -2,6 +2,8 @@ import { Navigation } from '@/components/shared/Navigation'
 import { Footer } from '@/components/shared/Footer'
 import { Hero } from '@/components/sections/Hero'
 import { ProofStrip } from '@/components/sections/ProofStrip'
+import { MarqueeStrip } from '@/components/shared/MarqueeStrip'
+import { SectionDivider } from '@/components/shared/SectionDivider'
 import { Projects } from '@/components/sections/Projects'
 import { Services } from '@/components/sections/Services'
 import { WhyUs } from '@/components/sections/WhyUs'
@@ -16,11 +18,17 @@ export default function Home() {
       <main>
         <Hero />
         <ProofStrip />
+        <MarqueeStrip />
         <Projects />
+        <SectionDivider glow="accent" />
         <Services />
+        <SectionDivider glow="warm" />
         <WhyUs />
+        <SectionDivider glow="subtle" />
         <Process />
+        <SectionDivider glow="accent" />
         <FAQ />
+        <SectionDivider glow="subtle" height={80} />
         <Contact />
       </main>
       <Footer />

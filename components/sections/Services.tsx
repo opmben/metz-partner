@@ -1,67 +1,131 @@
 'use client'
-import { useRef, useState } from 'react'
-import { motion, useInView, useReducedMotion } from 'framer-motion'
-import { fadeUp, staggerContainer } from '@/lib/animations'
+import { useRef, useState, useCallback } from 'react'
+import { motion, useInView, useReducedMotion, useMotionValue, useSpring } from 'framer-motion'
+import { fadeUp, staggerContainer, clipRevealUp } from '@/lib/animations'
 import { SectionLabel } from '@/components/shared/SectionLabel'
 import { services } from '@/lib/data/services'
 
-function ServiceCard({ service }: { service: typeof services[0] }) {
+/* ── 3D tilt card with cursor glow ── */
+function ServiceCard({ service, index }: { service: typeof services[0]; index: number }) {
+  const cardRef = useRef<HTMLDivElement>(null)
+  const shouldReduce = useReducedMotion()
   const [hovered, setHovered] = useState(false)
 
+  // Cursor glow position
+  const glowX = useMotionValue(0)
+  const glowY = useMotionValue(0)
+
+  // 3D tilt values
+  const rotateX = useMotionValue(0)
+  const rotateY = useMotionValue(0)
+  const springRotateX = useSpring(rotateX, { stiffness: 200, damping: 20 })
+  const springRotateY = useSpring(rotateY, { stiffness: 200, damping: 20 })
+
+  const handleMouse = useCallback(
+    (e: React.MouseEvent) => {
+      if (shouldReduce || !cardRef.current) return
+      const rect = cardRef.current.getBoundingClientRect()
+      const x = e.clientX - rect.left
+      const y = e.clientY - rect.top
+      const centerX = rect.width / 2
+      const centerY = rect.height / 2
+
+      glowX.set(x)
+      glowY.set(y)
+
+      // Tilt: max ±6deg
+      rotateX.set(((y - centerY) / centerY) * -6)
+      rotateY.set(((x - centerX) / centerX) * 6)
+    },
+    [shouldReduce, glowX, glowY, rotateX, rotateY],
+  )
+
+  const handleLeave = () => {
+    setHovered(false)
+    rotateX.set(0)
+    rotateY.set(0)
+  }
+
   return (
-    <div
+    <motion.div
+      ref={cardRef}
       onMouseEnter={() => setHovered(true)}
-      onMouseLeave={() => setHovered(false)}
+      onMouseMove={handleMouse}
+      onMouseLeave={handleLeave}
       style={{
-        background: hovered ? 'var(--surface-2)' : 'var(--bg)',
-        border: '1px solid var(--border)',
-        borderTop: 'none',
-        padding: '3rem 2.5rem',
         position: 'relative',
-        transition: 'background 0.3s ease',
+        background: hovered ? 'var(--surface)' : 'var(--bg)',
+        padding: 'clamp(2rem, 3vw, 3rem) clamp(1.5rem, 2.5vw, 2.5rem)',
+        transition: 'background 0.4s ease',
         cursor: 'default',
+        perspective: 800,
+        transformStyle: 'preserve-3d',
+        rotateX: shouldReduce ? 0 : springRotateX,
+        rotateY: shouldReduce ? 0 : springRotateY,
+        overflow: 'hidden',
       }}
     >
       {/* Animated top accent line */}
-      <div
+      <motion.div
         style={{
           position: 'absolute',
           top: 0,
           left: 0,
           right: 0,
-          height: 1,
+          height: 2,
           background: 'var(--accent)',
           transformOrigin: 'left',
-          transform: hovered ? 'scaleX(1)' : 'scaleX(0)',
-          transition: 'transform 0.4s ease',
+          scaleX: hovered ? 1 : 0,
         }}
+        transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
       />
 
-      {/* Number — decorative */}
-      <div
+      {/* Cursor-following glow */}
+      <motion.div
+        aria-hidden="true"
+        style={{
+          position: 'absolute',
+          width: 250,
+          height: 250,
+          borderRadius: '50%',
+          background: 'radial-gradient(circle, rgba(200,255,0,0.06), transparent 70%)',
+          pointerEvents: 'none',
+          x: glowX,
+          y: glowY,
+          translateX: '-50%',
+          translateY: '-50%',
+          opacity: hovered ? 1 : 0,
+        }}
+        transition={{ opacity: { duration: 0.3 } }}
+      />
+
+      {/* Number — large decorative */}
+      <motion.div
         style={{
           fontFamily: 'var(--font-display)',
-          fontSize: '4rem',
+          fontSize: 'clamp(3rem, 5vw, 4.5rem)',
           fontWeight: 400,
           fontStyle: 'italic',
-          color: 'rgba(240,237,232,0.06)',
           lineHeight: 1,
           marginBottom: '1.5rem',
           userSelect: 'none',
+          color: hovered ? 'var(--accent)' : 'rgba(240,237,232,0.04)',
         }}
+        transition={{ duration: 0.4 }}
       >
         {service.number}
-      </div>
+      </motion.div>
 
       <h3
         style={{
           fontFamily: 'var(--font-display)',
-          fontSize: '1.4rem',
+          fontSize: 'clamp(1.2rem, 1.8vw, 1.4rem)',
           fontWeight: 400,
           fontStyle: 'italic',
           color: 'var(--text)',
           marginBottom: '1rem',
           lineHeight: 1.2,
+          position: 'relative',
         }}
       >
         {service.title}
@@ -73,44 +137,86 @@ function ServiceCard({ service }: { service: typeof services[0] }) {
           fontWeight: 300,
           color: 'var(--muted)',
           lineHeight: 1.75,
-          marginBottom: '1.5rem',
+          marginBottom: '1.75rem',
+          position: 'relative',
         }}
       >
         {service.body}
       </p>
 
-      {/* Deliverables */}
-      <ul style={{ listStyle: 'none', padding: 0, margin: 0, display: 'flex', flexDirection: 'column', gap: '0.55rem' }}>
-        {service.deliverables.map((item) => (
-          <li
+      {/* Deliverables with staggered reveal on hover */}
+      <ul
+        style={{
+          listStyle: 'none',
+          padding: 0,
+          margin: 0,
+          display: 'flex',
+          flexDirection: 'column',
+          gap: '0.6rem',
+          position: 'relative',
+        }}
+      >
+        {service.deliverables.map((item, i) => (
+          <motion.li
             key={item}
+            initial={false}
+            animate={{
+              x: hovered && !shouldReduce ? 0 : -4,
+              opacity: hovered ? 0.8 : 0.45,
+            }}
+            transition={{
+              duration: 0.35,
+              delay: hovered ? i * 0.04 : 0,
+              ease: [0.16, 1, 0.3, 1],
+            }}
             style={{
               display: 'flex',
               alignItems: 'baseline',
               gap: '0.65rem',
               fontSize: '0.8rem',
               fontWeight: 300,
-              color: 'rgba(240,237,232,0.5)',
+              color: 'var(--text)',
               lineHeight: 1.5,
             }}
           >
-            <span
+            <motion.span
+              animate={{
+                background: hovered ? 'var(--accent)' : 'rgba(200,255,0,0.4)',
+              }}
+              transition={{ duration: 0.3 }}
               style={{
                 display: 'block',
-                width: 4,
-                height: 4,
+                width: 5,
+                height: 5,
                 borderRadius: '50%',
-                background: 'var(--accent)',
                 flexShrink: 0,
-                opacity: 0.6,
                 marginTop: '0.35em',
               }}
             />
             {item}
-          </li>
+          </motion.li>
         ))}
       </ul>
-    </div>
+
+      {/* Bottom index — appears on hover */}
+      <motion.div
+        animate={{ opacity: hovered ? 0.5 : 0 }}
+        transition={{ duration: 0.3 }}
+        style={{
+          position: 'absolute',
+          bottom: '1.5rem',
+          right: '1.5rem',
+          fontSize: '0.6rem',
+          fontWeight: 400,
+          textTransform: 'uppercase',
+          letterSpacing: '0.15em',
+          color: 'var(--muted)',
+          fontFamily: 'var(--font-ui)',
+        }}
+      >
+        0{index + 1} / 03
+      </motion.div>
+    </motion.div>
   )
 }
 
@@ -126,6 +232,7 @@ export function Services() {
         paddingTop: '5rem',
         paddingBottom: '5rem',
         background: 'var(--surface)',
+        position: 'relative',
       }}
       className="md:py-32"
     >
@@ -139,24 +246,30 @@ export function Services() {
           <motion.div variants={shouldReduce ? undefined : fadeUp} style={{ marginBottom: '1.25rem' }}>
             <SectionLabel>Leistungen</SectionLabel>
           </motion.div>
-          <motion.h2
-            className="display-section"
-            variants={shouldReduce ? undefined : fadeUp}
-            style={{ marginBottom: '3rem' }}
-          >
-            Was wir für Sie bauen.
-          </motion.h2>
 
+          {/* Headline with clip reveal */}
+          <div style={{ overflow: 'hidden', marginBottom: '3.5rem' }}>
+            <motion.h2
+              className="display-section"
+              variants={shouldReduce ? undefined : clipRevealUp}
+            >
+              Was wir für Sie bauen.
+            </motion.h2>
+          </div>
+
+          {/* Cards grid with visible separators */}
           <motion.div
-            variants={shouldReduce ? undefined : staggerContainer(0.1)}
+            variants={shouldReduce ? undefined : staggerContainer(0.12)}
             style={{
-              border: '1px solid var(--border)',
+              display: 'grid',
+              gap: '1px',
+              background: 'var(--border)',
             }}
-            className="grid grid-cols-1 md:grid-cols-3"
+            className="grid-cols-1 md:grid-cols-3"
           >
-            {services.map((service) => (
+            {services.map((service, i) => (
               <motion.div key={service.number} variants={shouldReduce ? undefined : fadeUp}>
-                <ServiceCard service={service} />
+                <ServiceCard service={service} index={i} />
               </motion.div>
             ))}
           </motion.div>
