@@ -116,7 +116,7 @@ function FAQItem({
               fontFamily: 'var(--font-display)',
               fontSize: 'clamp(1rem, 1.8vw, 1.25rem)',
               fontWeight: 400,
-              fontStyle: 'italic',
+              fontStyle: 'normal',
               color: 'var(--text)',
               lineHeight: 1.3,
             }}
