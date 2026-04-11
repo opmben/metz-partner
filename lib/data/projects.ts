@@ -22,7 +22,7 @@ export const projects: Project[] = [
     name: 'Fahrschule Dirk Arnold',
     category: 'Bildung',
     serviceType: 'Website',
-    coverImage: '/projekte/Fahrschule-DA.png',
+    coverImage: '/projekte/Fahrschule-DA.jpg',
     featured: true,
     imageReady: true,
     year: '2026',
