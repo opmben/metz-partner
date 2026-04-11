@@ -232,11 +232,12 @@ function DifferentiatorCard({
     >
       <BorderGlow
         backgroundColor="#0b0b0b"
-        borderRadius={4}
+        borderRadius={14}
         glowColor="73 100 50"
         glowRadius={55}
         glowIntensity={0.65}
         coneSpread={28}
+        animated
         colors={['#C8FF00', '#a8d400', '#7a9900']}
         fillOpacity={0.06}
         className="h-full"
