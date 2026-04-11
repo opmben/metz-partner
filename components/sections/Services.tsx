@@ -486,6 +486,7 @@ function ServiceCard({
         rotateY: shouldReduce ? 0 : springRotateY,
         transition: 'background 0.4s ease',
         overflow: 'hidden',
+        height: '100%',
       }}
     >
       {/* Top accent line */}
@@ -645,7 +646,7 @@ export function Services() {
             className="grid-cols-1 md:grid-cols-3"
           >
             {services.map((service, i) => (
-              <motion.div key={service.number} variants={shouldReduce ? undefined : fadeUp}>
+              <motion.div key={service.number} variants={shouldReduce ? undefined : fadeUp} style={{ height: '100%' }}>
                 <ServiceCard service={service} index={i} sectionInView={isInView} />
               </motion.div>
             ))}
