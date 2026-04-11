@@ -4,6 +4,7 @@ export interface Project {
   category: string
   serviceType: string
   coverImage: string
+  displayUrl?: string
   featured: boolean
   imageReady: boolean
   shortDescription: string
@@ -23,6 +24,7 @@ export const projects: Project[] = [
     category: 'Bildung',
     serviceType: 'Website',
     coverImage: '/projekte/Fahrschule-DA.jpg',
+    displayUrl: 'fahrschule-dirk-arnold.de',
     featured: true,
     imageReady: true,
     year: '2026',

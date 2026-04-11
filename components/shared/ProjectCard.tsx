@@ -2,6 +2,7 @@
 import { useState, useRef } from 'react'
 import Link from 'next/link'
 import Image from 'next/image'
+import { ArrowRight } from 'lucide-react'
 import { motion, useMotionValue, useSpring, useReducedMotion } from 'framer-motion'
 import type { Project } from '@/lib/data/projects'
 
@@ -75,67 +76,36 @@ function PlaceholderArt({
         background: theme.bg,
       }}
     >
-      {/* Ambient glows — animated drift */}
+      {/* Ambient glows */}
       <motion.div
-        animate={shouldReduce ? undefined : {
-          x: [0, 15, -10, 0],
-          y: [0, -10, 8, 0],
-          scale: [1, 1.08, 0.95, 1],
-        }}
-        transition={shouldReduce ? undefined : {
-          duration: 10,
-          repeat: Infinity,
-          ease: 'easeInOut',
-        }}
+        animate={shouldReduce ? undefined : { x: [0, 15, -10, 0], y: [0, -10, 8, 0], scale: [1, 1.08, 0.95, 1] }}
+        transition={shouldReduce ? undefined : { duration: 10, repeat: Infinity, ease: 'easeInOut' }}
         style={{
-          position: 'absolute',
-          top: '10%',
-          left: '15%',
-          width: '55%',
-          height: '55%',
-          borderRadius: '50%',
+          position: 'absolute', top: '10%', left: '15%',
+          width: '55%', height: '55%', borderRadius: '50%',
           background: `radial-gradient(circle, ${theme.glow1}, transparent 70%)`,
-          filter: 'blur(40px)',
-          pointerEvents: 'none',
+          filter: 'blur(40px)', pointerEvents: 'none',
         }}
       />
       <motion.div
-        animate={shouldReduce ? undefined : {
-          x: [0, -12, 8, 0],
-          y: [0, 8, -6, 0],
-          scale: [1, 0.94, 1.06, 1],
-        }}
-        transition={shouldReduce ? undefined : {
-          duration: 13,
-          repeat: Infinity,
-          ease: 'easeInOut',
-        }}
+        animate={shouldReduce ? undefined : { x: [0, -12, 8, 0], y: [0, 8, -6, 0], scale: [1, 0.94, 1.06, 1] }}
+        transition={shouldReduce ? undefined : { duration: 13, repeat: Infinity, ease: 'easeInOut' }}
         style={{
-          position: 'absolute',
-          bottom: '10%',
-          right: '10%',
-          width: '35%',
-          height: '35%',
-          borderRadius: '50%',
+          position: 'absolute', bottom: '10%', right: '10%',
+          width: '35%', height: '35%', borderRadius: '50%',
           background: `radial-gradient(circle, ${theme.glow2}, transparent 70%)`,
-          filter: 'blur(30px)',
-          pointerEvents: 'none',
+          filter: 'blur(30px)', pointerEvents: 'none',
         }}
       />
 
-      {/* Grid lines — slow drift */}
+      {/* Grid lines */}
       <motion.div
         animate={shouldReduce ? undefined : {
           backgroundPosition: ['0px 0px', `${featured ? 36 : 28}px ${featured ? 36 : 28}px`],
         }}
-        transition={shouldReduce ? undefined : {
-          duration: 20,
-          repeat: Infinity,
-          ease: 'linear',
-        }}
+        transition={shouldReduce ? undefined : { duration: 20, repeat: Infinity, ease: 'linear' }}
         style={{
-          position: 'absolute',
-          inset: 0,
+          position: 'absolute', inset: 0,
           backgroundImage: `linear-gradient(${theme.lineColor} 1px, transparent 1px), linear-gradient(90deg, ${theme.lineColor} 1px, transparent 1px)`,
           backgroundSize: featured ? '36px 36px' : '28px 28px',
           pointerEvents: 'none',
@@ -145,158 +115,135 @@ function PlaceholderArt({
       {/* Website skeleton wireframe */}
       <div style={{ position: 'absolute', inset: 0, padding: pad }}>
         {/* Nav */}
-        <div
-          style={{
-            display: 'flex',
-            justifyContent: 'space-between',
-            alignItems: 'center',
-            paddingBottom: featured ? '0.9rem' : '0.65rem',
-            marginBottom: featured ? '1.4rem' : '1rem',
-            borderBottom: `1px solid rgba(240,237,232,0.055)`,
-          }}
-        >
-          <div
-            style={{
-              width: featured ? 58 : 44,
-              height: featured ? 8 : 6,
-              borderRadius: 4,
-              background: 'rgba(240,237,232,0.28)',
-            }}
-          />
+        <div style={{
+          display: 'flex', justifyContent: 'space-between', alignItems: 'center',
+          paddingBottom: featured ? '0.9rem' : '0.65rem',
+          marginBottom: featured ? '1.4rem' : '1rem',
+          borderBottom: `1px solid rgba(240,237,232,0.055)`,
+        }}>
+          <div style={{ width: featured ? 58 : 44, height: featured ? 8 : 6, borderRadius: 4, background: 'rgba(240,237,232,0.28)' }} />
           <div style={{ display: 'flex', gap: '0.4rem' }}>
             {(featured ? [36, 28, 40] : [26, 20, 30]).map((w, i) => (
-              <div
-                key={i}
-                style={{
-                  width: w,
-                  height: featured ? 4 : 3,
-                  borderRadius: 2,
-                  background: 'rgba(240,237,232,0.1)',
-                }}
-              />
+              <div key={i} style={{ width: w, height: featured ? 4 : 3, borderRadius: 2, background: 'rgba(240,237,232,0.1)' }} />
             ))}
           </div>
-          <div
-            style={{
-              width: featured ? 50 : 38,
-              height: featured ? 18 : 13,
-              borderRadius: 9,
-              background: theme.accentBar,
-            }}
-          />
+          <div style={{ width: featured ? 50 : 38, height: featured ? 18 : 13, borderRadius: 9, background: theme.accentBar }} />
         </div>
 
         {/* Hero text */}
         <div style={{ marginBottom: featured ? '1.4rem' : '1rem' }}>
           {[76, 56, 40].map((pct, i) => (
-            <div
-              key={i}
-              style={{
-                width: `${pct}%`,
-                height: featured ? (i === 0 ? 12 : 10) : (i === 0 ? 8 : 7),
-                borderRadius: 3,
-                background:
-                  i === 2
-                    ? theme.blockAccent
-                    : `rgba(240,237,232,${0.22 - i * 0.04})`,
-                marginBottom: featured ? '0.55rem' : '0.4rem',
-              }}
-            />
+            <div key={i} style={{
+              width: `${pct}%`,
+              height: featured ? (i === 0 ? 12 : 10) : (i === 0 ? 8 : 7),
+              borderRadius: 3,
+              background: i === 2 ? theme.blockAccent : `rgba(240,237,232,${0.22 - i * 0.04})`,
+              marginBottom: featured ? '0.55rem' : '0.4rem',
+            }} />
           ))}
-          {/* CTA button skeleton — subtle pulse */}
           <motion.div
             animate={shouldReduce ? undefined : { opacity: [0.7, 0.45, 0.7] }}
             transition={shouldReduce ? undefined : { duration: 3, repeat: Infinity, ease: 'easeInOut' }}
             style={{
-              display: 'inline-block',
-              marginTop: featured ? '0.5rem' : '0.3rem',
-              width: featured ? 68 : 50,
-              height: featured ? 20 : 15,
-              borderRadius: 10,
-              background: theme.accentBar,
+              display: 'inline-block', marginTop: featured ? '0.5rem' : '0.3rem',
+              width: featured ? 68 : 50, height: featured ? 20 : 15,
+              borderRadius: 10, background: theme.accentBar,
             }}
           />
         </div>
 
-        {/* Content grid */}
+        {/* Content blocks (featured only) */}
         {featured && (
-          <div
-            style={{
-              display: 'grid',
-              gridTemplateColumns: '1fr 1fr 1fr',
-              gap: '0.6rem',
-            }}
-          >
+          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: '0.6rem' }}>
             {[0.08, 0.055, 0.07].map((op, i) => (
-              <div
-                key={i}
-                style={{
-                  height: 56,
-                  borderRadius: 3,
-                  background: `rgba(240,237,232,${op})`,
-                  border: '1px solid rgba(240,237,232,0.04)',
-                }}
-              />
+              <div key={i} style={{ height: 56, borderRadius: 3, background: `rgba(240,237,232,${op})`, border: '1px solid rgba(240,237,232,0.04)' }} />
             ))}
           </div>
         )}
 
-        {/* Non-featured: two row blocks */}
         {!featured && (
           <div style={{ display: 'flex', flexDirection: 'column', gap: '0.4rem' }}>
             {[90, 70].map((pct, i) => (
-              <div
-                key={i}
-                style={{
-                  width: `${pct}%`,
-                  height: 5,
-                  borderRadius: 2,
-                  background: `rgba(240,237,232,${0.09 - i * 0.02})`,
-                }}
-              />
+              <div key={i} style={{ width: `${pct}%`, height: 5, borderRadius: 2, background: `rgba(240,237,232,${0.09 - i * 0.02})` }} />
             ))}
           </div>
         )}
       </div>
 
       {/* "Referenz folgt" badge */}
+      <div style={{
+        position: 'absolute', top: '0.85rem', right: '0.85rem',
+        background: 'rgba(8,8,8,0.75)', border: '1px solid rgba(240,237,232,0.1)',
+        borderRadius: 100, padding: '0.28rem 0.7rem', backdropFilter: 'blur(8px)',
+      }}>
+        <span style={{ fontSize: '0.55rem', textTransform: 'uppercase', letterSpacing: '0.12em', color: 'rgba(240,237,232,0.38)', fontFamily: 'var(--font-ui)' }}>
+          Referenz folgt
+        </span>
+      </div>
+    </div>
+  )
+}
+
+/* ── Browser chrome bar ── */
+function BrowserChrome({ url }: { url: string }) {
+  return (
+    <div
+      style={{
+        height: 36,
+        background: '#161616',
+        borderBottom: '1px solid rgba(240,237,232,0.06)',
+        display: 'flex',
+        alignItems: 'center',
+        padding: '0 14px',
+        flexShrink: 0,
+      }}
+    >
+      {/* Traffic lights */}
+      <div style={{ display: 'flex', gap: 6, marginRight: 12 }}>
+        {[
+          'rgba(255,95,87,0.75)',
+          'rgba(255,189,46,0.75)',
+          'rgba(40,200,64,0.75)',
+        ].map((color, i) => (
+          <div
+            key={i}
+            style={{ width: 10, height: 10, borderRadius: '50%', background: color, flexShrink: 0 }}
+          />
+        ))}
+      </div>
+
+      {/* URL bar */}
       <div
         style={{
-          position: 'absolute',
-          top: '0.85rem',
-          right: '0.85rem',
-          background: 'rgba(8,8,8,0.75)',
-          border: '1px solid rgba(240,237,232,0.1)',
-          borderRadius: 100,
-          padding: '0.28rem 0.7rem',
-          backdropFilter: 'blur(8px)',
+          flex: 1,
+          height: 20,
+          background: 'rgba(240,237,232,0.04)',
+          border: '1px solid rgba(240,237,232,0.07)',
+          borderRadius: 4,
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          overflow: 'hidden',
+          padding: '0 8px',
         }}
       >
         <span
           style={{
-            fontSize: '0.55rem',
-            textTransform: 'uppercase',
-            letterSpacing: '0.12em',
-            color: 'rgba(240,237,232,0.38)',
+            fontSize: '0.6rem',
+            color: 'rgba(240,237,232,0.3)',
             fontFamily: 'var(--font-ui)',
+            letterSpacing: '0.01em',
+            whiteSpace: 'nowrap',
+            overflow: 'hidden',
+            textOverflow: 'ellipsis',
           }}
         >
-          Referenz folgt
+          {url}
         </span>
       </div>
 
-      {/* Bottom fade */}
-      <div
-        style={{
-          position: 'absolute',
-          bottom: 0,
-          left: 0,
-          right: 0,
-          height: '45%',
-          background: 'linear-gradient(to top, rgba(8,8,8,0.6) 0%, transparent 100%)',
-          pointerEvents: 'none',
-        }}
-      />
+      {/* Right spacer — mirrors traffic lights block */}
+      <div style={{ width: 52, marginLeft: 12 }} />
     </div>
   )
 }
@@ -307,37 +254,28 @@ export function ProjectCard({ project, featured = false }: ProjectCardProps) {
   const shouldReduce = useReducedMotion()
   const cardRef = useRef<HTMLDivElement>(null)
 
-  // Cursor-tracked parallax values
-  const mouseX = useMotionValue(0)
-  const mouseY = useMotionValue(0)
-  const rotateX = useSpring(useMotionValue(0), { stiffness: 180, damping: 20 })
-  const rotateY = useSpring(useMotionValue(0), { stiffness: 180, damping: 20 })
-  // Inner content shifts slightly opposite to tilt — parallax layers
-  const contentX = useSpring(mouseX, { stiffness: 120, damping: 18 })
-  const contentY = useSpring(mouseY, { stiffness: 120, damping: 18 })
+  const rotateX = useSpring(useMotionValue(0), { stiffness: 180, damping: 22 })
+  const rotateY = useSpring(useMotionValue(0), { stiffness: 180, damping: 22 })
 
   const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
     if (shouldReduce || !cardRef.current) return
     const rect = cardRef.current.getBoundingClientRect()
     const nx = ((e.clientX - rect.left) / rect.width - 0.5) * 2
     const ny = ((e.clientY - rect.top) / rect.height - 0.5) * 2
-    mouseX.set(nx * 8)
-    mouseY.set(ny * 8)
-    rotateX.set(-ny * 6)
-    rotateY.set(nx * 6)
+    rotateX.set(-ny * 5)
+    rotateY.set(nx * 5)
   }
 
   const handleMouseLeave = () => {
-    mouseX.set(0)
-    mouseY.set(0)
     rotateX.set(0)
     rotateY.set(0)
   }
 
   const showPlaceholder = !project.imageReady || imgError
+  const displayUrl = project.displayUrl ?? `${project.slug}.de`
 
   return (
-    <Link href={`/projekte/${project.slug}`} className="block" style={{ cursor: 'pointer', perspective: 800 }}>
+    <Link href={`/projekte/${project.slug}`} className="block" style={{ cursor: 'pointer', perspective: 1000 }}>
       <motion.div
         ref={cardRef}
         onHoverStart={() => setHovered(true)}
@@ -347,143 +285,153 @@ export function ProjectCard({ project, featured = false }: ProjectCardProps) {
         style={{
           position: 'relative',
           background: 'var(--surface)',
+          border: '1px solid var(--border)',
+          borderRadius: 8,
           overflow: 'hidden',
           cursor: 'pointer',
-          aspectRatio: featured ? '4/3' : '16/10',
-          borderRadius: 4,
           rotateX: shouldReduce ? 0 : rotateX,
           rotateY: shouldReduce ? 0 : rotateY,
           transformStyle: 'preserve-3d',
+          display: 'flex',
+          flexDirection: 'column',
         }}
-        animate={{ scale: hovered ? 1.01 : 1 }}
+        animate={{
+          scale: hovered ? 1.015 : 1,
+          boxShadow: hovered
+            ? '0 20px 60px rgba(0,0,0,0.5), 0 4px 16px rgba(0,0,0,0.3)'
+            : '0 2px 8px rgba(0,0,0,0.2)',
+        }}
         transition={{ duration: 0.4, ease: [0.16, 1, 0.3, 1] }}
       >
-        {/* Image / placeholder — deepest layer, scales on hover */}
-        <motion.div
-          style={{ position: 'absolute', inset: 0 }}
-          animate={{ scale: hovered ? 1.07 : 1 }}
-          transition={{ duration: 1.1, ease: [0.25, 0.46, 0.45, 0.94] }}
-        >
-          {showPlaceholder ? (
-            <PlaceholderArt project={project} featured={featured} />
-          ) : (
-            <Image
-              src={project.coverImage}
-              alt={`Screenshot der Website für ${project.name}`}
-              fill
-              sizes={
-                featured
-                  ? '(min-width: 1024px) 66vw, 100vw'
-                  : '(min-width: 1024px) 33vw, 100vw'
-              }
-              style={{ objectFit: 'cover' }}
-              onError={() => setImgError(true)}
-            />
-          )}
-        </motion.div>
-
-        {/* Gradient overlay — deepens on hover */}
-        <motion.div
-          style={{ position: 'absolute', inset: 0 }}
-          animate={{
-            background: hovered
-              ? 'linear-gradient(to top, rgba(8,8,8,0.96) 0%, rgba(8,8,8,0.3) 55%, transparent 100%)'
-              : 'linear-gradient(to top, rgba(8,8,8,0.88) 0%, transparent 55%)',
-          }}
-          transition={{ duration: 0.4 }}
-        />
-
-        {/* Cursor-following radial shine */}
-        {!shouldReduce && (
-          <motion.div
-            animate={{ opacity: hovered ? 1 : 0 }}
-            transition={{ duration: 0.3 }}
-            style={{
-              position: 'absolute',
-              inset: 0,
-              background: 'radial-gradient(circle at 50% 50%, rgba(200,255,0,0.07) 0%, transparent 60%)',
-              pointerEvents: 'none',
-            }}
-          />
-        )}
-
-        {/* Center hover pill — floats slightly above via parallax */}
+        {/* Top accent line — sweeps in on hover */}
         <motion.div
           style={{
-            position: 'absolute',
-            inset: 0,
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            x: shouldReduce ? 0 : contentX,
-            y: shouldReduce ? 0 : contentY,
+            position: 'absolute', top: 0, left: 0, right: 0,
+            height: 2, background: 'var(--accent)',
+            transformOrigin: 'left', zIndex: 10,
           }}
-          animate={{ opacity: hovered ? 1 : 0, scale: hovered ? 1 : 0.78 }}
-          transition={{ duration: 0.3, ease: [0.16, 1, 0.3, 1] }}
-        >
-          <span
-            style={{
-              background: 'var(--accent)',
-              color: 'var(--bg)',
-              fontFamily: 'var(--font-ui)',
-              fontSize: '0.78rem',
-              fontWeight: 500,
-              textTransform: 'uppercase',
-              letterSpacing: '0.09em',
-              padding: '0.7rem 1.6rem',
-              borderRadius: 100,
-              boxShadow: '0 4px 24px rgba(200,255,0,0.35)',
-            }}
-          >
-            Ansehen →
-          </span>
-        </motion.div>
-
-        {/* Project info — slides up on hover */}
-        <motion.div
-          style={{
-            position: 'absolute',
-            bottom: 0,
-            left: 0,
-            right: 0,
-            padding: featured ? '2rem' : '1.5rem',
-          }}
-          animate={{ y: hovered ? 0 : 8, opacity: hovered ? 1 : 0.85 }}
-          transition={{ duration: 0.45, ease: 'easeOut' }}
-        >
-          <motion.p
-            animate={{ x: hovered ? 0 : -4, opacity: hovered ? 1 : 0.7 }}
-            transition={{ duration: 0.35, delay: 0.05 }}
-            style={{
-              fontSize: '0.68rem',
-              fontWeight: 400,
-              textTransform: 'uppercase',
-              letterSpacing: '0.14em',
-              color: 'var(--accent)',
-              marginBottom: '0.4rem',
-            }}
-          >
-            {project.category} · {project.serviceType}
-          </motion.p>
-          <h3 className="display-card" style={{ color: 'var(--text)' }}>
-            {project.name}
-          </h3>
-        </motion.div>
-
-        {/* Top edge accent line — reveals on hover */}
-        <motion.div
-          style={{
-            position: 'absolute',
-            top: 0,
-            left: 0,
-            right: 0,
-            height: 2,
-            background: 'var(--accent)',
-            originX: 0,
-          }}
-          animate={{ scaleX: hovered ? 1 : 0, opacity: hovered ? 0.7 : 0 }}
+          animate={{ scaleX: hovered ? 1 : 0, opacity: hovered ? 0.8 : 0 }}
           transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
         />
+
+        {/* Browser chrome */}
+        <BrowserChrome url={displayUrl} />
+
+        {/* Screenshot viewport */}
+        <div
+          style={{
+            position: 'relative',
+            aspectRatio: featured ? '16/9' : '16/10',
+            overflow: 'hidden',
+            flexShrink: 0,
+          }}
+        >
+          {/* Image / placeholder — subtle scale on hover */}
+          <motion.div
+            style={{ position: 'absolute', inset: 0 }}
+            animate={{ scale: hovered ? 1.04 : 1 }}
+            transition={{ duration: 0.9, ease: [0.25, 0.46, 0.45, 0.94] }}
+          >
+            {showPlaceholder ? (
+              <PlaceholderArt project={project} featured={featured} />
+            ) : (
+              <Image
+                src={project.coverImage}
+                alt={`Screenshot der Website für ${project.name}`}
+                fill
+                sizes={
+                  featured
+                    ? '(min-width: 1024px) 80vw, 100vw'
+                    : '(min-width: 1024px) 33vw, 100vw'
+                }
+                style={{ objectFit: 'cover', objectPosition: 'top' }}
+                onError={() => setImgError(true)}
+              />
+            )}
+          </motion.div>
+
+          {/* Hover overlay + "Ansehen →" pill */}
+          <motion.div
+            style={{
+              position: 'absolute', inset: 0,
+              display: 'flex', alignItems: 'center', justifyContent: 'center',
+            }}
+            animate={{
+              background: hovered
+                ? 'rgba(8,8,8,0.45)'
+                : 'rgba(8,8,8,0)',
+            }}
+            transition={{ duration: 0.35 }}
+          >
+            <motion.span
+              animate={{ opacity: hovered ? 1 : 0, scale: hovered ? 1 : 0.82 }}
+              transition={{ duration: 0.3, ease: [0.16, 1, 0.3, 1] }}
+              style={{
+                background: 'var(--accent)',
+                color: 'var(--bg)',
+                fontFamily: 'var(--font-ui)',
+                fontSize: '0.75rem',
+                fontWeight: 500,
+                textTransform: 'uppercase',
+                letterSpacing: '0.1em',
+                padding: '0.65rem 1.5rem',
+                borderRadius: 100,
+                boxShadow: '0 4px 24px rgba(200,255,0,0.4)',
+                pointerEvents: 'none',
+              }}
+            >
+              Ansehen →
+            </motion.span>
+          </motion.div>
+        </div>
+
+        {/* Info row — always visible */}
+        <div
+          style={{
+            padding: featured ? '1.25rem 1.5rem' : '0.9rem 1.25rem',
+            borderTop: '1px solid rgba(240,237,232,0.05)',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'space-between',
+            gap: '1rem',
+          }}
+        >
+          <div>
+            <p
+              style={{
+                fontSize: '0.62rem',
+                fontWeight: 400,
+                textTransform: 'uppercase',
+                letterSpacing: '0.14em',
+                color: 'var(--accent)',
+                marginBottom: '0.3rem',
+                fontFamily: 'var(--font-ui)',
+              }}
+            >
+              {project.category} · {project.serviceType}
+            </p>
+            <h3
+              style={{
+                fontFamily: 'var(--font-display)',
+                fontSize: featured ? 'clamp(1.1rem, 1.6vw, 1.35rem)' : '1rem',
+                fontWeight: 400,
+                fontStyle: 'italic',
+                color: 'var(--text)',
+                lineHeight: 1.2,
+              }}
+            >
+              {project.name}
+            </h3>
+          </div>
+
+          <motion.div
+            animate={{ x: hovered ? 0 : -4, opacity: hovered ? 1 : 0.3 }}
+            transition={{ duration: 0.3, ease: 'easeOut' }}
+            style={{ flexShrink: 0, color: 'var(--text)' }}
+          >
+            <ArrowRight size={featured ? 18 : 15} />
+          </motion.div>
+        </div>
       </motion.div>
     </Link>
   )
