@@ -366,15 +366,6 @@ function LaunchIllustration({ inView, hovered, shouldReduce }: IllustrationProps
         style={{ transformOrigin: '12px 59px' }}
         transition={{ duration: 1.1, delay: go ? 1.06 : 0, ease: EASE }}
       />
-      {/* Progress bar glow */}
-      <motion.rect x="12" y="54" width="200" height="10" rx="5"
-        fill="transparent"
-        style={{ filter: 'blur(4px)' }}
-        initial={{ opacity: 0 }}
-        animate={go ? { opacity: 0.4 } : { opacity: 0 }}
-        transition={t(0.5, 1.3)}
-      />
-
       {/* Pipeline steps */}
       {steps.map((step, i) => (
         <g key={step.y}>
