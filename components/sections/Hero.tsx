@@ -100,11 +100,13 @@ function AnimatedNumber({
   suffix = '',
   shouldReduce,
   delay = 0,
+  fontSize = 'clamp(2rem, 3.5vw, 3rem)',
 }: {
   value: number
   suffix?: string
   shouldReduce: boolean | null
   delay?: number
+  fontSize?: string
 }) {
   const ref = useRef<HTMLSpanElement>(null)
   const hasAnimated = useRef(false)
@@ -122,7 +124,7 @@ function AnimatedNumber({
       style={{
         fontFamily: 'var(--font-display)',
         fontStyle: 'italic',
-        fontSize: 'clamp(2rem, 3.5vw, 3rem)',
+        fontSize,
         color: 'var(--text)',
         lineHeight: 1,
         letterSpacing: '-0.02em',
@@ -296,7 +298,7 @@ export function Hero() {
         className="container-site"
         style={{
           paddingTop: '8rem',
-          paddingBottom: '6rem',
+          paddingBottom: '8rem',
           width: '100%',
           y: shouldReduce ? 0 : parallaxY,
           opacity: shouldReduce ? 1 : parallaxOpacity,
@@ -546,45 +548,53 @@ export function Hero() {
             </MagneticButton>
           </motion.div>
         </div>
+      </motion.div>
 
-        {/* ── Stats row — open, borderless ── */}
-        <motion.div
-          variants={shouldReduce ? undefined : fadeUp}
-          initial={shouldReduce ? undefined : 'hidden'}
-          animate={shouldReduce ? undefined : 'visible'}
-          transition={{ delay: 1.6 }}
-          style={{
-            marginTop: 'clamp(4rem, 6vw, 6rem)',
-            borderTop: '1px solid var(--border)',
-            paddingTop: 'clamp(2rem, 3vw, 2.5rem)',
-            display: 'grid',
-            gridTemplateColumns: 'repeat(2, 1fr)',
-            rowGap: 'clamp(1.75rem, 3vw, 2.5rem)',
-          }}
-          className="md:grid-cols-4"
-        >
-          {[
-            { value: 90, suffix: '+', label: 'Pagespeed Score' },
-            { value: 2, suffix: '–4 Wo.', label: 'Projektdauer' },
-            { value: 100, suffix: '%', label: 'Persönl. Kontakt' },
-            { value: 0, suffix: '€', prefix: 'Ab 500', label: 'Faire Preise' },
-          ].map((stat, i) => (
-            <div
-              key={stat.label}
-              style={{
-                display: 'flex',
-                flexDirection: 'column',
-                gap: '0.4rem',
-                paddingRight: '1rem',
-              }}
-            >
-              <div>
+      {/* ── Stats strip — bottom anchored ── */}
+      <motion.div
+        initial={shouldReduce ? undefined : { opacity: 0, y: 8 }}
+        animate={shouldReduce ? undefined : { opacity: 1, y: 0 }}
+        transition={{ delay: 1.8, duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
+        style={{
+          position: 'absolute',
+          bottom: 0,
+          left: 0,
+          right: 0,
+          zIndex: 2,
+        }}
+      >
+        <div className="container-site">
+          <div
+            style={{
+              borderTop: '1px solid rgba(240,237,232,0.07)',
+              paddingTop: '1.25rem',
+              paddingBottom: '2.25rem',
+              display: 'grid',
+              gridTemplateColumns: 'repeat(2, 1fr)',
+              gap: '1.25rem 0',
+            }}
+            className="md:grid-cols-4"
+          >
+            {([
+              { value: 90,  suffix: '+',      label: 'Pagespeed Score',  prefix: undefined },
+              { value: 2,   suffix: '–4 Wo.', label: 'Projektdauer',     prefix: undefined },
+              { value: 100, suffix: '%',      label: 'Persönl. Kontakt', prefix: undefined },
+              { value: 0,   suffix: '€',      label: 'Faire Preise',     prefix: 'Ab 500'  },
+            ] as { value: number; suffix: string; label: string; prefix?: string }[]).map((stat, i) => (
+              <div
+                key={stat.label}
+                style={{
+                  display: 'flex',
+                  flexDirection: 'column',
+                  gap: '0.3rem',
+                }}
+              >
                 {stat.prefix ? (
                   <span
                     style={{
                       fontFamily: 'var(--font-display)',
                       fontStyle: 'italic',
-                      fontSize: 'clamp(2rem, 3.5vw, 3rem)',
+                      fontSize: 'clamp(1.5rem, 2vw, 1.9rem)',
                       color: 'var(--text)',
                       lineHeight: 1,
                       letterSpacing: '-0.02em',
@@ -597,68 +607,27 @@ export function Hero() {
                     value={stat.value}
                     suffix={stat.suffix}
                     shouldReduce={shouldReduce}
-                    delay={1.8 + i * 0.15}
+                    delay={2.0 + i * 0.12}
+                    fontSize="clamp(1.5rem, 2vw, 1.9rem)"
                   />
                 )}
+                <span
+                  style={{
+                    fontFamily: 'var(--font-ui)',
+                    fontSize: '0.6rem',
+                    fontWeight: 400,
+                    textTransform: 'uppercase',
+                    letterSpacing: '0.13em',
+                    color: 'var(--muted)',
+                    opacity: 0.65,
+                  }}
+                >
+                  {stat.label}
+                </span>
               </div>
-              <span
-                style={{
-                  fontFamily: 'var(--font-ui)',
-                  fontSize: '0.68rem',
-                  fontWeight: 400,
-                  textTransform: 'uppercase',
-                  letterSpacing: '0.12em',
-                  color: 'var(--muted)',
-                }}
-              >
-                {stat.label}
-              </span>
-            </div>
-          ))}
-        </motion.div>
-      </motion.div>
-
-      {/* Scroll indicator — refined */}
-      <motion.div
-        variants={shouldReduce ? undefined : fadeIn}
-        initial={shouldReduce ? undefined : 'hidden'}
-        animate={shouldReduce ? undefined : 'visible'}
-        transition={{ delay: 2.2 }}
-        style={{
-          position: 'absolute',
-          bottom: '2.5rem',
-          left: '50%',
-          transform: 'translateX(-50%)',
-          display: 'flex',
-          flexDirection: 'column',
-          alignItems: 'center',
-          gap: '0.6rem',
-        }}
-      >
-        <motion.div
-          animate={shouldReduce ? undefined : { y: [0, 6, 0] }}
-          transition={{ duration: 2, repeat: Infinity, ease: 'easeInOut' }}
-          style={{
-            width: 20,
-            height: 32,
-            borderRadius: 12,
-            border: '1px solid rgba(240,237,232,0.15)',
-            display: 'flex',
-            justifyContent: 'center',
-            paddingTop: 6,
-          }}
-        >
-          <motion.div
-            animate={shouldReduce ? undefined : { y: [0, 8, 0], opacity: [1, 0.3, 1] }}
-            transition={{ duration: 2, repeat: Infinity, ease: 'easeInOut' }}
-            style={{
-              width: 3,
-              height: 8,
-              borderRadius: 2,
-              background: 'var(--accent)',
-            }}
-          />
-        </motion.div>
+            ))}
+          </div>
+        </div>
       </motion.div>
 
       {/* Bottom gradient fade — extended for seamless flow into next section */}
