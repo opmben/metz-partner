@@ -105,4 +105,4 @@ Set `RESEND_API_KEY` in the Vercel project environment variables (Settings → E
 
 - **Impressum address**: Add the full street address to `app/impressum/page.tsx` before going live
 - **Datenschutz**: Review before launch — currently reflects Resend, Calendly, and no analytics
-- **Domain**: `metzundpartner.de` — update metadata in `app/layout.tsx` once confirmed
+- **Domain**: `metzundpartner.com` — update metadata in `app/layout.tsx` once confirmed
