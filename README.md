@@ -33,7 +33,7 @@ Create `.env.local` in the project root:
 RESEND_API_KEY=re_xxxxxxxxxxxx
 ```
 
-Get a key at [resend.com](https://resend.com). Once you verify your sending domain (`metzundpartner.de`), update the `from` address in `app/api/contact/route.ts` from `onboarding@resend.dev` to `website@metzundpartner.de`.
+Get a key at [resend.com](https://resend.com). Once you verify your sending domain (`metzundpartner.com`), update the `from` address in `app/api/contact/route.ts` from `onboarding@resend.dev` to `website@metzundpartner.com`.
 
 Without `RESEND_API_KEY`, the contact form returns a graceful error directing users to the direct email address.
 
