@@ -10,7 +10,6 @@ import {
   useSpring,
 } from 'framer-motion'
 import { fadeUp, staggerContainer, clipRevealUp, blurIn } from '@/lib/animations'
-import { SectionLabel } from '@/components/shared/SectionLabel'
 
 const founders = [
   {
@@ -325,8 +324,6 @@ export function WhyUs() {
       style={{
         paddingTop: '5rem',
         paddingBottom: '5rem',
-        background: 'var(--surface)',
-        borderTop: '1px solid var(--border)',
         position: 'relative',
         overflow: 'hidden',
       }}
@@ -360,11 +357,6 @@ export function WhyUs() {
           initial={shouldReduce ? undefined : 'hidden'}
           animate={shouldReduce ? undefined : isInView ? 'visible' : 'hidden'}
         >
-          {/* Header */}
-          <motion.div variants={shouldReduce ? undefined : fadeUp} style={{ marginBottom: '1.25rem' }}>
-            <SectionLabel>Warum Metz & Partner</SectionLabel>
-          </motion.div>
-
           {/* Positioning statement */}
           <motion.div
             variants={shouldReduce ? undefined : fadeUp}

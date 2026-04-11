@@ -12,7 +12,6 @@ import {
   useSpring,
 } from 'framer-motion'
 import { fadeUp, staggerContainer, clipRevealUp, blurIn } from '@/lib/animations'
-import { SectionLabel } from '@/components/shared/SectionLabel'
 import { Mail, Phone, ArrowRight, Check } from 'lucide-react'
 
 const schema = z.object({
@@ -267,10 +266,6 @@ export function Contact() {
           initial={shouldReduce ? undefined : 'hidden'}
           animate={shouldReduce ? undefined : isInView ? 'visible' : 'hidden'}
         >
-          <motion.div variants={shouldReduce ? undefined : fadeUp} style={{ marginBottom: '1.25rem' }}>
-            <SectionLabel>Kontakt</SectionLabel>
-          </motion.div>
-
           <div style={{ overflow: 'hidden', marginBottom: '4rem' }}>
             <motion.h2
               className="display-section"

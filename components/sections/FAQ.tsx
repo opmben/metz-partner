@@ -3,7 +3,6 @@ import { useRef, useState } from 'react'
 import { motion, useInView, useReducedMotion, AnimatePresence } from 'framer-motion'
 import { ChevronDown } from 'lucide-react'
 import { fadeUp, staggerContainer, clipRevealUp } from '@/lib/animations'
-import { SectionLabel } from '@/components/shared/SectionLabel'
 
 const faqs = [
   {
@@ -187,9 +186,6 @@ export function FAQ() {
             className="flex flex-col gap-4 md:flex-row md:items-end md:justify-between"
           >
             <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
-              <motion.div variants={shouldReduce ? undefined : fadeUp}>
-                <SectionLabel>Häufige Fragen</SectionLabel>
-              </motion.div>
               <div style={{ overflow: 'hidden' }}>
                 <motion.h2
                   className="display-section"

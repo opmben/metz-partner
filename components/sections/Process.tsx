@@ -7,8 +7,7 @@ import {
   useScroll,
   useTransform,
 } from 'framer-motion'
-import { fadeUp, staggerContainer, clipRevealUp, lineGrow } from '@/lib/animations'
-import { SectionLabel } from '@/components/shared/SectionLabel'
+import { fadeUp, staggerContainer, clipRevealUp } from '@/lib/animations'
 
 const steps = [
   {
@@ -153,21 +152,11 @@ function ProcessRow({
         >
           <span
             style={{
-              width: 5,
-              height: 5,
-              borderRadius: '50%',
-              background: 'var(--accent)',
-              display: 'block',
-              opacity: 0.6,
-            }}
-          />
-          <span
-            style={{
               fontSize: '0.68rem',
               fontWeight: 400,
               textTransform: 'uppercase',
               letterSpacing: '0.1em',
-              color: 'var(--accent)',
+              color: 'var(--muted)',
               whiteSpace: 'nowrap',
             }}
           >
@@ -210,7 +199,6 @@ export function Process() {
       style={{
         paddingTop: '5rem',
         paddingBottom: '5rem',
-        borderTop: '1px solid var(--border)',
         position: 'relative',
         overflow: 'hidden',
       }}
@@ -244,10 +232,6 @@ export function Process() {
           initial={shouldReduce ? undefined : 'hidden'}
           animate={shouldReduce ? undefined : isInView ? 'visible' : 'hidden'}
         >
-          <motion.div variants={shouldReduce ? undefined : fadeUp} style={{ marginBottom: '1.25rem' }}>
-            <SectionLabel>Prozess</SectionLabel>
-          </motion.div>
-
           <div style={{ overflow: 'hidden', marginBottom: '3.5rem' }}>
             <motion.h2
               className="display-section"

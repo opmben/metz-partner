@@ -9,7 +9,6 @@ import {
   useTransform,
 } from 'framer-motion'
 import { fadeUp, staggerContainer, scaleIn, clipRevealUp } from '@/lib/animations'
-import { SectionLabel } from '@/components/shared/SectionLabel'
 import { ProjectCard } from '@/components/shared/ProjectCard'
 import { projects } from '@/lib/data/projects'
 import { ArrowRight } from 'lucide-react'
@@ -79,9 +78,6 @@ export function Projects() {
             className="flex flex-col md:flex-row md:items-end md:justify-between"
           >
             <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
-              <motion.div variants={shouldReduce ? undefined : fadeUp}>
-                <SectionLabel>Ausgewählte Arbeiten</SectionLabel>
-              </motion.div>
               <div style={{ overflow: 'hidden' }}>
                 <motion.h2
                   className="display-section"

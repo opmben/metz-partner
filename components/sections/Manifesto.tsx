@@ -69,19 +69,6 @@ export function Manifesto() {
         </motion.div>
       )}
 
-      {/* Top rule */}
-      <div
-        aria-hidden="true"
-        style={{
-          position: 'absolute',
-          top: 0,
-          left: '10%',
-          right: '10%',
-          height: '1px',
-          background: 'linear-gradient(90deg, transparent, rgba(240,237,232,0.07) 30%, rgba(240,237,232,0.07) 70%, transparent)',
-        }}
-      />
-
       {/* Radial glow — centred */}
       <div
         aria-hidden="true"

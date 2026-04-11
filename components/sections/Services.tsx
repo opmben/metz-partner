@@ -2,7 +2,6 @@
 import { useRef, useState, useCallback } from 'react'
 import { motion, useInView, useReducedMotion, useMotionValue, useSpring } from 'framer-motion'
 import { fadeUp, staggerContainer, clipRevealUp } from '@/lib/animations'
-import { SectionLabel } from '@/components/shared/SectionLabel'
 import { services } from '@/lib/data/services'
 
 const EASE: [number, number, number, number] = [0.16, 1, 0.3, 1]
@@ -614,7 +613,6 @@ export function Services() {
       style={{
         paddingTop: '5rem',
         paddingBottom: '5rem',
-        background: 'var(--surface)',
         position: 'relative',
       }}
       className="md:py-32"
@@ -626,10 +624,6 @@ export function Services() {
           initial={shouldReduce ? undefined : 'hidden'}
           animate={shouldReduce ? undefined : isInView ? 'visible' : 'hidden'}
         >
-          <motion.div variants={shouldReduce ? undefined : fadeUp} style={{ marginBottom: '1.25rem' }}>
-            <SectionLabel>Leistungen</SectionLabel>
-          </motion.div>
-
           <div style={{ overflow: 'hidden', marginBottom: '3.5rem' }}>
             <motion.h2
               className="display-section"

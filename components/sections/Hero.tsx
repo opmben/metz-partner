@@ -122,8 +122,8 @@ function AnimatedNumber({
       style={{
         fontFamily: 'var(--font-display)',
         fontStyle: 'italic',
-        fontSize: 'clamp(2.5rem, 5vw, 4rem)',
-        color: 'var(--accent)',
+        fontSize: 'clamp(2rem, 3.5vw, 3rem)',
+        color: 'var(--text)',
         lineHeight: 1,
         letterSpacing: '-0.02em',
       }}
@@ -242,13 +242,13 @@ export function Hero() {
               position: 'absolute',
               top: '-15%',
               right: '-8%',
-              width: '65vw',
-              height: '65vw',
-              maxWidth: 900,
-              maxHeight: 900,
+              width: '75vw',
+              height: '90vw',
+              maxWidth: 1100,
+              maxHeight: 1300,
               borderRadius: '50%',
-              background: 'radial-gradient(circle, rgba(200,255,0,0.09), transparent 65%)',
-              filter: 'blur(140px)',
+              background: 'radial-gradient(circle, rgba(200,255,0,0.07), transparent 65%)',
+              filter: 'blur(160px)',
               pointerEvents: 'none',
             }}
           />
@@ -547,7 +547,7 @@ export function Hero() {
           </motion.div>
         </div>
 
-        {/* ── Stats row — below headline ── */}
+        {/* ── Stats row — open, borderless ── */}
         <motion.div
           variants={shouldReduce ? undefined : fadeUp}
           initial={shouldReduce ? undefined : 'hidden'}
@@ -555,28 +555,27 @@ export function Hero() {
           transition={{ delay: 1.6 }}
           style={{
             marginTop: 'clamp(4rem, 6vw, 6rem)',
+            borderTop: '1px solid var(--border)',
+            paddingTop: 'clamp(2rem, 3vw, 2.5rem)',
             display: 'grid',
-            gap: '1px',
-            background: 'var(--border)',
-            borderRadius: 4,
-            overflow: 'hidden',
+            gridTemplateColumns: 'repeat(2, 1fr)',
+            rowGap: 'clamp(1.75rem, 3vw, 2.5rem)',
           }}
-          className="grid-cols-2 md:grid-cols-4"
+          className="md:grid-cols-4"
         >
           {[
             { value: 90, suffix: '+', label: 'Pagespeed Score' },
             { value: 2, suffix: '–4 Wo.', label: 'Projektdauer' },
-            { value: 100, suffix: '%', label: 'Persönlicher Kontakt' },
+            { value: 100, suffix: '%', label: 'Persönl. Kontakt' },
             { value: 0, suffix: '€', prefix: 'Ab 500', label: 'Faire Preise' },
           ].map((stat, i) => (
             <div
               key={stat.label}
               style={{
-                background: 'var(--bg)',
-                padding: 'clamp(1.5rem, 3vw, 2.5rem)',
                 display: 'flex',
                 flexDirection: 'column',
-                gap: '0.5rem',
+                gap: '0.4rem',
+                paddingRight: '1rem',
               }}
             >
               <div>
@@ -585,8 +584,8 @@ export function Hero() {
                     style={{
                       fontFamily: 'var(--font-display)',
                       fontStyle: 'italic',
-                      fontSize: 'clamp(2.5rem, 5vw, 4rem)',
-                      color: 'var(--accent)',
+                      fontSize: 'clamp(2rem, 3.5vw, 3rem)',
+                      color: 'var(--text)',
                       lineHeight: 1,
                       letterSpacing: '-0.02em',
                     }}
@@ -605,7 +604,7 @@ export function Hero() {
               <span
                 style={{
                   fontFamily: 'var(--font-ui)',
-                  fontSize: '0.72rem',
+                  fontSize: '0.68rem',
                   fontWeight: 400,
                   textTransform: 'uppercase',
                   letterSpacing: '0.12em',
@@ -662,7 +661,7 @@ export function Hero() {
         </motion.div>
       </motion.div>
 
-      {/* Bottom gradient fade — cinematic edge */}
+      {/* Bottom gradient fade — extended for seamless flow into next section */}
       <div
         aria-hidden="true"
         style={{
@@ -670,8 +669,8 @@ export function Hero() {
           bottom: 0,
           left: 0,
           right: 0,
-          height: 120,
-          background: 'linear-gradient(to top, var(--bg), transparent)',
+          height: 240,
+          background: 'linear-gradient(to top, var(--bg) 0%, var(--bg) 20%, transparent 100%)',
           pointerEvents: 'none',
         }}
       />
