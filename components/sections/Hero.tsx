@@ -298,7 +298,7 @@ export function Hero() {
         className="container-site"
         style={{
           paddingTop: '8rem',
-          paddingBottom: '8rem',
+          paddingBottom: '6rem',
           width: '100%',
           y: shouldReduce ? 0 : parallaxY,
           opacity: shouldReduce ? 1 : parallaxOpacity,
@@ -547,31 +547,21 @@ export function Hero() {
               </motion.a>
             </MagneticButton>
           </motion.div>
-        </div>
-      </motion.div>
 
-      {/* ── Stats strip — bottom anchored ── */}
-      <motion.div
-        initial={shouldReduce ? undefined : { opacity: 0, y: 8 }}
-        animate={shouldReduce ? undefined : { opacity: 1, y: 0 }}
-        transition={{ delay: 1.8, duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
-        style={{
-          position: 'absolute',
-          bottom: 0,
-          left: 0,
-          right: 0,
-          zIndex: 2,
-        }}
-      >
-        <div className="container-site">
-          <div
+          {/* ── Stats row — in flow, below CTAs ── */}
+          <motion.div
+            variants={shouldReduce ? undefined : fadeUp}
+            initial={shouldReduce ? undefined : 'hidden'}
+            animate={shouldReduce ? undefined : 'visible'}
+            transition={{ delay: 1.5 }}
             style={{
-              borderTop: '1px solid rgba(240,237,232,0.07)',
-              paddingTop: '1.25rem',
-              paddingBottom: '2.25rem',
+              width: '100%',
+              maxWidth: 560,
+              borderTop: '1px solid rgba(240,237,232,0.08)',
+              paddingTop: '1.75rem',
               display: 'grid',
               gridTemplateColumns: 'repeat(2, 1fr)',
-              gap: '1.25rem 0',
+              gap: '1.25rem 1rem',
             }}
             className="md:grid-cols-4"
           >
@@ -586,7 +576,8 @@ export function Hero() {
                 style={{
                   display: 'flex',
                   flexDirection: 'column',
-                  gap: '0.3rem',
+                  gap: '0.25rem',
+                  textAlign: 'left',
                 }}
               >
                 {stat.prefix ? (
@@ -594,7 +585,7 @@ export function Hero() {
                     style={{
                       fontFamily: 'var(--font-display)',
                       fontStyle: 'italic',
-                      fontSize: 'clamp(1.5rem, 2vw, 1.9rem)',
+                      fontSize: 'clamp(1.35rem, 1.8vw, 1.6rem)',
                       color: 'var(--text)',
                       lineHeight: 1,
                       letterSpacing: '-0.02em',
@@ -607,8 +598,8 @@ export function Hero() {
                     value={stat.value}
                     suffix={stat.suffix}
                     shouldReduce={shouldReduce}
-                    delay={2.0 + i * 0.12}
-                    fontSize="clamp(1.5rem, 2vw, 1.9rem)"
+                    delay={1.7 + i * 0.1}
+                    fontSize="clamp(1.35rem, 1.8vw, 1.6rem)"
                   />
                 )}
                 <span
@@ -619,14 +610,14 @@ export function Hero() {
                     textTransform: 'uppercase',
                     letterSpacing: '0.13em',
                     color: 'var(--muted)',
-                    opacity: 0.65,
+                    opacity: 0.6,
                   }}
                 >
                   {stat.label}
                 </span>
               </div>
             ))}
-          </div>
+          </motion.div>
         </div>
       </motion.div>
 
