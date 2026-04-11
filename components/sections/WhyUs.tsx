@@ -10,6 +10,7 @@ import {
   useSpring,
 } from 'framer-motion'
 import { fadeUp, staggerContainer, clipRevealUp, blurIn } from '@/lib/animations'
+import BorderGlow from '@/components/BorderGlow'
 
 const founders = [
   {
@@ -219,87 +220,77 @@ function FounderCard({ founder }: { founder: (typeof founders)[0] }) {
 
 function DifferentiatorCard({
   d,
-  hovered,
-  onHover,
   shouldReduce,
 }: {
   d: (typeof differentiators)[0]
-  hovered: boolean
-  onHover: (h: boolean) => void
   shouldReduce: boolean | null
 }) {
   return (
     <motion.div
       variants={shouldReduce ? undefined : fadeUp}
-      onMouseEnter={() => onHover(true)}
-      onMouseLeave={() => onHover(false)}
-      style={{
-        background: 'var(--surface)',
-        padding: '2.5rem',
-        position: 'relative',
-        overflow: 'hidden',
-      }}
+      style={{ height: '100%' }}
     >
-      {/* Top accent line */}
-      <motion.div
-        animate={{ scaleX: hovered ? 1 : 0 }}
-        transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
-        style={{
-          position: 'absolute',
-          top: 0,
-          left: 0,
-          right: 0,
-          height: 2,
-          background: 'var(--accent)',
-          transformOrigin: 'left',
-        }}
-      />
-
-      <motion.p
-        animate={{
-          color: hovered && !shouldReduce ? 'var(--accent)' : 'var(--muted)',
-        }}
-        transition={{ duration: 0.3 }}
-        style={{
-          fontFamily: 'var(--font-display)',
-          fontSize: '0.75rem',
-          fontWeight: 400,
-          letterSpacing: '0.1em',
-          marginBottom: '1.5rem',
-          fontStyle: 'normal',
-        }}
+      <BorderGlow
+        backgroundColor="#0b0b0b"
+        borderRadius={4}
+        glowColor="73 100 50"
+        glowRadius={55}
+        glowIntensity={0.65}
+        coneSpread={28}
+        colors={['#C8FF00', '#a8d400', '#7a9900']}
+        fillOpacity={0.06}
+        className="h-full"
       >
-        {d.number}
-      </motion.p>
+        <div
+          style={{
+            padding: 'clamp(2rem, 3vw, 2.75rem)',
+            display: 'flex',
+            flexDirection: 'column',
+            gap: 0,
+            height: '100%',
+          }}
+        >
+          <p
+            style={{
+              fontFamily: 'var(--font-display)',
+              fontSize: '0.72rem',
+              fontWeight: 400,
+              fontStyle: 'italic',
+              letterSpacing: '0.06em',
+              color: 'rgba(200,255,0,0.35)',
+              marginBottom: '1.75rem',
+            }}
+          >
+            {d.number}
+          </p>
 
-      <motion.h4
-        animate={{
-          x: hovered && !shouldReduce ? 3 : 0,
-        }}
-        transition={{ duration: 0.3, ease: [0.16, 1, 0.3, 1] }}
-        style={{
-          fontFamily: 'var(--font-display)',
-          fontSize: '1.3rem',
-          fontWeight: 400,
-          fontStyle: 'normal',
-          color: 'var(--text)',
-          lineHeight: 1.2,
-          marginBottom: '1rem',
-        }}
-      >
-        {d.title}
-      </motion.h4>
+          <h4
+            style={{
+              fontFamily: 'var(--font-display)',
+              fontSize: 'clamp(1.2rem, 1.8vw, 1.45rem)',
+              fontWeight: 400,
+              fontStyle: 'italic',
+              color: 'var(--text)',
+              lineHeight: 1.15,
+              letterSpacing: '-0.01em',
+              marginBottom: '1rem',
+            }}
+          >
+            {d.title}
+          </h4>
 
-      <p
-        style={{
-          fontSize: '0.875rem',
-          fontWeight: 300,
-          color: 'var(--muted)',
-          lineHeight: 1.8,
-        }}
-      >
-        {d.body}
-      </p>
+          <p
+            style={{
+              fontSize: '0.875rem',
+              fontWeight: 300,
+              color: 'var(--muted)',
+              lineHeight: 1.8,
+            }}
+          >
+            {d.body}
+          </p>
+        </div>
+      </BorderGlow>
     </motion.div>
   )
 }
@@ -309,8 +300,6 @@ export function WhyUs() {
   const sectionRef = useRef(null)
   const isInView = useInView(ref, { once: true, margin: '-80px' })
   const shouldReduce = useReducedMotion()
-  const [hoveredDiff, setHoveredDiff] = useState<number | null>(null)
-
   const { scrollYProgress } = useScroll({
     target: sectionRef,
     offset: ['start end', 'end start'],
@@ -403,7 +392,7 @@ export function WhyUs() {
 
           {/* Differentiators */}
           <motion.div
-            variants={shouldReduce ? undefined : staggerContainer(0.08)}
+            variants={shouldReduce ? undefined : staggerContainer(0.1)}
             style={{
               borderTop: '1px solid var(--border)',
               paddingTop: '4rem',
@@ -412,17 +401,14 @@ export function WhyUs() {
             <div
               style={{
                 display: 'grid',
-                gap: '1px',
-                background: 'var(--border)',
+                gap: '1rem',
               }}
               className="grid-cols-1 md:grid-cols-3"
             >
-              {differentiators.map((d, i) => (
+              {differentiators.map((d) => (
                 <DifferentiatorCard
                   key={d.number}
                   d={d}
-                  hovered={hoveredDiff === i}
-                  onHover={(h) => setHoveredDiff(h ? i : null)}
                   shouldReduce={shouldReduce}
                 />
               ))}
