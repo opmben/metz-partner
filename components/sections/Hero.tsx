@@ -560,10 +560,9 @@ export function Hero() {
               borderTop: '1px solid rgba(240,237,232,0.08)',
               paddingTop: '1.75rem',
               display: 'grid',
-              gridTemplateColumns: 'repeat(2, 1fr)',
-              gap: '1.25rem 1rem',
+              gridTemplateColumns: 'repeat(4, 1fr)',
+              gap: '0 1.5rem',
             }}
-            className="md:grid-cols-4"
           >
             {([
               { value: 90,  suffix: '+',      label: 'Pagespeed Score',  prefix: undefined },
