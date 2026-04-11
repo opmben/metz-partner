@@ -8,11 +8,10 @@ import {
   useMotionValue,
   useSpring,
 } from 'framer-motion'
-import { fadeIn, fadeUp, blurIn, charReveal, charContainer } from '@/lib/animations'
+import { fadeUp, blurIn, charReveal, charContainer } from '@/lib/animations'
 import { ArrowRight } from 'lucide-react'
 import { HeroCanvasDynamic } from '@/components/shared/HeroCanvasDynamic'
 
-/* ── hydration gate ── */
 const subscribe = () => () => {}
 const getClientSnapshot = () => true
 const getServerSnapshot = () => false
@@ -94,83 +93,6 @@ function MagneticButton({
   )
 }
 
-/* ── animated counter ── */
-function AnimatedNumber({
-  value,
-  suffix = '',
-  shouldReduce,
-  delay = 0,
-  fontSize = 'clamp(2rem, 3.5vw, 3rem)',
-}: {
-  value: number
-  suffix?: string
-  shouldReduce: boolean | null
-  delay?: number
-  fontSize?: string
-}) {
-  const ref = useRef<HTMLSpanElement>(null)
-  const hasAnimated = useRef(false)
-
-  if (typeof window !== 'undefined' && !hasAnimated.current && ref.current) {
-    // handled by effect below
-  }
-
-  return (
-    <motion.span
-      ref={ref}
-      initial={shouldReduce ? undefined : { opacity: 0 }}
-      animate={shouldReduce ? undefined : { opacity: 1 }}
-      transition={{ delay, duration: 0.4 }}
-      style={{
-        fontFamily: 'var(--font-display)',
-        fontStyle: 'italic',
-        fontSize,
-        color: 'var(--text)',
-        lineHeight: 1,
-        letterSpacing: '-0.02em',
-      }}
-    >
-      <CountUp target={value} duration={1.4} delay={delay} shouldReduce={shouldReduce} />
-      {suffix}
-    </motion.span>
-  )
-}
-
-function CountUp({
-  target,
-  duration,
-  delay,
-  shouldReduce,
-}: {
-  target: number
-  duration: number
-  delay: number
-  shouldReduce: boolean | null
-}) {
-  const ref = useRef<HTMLSpanElement>(null)
-  const hasStarted = useRef(false)
-  const mounted = useSyncExternalStore(subscribe, getClientSnapshot, getServerSnapshot)
-
-  if (mounted && !hasStarted.current && ref.current) {
-    hasStarted.current = true
-    const el = ref.current
-    if (shouldReduce) {
-      el.textContent = String(target)
-    } else {
-      const startTime = performance.now() + delay * 1000
-      const animate = (now: number) => {
-        const elapsed = Math.max(0, now - startTime)
-        const progress = Math.min(elapsed / (duration * 1000), 1)
-        const eased = 1 - Math.pow(1 - progress, 3)
-        el.textContent = String(Math.round(eased * target))
-        if (progress < 1) requestAnimationFrame(animate)
-      }
-      requestAnimationFrame(animate)
-    }
-  }
-
-  return <span ref={ref}>{shouldReduce ? target : 0}</span>
-}
 
 /* ── orb animations ── */
 const orb1Animation = {
@@ -548,75 +470,6 @@ export function Hero() {
             </MagneticButton>
           </motion.div>
 
-          {/* ── Stats row — in flow, below CTAs ── */}
-          <motion.div
-            variants={shouldReduce ? undefined : fadeUp}
-            initial={shouldReduce ? undefined : 'hidden'}
-            animate={shouldReduce ? undefined : 'visible'}
-            transition={{ delay: 1.5 }}
-            style={{
-              width: '100%',
-              maxWidth: 560,
-              borderTop: '1px solid rgba(240,237,232,0.08)',
-              paddingTop: '1.75rem',
-              display: 'grid',
-              gridTemplateColumns: 'repeat(4, 1fr)',
-              gap: '0 1.5rem',
-            }}
-          >
-            {([
-              { value: 90,  suffix: '+',      label: 'Pagespeed Score',  prefix: undefined },
-              { value: 2,   suffix: '–4 Wo.', label: 'Projektdauer',     prefix: undefined },
-              { value: 100, suffix: '%',      label: 'Persönl. Kontakt', prefix: undefined },
-              { value: 0,   suffix: '€',      label: 'Faire Preise',     prefix: 'Ab 500'  },
-            ] as { value: number; suffix: string; label: string; prefix?: string }[]).map((stat, i) => (
-              <div
-                key={stat.label}
-                style={{
-                  display: 'flex',
-                  flexDirection: 'column',
-                  gap: '0.25rem',
-                  textAlign: 'left',
-                }}
-              >
-                {stat.prefix ? (
-                  <span
-                    style={{
-                      fontFamily: 'var(--font-display)',
-                      fontStyle: 'italic',
-                      fontSize: 'clamp(1.35rem, 1.8vw, 1.6rem)',
-                      color: 'var(--text)',
-                      lineHeight: 1,
-                      letterSpacing: '-0.02em',
-                    }}
-                  >
-                    {stat.prefix}
-                  </span>
-                ) : (
-                  <AnimatedNumber
-                    value={stat.value}
-                    suffix={stat.suffix}
-                    shouldReduce={shouldReduce}
-                    delay={1.7 + i * 0.1}
-                    fontSize="clamp(1.35rem, 1.8vw, 1.6rem)"
-                  />
-                )}
-                <span
-                  style={{
-                    fontFamily: 'var(--font-ui)',
-                    fontSize: '0.6rem',
-                    fontWeight: 400,
-                    textTransform: 'uppercase',
-                    letterSpacing: '0.13em',
-                    color: 'var(--muted)',
-                    opacity: 0.6,
-                  }}
-                >
-                  {stat.label}
-                </span>
-              </div>
-            ))}
-          </motion.div>
         </div>
       </motion.div>
 
