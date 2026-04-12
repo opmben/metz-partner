@@ -218,7 +218,7 @@ export function Contact() {
       }
       setSubmitted(true)
     } catch {
-      setSubmitError('Verbindungsfehler. Bitte versuchen Sie es erneut oder schreiben Sie direkt an hallo@metzundpartner.de')
+      setSubmitError('Verbindungsfehler. Bitte versuchen Sie es erneut oder schreiben Sie direkt an anfragen@metzundpartner.com')
     } finally {
       setLoading(false)
     }
@@ -343,7 +343,7 @@ export function Contact() {
                 </motion.a>
 
                 <a
-                  href="mailto:hallo@metzundpartner.de"
+                  href="mailto:anfragen@metzundpartner.com"
                   style={{
                     display: 'inline-flex',
                     alignItems: 'center',
@@ -363,7 +363,7 @@ export function Contact() {
                   }}
                 >
                   <Mail size={14} />
-                  hallo@metzundpartner.de
+                  anfragen@metzundpartner.com
                 </a>
               </motion.div>
 
