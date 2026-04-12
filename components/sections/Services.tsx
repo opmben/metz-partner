@@ -552,7 +552,7 @@ function ServiceCard({
 
         <h3 style={{
           fontFamily: 'var(--font-display)', fontSize: 'clamp(1.15rem, 1.7vw, 1.35rem)',
-          fontWeight: 600, fontStyle: 'normal', color: 'var(--text)',
+          fontWeight: 500, fontStyle: 'normal', color: 'var(--text)',
           marginBottom: '0.9rem', lineHeight: 1.25, position: 'relative',
         }}>
           {service.title}
