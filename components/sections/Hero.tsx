@@ -382,7 +382,7 @@ export function Hero() {
             <span style={{ color: 'var(--text)', fontWeight: 400 }}>
               Benedikt und Maximilian
             </span>{' '}
-            — zwei Gründer aus Koblenz, die Websites bauen, die nicht nur gut aussehen,
+            — zwei Webdeveloper aus Koblenz, die Websites bauen, die nicht nur gut aussehen,
             sondern echte Ergebnisse liefern.
           </motion.p>
 
