@@ -39,7 +39,7 @@ const differentiators = [
   {
     number: '01',
     title: 'Direkt & persönlich',
-    body: 'Sie haben immer eine direkte Ansprechperson — Benedikt oder Maximilian. Kein Ticketsystem, kein Wartezimmer, keine Vertretung.',
+    body: 'Sie haben immer eine direkte Ansprechperson, kein Ticketsystem, kein Wartezimmer, keine Vertretung. Sie werden zum Partner.',
   },
   {
     number: '02',
@@ -49,7 +49,7 @@ const differentiators = [
   {
     number: '03',
     title: 'Strategie bis Launch',
-    body: 'Wir denken Ihre Website nicht als Design-Auftrag. Wir fragen: Was soll sie erreichen? Dann bauen wir genau das.',
+    body: 'Wir bauen nach Ihren Wünschen, strukturiert und systematisch. Ihr Input zählt.',
   },
 ]
 
