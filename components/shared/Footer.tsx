@@ -1,4 +1,5 @@
 'use client'
+import Image from 'next/image'
 import Link from 'next/link'
 import {
   motion,
@@ -148,19 +149,13 @@ export function Footer() {
           className="flex flex-col md:flex-row md:items-end md:justify-between"
         >
           <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
-            <span
-              style={{
-                fontFamily: 'var(--font-display)',
-                fontSize: 'clamp(1.4rem, 2.5vw, 2rem)',
-                fontStyle: 'italic',
-                fontWeight: 400,
-                color: 'var(--text)',
-                lineHeight: 1.1,
-                letterSpacing: '-0.01em',
-              }}
-            >
-              Metz &amp; Partner
-            </span>
+            <Image
+              src="/font2 tra 2.svg"
+              alt="Metz & Partner"
+              width={160}
+              height={36}
+              style={{ objectFit: 'contain', objectPosition: 'left' }}
+            />
             <span
               style={{
                 fontFamily: 'var(--font-ui)',
