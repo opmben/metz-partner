@@ -312,7 +312,7 @@ export function Contact() {
                 style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}
               >
                 <motion.a
-                  href="https://calendly.com/metzundpartner"
+                  href="https://calendly.com/metzundpartner/kennenlerngesprach"
                   target="_blank"
                   rel="noopener noreferrer"
                   whileHover={shouldReduce ? undefined : { scale: 1.04, y: -2 }}
