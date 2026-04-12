@@ -225,7 +225,7 @@ export function Contact() {
   }
 
   const timelineSteps = [
-    { step: '1', text: 'Benedikt oder Maximilian liest Ihre Nachricht persönlich.' },
+    { step: '1', text: 'Wir lesen Ihre Nachricht, machen uns ein Bild und erstellen ein erstes Konzept.' },
     { step: '2', text: 'Wir melden uns innerhalb von 24 Stunden — per E-Mail oder Telefon.' },
     { step: '3', text: 'Wir klären gemeinsam, ob und wie wir helfen können. Kein Druck.' },
   ]
