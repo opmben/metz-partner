@@ -23,7 +23,7 @@ const dmSans = DM_Sans({
 })
 
 export const metadata: Metadata = {
-  title: 'Metz & Partner — Webdesign aus Koblenz',
+  title: 'Metz & Partner ∙ Webdesign aus Koblenz',
   description:
     'Wir sind Benedikt und Maximilian — zwei Gründer aus Koblenz, die Websites bauen, die nicht nur gut aussehen, sondern echte Ergebnisse liefern.',
   keywords: [
@@ -35,7 +35,7 @@ export const metadata: Metadata = {
   ],
   authors: [{ name: 'Benedikt Metz' }, { name: 'Maximilian Metz' }],
   openGraph: {
-    title: 'Metz & Partner — Webdesign aus Koblenz',
+    title: 'Metz & Partner ∙ Webdesign aus Koblenz',
     description:
       'Websites, die Unternehmen wachsen lassen. Persönlich. Direkt. Aus Koblenz.',
     type: 'website',
