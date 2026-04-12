@@ -301,7 +301,7 @@ export function Contact() {
                     lineHeight: 1.75,
                   }}
                 >
-                  Buchen Sie direkt einen kostenlosen 30-Minuten-Call mit Benedikt oder Maximilian —
+                  Buchen Sie direkt einen kostenlosen 30-Minuten-Call —
                   oder schreiben Sie uns.
                 </p>
               </motion.div>
