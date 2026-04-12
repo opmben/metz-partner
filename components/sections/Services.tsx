@@ -486,6 +486,8 @@ function ServiceCard({
         transition: 'background 0.4s ease',
         overflow: 'hidden',
         height: '100%',
+        border: hovered ? '1px solid rgba(240,237,232,0.14)' : '1px solid rgba(240,237,232,0.09)',
+        borderRadius: 8,
       }}
     >
       {/* Top accent line */}
@@ -550,7 +552,7 @@ function ServiceCard({
 
         <h3 style={{
           fontFamily: 'var(--font-display)', fontSize: 'clamp(1.15rem, 1.7vw, 1.35rem)',
-          fontWeight: 400, fontStyle: 'italic', color: 'var(--text)',
+          fontWeight: 600, fontStyle: 'normal', color: 'var(--text)',
           marginBottom: '0.9rem', lineHeight: 1.25, position: 'relative',
         }}>
           {service.title}
@@ -636,7 +638,7 @@ export function Services() {
           {/* Cards grid */}
           <motion.div
             variants={shouldReduce ? undefined : staggerContainer(0.12)}
-            style={{ display: 'grid', gap: '1px', background: 'var(--border)' }}
+            style={{ display: 'grid', gap: '12px', background: 'transparent' }}
             className="grid-cols-1 md:grid-cols-3"
           >
             {services.map((service, i) => (
