@@ -114,13 +114,15 @@ export function ProblemSolution() {
               background: 'var(--border)',
             }}
           >
-            {/* Primary — full width */}
+            {/* Primary — full width — full 4-side accent border */}
             <motion.div
               variants={shouldReduce ? undefined : fadeUp}
               style={{
                 background: 'var(--surface)',
                 position: 'relative',
                 overflow: 'hidden',
+                border: '1px solid var(--accent)',
+                boxShadow: '0 0 0 1px rgba(200,255,0,0.12), inset 0 0 40px rgba(200,255,0,0.03)',
               }}
             >
               <div

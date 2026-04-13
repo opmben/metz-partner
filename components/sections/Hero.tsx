@@ -284,7 +284,34 @@ export function Hero() {
             </div>
           </motion.div>
 
-          {/* Headline — character-level animation */}
+          {/* Stats row — between badge and headline */}
+          <motion.div
+            variants={shouldReduce ? undefined : fadeUp}
+            initial={shouldReduce ? undefined : 'hidden'}
+            animate={shouldReduce ? undefined : 'visible'}
+            transition={{ delay: 0.5 }}
+            style={{
+              display: 'flex',
+              alignItems: 'center',
+              gap: '1rem',
+              flexWrap: 'wrap',
+              justifyContent: 'center',
+              fontFamily: 'var(--font-ui)',
+              fontSize: '0.7rem',
+              fontWeight: 400,
+              textTransform: 'uppercase',
+              letterSpacing: '0.1em',
+              color: 'var(--muted)',
+            }}
+          >
+            <span>3 Projekte abgeschlossen</span>
+            <span style={{ opacity: 0.3 }}>·</span>
+            <span>Pagespeed 95+</span>
+            <span style={{ opacity: 0.3 }}>·</span>
+            <span>Fertig in 2–4 Wochen</span>
+          </motion.div>
+
+          {/* Headline */}
           <div style={{ display: 'flex', flexDirection: 'column', gap: 0 }}>
             {/* Line 1 */}
             <div style={{ overflow: 'hidden' }}>
@@ -294,7 +321,7 @@ export function Hero() {
                 initial={shouldReduce ? undefined : { y: '110%' }}
                 animate={shouldReduce ? undefined : { y: '0%' }}
                 transition={{
-                  delay: 0.5,
+                  delay: 0.7,
                   duration: 0.9,
                   ease: [0.16, 1, 0.3, 1],
                 }}
@@ -311,20 +338,20 @@ export function Hero() {
                 initial={shouldReduce ? undefined : { y: '110%' }}
                 animate={shouldReduce ? undefined : { y: '0%' }}
                 transition={{
-                  delay: 0.65,
+                  delay: 0.85,
                   duration: 0.9,
                   ease: [0.16, 1, 0.3, 1],
                 }}
               >
-                Unternehmen{' '}
+                für Sie{' '}
                 <span
                   style={{
                     color: 'var(--accent)',
                     position: 'relative',
                   }}
                 >
-                  wachsen
-                  {/* Accent underline */}
+                  arbeiten.
+                  {/* Accent underline sweep */}
                   <motion.span
                     aria-hidden="true"
                     style={{
@@ -339,26 +366,9 @@ export function Hero() {
                     }}
                     initial={shouldReduce ? undefined : { scaleX: 0 }}
                     animate={shouldReduce ? undefined : { scaleX: 1 }}
-                    transition={{ delay: 1.3, duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
+                    transition={{ delay: 1.4, duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
                   />
                 </span>
-              </motion.div>
-            </div>
-
-            {/* Line 3 */}
-            <div style={{ overflow: 'hidden' }}>
-              <motion.div
-                className="display-hero"
-                style={{ display: 'block', fontStyle: 'italic' }}
-                initial={shouldReduce ? undefined : { y: '110%' }}
-                animate={shouldReduce ? undefined : { y: '0%' }}
-                transition={{
-                  delay: 0.8,
-                  duration: 0.9,
-                  ease: [0.16, 1, 0.3, 1],
-                }}
-              >
-                lassen.
               </motion.div>
             </div>
           </div>
@@ -368,7 +378,7 @@ export function Hero() {
             variants={shouldReduce ? undefined : blurIn}
             initial={shouldReduce ? undefined : 'hidden'}
             animate={shouldReduce ? undefined : 'visible'}
-            transition={{ delay: 1.1 }}
+            transition={{ delay: 1.15 }}
             style={{
               fontFamily: 'var(--font-ui)',
               fontSize: 'clamp(1rem, 1.5vw, 1.15rem)',
@@ -382,8 +392,8 @@ export function Hero() {
             <span style={{ color: 'var(--text)', fontWeight: 400 }}>
               Benedikt und Maximilian
             </span>{' '}
-            — zwei Webdeveloper aus Koblenz, die Websites bauen, die nicht nur gut aussehen,
-            sondern echte Ergebnisse liefern.
+            — zwei Gründer aus Koblenz. Persönlich, direkt, mit einem Ziel: Ihre Website muss für
+            Sie arbeiten.
           </motion.p>
 
           {/* CTAs — magnetic */}
@@ -391,7 +401,7 @@ export function Hero() {
             variants={shouldReduce ? undefined : fadeUp}
             initial={shouldReduce ? undefined : 'hidden'}
             animate={shouldReduce ? undefined : 'visible'}
-            transition={{ delay: 1.3 }}
+            transition={{ delay: 1.35 }}
             style={{
               display: 'flex',
               gap: '1.5rem',
