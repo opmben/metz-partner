@@ -1,9 +1,13 @@
 'use client'
-import { useRef, useState } from 'react'
-import { motion, useInView, useReducedMotion, AnimatePresence } from 'framer-motion'
-import { ChevronDown } from 'lucide-react'
+
+import { useRef } from 'react'
+import * as AccordionPrimitive from '@radix-ui/react-accordion'
+import { Plus } from 'lucide-react'
+import { motion, useInView, useReducedMotion } from 'framer-motion'
+import { Accordion, AccordionContent, AccordionItem } from '@/components/ui/accordion'
 import { fadeUp, staggerContainer, clipRevealUp } from '@/lib/animations'
 
+// ─── Data ─────────────────────────────────────────────────────────────────────
 const faqs = [
   {
     question: 'Was kostet eine Website bei Metz & Partner?',
@@ -37,133 +41,9 @@ const faqs = [
   },
 ]
 
-function FAQItem({
-  faq,
-  index,
-  shouldReduce,
-}: {
-  faq: (typeof faqs)[0]
-  index: number
-  shouldReduce: boolean | null
-}) {
-  const [open, setOpen] = useState(false)
-  const [hovered, setHovered] = useState(false)
-
-  return (
-    <motion.div
-      variants={shouldReduce ? undefined : fadeUp}
-      onMouseEnter={() => setHovered(true)}
-      onMouseLeave={() => setHovered(false)}
-      style={{
-        borderBottom: '1px solid var(--border)',
-        position: 'relative',
-      }}
-    >
-      {/* Hover glow */}
-      <motion.div
-        aria-hidden="true"
-        animate={{ opacity: hovered && !shouldReduce ? 1 : 0 }}
-        transition={{ duration: 0.3 }}
-        style={{
-          position: 'absolute',
-          inset: 0,
-          background:
-            'linear-gradient(90deg, rgba(200,255,0,0.02) 0%, transparent 50%)',
-          pointerEvents: 'none',
-        }}
-      />
-
-      <button
-        onClick={() => setOpen(!open)}
-        style={{
-          width: '100%',
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'space-between',
-          gap: '1.5rem',
-          padding: '2rem 0',
-          background: 'none',
-          border: 'none',
-          cursor: 'pointer',
-          textAlign: 'left',
-          position: 'relative',
-        }}
-        aria-expanded={open}
-      >
-        <div style={{ display: 'flex', alignItems: 'baseline', gap: '1.25rem' }}>
-          <motion.span
-            animate={{
-              color: open
-                ? 'var(--accent)'
-                : hovered
-                  ? 'rgba(240,237,232,0.5)'
-                  : 'var(--muted)',
-            }}
-            transition={{ duration: 0.3 }}
-            style={{
-              fontFamily: 'var(--font-display)',
-              fontSize: '0.8rem',
-              fontStyle: 'italic',
-              flexShrink: 0,
-              lineHeight: 1,
-            }}
-          >
-            {String(index + 1).padStart(2, '0')}
-          </motion.span>
-          <span
-            style={{
-              fontFamily: 'var(--font-display)',
-              fontSize: 'clamp(1rem, 1.8vw, 1.25rem)',
-              fontWeight: 400,
-              fontStyle: 'normal',
-              color: 'var(--text)',
-              lineHeight: 1.3,
-            }}
-          >
-            {faq.question}
-          </span>
-        </div>
-        <motion.div
-          animate={{ rotate: open ? 180 : 0 }}
-          transition={{ duration: 0.4, ease: [0.16, 1, 0.3, 1] }}
-          style={{ flexShrink: 0, color: open ? 'var(--accent)' : 'var(--muted)' }}
-        >
-          <ChevronDown size={18} />
-        </motion.div>
-      </button>
-
-      <AnimatePresence initial={false}>
-        {open && (
-          <motion.div
-            key="answer"
-            initial={shouldReduce ? { opacity: 0 } : { height: 0, opacity: 0 }}
-            animate={shouldReduce ? { opacity: 1 } : { height: 'auto', opacity: 1 }}
-            exit={shouldReduce ? { opacity: 0 } : { height: 0, opacity: 0 }}
-            transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
-            style={{ overflow: 'hidden' }}
-          >
-            <p
-              style={{
-                paddingBottom: '2rem',
-                paddingLeft: 'calc(0.8rem + 1.25rem + 1.25rem)',
-                fontSize: '0.95rem',
-                fontWeight: 300,
-                color: 'var(--muted)',
-                lineHeight: 1.8,
-                maxWidth: 640,
-              }}
-            >
-              {faq.answer}
-            </p>
-          </motion.div>
-        )}
-      </AnimatePresence>
-    </motion.div>
-  )
-}
-
+// ─── FAQ Section ──────────────────────────────────────────────────────────────
 export function FAQ() {
-  const ref = useRef(null)
+  const ref = useRef<HTMLDivElement>(null)
   const isInView = useInView(ref, { once: true, margin: '-80px' })
   const shouldReduce = useReducedMotion()
 
@@ -185,15 +65,13 @@ export function FAQ() {
             style={{ marginBottom: '3.5rem' }}
             className="flex flex-col gap-4 md:flex-row md:items-end md:justify-between"
           >
-            <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
-              <div style={{ overflow: 'hidden' }}>
-                <motion.h2
-                  className="display-section"
-                  variants={shouldReduce ? undefined : clipRevealUp}
-                >
-                  Alles Wichtige, bevor Sie anfragen.
-                </motion.h2>
-              </div>
+            <div style={{ overflow: 'hidden' }}>
+              <motion.h2
+                className="display-section"
+                variants={shouldReduce ? undefined : clipRevealUp}
+              >
+                Alles Wichtige, bevor Sie anfragen.
+              </motion.h2>
             </div>
             <motion.p
               variants={shouldReduce ? undefined : fadeUp}
@@ -210,19 +88,95 @@ export function FAQ() {
             </motion.p>
           </div>
 
-          {/* FAQ list */}
-          <motion.div
-            style={{ borderTop: '1px solid var(--border)' }}
-            variants={shouldReduce ? undefined : staggerContainer(0.05)}
-          >
-            {faqs.map((faq, i) => (
-              <FAQItem
-                key={faq.question}
-                faq={faq}
-                index={i}
-                shouldReduce={shouldReduce}
-              />
-            ))}
+          {/* Accordion */}
+          <motion.div variants={shouldReduce ? undefined : staggerContainer(0.05)}>
+            <Accordion type="single" collapsible className="w-full space-y-2">
+              {faqs.map((faq, i) => (
+                <motion.div key={faq.question} variants={shouldReduce ? undefined : fadeUp}>
+                  <AccordionItem
+                    value={String(i)}
+                    style={{
+                      border: '1px solid var(--border)',
+                      borderRadius: 4,
+                      background: 'var(--surface)',
+                      overflow: 'hidden',
+                    }}
+                    className="transition-colors duration-300 hover:[border-color:var(--border-hover)]"
+                  >
+                    <AccordionPrimitive.Header className="flex">
+                      <AccordionPrimitive.Trigger
+                        className={[
+                          'group flex w-full flex-1 items-center justify-between gap-6',
+                          'px-6 py-5 text-left',
+                          'transition-colors duration-300',
+                          // Plus icon: rotate 45° → × on open
+                          '[&[data-state=open]>svg]:rotate-45',
+                          '[&[data-state=open]>svg]:text-accent',
+                          // Number: muted → accent on open
+                          '[&[data-state=open]_[data-num]]:text-accent',
+                        ].join(' ')}
+                      >
+                        <div className="flex items-baseline gap-5 min-w-0">
+                          <span
+                            data-num=""
+                            style={{
+                              fontFamily: 'var(--font-display)',
+                              fontSize: '0.75rem',
+                              fontStyle: 'italic',
+                              color: 'var(--muted)',
+                              flexShrink: 0,
+                              lineHeight: 1,
+                              transition: 'color 0.3s ease',
+                            }}
+                          >
+                            {String(i + 1).padStart(2, '0')}
+                          </span>
+                          <span
+                            style={{
+                              fontFamily: 'var(--font-display)',
+                              fontSize: 'clamp(1rem, 1.8vw, 1.2rem)',
+                              fontWeight: 400,
+                              color: 'var(--text)',
+                              lineHeight: 1.3,
+                              minWidth: 0,
+                            }}
+                          >
+                            {faq.question}
+                          </span>
+                        </div>
+                        <Plus
+                          size={15}
+                          strokeWidth={1.5}
+                          style={{ color: 'var(--muted)', flexShrink: 0 }}
+                          className="transition-transform duration-300 ease-[cubic-bezier(0.16,1,0.3,1)]"
+                          aria-hidden="true"
+                        />
+                      </AccordionPrimitive.Trigger>
+                    </AccordionPrimitive.Header>
+
+                    <AccordionContent
+                      className="px-6 pb-0"
+                      style={{ fontFamily: 'var(--font-ui)' }}
+                    >
+                      <p
+                        style={{
+                          paddingTop: '0.25rem',
+                          paddingBottom: '1.5rem',
+                          paddingLeft: 'calc(0.75rem + 1.25rem)',
+                          fontSize: '0.93rem',
+                          fontWeight: 300,
+                          color: 'var(--muted)',
+                          lineHeight: 1.8,
+                          maxWidth: 580,
+                        }}
+                      >
+                        {faq.answer}
+                      </p>
+                    </AccordionContent>
+                  </AccordionItem>
+                </motion.div>
+              ))}
+            </Accordion>
           </motion.div>
         </motion.div>
       </div>
