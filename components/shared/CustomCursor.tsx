@@ -5,7 +5,10 @@ import { motion, useMotionValue, useSpring } from 'framer-motion'
 export function CustomCursor() {
   const [isPointer, setIsPointer] = useState(false)
   const [isVisible, setIsVisible] = useState(false)
-  const [isPointerDevice, setIsPointerDevice] = useState(false)
+  // Lazy initializer — reads matchMedia once at mount, never needs updating
+  const [isPointerDevice] = useState(
+    () => typeof window !== 'undefined' && window.matchMedia('(pointer: fine)').matches
+  )
 
   // Raw cursor position
   const cursorX = useMotionValue(-100)
@@ -24,9 +27,7 @@ export function CustomCursor() {
   const ringBorderOpacity = useSpring(0.35, { stiffness: 200, damping: 20 })
 
   useEffect(() => {
-    // Only render on fine pointer devices
-    if (!window.matchMedia('(pointer: fine)').matches) return
-    setIsPointerDevice(true)
+    if (!isPointerDevice) return
 
     const onMove = (e: MouseEvent) => {
       cursorX.set(e.clientX)
@@ -58,7 +59,7 @@ export function CustomCursor() {
       window.removeEventListener('mouseenter', onEnter)
       window.removeEventListener('mouseleave', onLeave)
     }
-  }, [cursorX, cursorY])
+  }, [isPointerDevice, cursorX, cursorY])
 
   // Update spring targets when pointer state changes
   useEffect(() => {

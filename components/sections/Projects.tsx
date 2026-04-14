@@ -19,19 +19,19 @@ export function Projects() {
   const isInView = useInView(ref, { once: true, margin: '-80px' })
   const shouldReduce = useReducedMotion()
 
-  // Only show projects with a real coverImage (imageReady = true)
-  const realProjects = projects.filter((p) => p.imageReady && p.coverImage)
-  if (realProjects.length < 2) return null
-
-  const displayProjects = realProjects.slice(0, 2)
-
-  // Parallax for the decorative background word
+  // Parallax for the decorative background word — must be before any early return
   const { scrollYProgress } = useScroll({
     target: sectionRef,
     offset: ['start end', 'end start'],
   })
   const bgNumberY = useTransform(scrollYProgress, [0, 1], [80, -80])
   const bgNumberOpacity = useTransform(scrollYProgress, [0, 0.3, 0.7, 1], [0, 0.04, 0.04, 0])
+
+  // Only show projects with a real coverImage (imageReady = true)
+  const realProjects = projects.filter((p) => p.imageReady && p.coverImage)
+  if (realProjects.length < 2) return null
+
+  const displayProjects = realProjects.slice(0, 2)
 
   return (
     <section
