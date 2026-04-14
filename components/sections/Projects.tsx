@@ -11,7 +11,6 @@ import {
 import { fadeUp, staggerContainer, scaleIn, clipRevealUp } from '@/lib/animations'
 import { ProjectCard } from '@/components/shared/ProjectCard'
 import { projects } from '@/lib/data/projects'
-import { SectionLabel } from '@/components/shared/SectionLabel'
 import { ArrowRight } from 'lucide-react'
 
 export function Projects() {
@@ -28,12 +27,8 @@ export function Projects() {
   const bgNumberY = useTransform(scrollYProgress, [0, 1], [80, -80])
   const bgNumberOpacity = useTransform(scrollYProgress, [0, 0.3, 0.7, 1], [0, 0.04, 0.04, 0])
 
-  // Only render when ≥ 2 real projects with actual screenshots exist
-  const realProjects = projects.filter((p) => p.imageReady)
-  if (realProjects.length < 2) return null
-
-  const featured = realProjects.find((p) => p.featured) ?? realProjects[0]
-  const secondary = realProjects.filter((p) => p.slug !== featured.slug)
+  const featured = projects.find((p) => p.featured)
+  const secondary = projects.filter((p) => !p.featured)
 
   return (
     <section
@@ -83,9 +78,6 @@ export function Projects() {
             className="flex flex-col md:flex-row md:items-end md:justify-between"
           >
             <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
-              <motion.div variants={shouldReduce ? undefined : fadeUp}>
-                <SectionLabel>Ausgewählte Arbeiten</SectionLabel>
-              </motion.div>
               <div style={{ overflow: 'hidden' }}>
                 <motion.h2
                   className="display-section"
@@ -133,33 +125,36 @@ export function Projects() {
             </motion.div>
           </div>
 
-          {/* Grid — equal 1fr 1fr, min-height 480px */}
-          <motion.div
-            variants={shouldReduce ? undefined : staggerContainer(0.12)}
-            style={{
-              display: 'grid',
-              gap: '1rem',
-              gridTemplateColumns: 'repeat(1, 1fr)',
-            }}
-            className="md:grid-cols-2"
-          >
+          {/* Grid */}
+          {featured && (
             <motion.div
-              variants={shouldReduce ? undefined : scaleIn}
-              style={{ minHeight: 480 }}
+              variants={shouldReduce ? undefined : staggerContainer(0.12)}
+              style={{
+                display: 'grid',
+                gap: '1rem',
+                gridTemplateColumns: secondary.length > 0 ? 'repeat(3, 1fr)' : '1fr',
+              }}
             >
-              <ProjectCard project={featured} featured />
-            </motion.div>
-
-            {secondary.slice(0, 1).map((project) => (
+              {/* Featured */}
               <motion.div
-                key={project.slug}
                 variants={shouldReduce ? undefined : scaleIn}
-                style={{ minHeight: 480 }}
+                style={{ gridColumn: secondary.length > 0 ? 'span 2' : 'span 1' }}
               >
-                <ProjectCard project={project} />
+                <ProjectCard project={featured} featured />
               </motion.div>
-            ))}
-          </motion.div>
+
+              {/* Secondary stack — only when projects exist */}
+              {secondary.length > 0 && (
+                <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
+                  {secondary.map((project) => (
+                    <motion.div key={project.slug} variants={shouldReduce ? undefined : scaleIn}>
+                      <ProjectCard project={project} />
+                    </motion.div>
+                  ))}
+                </div>
+              )}
+            </motion.div>
+          )}
         </motion.div>
       </div>
     </section>

@@ -94,7 +94,7 @@ export function Manifesto() {
             display: 'flex',
             flexDirection: 'column',
             alignItems: 'center',
-            gap: '3rem',
+            gap: '4rem',
           }}
         >
           {/* Manifesto text */}
@@ -142,27 +142,24 @@ export function Manifesto() {
             }}
           />
 
-          {/* CTA — ghost link */}
+          {/* CTA */}
           {shouldReduce ? (
             <a
               href="#kontakt"
               onClick={scrollTo}
-              className="manifesto-cta-ghost"
               style={{
+                background: 'var(--accent)',
+                color: 'var(--bg)',
                 fontFamily: 'var(--font-ui)',
-                fontSize: '0.9rem',
-                fontWeight: 400,
-                letterSpacing: '0.06em',
-                color: 'var(--muted)',
+                fontSize: '0.85rem',
+                fontWeight: 500,
+                textTransform: 'uppercase',
+                letterSpacing: '0.08em',
+                padding: '1rem 2.5rem',
+                borderRadius: 100,
                 textDecoration: 'none',
-                display: 'inline-flex',
-                alignItems: 'center',
-                gap: '0.5rem',
-                transition: 'color 0.2s ease',
-                alignSelf: 'flex-end',
+                display: 'inline-block',
               }}
-              onMouseEnter={(e) => ((e.currentTarget as HTMLAnchorElement).style.color = 'var(--text)')}
-              onMouseLeave={(e) => ((e.currentTarget as HTMLAnchorElement).style.color = 'var(--muted)')}
             >
               Jetzt Projekt anfragen →
             </a>
@@ -170,23 +167,25 @@ export function Manifesto() {
             <motion.a
               href="#kontakt"
               onClick={scrollTo}
-              className="manifesto-cta-ghost"
               style={{
+                background: 'var(--accent)',
+                color: 'var(--bg)',
                 fontFamily: 'var(--font-ui)',
-                fontSize: '0.9rem',
-                fontWeight: 400,
-                letterSpacing: '0.06em',
-                color: 'var(--muted)',
+                fontSize: '0.85rem',
+                fontWeight: 500,
+                textTransform: 'uppercase',
+                letterSpacing: '0.08em',
+                padding: '1rem 2.5rem',
+                borderRadius: 100,
                 textDecoration: 'none',
-                display: 'inline-flex',
-                alignItems: 'center',
-                gap: '0.5rem',
+                display: 'inline-block',
                 opacity: ctaOpacity,
                 y: ctaY,
-                alignSelf: 'flex-end',
+                boxShadow: '0 0 40px rgba(200,255,0,0.18)',
               }}
-              whileHover={{ color: 'var(--text)' }}
-              transition={{ color: { duration: 0.2 } }}
+              whileHover={{ scale: 1.04, y: -3 }}
+              whileTap={{ scale: 0.97 }}
+              transition={{ duration: 0.2 }}
             >
               Jetzt Projekt anfragen →
             </motion.a>

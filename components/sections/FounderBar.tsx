@@ -1,6 +1,6 @@
 'use client'
 import { motion, useInView, useReducedMotion } from 'framer-motion'
-import { useRef, useState } from 'react'
+import { useRef } from 'react'
 import { fadeUp, staggerContainer } from '@/lib/animations'
 import { SectionLabel } from '@/components/shared/SectionLabel'
 
@@ -16,91 +16,6 @@ const founders = [
     bio: 'Hintergrund in Marketing und Finanzen. Zuständig für Strategie, Wirkung und dafür, dass Ihre Website konvertiert.',
   },
 ]
-
-function FounderCard({
-  founder,
-  isRight,
-  shouldReduce,
-}: {
-  founder: (typeof founders)[0]
-  isRight: boolean
-  shouldReduce: boolean | null
-}) {
-  const [hovered, setHovered] = useState(false)
-
-  return (
-    <motion.div
-      variants={shouldReduce ? undefined : fadeUp}
-      onMouseEnter={() => setHovered(true)}
-      onMouseLeave={() => setHovered(false)}
-      style={{
-        padding: '2.5rem 0',
-        paddingRight: !isRight ? '3rem' : 0,
-        paddingLeft: isRight ? '3rem' : 0,
-        borderRight: !isRight ? '1px solid var(--border)' : 'none',
-        position: 'relative',
-        cursor: 'default',
-      }}
-      className={isRight ? 'md:pl-12' : 'md:pr-12'}
-    >
-      {/* Top accent border — animates scaleX on hover */}
-      <motion.div
-        style={{
-          position: 'absolute',
-          top: 0,
-          left: isRight ? '3rem' : 0,
-          right: 0,
-          height: 2,
-          background: 'var(--accent)',
-          transformOrigin: 'left',
-          boxShadow: hovered ? '0 0 12px rgba(200,255,0,0.4)' : 'none',
-        }}
-        animate={{ scaleX: hovered ? 1 : 0.35, opacity: hovered ? 1 : 0.5 }}
-        transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
-        className={isRight ? 'md:left-12' : ''}
-      />
-
-      <p
-        style={{
-          fontSize: '0.7rem',
-          fontWeight: 400,
-          textTransform: 'uppercase',
-          letterSpacing: '0.14em',
-          color: 'var(--muted)',
-          marginBottom: '0.75rem',
-          fontFamily: 'var(--font-ui)',
-        }}
-      >
-        {founder.role}
-      </p>
-      <h3
-        style={{
-          fontFamily: 'var(--font-display)',
-          fontSize: '2rem',
-          fontWeight: 400,
-          fontStyle: 'italic',
-          color: 'var(--text)',
-          marginBottom: '1rem',
-          lineHeight: 1.1,
-        }}
-      >
-        {founder.name}
-      </h3>
-      <p
-        style={{
-          fontSize: '1rem',
-          fontWeight: 300,
-          color: 'var(--muted)',
-          lineHeight: 1.75,
-          maxWidth: 340,
-          fontFamily: 'var(--font-ui)',
-        }}
-      >
-        {founder.bio}
-      </p>
-    </motion.div>
-  )
-}
 
 export function FounderBar() {
   const ref = useRef(null)
@@ -131,21 +46,78 @@ export function FounderBar() {
           {/* Founder cards */}
           <div className="grid grid-cols-1 md:grid-cols-2">
             {founders.map((founder, i) => (
-              <FounderCard
+              <motion.div
                 key={founder.name}
-                founder={founder}
-                isRight={i === 1}
-                shouldReduce={shouldReduce}
-              />
+                variants={shouldReduce ? undefined : fadeUp}
+                style={{
+                  padding: '2.5rem 0',
+                  paddingRight: i === 0 ? '3rem' : 0,
+                  paddingLeft: i === 1 ? '3rem' : 0,
+                  borderRight: i === 0 ? '1px solid var(--border)' : 'none',
+                  borderTop: i === 1 ? '1px solid var(--border)' : 'none',
+                  position: 'relative',
+                }}
+                className={i === 0 ? 'md:border-r md:border-t-0' : 'md:border-t-0 md:pl-12'}
+              >
+                {/* Accent top line */}
+                <div
+                  style={{
+                    position: 'absolute',
+                    top: 0,
+                    left: i === 1 ? '3rem' : 0,
+                    right: 0,
+                    height: 1,
+                    background: 'var(--accent)',
+                  }}
+                  className={i === 1 ? 'md:left-12' : ''}
+                />
+
+                <p
+                  style={{
+                    fontSize: '0.7rem',
+                    fontWeight: 400,
+                    textTransform: 'uppercase',
+                    letterSpacing: '0.14em',
+                    color: 'var(--muted)',
+                    marginBottom: '0.75rem',
+                  }}
+                >
+                  {founder.role}
+                </p>
+                <h3
+                  style={{
+                    fontFamily: 'var(--font-display)',
+                    fontSize: '2rem',
+                    fontWeight: 400,
+                    fontStyle: 'italic',
+                    color: 'var(--text)',
+                    marginBottom: '1rem',
+                    lineHeight: 1.1,
+                  }}
+                >
+                  {founder.name}
+                </h3>
+                <p
+                  style={{
+                    fontSize: '1rem',
+                    fontWeight: 300,
+                    color: 'var(--muted)',
+                    lineHeight: 1.75,
+                    maxWidth: 340,
+                  }}
+                >
+                  {founder.bio}
+                </p>
+              </motion.div>
             ))}
           </div>
 
-          {/* Positioning statement — tightened gap */}
+          {/* Positioning statement */}
           <motion.div
             variants={shouldReduce ? undefined : fadeUp}
             style={{
-              marginTop: '2.5rem',
-              paddingTop: '2.5rem',
+              marginTop: '3rem',
+              paddingTop: '3rem',
               borderTop: '1px solid var(--border)',
               textAlign: 'center',
             }}
@@ -153,11 +125,11 @@ export function FounderBar() {
             <p
               style={{
                 fontFamily: 'var(--font-display)',
-                fontSize: '1.2rem',
+                fontSize: 'clamp(1.2rem, 2.5vw, 1.75rem)',
                 fontWeight: 400,
                 fontStyle: 'italic',
                 color: 'var(--text)',
-                lineHeight: 1.6,
+                lineHeight: 1.5,
               }}
             >
               Wenn Sie uns anfragen, sprechen Sie mit uns.
