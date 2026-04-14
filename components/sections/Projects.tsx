@@ -19,16 +19,19 @@ export function Projects() {
   const isInView = useInView(ref, { once: true, margin: '-80px' })
   const shouldReduce = useReducedMotion()
 
-  // Parallax for the decorative background number
+  // Only show projects with a real coverImage (imageReady = true)
+  const realProjects = projects.filter((p) => p.imageReady && p.coverImage)
+  if (realProjects.length < 2) return null
+
+  const displayProjects = realProjects.slice(0, 2)
+
+  // Parallax for the decorative background word
   const { scrollYProgress } = useScroll({
     target: sectionRef,
     offset: ['start end', 'end start'],
   })
   const bgNumberY = useTransform(scrollYProgress, [0, 1], [80, -80])
   const bgNumberOpacity = useTransform(scrollYProgress, [0, 0.3, 0.7, 1], [0, 0.04, 0.04, 0])
-
-  const featured = projects.find((p) => p.featured)
-  const secondary = projects.filter((p) => !p.featured)
 
   return (
     <section
@@ -125,36 +128,25 @@ export function Projects() {
             </motion.div>
           </div>
 
-          {/* Grid */}
-          {featured && (
-            <motion.div
-              variants={shouldReduce ? undefined : staggerContainer(0.12)}
-              style={{
-                display: 'grid',
-                gap: '1rem',
-                gridTemplateColumns: secondary.length > 0 ? 'repeat(3, 1fr)' : '1fr',
-              }}
-            >
-              {/* Featured */}
+          {/* Symmetric 1fr / 1fr grid */}
+          <motion.div
+            variants={shouldReduce ? undefined : staggerContainer(0.12)}
+            style={{
+              display: 'grid',
+              gap: '1rem',
+              gridTemplateColumns: 'repeat(2, 1fr)',
+            }}
+          >
+            {displayProjects.map((project) => (
               <motion.div
+                key={project.slug}
                 variants={shouldReduce ? undefined : scaleIn}
-                style={{ gridColumn: secondary.length > 0 ? 'span 2' : 'span 1' }}
+                style={{ minHeight: 480 }}
               >
-                <ProjectCard project={featured} featured />
+                <ProjectCard project={project} featured />
               </motion.div>
-
-              {/* Secondary stack — only when projects exist */}
-              {secondary.length > 0 && (
-                <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
-                  {secondary.map((project) => (
-                    <motion.div key={project.slug} variants={shouldReduce ? undefined : scaleIn}>
-                      <ProjectCard project={project} />
-                    </motion.div>
-                  ))}
-                </div>
-              )}
-            </motion.div>
-          )}
+            ))}
+          </motion.div>
         </motion.div>
       </div>
     </section>

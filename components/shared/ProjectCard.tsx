@@ -326,12 +326,8 @@ export function ProjectCard({ project, featured = false }: ProjectCardProps) {
             flexShrink: 0,
           }}
         >
-          {/* Image / placeholder — subtle scale on hover */}
-          <motion.div
-            style={{ position: 'absolute', inset: 0 }}
-            animate={{ scale: hovered ? 1.04 : 1 }}
-            transition={{ duration: 0.9, ease: [0.25, 0.46, 0.45, 0.94] }}
-          >
+          {/* Image / placeholder — no scale on hover */}
+          <div style={{ position: 'absolute', inset: 0 }}>
             {showPlaceholder ? (
               <PlaceholderArt project={project} featured={featured} />
             ) : (
@@ -341,14 +337,14 @@ export function ProjectCard({ project, featured = false }: ProjectCardProps) {
                 fill
                 sizes={
                   featured
-                    ? '(min-width: 1024px) 80vw, 100vw'
+                    ? '(min-width: 1024px) 50vw, 100vw'
                     : '(min-width: 1024px) 33vw, 100vw'
                 }
                 style={{ objectFit: 'cover', objectPosition: 'top' }}
                 onError={() => setImgError(true)}
               />
             )}
-          </motion.div>
+          </div>
 
           {/* Hover overlay + "Ansehen →" pill */}
           <motion.div
@@ -364,7 +360,7 @@ export function ProjectCard({ project, featured = false }: ProjectCardProps) {
             transition={{ duration: 0.35 }}
           >
             <motion.span
-              animate={{ opacity: hovered ? 1 : 0, scale: hovered ? 1 : 0.82 }}
+              animate={{ opacity: hovered ? 1 : 0, scale: hovered ? 1 : 0.85 }}
               transition={{ duration: 0.3, ease: [0.16, 1, 0.3, 1] }}
               style={{
                 background: 'var(--accent)',
@@ -385,8 +381,10 @@ export function ProjectCard({ project, featured = false }: ProjectCardProps) {
           </motion.div>
         </div>
 
-        {/* Info row — always visible */}
-        <div
+        {/* Info row — translates up on hover */}
+        <motion.div
+          animate={{ y: hovered ? 0 : 8 }}
+          transition={{ duration: 0.4, ease: [0.16, 1, 0.3, 1] }}
           style={{
             padding: featured ? '1.25rem 1.5rem' : '0.9rem 1.25rem',
             borderTop: '1px solid rgba(240,237,232,0.05)',
@@ -431,7 +429,7 @@ export function ProjectCard({ project, featured = false }: ProjectCardProps) {
           >
             <ArrowRight size={featured ? 18 : 15} />
           </motion.div>
-        </div>
+        </motion.div>
       </motion.div>
     </Link>
   )
