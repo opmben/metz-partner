@@ -1,4 +1,6 @@
 @import "tailwindcss";
+
+@custom-variant dark (&:is(.dark *));
 @config "../tailwind.config.ts";
 
 :root {
@@ -43,7 +45,6 @@ body {
   margin: 0;
   padding: 0;
 }
-
 
 /* Noise texture overlay */
 body::before {
@@ -144,4 +145,25 @@ body::before {
   line-height: 1.2;
   letter-spacing: -0.01em;
   margin: 0;
+}
+
+@theme inline {
+  --animate-accordion-down:          accordion-down 0.2s ease-out;
+  --animate-accordion-up:          accordion-up 0.2s ease-out;
+  @keyframes accordion-down {
+  from {
+    height:          0;
+    }
+  to {
+    height:          var(--radix-accordion-content-height);
+    }
+  }
+  @keyframes accordion-up {
+  from {
+    height:          var(--radix-accordion-content-height);
+    }
+  to {
+    height:          0;
+    }
+  }
 }
