@@ -1,0 +1,114 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 560 315" fill="none">
+  <rect width="560" height="315" fill="#111111"/>
+
+  <!-- Outer browser frame -->
+  <rect x="18" y="18" width="524" height="279" rx="8" fill="#0C0C0C" stroke="rgba(240,237,232,0.08)" stroke-width="1"/>
+
+  <!-- Chrome bar fill -->
+  <rect x="18" y="18" width="524" height="44" rx="8" fill="#161616"/>
+  <rect x="18" y="50" width="524" height="12" fill="#161616"/>
+
+  <!-- Chrome divider -->
+  <rect x="18" y="61" width="524" height="1" fill="rgba(240,237,232,0.05)"/>
+
+  <!-- Traffic lights -->
+  <circle cx="40" cy="40" r="5.5" fill="rgba(255,95,87,0.75)"/>
+  <circle cx="57" cy="40" r="5.5" fill="rgba(255,189,68,0.75)"/>
+  <circle cx="74" cy="40" r="5.5" fill="rgba(40,200,64,0.75)"/>
+
+  <!-- URL bar -->
+  <rect x="148" y="28" width="264" height="24" rx="12" fill="rgba(240,237,232,0.04)" stroke="rgba(240,237,232,0.09)" stroke-width="1"/>
+  <!-- Favicon dot -->
+  <circle cx="164" cy="40" r="4" fill="rgba(200,255,0,0.4)"/>
+  <!-- URL text blocks -->
+  <rect x="175" y="36" width="115" height="7" rx="3" fill="rgba(240,237,232,0.22)"/>
+
+  <!-- Reload + forward icons (minimal) -->
+  <circle cx="122" cy="40" r="7" stroke="rgba(240,237,232,0.1)" stroke-width="1" fill="none"/>
+  <rect x="478" y="35" width="36" height="10" rx="3" fill="rgba(200,255,0,0.1)" stroke="rgba(200,255,0,0.25)" stroke-width="0.75"/>
+
+  <!-- NAV BAR (inside page) -->
+  <rect x="18" y="62" width="524" height="42" fill="#0E0E0E"/>
+  <rect x="18" y="103" width="524" height="1" fill="rgba(240,237,232,0.04)"/>
+
+  <!-- Logo block -->
+  <rect x="40" y="75" width="72" height="12" rx="3" fill="rgba(200,255,0,0.12)" stroke="rgba(200,255,0,0.28)" stroke-width="0.75"/>
+
+  <!-- Nav links -->
+  <rect x="152" y="79" width="34" height="5" rx="2" fill="rgba(240,237,232,0.12)"/>
+  <rect x="196" y="79" width="44" height="5" rx="2" fill="rgba(240,237,232,0.12)"/>
+  <rect x="250" y="79" width="30" height="5" rx="2" fill="rgba(240,237,232,0.12)"/>
+  <rect x="290" y="79" width="38" height="5" rx="2" fill="rgba(240,237,232,0.12)"/>
+
+  <!-- Nav CTA pill -->
+  <rect x="455" y="69" width="68" height="24" rx="12" fill="rgba(200,255,0,0.85)"/>
+  <rect x="466" y="79" width="46" height="5" rx="2" fill="#0C0C0C"/>
+
+  <!-- HERO: background gradient hint -->
+  <rect x="18" y="104" width="524" height="130" fill="#080808"/>
+  <!-- Subtle orb -->
+  <ellipse cx="480" cy="148" rx="100" ry="80" fill="rgba(200,255,0,0.04)"/>
+
+  <!-- Hero headline lines -->
+  <rect x="40" y="120" width="280" height="18" rx="3" fill="rgba(240,237,232,0.22)"/>
+  <rect x="40" y="144" width="240" height="16" rx="3" fill="rgba(240,237,232,0.18)"/>
+  <!-- Accent word block -->
+  <rect x="40" y="168" width="136" height="16" rx="3" fill="rgba(200,255,0,0.65)"/>
+  <rect x="184" y="168" width="80" height="16" rx="3" fill="rgba(240,237,232,0.18)"/>
+
+  <!-- Subline text -->
+  <rect x="40" y="196" width="240" height="5" rx="2" fill="rgba(240,237,232,0.12)"/>
+  <rect x="40" y="206" width="200" height="5" rx="2" fill="rgba(240,237,232,0.08)"/>
+
+  <!-- CTA buttons -->
+  <rect x="40" y="220" width="118" height="30" rx="15" fill="rgba(200,255,0,0.88)"/>
+  <rect x="56" y="233" width="86" height="5" rx="2" fill="#080808"/>
+  <rect x="168" y="220" width="105" height="30" rx="15" fill="rgba(240,237,232,0.05)" stroke="rgba(240,237,232,0.12)" stroke-width="0.75"/>
+  <rect x="181" y="233" width="79" height="5" rx="2" fill="rgba(240,237,232,0.3)"/>
+
+  <!-- Vertical section divider -->
+  <line x1="332" y1="104" x2="332" y2="232" stroke="rgba(240,237,232,0.04)" stroke-width="1"/>
+
+  <!-- CONTACT FORM (right column) -->
+  <!-- Form heading -->
+  <rect x="350" y="118" width="148" height="12" rx="3" fill="rgba(240,237,232,0.2)"/>
+  <rect x="350" y="136" width="100" height="7" rx="2" fill="rgba(240,237,232,0.08)"/>
+
+  <!-- Input fields -->
+  <rect x="350" y="156" width="174" height="22" rx="4" fill="rgba(240,237,232,0.03)" stroke="rgba(240,237,232,0.09)" stroke-width="0.75"/>
+  <rect x="361" y="163" width="65" height="5" rx="2" fill="rgba(240,237,232,0.18)"/>
+
+  <rect x="350" y="184" width="174" height="22" rx="4" fill="rgba(240,237,232,0.03)" stroke="rgba(240,237,232,0.09)" stroke-width="0.75"/>
+  <rect x="361" y="191" width="88" height="5" rx="2" fill="rgba(240,237,232,0.18)"/>
+
+  <!-- Active input (accent border) -->
+  <rect x="350" y="212" width="174" height="22" rx="4" fill="rgba(200,255,0,0.03)" stroke="rgba(200,255,0,0.32)" stroke-width="0.75"/>
+  <rect x="361" y="219" width="54" height="5" rx="2" fill="rgba(240,237,232,0.18)"/>
+  <!-- cursor blink rect -->
+  <rect x="422" y="217" width="1.5" height="9" rx="1" fill="rgba(200,255,0,0.7)"/>
+
+  <!-- Submit button -->
+  <rect x="350" y="243" width="174" height="28" rx="14" fill="rgba(200,255,0,0.85)"/>
+  <rect x="396" y="254" width="82" height="5" rx="2" fill="#080808"/>
+
+  <!-- Bottom strip -->
+  <rect x="18" y="234" width="524" height="63" fill="#0A0A0A"/>
+  <rect x="18" y="234" width="524" height="1" fill="rgba(240,237,232,0.04)"/>
+
+  <!-- Performance score badge -->
+  <rect x="40" y="251" width="88" height="32" rx="6" fill="rgba(200,255,0,0.07)" stroke="rgba(200,255,0,0.2)" stroke-width="0.75"/>
+  <rect x="52" y="260" width="16" height="12" rx="2" fill="rgba(200,255,0,0.5)"/>
+  <rect x="72" y="260" width="24" height="5" rx="2" fill="rgba(240,237,232,0.4)"/>
+  <rect x="72" y="270" width="18" height="4" rx="2" fill="rgba(240,237,232,0.18)"/>
+
+  <!-- Footer nav links (bottom) -->
+  <rect x="200" y="256" width="32" height="5" rx="2" fill="rgba(240,237,232,0.07)"/>
+  <rect x="242" y="256" width="40" height="5" rx="2" fill="rgba(240,237,232,0.07)"/>
+  <rect x="292" y="256" width="28" height="5" rx="2" fill="rgba(240,237,232,0.07)"/>
+
+  <!-- Speed metric dots -->
+  <circle cx="420" cy="258" r="4" fill="rgba(200,255,0,0.45)"/>
+  <rect x="430" y="255" width="40" height="5" rx="2" fill="rgba(240,237,232,0.15)"/>
+  <circle cx="420" cy="272" r="4" fill="rgba(200,255,0,0.25)"/>
+  <rect x="430" y="269" width="32" height="5" rx="2" fill="rgba(240,237,232,0.1)"/>
+</svg>

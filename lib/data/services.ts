@@ -1,44 +1,57 @@
 export interface Service {
+  id: string
   number: string
+  tag: string
   title: string
-  body: string
-  deliverables: string[]
+  status: 'available' | 'coming-soon'
+  statusLabel: string
+  statusBadge?: string
+  description: string
+  pills: string[]
+  visual: string
+  defaultOpen: boolean
 }
 
 export const services: Service[] = [
   {
+    id: 'webdesign',
     number: '01',
+    tag: 'Kernleistung',
     title: 'Webdesign & Entwicklung',
-    body: 'Maßgeschneiderte Websites in Next.js. Blitzschnell, mobiloptimiert, SEO-ready — und so gestaltet, dass man sie nicht vergisst.',
-    deliverables: [
-      'Individuelles Design in Abstimmung mit Ihnen',
-      'Entwicklung in Next.js — schnell, sicher, skalierbar',
-      'Vollständig mobiloptimiert auf allen Geräten',
-      'Pagespeed 90+ von Anfang an',
-      'SEO-Grundstruktur: Meta-Tags, Sitemaps, URLs',
-    ],
+    status: 'available',
+    statusLabel: 'Verfügbar',
+    description:
+      'Eine Website die schneller lädt als die Ihrer Wettbewerber — und bei Google gefunden wird, bevor Sie dafür extra zahlen müssen.',
+    pills: ['Next.js', 'Mobiloptimiert', 'Pagespeed 95+', 'SEO-ready', 'Framer Motion'],
+    visual: '/visuals/service-webdesign.svg',
+    defaultOpen: true,
   },
   {
+    id: 'seo',
     number: '02',
-    title: 'UX-Strategie & Konzeption',
-    body: 'Bevor der erste Pixel gesetzt wird, denken wir durch, wie Ihre Website konvertiert. Struktur, Nutzerführung, Inhalte — alles geplant.',
-    deliverables: [
-      'Seitenstruktur & Navigationskonzept',
-      'Nutzerführung zur Anfrage hin',
-      'Inhaltsplanung: Was auf welche Seite gehört',
-      'Zwei Feedback-Runden im Design',
-      'Klarer Zeitplan von Tag 1',
-    ],
+    tag: 'In Vorbereitung',
+    title: 'SEO-Optimierung',
+    status: 'coming-soon',
+    statusLabel: 'Demnächst',
+    statusBadge: 'Bald',
+    description:
+      'Gefunden werden, bevor Sie für Werbung zahlen müssen. Wir optimieren Ihre Website technisch und inhaltlich für Google — nachhaltig, messbar, ohne monatliche Mindestlaufzeiten.',
+    pills: ['On-Page SEO', 'Technisches SEO', 'Keyword-Analyse', 'Lokales SEO', 'Pagespeed'],
+    visual: '/visuals/service-seo.svg',
+    defaultOpen: false,
   },
   {
+    id: 'branding',
     number: '03',
-    title: 'Launch & Übergabe',
-    body: 'Wir schalten Ihre Website live, weisen Sie ein, und stehen danach für Fragen bereit. Kein Support-Ticket. Eine direkte Nachricht.',
-    deliverables: [
-      'Technische Live-Schaltung inkl. Domain-Setup',
-      'Persönliche 30-minütige Einweisung',
-      '2 Wochen Nachbetreuung nach Launch',
-      'Direkter Kontakt — kein Ticketsystem',
-    ],
+    tag: 'In Vorbereitung',
+    title: 'Branding & Visuelle Identität',
+    status: 'coming-soon',
+    statusLabel: 'Demnächst',
+    statusBadge: 'Bald',
+    description:
+      'Ein Unternehmen das gut aussieht wird ernster genommen. Wir entwickeln visuelle Identitäten die zu Ihrem Unternehmen passen — Logo, Farben, Typografie, alles aus einem Guss.',
+    pills: ['Logo-Design', 'Farbsystem', 'Typografie', 'Brand Guidelines', 'Visitenkarten'],
+    visual: '/visuals/service-branding.svg',
+    defaultOpen: false,
   },
 ]

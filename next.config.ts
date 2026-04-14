@@ -8,6 +8,9 @@ const nextConfig: NextConfig = {
   images: {
     // Allow local project screenshot images
     unoptimized: false,
+    dangerouslyAllowSVG: true,
+    contentDispositionType: 'attachment',
+    contentSecurityPolicy: "default-src 'self'; script-src 'none'; sandbox;",
   },
 }
 
