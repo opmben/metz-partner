@@ -133,9 +133,9 @@ export function FAQ() {
                           </span>
                           <span
                             style={{
-                              fontFamily: 'var(--font-display)',
+                              fontFamily: 'var(--font-ui)',
                               fontSize: 'clamp(1rem, 1.8vw, 1.2rem)',
-                              fontWeight: 400,
+                              fontWeight: 700,
                               color: 'var(--text)',
                               lineHeight: 1.3,
                               minWidth: 0,
