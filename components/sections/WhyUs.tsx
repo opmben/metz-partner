@@ -6,11 +6,32 @@ import {
   useReducedMotion,
   useScroll,
   useTransform,
-  useMotionValue,
-  useSpring,
+  type Variants,
 } from 'framer-motion'
 import { fadeUp, staggerContainer, clipRevealUp, blurIn } from '@/lib/animations'
 import BorderGlow from '@/components/BorderGlow'
+
+// ── Variants ──────────────────────────────────────────────────────────────────
+
+const photoReveal: Variants = {
+  hidden: { opacity: 0, x: -24 },
+  visible: {
+    opacity: 1,
+    x: 0,
+    transition: { duration: 1.0, ease: [0.16, 1, 0.3, 1] as const },
+  },
+}
+
+const glassSlide: Variants = {
+  hidden: { opacity: 0, x: 32 },
+  visible: {
+    opacity: 1,
+    x: 0,
+    transition: { duration: 0.9, ease: [0.16, 1, 0.3, 1] as const, delay: 0.2 },
+  },
+}
+
+// ── Data ──────────────────────────────────────────────────────────────────────
 
 const founders = [
   {
@@ -19,9 +40,9 @@ const founders = [
     role: 'Head of UI/UX Design',
     bio: 'Hintergrund in Grafikdesign und Recht. Zuständig für alles, was man sieht — und dafür, dass es rechtlich stimmt.',
     accentColor: 'var(--accent)',
-    accentBg: 'rgba(200,255,0,0.06)',
-    accentBorder: 'rgba(200,255,0,0.15)',
-    glowColor: 'rgba(200,255,0,0.08)',
+    gradientFrom: 'rgba(200,255,0,0.08)',
+    glowColor: 'rgba(200,255,0,0.06)',
+    borderAccent: 'rgba(200,255,0,0.2)',
   },
   {
     initial: 'M',
@@ -29,9 +50,9 @@ const founders = [
     role: 'Head of Marketing & Sales',
     bio: 'Hintergrund in Marketing und Finanzen. Zuständig für Strategie, Wirkung und dafür, dass Ihre Website konvertiert.',
     accentColor: 'var(--accent-warm)',
-    accentBg: 'rgba(255,107,53,0.06)',
-    accentBorder: 'rgba(255,107,53,0.15)',
+    gradientFrom: 'rgba(255,107,53,0.08)',
     glowColor: 'rgba(255,107,53,0.06)',
+    borderAccent: 'rgba(255,107,53,0.2)',
   },
 ]
 
@@ -53,111 +74,82 @@ const differentiators = [
   },
 ]
 
-function FounderCard({ founder }: { founder: (typeof founders)[0] }) {
-  const [hovered, setHovered] = useState(false)
-  const shouldReduce = useReducedMotion()
-  const glowX = useMotionValue(0.5)
-  const glowY = useMotionValue(0.5)
-  const springX = useSpring(glowX, { stiffness: 150, damping: 20 })
-  const springY = useSpring(glowY, { stiffness: 150, damping: 20 })
+// ── FounderCard ───────────────────────────────────────────────────────────────
 
-  const handleMouse = (e: React.MouseEvent<HTMLDivElement>) => {
-    if (shouldReduce) return
-    const rect = e.currentTarget.getBoundingClientRect()
-    glowX.set((e.clientX - rect.left) / rect.width)
-    glowY.set((e.clientY - rect.top) / rect.height)
-  }
+function FounderCard({
+  founder,
+  isInView,
+  delay,
+  shouldReduce,
+}: {
+  founder: (typeof founders)[0]
+  isInView: boolean
+  delay: number
+  shouldReduce: boolean | null
+}) {
+  const [hovered, setHovered] = useState(false)
+  const vis = shouldReduce ? 'visible' : isInView ? 'visible' : 'hidden'
 
   return (
-    <motion.div
+    <div
       onMouseEnter={() => setHovered(true)}
       onMouseLeave={() => setHovered(false)}
-      onMouseMove={handleMouse}
-      animate={{ borderColor: hovered && !shouldReduce ? founder.accentBorder : 'rgba(240,237,232,0.07)' }}
-      transition={{ duration: 0.3 }}
-      style={{
-        display: 'flex',
-        flexDirection: 'row',
-        overflow: 'hidden',
-        borderRadius: 6,
-        border: '1px solid rgba(240,237,232,0.07)',
-        background: 'rgba(17,17,17,0.6)',
-        backdropFilter: 'blur(20px)',
-        WebkitBackdropFilter: 'blur(20px)',
-        position: 'relative',
-        minHeight: 220,
-      }}
+      // Stack on mobile, side-by-side on sm+
+      className="flex flex-col sm:flex-row sm:items-stretch"
+      style={{ position: 'relative' }}
     >
-      {/* Accent top border */}
-      <div
+      {/* ── Photo placeholder ──────────────────────────────────────────────
+          Swap this div's contents for <Image fill className="object-cover">
+          when real photos are available. No layout changes needed.
+      ─────────────────────────────────────────────────────────────────── */}
+      <motion.div
+        variants={shouldReduce ? undefined : photoReveal}
+        initial={shouldReduce ? undefined : 'hidden'}
+        animate={shouldReduce ? undefined : vis}
+        transition={shouldReduce ? undefined : { delay }}
+        // Full-width short on mobile, fixed 260px tall on sm+
+        className="w-full rounded-2xl overflow-hidden relative flex-shrink-0
+                   h-52 sm:w-[260px] sm:h-auto"
         style={{
-          position: 'absolute',
-          top: 0,
-          left: 0,
-          right: 0,
-          height: 1,
-          background: founder.accentColor,
-          opacity: 0.7,
-          pointerEvents: 'none',
-        }}
-      />
-
-      {/* ── Left panel: photo placeholder (swap for <Image> when ready) ── */}
-      <div
-        style={{
-          width: 200,
-          flexShrink: 0,
-          position: 'relative',
-          overflow: 'hidden',
-          borderRight: '1px solid rgba(240,237,232,0.07)',
+          background: `linear-gradient(150deg, ${founder.gradientFrom} 0%, var(--surface) 70%)`,
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'center',
           flexDirection: 'column',
-          gap: '1rem',
-          background: `linear-gradient(150deg, ${founder.accentBg} 0%, rgba(8,8,8,0) 70%)`,
+          gap: '1.25rem',
         }}
       >
-        {/* Subtle grid */}
+        {/* Subtle grid overlay */}
         <div
           aria-hidden="true"
           style={{
             position: 'absolute',
             inset: 0,
             backgroundImage:
-              'linear-gradient(rgba(240,237,232,0.02) 1px, transparent 1px), linear-gradient(90deg, rgba(240,237,232,0.02) 1px, transparent 1px)',
-            backgroundSize: '24px 24px',
+              'linear-gradient(rgba(240,237,232,0.025) 1px, transparent 1px),' +
+              'linear-gradient(90deg, rgba(240,237,232,0.025) 1px, transparent 1px)',
+            backgroundSize: '28px 28px',
           }}
         />
 
-        {/* Dynamic cursor glow */}
-        <motion.div
+        {/* Radial glow */}
+        <div
           aria-hidden="true"
           style={{
             position: 'absolute',
-            width: '120%',
-            height: '120%',
-            borderRadius: '50%',
-            background: `radial-gradient(circle, ${founder.glowColor}, transparent 65%)`,
-            pointerEvents: 'none',
-            left: springX,
-            top: springY,
-            translateX: '-50%',
-            translateY: '-50%',
-            filter: 'blur(30px)',
-            opacity: hovered && !shouldReduce ? 1 : 0.4,
+            inset: 0,
+            background: `radial-gradient(ellipse at 50% 40%, ${founder.glowColor}, transparent 70%)`,
           }}
-          transition={{ opacity: { duration: 0.4 } }}
         />
 
-        {/* Initial */}
+        {/* Animated initial */}
         <motion.span
           animate={
             shouldReduce
               ? undefined
               : hovered
-              ? { scale: 1.08, color: 'rgba(240,237,232,0.14)' }
-              : { scale: [1, 1.03, 1], color: 'rgba(240,237,232,0.07)', y: [0, -5, 0] }
+              ? { scale: 1.06, color: 'rgba(240,237,232,0.15)' }
+              : { scale: [1, 1.025, 1], color: 'rgba(240,237,232,0.07)', y: [0, -5, 0] }
           }
           transition={
             hovered
@@ -167,7 +159,7 @@ function FounderCard({ founder }: { founder: (typeof founders)[0] }) {
           style={{
             position: 'relative',
             fontFamily: 'var(--font-display)',
-            fontSize: 'clamp(4rem, 8vw, 6rem)',
+            fontSize: 'clamp(4.5rem, 10vw, 7rem)',
             fontWeight: 400,
             fontStyle: 'italic',
             lineHeight: 1,
@@ -177,57 +169,85 @@ function FounderCard({ founder }: { founder: (typeof founders)[0] }) {
           {founder.initial}
         </motion.span>
 
-        {/* "Foto folgt" badge */}
+        {/* Foto-folgt badge */}
         <div
           style={{
             position: 'relative',
-            background: 'rgba(8,8,8,0.75)',
-            border: '1px solid rgba(240,237,232,0.08)',
+            background: 'rgba(8,8,8,0.7)',
+            border: '1px solid rgba(240,237,232,0.07)',
             borderRadius: 100,
-            padding: '0.25rem 0.75rem',
-            backdropFilter: 'blur(8px)',
+            padding: '0.26rem 0.8rem',
+            backdropFilter: 'blur(10px)',
           }}
         >
           <span
             style={{
-              fontSize: '0.52rem',
-              textTransform: 'uppercase',
-              letterSpacing: '0.12em',
-              color: 'rgba(240,237,232,0.28)',
               fontFamily: 'var(--font-ui)',
+              fontSize: '0.5rem',
+              fontWeight: 400,
+              textTransform: 'uppercase',
+              letterSpacing: '0.14em',
+              color: 'rgba(240,237,232,0.25)',
               whiteSpace: 'nowrap',
             }}
           >
             Foto folgt
           </span>
         </div>
-      </div>
+      </motion.div>
 
-      {/* ── Right panel: info ── */}
-      <div
+      {/* ── Glass info card ─────────────────────────────────────────────────
+          On sm+: -ml-16 creates the overlap, z-10 floats it above the photo
+      ─────────────────────────────────────────────────────────────────── */}
+      <motion.div
+        variants={shouldReduce ? undefined : glassSlide}
+        initial={shouldReduce ? undefined : 'hidden'}
+        animate={shouldReduce ? undefined : vis}
+        transition={shouldReduce ? undefined : { delay: delay + 0.2 }}
+        className="relative z-10 flex-1 rounded-2xl
+                   mt-3 sm:mt-0 sm:-ml-16"
         style={{
-          padding: '2.25rem 2.5rem',
+          background: 'rgba(12,12,12,0.9)',
+          backdropFilter: 'blur(32px)',
+          WebkitBackdropFilter: 'blur(32px)',
+          border: `1px solid ${hovered ? founder.borderAccent : 'rgba(240,237,232,0.08)'}`,
+          transition: 'border-color 0.35s ease',
+          padding: 'clamp(1.75rem, 3vw, 2.5rem)',
           display: 'flex',
           flexDirection: 'column',
           justifyContent: 'center',
-          gap: '0.55rem',
-          flex: 1,
-          minWidth: 0,
+          gap: '0.7rem',
         }}
       >
+        {/* Accent top line */}
+        <div
+          style={{
+            position: 'absolute',
+            top: 0,
+            left: 0,
+            right: 0,
+            height: 1,
+            background: founder.accentColor,
+            borderRadius: '16px 16px 0 0',
+            opacity: 0.7,
+          }}
+        />
+
+        {/* Role */}
         <p
           style={{
-            fontSize: '0.68rem',
             fontFamily: 'var(--font-ui)',
+            fontSize: '0.64rem',
             fontWeight: 400,
             textTransform: 'uppercase',
-            letterSpacing: '0.14em',
+            letterSpacing: '0.16em',
             color: 'var(--muted)',
           }}
         >
           {founder.role}
         </p>
 
+        {/* Name */}
         <h3
           style={{
             fontFamily: 'var(--font-display)',
@@ -236,29 +256,32 @@ function FounderCard({ founder }: { founder: (typeof founders)[0] }) {
             fontStyle: 'italic',
             color: 'var(--text)',
             lineHeight: 1.1,
-            letterSpacing: '-0.01em',
+            letterSpacing: '-0.02em',
           }}
         >
           {founder.name}
         </h3>
 
+        {/* Bio */}
         <p
           style={{
+            fontFamily: 'var(--font-ui)',
             fontSize: '0.875rem',
             fontWeight: 300,
-            fontFamily: 'var(--font-ui)',
             color: 'var(--muted)',
-            lineHeight: 1.75,
-            marginTop: '0.2rem',
+            lineHeight: 1.8,
+            marginTop: '0.1rem',
             maxWidth: 400,
           }}
         >
           {founder.bio}
         </p>
-      </div>
-    </motion.div>
+      </motion.div>
+    </div>
   )
 }
+
+// ── DifferentiatorCard ────────────────────────────────────────────────────────
 
 function DifferentiatorCard({
   d,
@@ -268,10 +291,7 @@ function DifferentiatorCard({
   shouldReduce: boolean | null
 }) {
   return (
-    <motion.div
-      variants={shouldReduce ? undefined : fadeUp}
-      style={{ height: '100%' }}
-    >
+    <motion.div variants={shouldReduce ? undefined : fadeUp} style={{ height: '100%' }}>
       <BorderGlow
         backgroundColor="#0b0b0b"
         borderRadius={14}
@@ -289,7 +309,6 @@ function DifferentiatorCard({
             padding: 'clamp(2rem, 3vw, 2.75rem)',
             display: 'flex',
             flexDirection: 'column',
-            gap: 0,
             height: '100%',
           }}
         >
@@ -306,13 +325,11 @@ function DifferentiatorCard({
           >
             {d.number}
           </p>
-
           <h4
             style={{
               fontFamily: 'var(--font-display)',
               fontSize: 'clamp(1.2rem, 1.8vw, 1.45rem)',
               fontWeight: 400,
-              fontStyle: 'normal',
               color: 'var(--text)',
               lineHeight: 1.15,
               letterSpacing: '-0.01em',
@@ -321,7 +338,6 @@ function DifferentiatorCard({
           >
             {d.title}
           </h4>
-
           <p
             style={{
               fontSize: '0.875rem',
@@ -337,6 +353,8 @@ function DifferentiatorCard({
     </motion.div>
   )
 }
+
+// ── WhyUs ─────────────────────────────────────────────────────────────────────
 
 export function WhyUs() {
   const ref = useRef(null)
@@ -364,7 +382,7 @@ export function WhyUs() {
       }}
       className="md:py-32"
     >
-      {/* Background decorative text */}
+      {/* Decorative background text */}
       <motion.div
         aria-hidden="true"
         style={{
@@ -392,7 +410,7 @@ export function WhyUs() {
           initial={shouldReduce ? undefined : 'hidden'}
           animate={shouldReduce ? undefined : isInView ? 'visible' : 'hidden'}
         >
-          {/* Positioning statement */}
+          {/* Header */}
           <motion.div
             variants={shouldReduce ? undefined : fadeUp}
             style={{ marginBottom: '4rem', maxWidth: 720 }}
@@ -418,44 +436,37 @@ export function WhyUs() {
                 maxWidth: 560,
               }}
             >
-              Nicht mit einem Account Manager. Nicht mit einem Junior. Mit den Menschen, die
-              Ihre Website bauen — von der ersten Anfrage bis zum Launch.
+              Nicht mit einem Account Manager. Nicht mit einem Junior. Mit den
+              Menschen, die Ihre Website bauen — von der ersten Anfrage bis zum Launch.
             </motion.p>
           </motion.div>
 
-          {/* Founders */}
-          <motion.div
-            variants={shouldReduce ? undefined : staggerContainer(0.15)}
-            style={{ marginBottom: '5rem', display: 'flex', flexDirection: 'column', gap: '1rem' }}
+          {/* Founder cards — two-column grid at md+ */}
+          <div
+            className="grid grid-cols-1 md:grid-cols-2 gap-6"
+            style={{ marginBottom: '5rem' }}
           >
-            {founders.map((founder) => (
-              <motion.div key={founder.name} variants={shouldReduce ? undefined : fadeUp}>
-                <FounderCard founder={founder} />
-              </motion.div>
+            {founders.map((founder, i) => (
+              <FounderCard
+                key={founder.name}
+                founder={founder}
+                isInView={isInView}
+                delay={i * 0.15}
+                shouldReduce={shouldReduce}
+              />
             ))}
-          </motion.div>
+          </div>
 
           {/* Differentiators */}
           <motion.div
             variants={shouldReduce ? undefined : staggerContainer(0.1)}
-            style={{
-              borderTop: '1px solid var(--border)',
-              paddingTop: '4rem',
-            }}
+            style={{ borderTop: '1px solid var(--border)', paddingTop: '4rem' }}
           >
             <div
-              style={{
-                display: 'grid',
-                gap: '1rem',
-              }}
-              className="grid-cols-1 md:grid-cols-3"
+              className="grid grid-cols-1 md:grid-cols-3 gap-4"
             >
               {differentiators.map((d) => (
-                <DifferentiatorCard
-                  key={d.number}
-                  d={d}
-                  shouldReduce={shouldReduce}
-                />
+                <DifferentiatorCard key={d.number} d={d} shouldReduce={shouldReduce} />
               ))}
             </div>
           </motion.div>
