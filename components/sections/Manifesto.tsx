@@ -1,5 +1,5 @@
 'use client'
-import { useRef, useCallback, useState, useMemo } from 'react'
+import { useRef, useState, useEffect, useMemo } from 'react'
 import { motion, useReducedMotion, useScroll, useTransform, MotionValue } from 'framer-motion'
 
 // ── Word config ──────────────────────────────────────────────────────────────
@@ -84,17 +84,13 @@ function WordReveal({
 export function Manifesto() {
   const shouldReduce = useReducedMotion()
 
-  const sectionRef = useRef<HTMLElement | null>(null)
-  const [sectionEl, setSectionEl] = useState<HTMLElement | null>(null)
-
-  const refCallback = useCallback((el: HTMLElement | null) => {
-    sectionRef.current = el
-    setSectionEl(el)
-  }, [])
+  const sectionRef = useRef(null)
+  const [mounted, setMounted] = useState(false)
+  useEffect(() => { setMounted(true) }, [])
 
   const { scrollYProgress } = useScroll({
-    target: sectionEl ? sectionRef : undefined,
-    offset: ['start 0.88', 'end 0.22'],
+    target: mounted ? sectionRef : undefined,
+    offset: ['start 0.92', 'end 0.18'],
   })
 
   // Subtle container rotation scrubbed by scroll
@@ -119,7 +115,7 @@ export function Manifesto() {
 
   return (
     <section
-      ref={refCallback}
+      ref={sectionRef}
       style={{
         paddingTop: '12rem',
         paddingBottom: '12rem',
