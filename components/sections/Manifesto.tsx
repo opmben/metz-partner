@@ -37,8 +37,8 @@ const WORDS: WordDef[] = [
 ]
 
 // Each word occupies a window of WINDOW width, staggered by STEP
-const STEP   = 0.042   // offset between consecutive word start points
-const WINDOW = 0.18    // how long each word's reveal takes (in progress units)
+const STEP   = 0.050   // offset between consecutive word start points
+const WINDOW = 0.13    // how long each word's reveal takes (in progress units)
 
 // ── WordReveal ────────────────────────────────────────────────────────────────
 function WordReveal({
@@ -94,15 +94,15 @@ export function Manifesto() {
 
   const { scrollYProgress } = useScroll({
     target: sectionEl ? sectionRef : undefined,
-    offset: ['start 0.88', 'end 0.12'],
+    offset: ['start 0.88', 'end 0.22'],
   })
 
   // Subtle container rotation scrubbed by scroll
   const containerRotate = useTransform(scrollYProgress, [0, 1], [1.2, 0])
 
   // CTA fade — starts after the last word is mostly revealed
-  const ctaOpacity = useTransform(scrollYProgress, [0.82, 0.95], [0, 1])
-  const ctaY       = useTransform(scrollYProgress, [0.82, 0.95], [24, 0])
+  const ctaOpacity = useTransform(scrollYProgress, [0.88, 0.97], [0, 1])
+  const ctaY       = useTransform(scrollYProgress, [0.88, 0.97], [24, 0])
 
   // Background ghost text parallax
   const bgTextY = useTransform(scrollYProgress, [0, 1], [80, -80])
