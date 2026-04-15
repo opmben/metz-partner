@@ -1,28 +1,44 @@
 'use client'
-import { useRef, useState, useEffect } from 'react'
+import { useRef, useCallback, useState } from 'react'
 import { motion, useReducedMotion, useScroll, useTransform } from 'framer-motion'
 
 export function Manifesto() {
-  const sectionRef = useRef<HTMLElement>(null)
   const shouldReduce = useReducedMotion()
 
-  const [mounted, setMounted] = useState(false)
-  useEffect(() => { setMounted(true) }, [])
+  // Callback ref: element is guaranteed mounted when passed to useScroll
+  const sectionRef = useRef<HTMLElement | null>(null)
+  const [sectionEl, setSectionEl] = useState<HTMLElement | null>(null)
 
+  const refCallback = useCallback((el: HTMLElement | null) => {
+    sectionRef.current = el
+    setSectionEl(el)
+  }, [])
+
+  // Wide offset so reveal spans the full time section is in view
   const { scrollYProgress } = useScroll({
-    target: mounted ? sectionRef : undefined,
-    offset: ['start 0.85', 'end 0.35'],
+    target: sectionEl ? sectionRef : undefined,
+    offset: ['start 0.92', 'end 0.15'],
   })
 
-  // Each text segment brightens sequentially as the section scrolls through
-  const opacity1 = useTransform(scrollYProgress, [0, 0.25], [0.1, 1])
-  const opacity2 = useTransform(scrollYProgress, [0.22, 0.5], [0.1, 1])
-  const opacity3 = useTransform(scrollYProgress, [0.45, 0.72], [0.1, 1])
-  const ctaOpacity = useTransform(scrollYProgress, [0.55, 0.82], [0, 1])
-  const ctaY = useTransform(scrollYProgress, [0.55, 0.82], [20, 0])
+  // ── Line 1: "Ihre Website ist oft der erste Eindruck." ──
+  const line1Opacity = useTransform(scrollYProgress, [0, 0.28], [0, 1])
+  const line1Y      = useTransform(scrollYProgress, [0, 0.28], [48, 0])
+  const line1Blur   = useTransform(scrollYProgress, [0, 0.28], [6, 0])
 
-  // Background oversized type parallax
-  const bgTextY = useTransform(scrollYProgress, [0, 1], [60, -60])
+  // ── Line 2: "Manchmal der einzige." ──
+  const line2Opacity = useTransform(scrollYProgress, [0.2, 0.5], [0, 1])
+  const line2Y       = useTransform(scrollYProgress, [0.2, 0.5], [48, 0])
+
+  // ── Line 3: "Wir sorgen dafür, dass er zählt." ──
+  const line3Opacity = useTransform(scrollYProgress, [0.4, 0.68], [0, 1])
+  const line3Y       = useTransform(scrollYProgress, [0.4, 0.68], [48, 0])
+
+  // ── Divider + CTA ──
+  const ctaOpacity = useTransform(scrollYProgress, [0.6, 0.85], [0, 1])
+  const ctaY       = useTransform(scrollYProgress, [0.6, 0.85], [28, 0])
+
+  // ── Background oversized type ──
+  const bgTextY = useTransform(scrollYProgress, [0, 1], [80, -80])
 
   const scrollTo = (e: React.MouseEvent) => {
     e.preventDefault()
@@ -31,16 +47,16 @@ export function Manifesto() {
 
   return (
     <section
-      ref={sectionRef}
+      ref={refCallback}
       style={{
-        paddingTop: '10rem',
-        paddingBottom: '10rem',
+        paddingTop: '12rem',
+        paddingBottom: '12rem',
         position: 'relative',
         overflow: 'hidden',
         textAlign: 'center',
       }}
     >
-      {/* Oversized background type — depth layer */}
+      {/* Oversized ghost type — depth layer */}
       {!shouldReduce && (
         <motion.div
           aria-hidden="true"
@@ -62,7 +78,7 @@ export function Manifesto() {
               fontSize: 'clamp(12rem, 30vw, 32rem)',
               lineHeight: 0.85,
               color: 'transparent',
-              WebkitTextStroke: '1px rgba(240,237,232,0.04)',
+              WebkitTextStroke: '1px rgba(240,237,232,0.035)',
               whiteSpace: 'nowrap',
               letterSpacing: '-0.04em',
             }}
@@ -72,7 +88,7 @@ export function Manifesto() {
         </motion.div>
       )}
 
-      {/* Radial glow — centred */}
+      {/* Radial lime glow */}
       <div
         aria-hidden="true"
         style={{
@@ -80,13 +96,13 @@ export function Manifesto() {
           top: '50%',
           left: '50%',
           transform: 'translate(-50%, -50%)',
-          width: '80vw',
-          height: '80vw',
-          maxWidth: 1200,
-          maxHeight: 1200,
+          width: '70vw',
+          height: '70vw',
+          maxWidth: 1100,
+          maxHeight: 1100,
           borderRadius: '50%',
-          background: 'radial-gradient(circle, rgba(200,255,0,0.045), transparent 65%)',
-          filter: 'blur(100px)',
+          background: 'radial-gradient(circle, rgba(200,255,0,0.04), transparent 65%)',
+          filter: 'blur(80px)',
           pointerEvents: 'none',
         }}
       />
@@ -97,12 +113,16 @@ export function Manifesto() {
             display: 'flex',
             flexDirection: 'column',
             alignItems: 'center',
-            gap: '4rem',
+            gap: '3.5rem',
           }}
         >
-          {/* Manifesto text */}
-          <div className="display-manifesto" style={{ maxWidth: 920, position: 'relative' }}>
+          {/* ── Manifesto text ── */}
+          <div
+            className="display-manifesto"
+            style={{ maxWidth: 960, position: 'relative', lineHeight: 1.12 }}
+          >
             {shouldReduce ? (
+              /* Static fallback */
               <>
                 <span>Ihre Website ist oft der </span>
                 <em style={{ color: 'var(--accent)' }}>erste Eindruck</em>
@@ -115,23 +135,51 @@ export function Manifesto() {
                 </span>
               </>
             ) : (
-              <>
-                <motion.span style={{ opacity: opacity1 }}>
-                  Ihre Website ist oft der{' '}
-                </motion.span>
-                <motion.em style={{ color: 'var(--accent)', opacity: opacity1 }}>
-                  erste Eindruck
-                </motion.em>
-                <motion.span style={{ opacity: opacity1 }}>.</motion.span>
-                <br />
-                <motion.span style={{ opacity: opacity2 }}>
-                  Manchmal der einzige.
-                </motion.span>
-                <br />
-                <motion.span style={{ color: 'var(--muted)', opacity: opacity3 }}>
-                  Wir sorgen dafür, dass er zählt.
-                </motion.span>
-              </>
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '0.1em' }}>
+                {/* Line 1 */}
+                <div style={{ overflow: 'hidden', paddingBottom: '0.05em' }}>
+                  <motion.div
+                    style={{
+                      opacity: line1Opacity,
+                      y: line1Y,
+                      filter: useTransform(line1Blur, (v) => `blur(${v}px)`),
+                      display: 'block',
+                    }}
+                  >
+                    <span>Ihre Website ist oft der </span>
+                    <em style={{ color: 'var(--accent)' }}>erste Eindruck</em>
+                    <span>.</span>
+                  </motion.div>
+                </div>
+
+                {/* Line 2 */}
+                <div style={{ overflow: 'hidden', paddingBottom: '0.05em' }}>
+                  <motion.div
+                    style={{
+                      opacity: line2Opacity,
+                      y: line2Y,
+                      display: 'block',
+                    }}
+                  >
+                    Manchmal der einzige.
+                  </motion.div>
+                </div>
+
+                {/* Line 3 */}
+                <div style={{ overflow: 'hidden', paddingBottom: '0.05em' }}>
+                  <motion.div
+                    style={{
+                      opacity: line3Opacity,
+                      y: line3Y,
+                      display: 'block',
+                      color: 'var(--muted)',
+                      fontStyle: 'italic',
+                    }}
+                  >
+                    Wir sorgen dafür, dass er zählt.
+                  </motion.div>
+                </div>
+              </div>
             )}
           </div>
 
@@ -139,8 +187,8 @@ export function Manifesto() {
           <motion.div
             style={{
               width: 1,
-              height: 56,
-              background: 'linear-gradient(to bottom, rgba(200,255,0,0.6), transparent)',
+              height: 52,
+              background: 'linear-gradient(to bottom, rgba(200,255,0,0.65), transparent)',
               opacity: shouldReduce ? 1 : ctaOpacity,
             }}
           />
