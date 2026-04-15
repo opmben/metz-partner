@@ -97,8 +97,8 @@ export function FAQ() {
                     value={String(i)}
                     style={{
                       border: '1px solid var(--border)',
-                      borderRadius: 5,
-                      background: 'rgba(255,255,255,0.03)',
+                      borderRadius: 6,
+                      background: 'rgba(255,255,255,0.02)',
                       overflow: 'hidden',
                     }}
                     className="transition-colors duration-300 hover:[border-color:var(--border-hover)]"
@@ -135,7 +135,7 @@ export function FAQ() {
                             style={{
                               fontFamily: 'var(--font-ui)',
                               fontSize: 'clamp(1rem, 1.8vw, 1.2rem)',
-                              fontWeight: 400,
+                              fontWeight: 300,
                               color: 'var(--text)',
                               lineHeight: 1.3,
                               minWidth: 0,
