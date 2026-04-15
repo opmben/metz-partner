@@ -1,26 +1,197 @@
 'use client'
 import { motion, useInView, useReducedMotion } from 'framer-motion'
 import { useRef } from 'react'
-import { fadeUp, staggerContainer } from '@/lib/animations'
+import { type Variants } from 'framer-motion'
 import { SectionLabel } from '@/components/shared/SectionLabel'
+
+// ── Variants ──────────────────────────────────────────────────────────────────
+
+const containerVariants: Variants = {
+  hidden: {},
+  visible: { transition: { staggerChildren: 0.14 } },
+}
+
+const cardVariants: Variants = {
+  hidden: { opacity: 0, y: 32 },
+  visible: {
+    opacity: 1,
+    y: 0,
+    transition: { duration: 0.9, ease: [0.16, 1, 0.3, 1] as const },
+  },
+}
+
+const fadeUp: Variants = {
+  hidden: { opacity: 0, y: 20 },
+  visible: {
+    opacity: 1,
+    y: 0,
+    transition: { duration: 0.8, ease: [0.16, 1, 0.3, 1] as const },
+  },
+}
+
+// ── Data ──────────────────────────────────────────────────────────────────────
 
 const founders = [
   {
+    initial: 'B',
     name: 'Benedikt Metz',
     role: 'Head of UI/UX Design',
     bio: 'Hintergrund in Grafikdesign und Recht. Zuständig für alles, was man sieht — und dafür, dass es rechtlich stimmt.',
+    accentAngle: '135deg',
   },
   {
+    initial: 'M',
     name: 'Maximilian Metz',
     role: 'Head of Marketing & Sales',
     bio: 'Hintergrund in Marketing und Finanzen. Zuständig für Strategie, Wirkung und dafür, dass Ihre Website konvertiert.',
+    accentAngle: '225deg',
   },
 ]
+
+// ── FounderCard ───────────────────────────────────────────────────────────────
+
+function FounderCard({ founder }: { founder: (typeof founders)[0] }) {
+  return (
+    <motion.div
+      variants={cardVariants}
+      style={{
+        display: 'flex',
+        flexDirection: 'row',
+        overflow: 'hidden',
+        borderRadius: 6,
+        border: '1px solid var(--border)',
+        background: 'rgba(17,17,17,0.6)',
+        backdropFilter: 'blur(24px)',
+        WebkitBackdropFilter: 'blur(24px)',
+        position: 'relative',
+      }}
+    >
+      {/* Accent top border */}
+      <div
+        style={{
+          position: 'absolute',
+          top: 0,
+          left: 0,
+          right: 0,
+          height: 1,
+          background: 'var(--accent)',
+          opacity: 0.8,
+        }}
+      />
+
+      {/* ── Left panel: photo placeholder ──
+          To swap in a real photo later, replace this div's contents with:
+          <Image src={founder.image} alt={founder.name} fill className="object-cover" />
+          and add position: 'relative' to the container.
+      ── */}
+      <div
+        style={{
+          width: 200,
+          flexShrink: 0,
+          position: 'relative',
+          overflow: 'hidden',
+          background: `linear-gradient(${founder.accentAngle}, rgba(200,255,0,0.07) 0%, rgba(8,8,8,0.0) 60%)`,
+          borderRight: '1px solid var(--border)',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+        }}
+        className="hidden sm:flex"
+      >
+        {/* Atmospheric grain layer */}
+        <div
+          aria-hidden="true"
+          style={{
+            position: 'absolute',
+            inset: 0,
+            backgroundImage:
+              'radial-gradient(circle at 40% 60%, rgba(200,255,0,0.06) 0%, transparent 65%)',
+          }}
+        />
+        {/* Initial */}
+        <span
+          aria-hidden="true"
+          style={{
+            fontFamily: 'var(--font-display)',
+            fontStyle: 'italic',
+            fontSize: 'clamp(5rem, 10vw, 7.5rem)',
+            fontWeight: 400,
+            lineHeight: 1,
+            color: 'rgba(200,255,0,0.18)',
+            letterSpacing: '-0.04em',
+            userSelect: 'none',
+            position: 'relative',
+          }}
+        >
+          {founder.initial}
+        </span>
+      </div>
+
+      {/* ── Right panel: info ── */}
+      <div
+        style={{
+          padding: '2.25rem 2.5rem',
+          display: 'flex',
+          flexDirection: 'column',
+          justifyContent: 'center',
+          gap: '0.6rem',
+          flex: 1,
+          minWidth: 0,
+        }}
+      >
+        <p
+          style={{
+            fontSize: '0.68rem',
+            fontFamily: 'var(--font-ui)',
+            fontWeight: 400,
+            textTransform: 'uppercase',
+            letterSpacing: '0.14em',
+            color: 'var(--muted)',
+          }}
+        >
+          {founder.role}
+        </p>
+
+        <h3
+          style={{
+            fontFamily: 'var(--font-display)',
+            fontSize: 'clamp(1.5rem, 2.5vw, 2rem)',
+            fontWeight: 400,
+            fontStyle: 'italic',
+            color: 'var(--text)',
+            lineHeight: 1.1,
+            letterSpacing: '-0.01em',
+          }}
+        >
+          {founder.name}
+        </h3>
+
+        <p
+          style={{
+            fontSize: '0.9rem',
+            fontWeight: 300,
+            fontFamily: 'var(--font-ui)',
+            color: 'var(--muted)',
+            lineHeight: 1.7,
+            marginTop: '0.25rem',
+            maxWidth: 380,
+          }}
+        >
+          {founder.bio}
+        </p>
+      </div>
+    </motion.div>
+  )
+}
+
+// ── FounderBar ────────────────────────────────────────────────────────────────
 
 export function FounderBar() {
   const ref = useRef(null)
   const isInView = useInView(ref, { once: true, margin: '-80px' })
   const shouldReduce = useReducedMotion()
+
+  const animState = shouldReduce ? 'visible' : isInView ? 'visible' : 'hidden'
 
   return (
     <section
@@ -30,85 +201,27 @@ export function FounderBar() {
         borderTop: '1px solid var(--border)',
         borderBottom: '1px solid var(--border)',
       }}
-      className="md:py-32"
+      className="md:py-20"
     >
       <div className="container-site">
         <motion.div
           ref={ref}
-          variants={shouldReduce ? undefined : staggerContainer(0.1)}
+          variants={shouldReduce ? undefined : containerVariants}
           initial={shouldReduce ? undefined : 'hidden'}
-          animate={shouldReduce ? undefined : isInView ? 'visible' : 'hidden'}
+          animate={shouldReduce ? undefined : animState}
+          style={{ display: 'flex', flexDirection: 'column', gap: '2rem' }}
         >
-          <motion.div variants={shouldReduce ? undefined : fadeUp} style={{ marginBottom: '3rem' }}>
+          {/* Label */}
+          <motion.div variants={shouldReduce ? undefined : fadeUp}>
             <SectionLabel>Über uns</SectionLabel>
           </motion.div>
 
-          {/* Founder cards */}
-          <div className="grid grid-cols-1 md:grid-cols-2">
-            {founders.map((founder, i) => (
-              <motion.div
-                key={founder.name}
-                variants={shouldReduce ? undefined : fadeUp}
-                style={{
-                  padding: '2.5rem 0',
-                  paddingRight: i === 0 ? '3rem' : 0,
-                  paddingLeft: i === 1 ? '3rem' : 0,
-                  borderRight: i === 0 ? '1px solid var(--border)' : 'none',
-                  borderTop: i === 1 ? '1px solid var(--border)' : 'none',
-                  position: 'relative',
-                }}
-                className={i === 0 ? 'md:border-r md:border-t-0' : 'md:border-t-0 md:pl-12'}
-              >
-                {/* Accent top line */}
-                <div
-                  style={{
-                    position: 'absolute',
-                    top: 0,
-                    left: i === 1 ? '3rem' : 0,
-                    right: 0,
-                    height: 1,
-                    background: 'var(--accent)',
-                  }}
-                  className={i === 1 ? 'md:left-12' : ''}
-                />
-
-                <p
-                  style={{
-                    fontSize: '0.7rem',
-                    fontWeight: 400,
-                    textTransform: 'uppercase',
-                    letterSpacing: '0.14em',
-                    color: 'var(--muted)',
-                    marginBottom: '0.75rem',
-                  }}
-                >
-                  {founder.role}
-                </p>
-                <h3
-                  style={{
-                    fontFamily: 'var(--font-display)',
-                    fontSize: '2rem',
-                    fontWeight: 400,
-                    fontStyle: 'italic',
-                    color: 'var(--text)',
-                    marginBottom: '1rem',
-                    lineHeight: 1.1,
-                  }}
-                >
-                  {founder.name}
-                </h3>
-                <p
-                  style={{
-                    fontSize: '1rem',
-                    fontWeight: 300,
-                    color: 'var(--muted)',
-                    lineHeight: 1.75,
-                    maxWidth: 340,
-                  }}
-                >
-                  {founder.bio}
-                </p>
-              </motion.div>
+          {/* Cards */}
+          <div
+            style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}
+          >
+            {founders.map((founder) => (
+              <FounderCard key={founder.name} founder={founder} />
             ))}
           </div>
 
@@ -116,8 +229,8 @@ export function FounderBar() {
           <motion.div
             variants={shouldReduce ? undefined : fadeUp}
             style={{
-              marginTop: '3rem',
-              paddingTop: '3rem',
+              marginTop: '1rem',
+              paddingTop: '2.5rem',
               borderTop: '1px solid var(--border)',
               textAlign: 'center',
             }}
@@ -125,11 +238,11 @@ export function FounderBar() {
             <p
               style={{
                 fontFamily: 'var(--font-display)',
-                fontSize: 'clamp(1.2rem, 2.5vw, 1.75rem)',
+                fontSize: 'clamp(1.1rem, 2.2vw, 1.6rem)',
                 fontWeight: 400,
                 fontStyle: 'italic',
                 color: 'var(--text)',
-                lineHeight: 1.5,
+                lineHeight: 1.6,
               }}
             >
               Wenn Sie uns anfragen, sprechen Sie mit uns.
