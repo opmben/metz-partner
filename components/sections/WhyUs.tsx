@@ -69,75 +69,105 @@ function FounderCard({ founder }: { founder: (typeof founders)[0] }) {
   }
 
   return (
-    <div
+    <motion.div
       onMouseEnter={() => setHovered(true)}
       onMouseLeave={() => setHovered(false)}
       onMouseMove={handleMouse}
+      animate={{ borderColor: hovered && !shouldReduce ? founder.accentBorder : 'rgba(240,237,232,0.07)' }}
+      transition={{ duration: 0.3 }}
+      style={{
+        display: 'flex',
+        flexDirection: 'row',
+        overflow: 'hidden',
+        borderRadius: 6,
+        border: '1px solid rgba(240,237,232,0.07)',
+        background: 'rgba(17,17,17,0.6)',
+        backdropFilter: 'blur(20px)',
+        WebkitBackdropFilter: 'blur(20px)',
+        position: 'relative',
+        minHeight: 220,
+      }}
     >
-      {/* Photo frame */}
-      <motion.div
-        animate={{
-          borderColor: hovered ? founder.accentBorder : 'var(--border)',
-        }}
-        transition={{ duration: 0.3 }}
+      {/* Accent top border */}
+      <div
         style={{
-          width: '100%',
-          aspectRatio: '3/4',
-          background: 'var(--surface)',
-          border: '1px solid var(--border)',
-          borderRadius: 4,
+          position: 'absolute',
+          top: 0,
+          left: 0,
+          right: 0,
+          height: 1,
+          background: founder.accentColor,
+          opacity: 0.7,
+          pointerEvents: 'none',
+        }}
+      />
+
+      {/* ── Left panel: photo placeholder (swap for <Image> when ready) ── */}
+      <div
+        style={{
+          width: 200,
+          flexShrink: 0,
           position: 'relative',
           overflow: 'hidden',
+          borderRight: '1px solid rgba(240,237,232,0.07)',
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'center',
           flexDirection: 'column',
+          gap: '1rem',
+          background: `linear-gradient(150deg, ${founder.accentBg} 0%, rgba(8,8,8,0) 70%)`,
         }}
       >
-        {/* Dynamic cursor glow */}
-        <motion.div
-          aria-hidden="true"
-          style={{
-            position: 'absolute',
-            width: '80%',
-            height: '80%',
-            borderRadius: '50%',
-            background: `radial-gradient(circle, ${founder.glowColor}, transparent 70%)`,
-            pointerEvents: 'none',
-            left: springX,
-            top: springY,
-            translateX: '-50%',
-            translateY: '-50%',
-            filter: 'blur(40px)',
-            opacity: hovered ? 1 : 0.3,
-          }}
-          transition={{ opacity: { duration: 0.4 } }}
-        />
-
-        {/* Grid */}
+        {/* Subtle grid */}
         <div
           aria-hidden="true"
           style={{
             position: 'absolute',
             inset: 0,
             backgroundImage:
-              'linear-gradient(rgba(240,237,232,0.025) 1px, transparent 1px), linear-gradient(90deg, rgba(240,237,232,0.025) 1px, transparent 1px)',
-            backgroundSize: '32px 32px',
+              'linear-gradient(rgba(240,237,232,0.02) 1px, transparent 1px), linear-gradient(90deg, rgba(240,237,232,0.02) 1px, transparent 1px)',
+            backgroundSize: '24px 24px',
           }}
         />
 
-        {/* Initial — dramatic scale + ambient float */}
+        {/* Dynamic cursor glow */}
+        <motion.div
+          aria-hidden="true"
+          style={{
+            position: 'absolute',
+            width: '120%',
+            height: '120%',
+            borderRadius: '50%',
+            background: `radial-gradient(circle, ${founder.glowColor}, transparent 65%)`,
+            pointerEvents: 'none',
+            left: springX,
+            top: springY,
+            translateX: '-50%',
+            translateY: '-50%',
+            filter: 'blur(30px)',
+            opacity: hovered && !shouldReduce ? 1 : 0.4,
+          }}
+          transition={{ opacity: { duration: 0.4 } }}
+        />
+
+        {/* Initial */}
         <motion.span
-          animate={shouldReduce ? undefined : hovered
-            ? { scale: 1.1, color: 'rgba(240,237,232,0.12)', y: 0 }
-            : { scale: [1, 1.03, 1], color: 'rgba(240,237,232,0.06)', y: [0, -6, 0] }}
-          transition={hovered
-            ? { duration: 0.5, ease: [0.16, 1, 0.3, 1] }
-            : { duration: 5, repeat: Infinity, ease: 'easeInOut' }}
+          animate={
+            shouldReduce
+              ? undefined
+              : hovered
+              ? { scale: 1.08, color: 'rgba(240,237,232,0.14)' }
+              : { scale: [1, 1.03, 1], color: 'rgba(240,237,232,0.07)', y: [0, -5, 0] }
+          }
+          transition={
+            hovered
+              ? { duration: 0.5, ease: [0.16, 1, 0.3, 1] }
+              : { duration: 5, repeat: Infinity, ease: 'easeInOut' }
+          }
           style={{
             position: 'relative',
             fontFamily: 'var(--font-display)',
-            fontSize: 'clamp(5rem, 12vw, 8rem)',
+            fontSize: 'clamp(4rem, 8vw, 6rem)',
             fontWeight: 400,
             fontStyle: 'italic',
             lineHeight: 1,
@@ -150,71 +180,83 @@ function FounderCard({ founder }: { founder: (typeof founders)[0] }) {
         {/* "Foto folgt" badge */}
         <div
           style={{
-            position: 'absolute',
-            bottom: '1rem',
-            left: '50%',
-            transform: 'translateX(-50%)',
-            background: 'rgba(8,8,8,0.8)',
+            position: 'relative',
+            background: 'rgba(8,8,8,0.75)',
             border: '1px solid rgba(240,237,232,0.08)',
             borderRadius: 100,
-            padding: '0.3rem 0.9rem',
+            padding: '0.25rem 0.75rem',
             backdropFilter: 'blur(8px)',
-            whiteSpace: 'nowrap',
           }}
         >
           <span
             style={{
-              fontSize: '0.55rem',
+              fontSize: '0.52rem',
               textTransform: 'uppercase',
               letterSpacing: '0.12em',
-              color: 'rgba(240,237,232,0.32)',
+              color: 'rgba(240,237,232,0.28)',
               fontFamily: 'var(--font-ui)',
+              whiteSpace: 'nowrap',
             }}
           >
             Foto folgt
           </span>
         </div>
-      </motion.div>
+      </div>
 
-      {/* Name + role */}
-      <div style={{ marginTop: '1.5rem' }}>
+      {/* ── Right panel: info ── */}
+      <div
+        style={{
+          padding: '2.25rem 2.5rem',
+          display: 'flex',
+          flexDirection: 'column',
+          justifyContent: 'center',
+          gap: '0.55rem',
+          flex: 1,
+          minWidth: 0,
+        }}
+      >
         <p
           style={{
-            fontSize: '0.7rem',
+            fontSize: '0.68rem',
+            fontFamily: 'var(--font-ui)',
             fontWeight: 400,
             textTransform: 'uppercase',
             letterSpacing: '0.14em',
             color: 'var(--muted)',
-            marginBottom: '0.4rem',
           }}
         >
           {founder.role}
         </p>
+
         <h3
           style={{
             fontFamily: 'var(--font-display)',
-            fontSize: '1.75rem',
+            fontSize: 'clamp(1.4rem, 2.2vw, 1.9rem)',
             fontWeight: 400,
             fontStyle: 'italic',
             color: 'var(--text)',
-            lineHeight: 1.15,
-            marginBottom: '0.75rem',
+            lineHeight: 1.1,
+            letterSpacing: '-0.01em',
           }}
         >
           {founder.name}
         </h3>
+
         <p
           style={{
-            fontSize: '0.9rem',
+            fontSize: '0.875rem',
             fontWeight: 300,
+            fontFamily: 'var(--font-ui)',
             color: 'var(--muted)',
             lineHeight: 1.75,
+            marginTop: '0.2rem',
+            maxWidth: 400,
           }}
         >
           {founder.bio}
         </p>
       </div>
-    </div>
+    </motion.div>
   )
 }
 
@@ -384,8 +426,7 @@ export function WhyUs() {
           {/* Founders */}
           <motion.div
             variants={shouldReduce ? undefined : staggerContainer(0.15)}
-            style={{ marginBottom: '5rem' }}
-            className="grid grid-cols-1 gap-8 md:grid-cols-2 md:gap-12"
+            style={{ marginBottom: '5rem', display: 'flex', flexDirection: 'column', gap: '1rem' }}
           >
             {founders.map((founder) => (
               <motion.div key={founder.name} variants={shouldReduce ? undefined : fadeUp}>
