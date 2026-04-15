@@ -1,112 +1,57 @@
 'use client'
-import { useRef, useState, useEffect, useMemo } from 'react'
-import { motion, useReducedMotion, useScroll, useTransform, MotionValue } from 'framer-motion'
+import { useRef } from 'react'
+import {
+  motion,
+  useInView,
+  useReducedMotion,
+  type Variants,
+} from 'framer-motion'
 
-// ── Word config ──────────────────────────────────────────────────────────────
-type WordStyle = 'normal' | 'accent' | 'muted'
+// ── Variants ──────────────────────────────────────────────────────────────────
 
-interface WordDef {
-  text: string
-  style: WordStyle
-  italic?: boolean
+const containerVariants: Variants = {
+  hidden: {},
+  visible: {
+    transition: { staggerChildren: 0.2, delayChildren: 0.05 },
+  },
 }
 
-// 3 lines: 6 + 3 + 7 = 16 words
-// Line 1 — "Ihre Website ist oft der erste Eindruck."
-// Line 2 — "Manchmal der einzige."
-// Line 3 — "Wir sorgen dafür, dass er zählt."
-const WORDS: WordDef[] = [
-  { text: 'Ihre',     style: 'normal' },
-  { text: 'Website',  style: 'normal' },
-  { text: 'ist',      style: 'normal' },
-  { text: 'oft',      style: 'normal' },
-  { text: 'der',      style: 'normal' },
-  { text: 'erste',    style: 'accent', italic: true },
-  { text: 'Eindruck.', style: 'accent', italic: true },
-  // line 2
-  { text: 'Manchmal', style: 'normal' },
-  { text: 'der',      style: 'normal' },
-  { text: 'einzige.', style: 'normal' },
-  // line 3
-  { text: 'Wir',      style: 'muted', italic: true },
-  { text: 'sorgen',   style: 'muted', italic: true },
-  { text: 'dafür,',   style: 'muted', italic: true },
-  { text: 'dass',     style: 'muted', italic: true },
-  { text: 'er',       style: 'muted', italic: true },
-  { text: 'zählt.',   style: 'muted', italic: true },
-]
-
-// Each word occupies a window of WINDOW width, staggered by STEP
-const STEP   = 0.050   // offset between consecutive word start points
-const WINDOW = 0.13    // how long each word's reveal takes (in progress units)
-
-// ── WordReveal ────────────────────────────────────────────────────────────────
-function WordReveal({
-  word,
-  index,
-  scrollYProgress,
-}: {
-  word: WordDef
-  index: number
-  scrollYProgress: MotionValue<number>
-}) {
-  const start = index * STEP
-  const end   = start + WINDOW
-
-  const opacity = useTransform(scrollYProgress, [start, end], [0, 1])
-  const y       = useTransform(scrollYProgress, [start, end], [32, 0])
-  const blur    = useTransform(scrollYProgress, [start, end], [8, 0])
-  const filter  = useTransform(blur, (v) => `blur(${v}px)`)
-
-  const color =
-    word.style === 'accent' ? 'var(--accent)' :
-    word.style === 'muted'  ? 'var(--muted)'  :
-    'var(--text)'
-
-  return (
-    <motion.span
-      style={{
-        opacity,
-        y,
-        filter,
-        color,
-        fontStyle: word.italic ? 'italic' : 'normal',
-        display: 'inline-block',
-        willChange: 'transform, opacity, filter',
-      }}
-    >
-      {word.text}
-    </motion.span>
-  )
+// Clip-reveal: line slides up from overflow:hidden parent
+const lineClip: Variants = {
+  hidden: { y: '108%' },
+  visible: {
+    y: '0%',
+    transition: { duration: 1.05, ease: [0.16, 1, 0.3, 1] as const },
+  },
 }
 
-// ── Manifesto ─────────────────────────────────────────────────────────────────
+// Soft fade-up for divider + CTA
+const fadeUp: Variants = {
+  hidden: { opacity: 0, y: 28 },
+  visible: {
+    opacity: 1,
+    y: 0,
+    transition: { duration: 0.9, ease: [0.16, 1, 0.3, 1] as const },
+  },
+}
+
+// Ghost background fades in slowly
+const ghostFade: Variants = {
+  hidden: { opacity: 0 },
+  visible: {
+    opacity: 1,
+    transition: { duration: 2.5, ease: 'easeOut' as const },
+  },
+}
+
+// ── Component ─────────────────────────────────────────────────────────────────
+
 export function Manifesto() {
   const shouldReduce = useReducedMotion()
+  const ref = useRef(null)
+  const isInView = useInView(ref, { once: true, margin: '-100px' })
 
-  const sectionRef = useRef(null)
-  const [mounted, setMounted] = useState(false)
-  useEffect(() => { setMounted(true) }, [])
-
-  const { scrollYProgress } = useScroll({
-    target: mounted ? sectionRef : undefined,
-    offset: ['start 0.92', 'end 0.18'],
-  })
-
-  // Subtle container rotation scrubbed by scroll
-  const containerRotate = useTransform(scrollYProgress, [0, 1], [1.2, 0])
-
-  // CTA fade — starts after the last word is mostly revealed
-  const ctaOpacity = useTransform(scrollYProgress, [0.88, 0.97], [0, 1])
-  const ctaY       = useTransform(scrollYProgress, [0.88, 0.97], [24, 0])
-
-  // Background ghost text parallax
-  const bgTextY = useTransform(scrollYProgress, [0, 1], [80, -80])
-
-  // Split words into lines for layout
-  const line1 = useMemo(() => WORDS.slice(0, 7),  [])
-  const line2 = useMemo(() => WORDS.slice(7, 10),  [])
-  const line3 = useMemo(() => WORDS.slice(10, 16), [])
+  const animState = shouldReduce ? 'visible' : isInView ? 'visible' : 'hidden'
 
   const scrollTo = (e: React.MouseEvent) => {
     e.preventDefault()
@@ -115,26 +60,27 @@ export function Manifesto() {
 
   return (
     <section
-      ref={sectionRef}
       style={{
-        paddingTop: '12rem',
-        paddingBottom: '12rem',
+        paddingTop: '11rem',
+        paddingBottom: '11rem',
         position: 'relative',
         overflow: 'hidden',
         textAlign: 'center',
       }}
     >
-      {/* Oversized ghost type — depth layer */}
+      {/* ── Oversized ghost "Eindruck" — depth layer ── */}
       {!shouldReduce && (
         <motion.div
           aria-hidden="true"
+          variants={ghostFade}
+          initial="hidden"
+          animate={isInView ? 'visible' : 'hidden'}
           style={{
             position: 'absolute',
             inset: 0,
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'center',
-            y: bgTextY,
             pointerEvents: 'none',
             userSelect: 'none',
           }}
@@ -143,10 +89,10 @@ export function Manifesto() {
             style={{
               fontFamily: 'var(--font-display)',
               fontStyle: 'italic',
-              fontSize: 'clamp(12rem, 30vw, 32rem)',
+              fontSize: 'clamp(10rem, 28vw, 30rem)',
               lineHeight: 0.85,
               color: 'transparent',
-              WebkitTextStroke: '1px rgba(240,237,232,0.035)',
+              WebkitTextStroke: '1px rgba(240,237,232,0.032)',
               whiteSpace: 'nowrap',
               letterSpacing: '-0.04em',
             }}
@@ -156,7 +102,7 @@ export function Manifesto() {
         </motion.div>
       )}
 
-      {/* Radial lime glow */}
+      {/* ── Radial lime glow ── */}
       <div
         aria-hidden="true"
         style={{
@@ -164,173 +110,114 @@ export function Manifesto() {
           top: '50%',
           left: '50%',
           transform: 'translate(-50%, -50%)',
-          width: '70vw',
-          height: '70vw',
-          maxWidth: 1100,
-          maxHeight: 1100,
+          width: '65vw',
+          height: '65vw',
+          maxWidth: 1000,
+          maxHeight: 1000,
           borderRadius: '50%',
-          background: 'radial-gradient(circle, rgba(200,255,0,0.04), transparent 65%)',
+          background:
+            'radial-gradient(circle, rgba(200,255,0,0.05), transparent 65%)',
           filter: 'blur(80px)',
           pointerEvents: 'none',
         }}
       />
 
+      {/* ── Content ── */}
       <div className="container-site" style={{ position: 'relative' }}>
-        <div
+        <motion.div
+          ref={ref}
+          variants={shouldReduce ? undefined : containerVariants}
+          initial={shouldReduce ? undefined : 'hidden'}
+          animate={shouldReduce ? undefined : animState}
           style={{
             display: 'flex',
             flexDirection: 'column',
             alignItems: 'center',
-            gap: '3.5rem',
+            gap: '3rem',
           }}
         >
           {/* ── Manifesto text ── */}
-          {shouldReduce ? (
-            /* Static fallback for reduced-motion */
+          <div
+            className="display-manifesto"
+            style={{ maxWidth: 980, width: '100%' }}
+          >
+            {/* Line 1 */}
             <div
-              className="display-manifesto"
-              style={{ maxWidth: 960, lineHeight: 1.12 }}
+              style={{ overflow: 'hidden', paddingBottom: '0.07em' }}
             >
-              <span>Ihre Website ist oft der </span>
-              <em style={{ color: 'var(--accent)' }}>erste Eindruck</em>
-              <span>.</span>
-              <br />
-              <span>Manchmal der einzige.</span>
-              <br />
-              <span style={{ color: 'var(--muted)', fontStyle: 'italic' }}>
-                Wir sorgen dafür, dass er zählt.
-              </span>
+              <motion.div
+                variants={shouldReduce ? undefined : lineClip}
+              >
+                <span>Ihre Website ist oft der&nbsp;</span>
+                <em style={{ color: 'var(--accent)' }}>erste Eindruck</em>
+                <span>.</span>
+              </motion.div>
             </div>
-          ) : (
-            <motion.div
-              className="display-manifesto"
-              style={{
-                maxWidth: 960,
-                lineHeight: 1.12,
-                rotate: containerRotate,
-                transformOrigin: 'center 60%',
-              }}
+
+            {/* Line 2 */}
+            <div
+              style={{ overflow: 'hidden', paddingBottom: '0.07em' }}
             >
-              {/* Line 1 */}
-              <div
+              <motion.div
+                variants={shouldReduce ? undefined : lineClip}
+              >
+                Manchmal der einzige.
+              </motion.div>
+            </div>
+
+            {/* Line 3 */}
+            <div
+              style={{ overflow: 'hidden', paddingBottom: '0.07em' }}
+            >
+              <motion.div
+                variants={shouldReduce ? undefined : lineClip}
                 style={{
-                  display: 'flex',
-                  flexWrap: 'wrap',
-                  justifyContent: 'center',
-                  gap: '0.28em',
-                  marginBottom: '0.08em',
+                  color: 'var(--muted)',
+                  fontStyle: 'italic',
                 }}
               >
-                {line1.map((word, i) => (
-                  <WordReveal
-                    key={i}
-                    word={word}
-                    index={i}
-                    scrollYProgress={scrollYProgress}
-                  />
-                ))}
-              </div>
+                Wir sorgen dafür, dass er zählt.
+              </motion.div>
+            </div>
+          </div>
 
-              {/* Line 2 */}
-              <div
-                style={{
-                  display: 'flex',
-                  flexWrap: 'wrap',
-                  justifyContent: 'center',
-                  gap: '0.28em',
-                  marginBottom: '0.08em',
-                }}
-              >
-                {line2.map((word, i) => (
-                  <WordReveal
-                    key={i}
-                    word={word}
-                    index={7 + i}
-                    scrollYProgress={scrollYProgress}
-                  />
-                ))}
-              </div>
-
-              {/* Line 3 */}
-              <div
-                style={{
-                  display: 'flex',
-                  flexWrap: 'wrap',
-                  justifyContent: 'center',
-                  gap: '0.28em',
-                }}
-              >
-                {line3.map((word, i) => (
-                  <WordReveal
-                    key={i}
-                    word={word}
-                    index={10 + i}
-                    scrollYProgress={scrollYProgress}
-                  />
-                ))}
-              </div>
-            </motion.div>
-          )}
-
-          {/* Accent divider */}
+          {/* ── Accent divider ── */}
           <motion.div
+            variants={shouldReduce ? undefined : fadeUp}
             style={{
               width: 1,
-              height: 52,
-              background: 'linear-gradient(to bottom, rgba(200,255,0,0.65), transparent)',
-              opacity: shouldReduce ? 1 : ctaOpacity,
+              height: 56,
+              background:
+                'linear-gradient(to bottom, rgba(200,255,0,0.6), transparent)',
             }}
           />
 
-          {/* CTA */}
-          {shouldReduce ? (
-            <a
-              href="#kontakt"
-              onClick={scrollTo}
-              style={{
-                background: 'var(--accent)',
-                color: 'var(--bg)',
-                fontFamily: 'var(--font-ui)',
-                fontSize: '0.85rem',
-                fontWeight: 500,
-                textTransform: 'uppercase',
-                letterSpacing: '0.08em',
-                padding: '1rem 2.5rem',
-                borderRadius: 100,
-                textDecoration: 'none',
-                display: 'inline-block',
-              }}
-            >
-              Jetzt Projekt anfragen →
-            </a>
-          ) : (
-            <motion.a
-              href="#kontakt"
-              onClick={scrollTo}
-              style={{
-                background: 'var(--accent)',
-                color: 'var(--bg)',
-                fontFamily: 'var(--font-ui)',
-                fontSize: '0.85rem',
-                fontWeight: 500,
-                textTransform: 'uppercase',
-                letterSpacing: '0.08em',
-                padding: '1rem 2.5rem',
-                borderRadius: 100,
-                textDecoration: 'none',
-                display: 'inline-block',
-                opacity: ctaOpacity,
-                y: ctaY,
-                boxShadow: '0 0 40px rgba(200,255,0,0.18)',
-              }}
-              whileHover={{ scale: 1.04, y: -3 }}
-              whileTap={{ scale: 0.97 }}
-              transition={{ duration: 0.2 }}
-            >
-              Jetzt Projekt anfragen →
-            </motion.a>
-          )}
-        </div>
+          {/* ── CTA ── */}
+          <motion.a
+            href="#kontakt"
+            onClick={scrollTo}
+            variants={shouldReduce ? undefined : fadeUp}
+            whileHover={shouldReduce ? undefined : { scale: 1.04, y: -3 }}
+            whileTap={shouldReduce ? undefined : { scale: 0.97 }}
+            transition={{ duration: 0.2 }}
+            style={{
+              background: 'var(--accent)',
+              color: 'var(--bg)',
+              fontFamily: 'var(--font-ui)',
+              fontSize: '0.85rem',
+              fontWeight: 500,
+              textTransform: 'uppercase',
+              letterSpacing: '0.08em',
+              padding: '1rem 2.5rem',
+              borderRadius: 100,
+              textDecoration: 'none',
+              display: 'inline-block',
+              boxShadow: '0 0 40px rgba(200,255,0,0.15)',
+            }}
+          >
+            Jetzt Projekt anfragen →
+          </motion.a>
+        </motion.div>
       </div>
     </section>
   )
