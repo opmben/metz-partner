@@ -97,8 +97,8 @@ export function FAQ() {
                     value={String(i)}
                     style={{
                       border: '1px solid var(--border)',
-                      borderRadius: 4,
-                      background: 'var(--surface)',
+                      borderRadius: 5,
+                      background: 'rgba(255,255,255,0.03)',
                       overflow: 'hidden',
                     }}
                     className="transition-colors duration-300 hover:[border-color:var(--border-hover)]"
