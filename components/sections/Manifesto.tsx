@@ -1,11 +1,89 @@
 'use client'
-import { useRef, useCallback, useState } from 'react'
-import { motion, useReducedMotion, useScroll, useTransform } from 'framer-motion'
+import { useRef, useCallback, useState, useMemo } from 'react'
+import { motion, useReducedMotion, useScroll, useTransform, MotionValue } from 'framer-motion'
 
+// ── Word config ──────────────────────────────────────────────────────────────
+type WordStyle = 'normal' | 'accent' | 'muted'
+
+interface WordDef {
+  text: string
+  style: WordStyle
+  italic?: boolean
+}
+
+// 3 lines: 6 + 3 + 7 = 16 words
+// Line 1 — "Ihre Website ist oft der erste Eindruck."
+// Line 2 — "Manchmal der einzige."
+// Line 3 — "Wir sorgen dafür, dass er zählt."
+const WORDS: WordDef[] = [
+  { text: 'Ihre',     style: 'normal' },
+  { text: 'Website',  style: 'normal' },
+  { text: 'ist',      style: 'normal' },
+  { text: 'oft',      style: 'normal' },
+  { text: 'der',      style: 'normal' },
+  { text: 'erste',    style: 'accent', italic: true },
+  { text: 'Eindruck.', style: 'accent', italic: true },
+  // line 2
+  { text: 'Manchmal', style: 'normal' },
+  { text: 'der',      style: 'normal' },
+  { text: 'einzige.', style: 'normal' },
+  // line 3
+  { text: 'Wir',      style: 'muted', italic: true },
+  { text: 'sorgen',   style: 'muted', italic: true },
+  { text: 'dafür,',   style: 'muted', italic: true },
+  { text: 'dass',     style: 'muted', italic: true },
+  { text: 'er',       style: 'muted', italic: true },
+  { text: 'zählt.',   style: 'muted', italic: true },
+]
+
+// Each word occupies a window of WINDOW width, staggered by STEP
+const STEP   = 0.042   // offset between consecutive word start points
+const WINDOW = 0.18    // how long each word's reveal takes (in progress units)
+
+// ── WordReveal ────────────────────────────────────────────────────────────────
+function WordReveal({
+  word,
+  index,
+  scrollYProgress,
+}: {
+  word: WordDef
+  index: number
+  scrollYProgress: MotionValue<number>
+}) {
+  const start = index * STEP
+  const end   = start + WINDOW
+
+  const opacity = useTransform(scrollYProgress, [start, end], [0, 1])
+  const y       = useTransform(scrollYProgress, [start, end], [32, 0])
+  const blur    = useTransform(scrollYProgress, [start, end], [8, 0])
+  const filter  = useTransform(blur, (v) => `blur(${v}px)`)
+
+  const color =
+    word.style === 'accent' ? 'var(--accent)' :
+    word.style === 'muted'  ? 'var(--muted)'  :
+    'var(--text)'
+
+  return (
+    <motion.span
+      style={{
+        opacity,
+        y,
+        filter,
+        color,
+        fontStyle: word.italic ? 'italic' : 'normal',
+        display: 'inline-block',
+        willChange: 'transform, opacity, filter',
+      }}
+    >
+      {word.text}
+    </motion.span>
+  )
+}
+
+// ── Manifesto ─────────────────────────────────────────────────────────────────
 export function Manifesto() {
   const shouldReduce = useReducedMotion()
 
-  // Callback ref: element is guaranteed mounted when passed to useScroll
   const sectionRef = useRef<HTMLElement | null>(null)
   const [sectionEl, setSectionEl] = useState<HTMLElement | null>(null)
 
@@ -14,31 +92,25 @@ export function Manifesto() {
     setSectionEl(el)
   }, [])
 
-  // Wide offset so reveal spans the full time section is in view
   const { scrollYProgress } = useScroll({
     target: sectionEl ? sectionRef : undefined,
-    offset: ['start 0.92', 'end 0.15'],
+    offset: ['start 0.88', 'end 0.12'],
   })
 
-  // ── Line 1: "Ihre Website ist oft der erste Eindruck." ──
-  const line1Opacity = useTransform(scrollYProgress, [0, 0.28], [0, 1])
-  const line1Y      = useTransform(scrollYProgress, [0, 0.28], [48, 0])
-  const line1Blur   = useTransform(scrollYProgress, [0, 0.28], [6, 0])
+  // Subtle container rotation scrubbed by scroll
+  const containerRotate = useTransform(scrollYProgress, [0, 1], [1.2, 0])
 
-  // ── Line 2: "Manchmal der einzige." ──
-  const line2Opacity = useTransform(scrollYProgress, [0.2, 0.5], [0, 1])
-  const line2Y       = useTransform(scrollYProgress, [0.2, 0.5], [48, 0])
+  // CTA fade — starts after the last word is mostly revealed
+  const ctaOpacity = useTransform(scrollYProgress, [0.82, 0.95], [0, 1])
+  const ctaY       = useTransform(scrollYProgress, [0.82, 0.95], [24, 0])
 
-  // ── Line 3: "Wir sorgen dafür, dass er zählt." ──
-  const line3Opacity = useTransform(scrollYProgress, [0.4, 0.68], [0, 1])
-  const line3Y       = useTransform(scrollYProgress, [0.4, 0.68], [48, 0])
-
-  // ── Divider + CTA ──
-  const ctaOpacity = useTransform(scrollYProgress, [0.6, 0.85], [0, 1])
-  const ctaY       = useTransform(scrollYProgress, [0.6, 0.85], [28, 0])
-
-  // ── Background oversized type ──
+  // Background ghost text parallax
   const bgTextY = useTransform(scrollYProgress, [0, 1], [80, -80])
+
+  // Split words into lines for layout
+  const line1 = useMemo(() => WORDS.slice(0, 7),  [])
+  const line2 = useMemo(() => WORDS.slice(7, 10),  [])
+  const line3 = useMemo(() => WORDS.slice(10, 16), [])
 
   const scrollTo = (e: React.MouseEvent) => {
     e.preventDefault()
@@ -117,71 +189,92 @@ export function Manifesto() {
           }}
         >
           {/* ── Manifesto text ── */}
-          <div
-            className="display-manifesto"
-            style={{ maxWidth: 960, position: 'relative', lineHeight: 1.12 }}
-          >
-            {shouldReduce ? (
-              /* Static fallback */
-              <>
-                <span>Ihre Website ist oft der </span>
-                <em style={{ color: 'var(--accent)' }}>erste Eindruck</em>
-                <span>.</span>
-                <br />
-                <span>Manchmal der einzige.</span>
-                <br />
-                <span style={{ color: 'var(--muted)' }}>
-                  Wir sorgen dafür, dass er zählt.
-                </span>
-              </>
-            ) : (
-              <div style={{ display: 'flex', flexDirection: 'column', gap: '0.1em' }}>
-                {/* Line 1 */}
-                <div style={{ overflow: 'hidden', paddingBottom: '0.05em' }}>
-                  <motion.div
-                    style={{
-                      opacity: line1Opacity,
-                      y: line1Y,
-                      filter: useTransform(line1Blur, (v) => `blur(${v}px)`),
-                      display: 'block',
-                    }}
-                  >
-                    <span>Ihre Website ist oft der </span>
-                    <em style={{ color: 'var(--accent)' }}>erste Eindruck</em>
-                    <span>.</span>
-                  </motion.div>
-                </div>
-
-                {/* Line 2 */}
-                <div style={{ overflow: 'hidden', paddingBottom: '0.05em' }}>
-                  <motion.div
-                    style={{
-                      opacity: line2Opacity,
-                      y: line2Y,
-                      display: 'block',
-                    }}
-                  >
-                    Manchmal der einzige.
-                  </motion.div>
-                </div>
-
-                {/* Line 3 */}
-                <div style={{ overflow: 'hidden', paddingBottom: '0.05em' }}>
-                  <motion.div
-                    style={{
-                      opacity: line3Opacity,
-                      y: line3Y,
-                      display: 'block',
-                      color: 'var(--muted)',
-                      fontStyle: 'italic',
-                    }}
-                  >
-                    Wir sorgen dafür, dass er zählt.
-                  </motion.div>
-                </div>
+          {shouldReduce ? (
+            /* Static fallback for reduced-motion */
+            <div
+              className="display-manifesto"
+              style={{ maxWidth: 960, lineHeight: 1.12 }}
+            >
+              <span>Ihre Website ist oft der </span>
+              <em style={{ color: 'var(--accent)' }}>erste Eindruck</em>
+              <span>.</span>
+              <br />
+              <span>Manchmal der einzige.</span>
+              <br />
+              <span style={{ color: 'var(--muted)', fontStyle: 'italic' }}>
+                Wir sorgen dafür, dass er zählt.
+              </span>
+            </div>
+          ) : (
+            <motion.div
+              className="display-manifesto"
+              style={{
+                maxWidth: 960,
+                lineHeight: 1.12,
+                rotate: containerRotate,
+                transformOrigin: 'center 60%',
+              }}
+            >
+              {/* Line 1 */}
+              <div
+                style={{
+                  display: 'flex',
+                  flexWrap: 'wrap',
+                  justifyContent: 'center',
+                  gap: '0.28em',
+                  marginBottom: '0.08em',
+                }}
+              >
+                {line1.map((word, i) => (
+                  <WordReveal
+                    key={i}
+                    word={word}
+                    index={i}
+                    scrollYProgress={scrollYProgress}
+                  />
+                ))}
               </div>
-            )}
-          </div>
+
+              {/* Line 2 */}
+              <div
+                style={{
+                  display: 'flex',
+                  flexWrap: 'wrap',
+                  justifyContent: 'center',
+                  gap: '0.28em',
+                  marginBottom: '0.08em',
+                }}
+              >
+                {line2.map((word, i) => (
+                  <WordReveal
+                    key={i}
+                    word={word}
+                    index={7 + i}
+                    scrollYProgress={scrollYProgress}
+                  />
+                ))}
+              </div>
+
+              {/* Line 3 */}
+              <div
+                style={{
+                  display: 'flex',
+                  flexWrap: 'wrap',
+                  justifyContent: 'center',
+                  gap: '0.28em',
+                }}
+              >
+                {line3.map((word, i) => (
+                  <WordReveal
+                    key={i}
+                    word={word}
+                    index={10 + i}
+                    scrollYProgress={scrollYProgress}
+                  />
+                ))}
+              </div>
+            </motion.div>
+          )}
 
           {/* Accent divider */}
           <motion.div
