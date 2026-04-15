@@ -135,7 +135,7 @@ export function FAQ() {
                             style={{
                               fontFamily: 'var(--font-ui)',
                               fontSize: 'clamp(1rem, 1.8vw, 1.2rem)',
-                              fontWeight: 700,
+                              fontWeight: 500,
                               color: 'var(--text)',
                               lineHeight: 1.3,
                               minWidth: 0,
