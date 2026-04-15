@@ -1,5 +1,5 @@
 'use client'
-import { useRef } from 'react'
+import { useRef, useState, useEffect } from 'react'
 import Link from 'next/link'
 import {
   motion,
@@ -19,16 +19,21 @@ export function Projects() {
   const isInView = useInView(ref, { once: true, margin: '-80px' })
   const shouldReduce = useReducedMotion()
 
+  const [mounted, setMounted] = useState(false)
+  useEffect(() => { setMounted(true) }, [])
+
+  // Only show projects with a real coverImage (imageReady = true)
+  const realProjects = projects.filter((p) => p.imageReady && p.coverImage)
+
   // Parallax for the decorative background word — must be before any early return
+  // target only when mounted AND section will actually render (avoids unhydrated-ref error)
   const { scrollYProgress } = useScroll({
-    target: sectionRef,
+    target: (mounted && realProjects.length >= 2) ? sectionRef : undefined,
     offset: ['start end', 'end start'],
   })
   const bgNumberY = useTransform(scrollYProgress, [0, 1], [80, -80])
   const bgNumberOpacity = useTransform(scrollYProgress, [0, 0.3, 0.7, 1], [0, 0.04, 0.04, 0])
 
-  // Only show projects with a real coverImage (imageReady = true)
-  const realProjects = projects.filter((p) => p.imageReady && p.coverImage)
   if (realProjects.length < 2) return null
 
   const displayProjects = realProjects.slice(0, 2)

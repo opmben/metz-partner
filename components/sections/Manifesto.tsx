@@ -1,13 +1,16 @@
 'use client'
-import { useRef } from 'react'
+import { useRef, useState, useEffect } from 'react'
 import { motion, useReducedMotion, useScroll, useTransform } from 'framer-motion'
 
 export function Manifesto() {
   const sectionRef = useRef<HTMLElement>(null)
   const shouldReduce = useReducedMotion()
 
+  const [mounted, setMounted] = useState(false)
+  useEffect(() => { setMounted(true) }, [])
+
   const { scrollYProgress } = useScroll({
-    target: sectionRef,
+    target: mounted ? sectionRef : undefined,
     offset: ['start 0.85', 'end 0.35'],
   })
 

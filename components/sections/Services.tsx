@@ -1,6 +1,6 @@
 'use client'
 
-import { useRef, useCallback } from 'react'
+import { useRef, useCallback, useState, useEffect } from 'react'
 import {
   motion,
   useInView,
@@ -814,9 +814,12 @@ export function Services() {
   const isHeaderInView = useInView(headerRef, { once: true, margin: '-80px' })
   const shouldReduce = useReducedMotion()
 
+  const [mounted, setMounted] = useState(false)
+  useEffect(() => { setMounted(true) }, [])
+
   // Vertical scroll-progress line
   const { scrollYProgress } = useScroll({
-    target: sectionRef,
+    target: mounted ? sectionRef : undefined,
     offset: ['start 65%', 'end 35%'],
   })
   const lineHeight = useTransform(scrollYProgress, [0, 1], ['0%', '100%'])

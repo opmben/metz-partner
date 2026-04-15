@@ -1,5 +1,5 @@
 'use client'
-import { useRef, useState } from 'react'
+import { useRef, useState, useEffect } from 'react'
 import {
   motion,
   useInView,
@@ -301,8 +301,11 @@ export function WhyUs() {
   const sectionRef = useRef(null)
   const isInView = useInView(ref, { once: true, margin: '-80px' })
   const shouldReduce = useReducedMotion()
+  const [mounted, setMounted] = useState(false)
+  useEffect(() => { setMounted(true) }, [])
+
   const { scrollYProgress } = useScroll({
-    target: sectionRef,
+    target: mounted ? sectionRef : undefined,
     offset: ['start end', 'end start'],
   })
   const bgY = useTransform(scrollYProgress, [0, 1], [40, -40])

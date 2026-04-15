@@ -10,7 +10,7 @@ import {
 } from 'framer-motion'
 import { fadeUp, blurIn, charReveal, charContainer } from '@/lib/animations'
 import { ArrowRight } from 'lucide-react'
-import { HeroCanvasDynamic } from '@/components/shared/HeroCanvasDynamic'
+import { ColorBendsBackground } from '@/components/shared/ColorBendsBackground'
 
 const subscribe = () => () => {}
 const getClientSnapshot = () => true
@@ -94,29 +94,15 @@ function MagneticButton({
 }
 
 
-/* ── orb animations ── */
-const orb1Animation = {
-  animate: { x: [0, -80, 50, 0], y: [0, 50, -40, 0], scale: [1, 1.15, 0.9, 1] },
-  transition: { duration: 18, repeat: Infinity, ease: 'easeInOut' as const },
-}
-const orb2Animation = {
-  animate: { x: [0, 60, -40, 0], y: [0, -50, 40, 0], scale: [1, 0.9, 1.12, 1] },
-  transition: { duration: 22, repeat: Infinity, ease: 'easeInOut' as const },
-}
-const orb3Animation = {
-  animate: { x: [0, -30, 40, 0], y: [0, 30, -20, 0], scale: [1, 1.05, 0.95, 1] },
-  transition: { duration: 26, repeat: Infinity, ease: 'easeInOut' as const },
-}
-
 /* ── Hero component ── */
 export function Hero() {
   const mounted = useSyncExternalStore(subscribe, getClientSnapshot, getServerSnapshot)
   const shouldReduce = useReducedMotion()
   const sectionRef = useRef<HTMLElement>(null)
 
-  // Scroll-linked parallax
+  // Scroll-linked parallax — target only after mount to avoid framer-motion ref error
   const { scrollYProgress } = useScroll({
-    target: sectionRef,
+    target: mounted ? sectionRef : undefined,
     offset: ['start start', 'end start'],
   })
   const parallaxY = useTransform(scrollYProgress, [0, 1], [0, 150])
@@ -152,68 +138,8 @@ export function Hero() {
         }}
       />
 
-      {/* Three.js wireframe — right half, SSR-safe */}
-      {mounted && !shouldReduce && <HeroCanvasDynamic />}
-
-      {/* Colour orbs — deeper, richer, 3 layers */}
-      {mounted && !shouldReduce && (
-        <>
-          <motion.div
-            aria-hidden="true"
-            animate={orb1Animation.animate}
-            transition={orb1Animation.transition}
-            style={{
-              position: 'absolute',
-              top: '-15%',
-              right: '-8%',
-              width: '75vw',
-              height: '90vw',
-              maxWidth: 1100,
-              maxHeight: 1300,
-              borderRadius: '50%',
-              background: 'radial-gradient(circle, rgba(200,255,0,0.07), transparent 65%)',
-              filter: 'blur(160px)',
-              pointerEvents: 'none',
-            }}
-          />
-          <motion.div
-            aria-hidden="true"
-            animate={orb2Animation.animate}
-            transition={orb2Animation.transition}
-            style={{
-              position: 'absolute',
-              bottom: '5%',
-              left: '-12%',
-              width: '55vw',
-              height: '55vw',
-              maxWidth: 750,
-              maxHeight: 750,
-              borderRadius: '50%',
-              background: 'radial-gradient(circle, rgba(255,107,53,0.06), transparent 65%)',
-              filter: 'blur(140px)',
-              pointerEvents: 'none',
-            }}
-          />
-          <motion.div
-            aria-hidden="true"
-            animate={orb3Animation.animate}
-            transition={orb3Animation.transition}
-            style={{
-              position: 'absolute',
-              top: '30%',
-              left: '25%',
-              width: '40vw',
-              height: '40vw',
-              maxWidth: 500,
-              maxHeight: 500,
-              borderRadius: '50%',
-              background: 'radial-gradient(circle, rgba(120,80,255,0.04), transparent 65%)',
-              filter: 'blur(120px)',
-              pointerEvents: 'none',
-            }}
-          />
-        </>
-      )}
+      {/* ColorBends GLSL shader background — SSR-safe */}
+      {mounted && !shouldReduce && <ColorBendsBackground />}
 
       {/* Main content — parallax fade on scroll */}
       <motion.div

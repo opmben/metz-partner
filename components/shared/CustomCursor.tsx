@@ -1,14 +1,20 @@
 'use client'
-import { useEffect, useState } from 'react'
+import { useEffect, useState, useSyncExternalStore } from 'react'
 import { motion, useMotionValue, useSpring } from 'framer-motion'
 
+const subscribe = () => () => {}
+const getClientSnapshot = () => true
+const getServerSnapshot = () => false
+
 export function CustomCursor() {
+  const mounted = useSyncExternalStore(subscribe, getClientSnapshot, getServerSnapshot)
   const [isPointer, setIsPointer] = useState(false)
   const [isVisible, setIsVisible] = useState(false)
-  // Lazy initializer — reads matchMedia once at mount, never needs updating
-  const [isPointerDevice] = useState(
-    () => typeof window !== 'undefined' && window.matchMedia('(pointer: fine)').matches
-  )
+  const [isPointerDevice, setIsPointerDevice] = useState(false)
+
+  useEffect(() => {
+    setIsPointerDevice(window.matchMedia('(pointer: fine)').matches)
+  }, [])
 
   // Raw cursor position
   const cursorX = useMotionValue(-100)
@@ -67,7 +73,7 @@ export function CustomCursor() {
     ringBorderOpacity.set(isPointer ? 0.6 : 0.35)
   }, [isPointer, ringSize, ringBorderOpacity])
 
-  if (!isPointerDevice) return null
+  if (!mounted || !isPointerDevice) return null
 
   return (
     <>
