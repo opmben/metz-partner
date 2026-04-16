@@ -307,9 +307,9 @@ export function Hero() {
           >
             Wir sind{' '}
             <span style={{ color: 'var(--text)', fontWeight: 400 }}>
-              Benedikt und Maximilian
+              Metz & Partner
             </span>{' '}
-            — zwei Webdeveloper aus Koblenz, die Websites bauen, die nicht nur gut aussehen,
+            — Webdeveloper aus Koblenz, die Websites bauen, die nicht nur gut aussehen,
             sondern echte Ergebnisse liefern.
           </motion.p>
 
