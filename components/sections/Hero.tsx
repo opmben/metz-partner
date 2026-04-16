@@ -120,6 +120,7 @@ export function Hero() {
       style={{
         position: 'relative',
         minHeight: '100vh',
+        marginTop: '-72px',
         display: 'flex',
         alignItems: 'center',
         overflow: 'hidden',
