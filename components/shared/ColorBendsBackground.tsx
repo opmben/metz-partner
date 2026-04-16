@@ -13,16 +13,14 @@ export function ColorBendsBackground() {
     >
       <ColorBends
         colors={['#080808', '#0d1a00', '#1a2e00', '#C8FF00', '#080808', '#111111', '#0a1400', '#080808']}
-        speed={0.3}
-        scale={1.2}
-        frequency={0.5}
-        warpStrength={0.8}
-        intensity={0.35}
-        mouseInfluence={0.08}
-        parallax={0.6}
-        iterations={4}
-        noise={0.2}
-        bandWidth={5}
+        speed={1.0}
+        frequency={1.2}
+        noise={0.49}
+        bandWidth={0.14}
+        rotation={92}
+        fadeTop={0.75}
+        iterations={2}
+        intensity={1.3}
       />
     </div>
   )
