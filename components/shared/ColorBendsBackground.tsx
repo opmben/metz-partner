@@ -22,8 +22,8 @@ export function ColorBendsBackground() {
         warpStrength={1}
         mouseInfluence={1}
         parallax={0.5}
-        noise={0.4}
-        iterations={1}
+        noise={0.3}
+        iterations={2}
         intensity={1.5}
         bandWidth={6}
       />
