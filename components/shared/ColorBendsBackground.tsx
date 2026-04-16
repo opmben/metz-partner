@@ -14,7 +14,7 @@ export function ColorBendsBackground() {
       <ColorBends
         colors={['#080808', '#0d1a00', '#1a2e00', '#C8FF00', '#080808', '#111111', '#0a1400', '#080808']}
         rotation={90}
-        speed={1}
+        speed={0.4}
         transparent={false}
         autoRotate={0}
         scale={1}
