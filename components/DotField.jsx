@@ -106,27 +106,20 @@ const DotField = memo(({
 
     const speedInterval = setInterval(updateMouseSpeed, 20);
 
-    // Scroll-driven time — wave flows with scroll, freezes when idle
-    const scrollState = { t: 0, velocity: 0, lastY: typeof window !== 'undefined' ? window.scrollY : 0 };
-
-    function onScroll() {
-      const dy = window.scrollY - scrollState.lastY;
-      scrollState.velocity += Math.abs(dy) * 0.14;
-      scrollState.lastY = window.scrollY;
-    }
-    window.addEventListener('scroll', onScroll, { passive: true });
+    let frameCount = 0;
 
     function tick() {
+      frameCount++;
       const dots = dotsRef.current;
       const m = mouseRef.current;
       const { w, h } = sizeRef.current;
       const p = propsRef.current;
       const len = dots.length;
+      const t = frameCount * 0.02;
 
-      // Decay scroll velocity, advance time — tiny ambient drift so dots feel alive at rest
-      scrollState.velocity *= 0.88;
-      scrollState.t += scrollState.velocity * 0.012 + 0.0025;
-      const t = scrollState.t;
+      // Scroll-through: how far down the user has scrolled, wrapped to canvas height.
+      // Dots are offset by this amount so the field feels fixed in page space.
+      const scrollMod = h > 0 ? (window.scrollY % h + h) % h : 0;
 
       const targetEngagement = Math.min(m.speed / 5, 1);
       engagement.current += (targetEngagement - engagement.current) * 0.06;
@@ -157,20 +150,28 @@ const DotField = memo(({
 
       for (let i = 0; i < len; i++) {
         const d = dots[i];
-        const dx = m.x - d.ax;
-        const dy = m.y - d.ay;
-        const distSq = dx * dx + dy * dy;
+
+        // Visual (viewport) Y of this dot after scroll offset — wraps seamlessly.
+        const visualY = ((d.sy - scrollMod) % h + h) % h;
+
+        // Distance from cursor to the dot's VISUAL position.
+        // Use torus-corrected Y so interaction is correct across the wrap boundary.
+        const dxC = m.x - d.sx;
+        let dyC = m.y - visualY;
+        if (dyC > h / 2) dyC -= h;
+        if (dyC < -h / 2) dyC += h;
+        const distSq = dxC * dxC + dyC * dyC;
 
         if (distSq < crSq && eng > 0.01) {
           const dist = Math.sqrt(distSq);
           if (isBulge) {
-            const t = 1 - dist / cr;
-            const push = t * t * p.bulgeStrength * eng;
-            const angle = Math.atan2(dy, dx);
+            const tLocal = 1 - dist / cr;
+            const push = tLocal * tLocal * p.bulgeStrength * eng;
+            const angle = Math.atan2(dyC, dxC);
             d.sx += (d.ax - Math.cos(angle) * push - d.sx) * 0.15;
             d.sy += (d.ay - Math.sin(angle) * push - d.sy) * 0.15;
           } else {
-            const angle = Math.atan2(dy, dx);
+            const angle = Math.atan2(dyC, dxC);
             const move = (500 / dist) * (m.speed * p.cursorForce);
             d.vx += Math.cos(angle) * -move;
             d.vy += Math.sin(angle) * -move;
@@ -189,8 +190,10 @@ const DotField = memo(({
           d.sy += (d.y - d.sy) * 0.1;
         }
 
+        // Draw at the scroll-offset visual position
         let drawX = d.sx;
-        let drawY = d.sy;
+        let drawY = ((d.sy - scrollMod) % h + h) % h;
+
         if (p.waveAmplitude > 0) {
           drawY += Math.sin(d.ax * 0.03 + t) * p.waveAmplitude;
           drawX += Math.cos(d.ay * 0.03 + t * 0.7) * p.waveAmplitude * 0.5;
@@ -232,7 +235,6 @@ const DotField = memo(({
       clearTimeout(resizeTimer);
       window.removeEventListener('resize', resize);
       window.removeEventListener('mousemove', onMouseMove);
-      window.removeEventListener('scroll', onScroll);
     };
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
