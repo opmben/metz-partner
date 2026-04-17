@@ -1,28 +1,12 @@
 'use client'
-import { useRef, useState, useEffect } from 'react'
+import { useRef, useState } from 'react'
 import {
   motion,
   useInView,
   useReducedMotion,
   useScroll,
   useTransform,
-  type Variants,
 } from 'framer-motion'
-import { fadeUp, staggerContainer, clipRevealUp, blurIn } from '@/lib/animations'
-import BorderGlow from '@/components/BorderGlow'
-
-// ── Variants ──────────────────────────────────────────────────────────────────
-
-const cardReveal: Variants = {
-  hidden: { opacity: 0, y: 28 },
-  visible: {
-    opacity: 1,
-    y: 0,
-    transition: { duration: 0.9, ease: [0.16, 1, 0.3, 1] as const },
-  },
-}
-
-// ── Data ──────────────────────────────────────────────────────────────────────
 
 const founders = [
   {
@@ -30,20 +14,22 @@ const founders = [
     name: 'Benedikt Metz',
     role: 'Head of UI/UX Design',
     bio: 'Hintergrund in Grafikdesign und Recht. Zuständig für alles, was man sieht — und dafür, dass es rechtlich stimmt.',
-    accentColor: 'var(--accent)',
-    initialColor: 'rgba(200,255,0,0.09)',
-    glowBg: 'radial-gradient(ellipse at 25% 60%, rgba(200,255,0,0.055) 0%, transparent 62%)',
-    borderHover: 'rgba(200,255,0,0.2)',
+    accentColor: 'rgba(212,131,10,0.92)',
+    accentBg: 'rgba(212,131,10,0.10)',
+    accentBorder: 'rgba(212,131,10,0.24)',
+    glowColor: 'rgba(212,131,10,0.12)',
+    initialFill: 'rgba(212,131,10,0.08)',
   },
   {
     initial: 'M',
     name: 'Maximilian Metz',
     role: 'Head of Marketing & Sales',
     bio: 'Hintergrund in Marketing und Finanzen. Zuständig für Strategie, Wirkung und dafür, dass Ihre Website konvertiert.',
-    accentColor: 'var(--accent-warm)',
-    initialColor: 'rgba(255,107,53,0.09)',
-    glowBg: 'radial-gradient(ellipse at 25% 60%, rgba(255,107,53,0.055) 0%, transparent 62%)',
-    borderHover: 'rgba(255,107,53,0.2)',
+    accentColor: 'rgba(198,124,59,0.92)',
+    accentBg: 'rgba(198,124,59,0.10)',
+    accentBorder: 'rgba(198,124,59,0.24)',
+    glowColor: 'rgba(198,124,59,0.12)',
+    initialFill: 'rgba(198,124,59,0.08)',
   },
 ]
 
@@ -51,7 +37,7 @@ const differentiators = [
   {
     number: '01',
     title: 'Direkt & persönlich',
-    body: 'Sie haben immer eine direkte Ansprechperson, kein Ticketsystem, kein Wartezimmer, keine Vertretung. Sie werden zum Partner.',
+    body: 'Sie haben immer eine direkte Ansprechperson — kein Ticketsystem, kein Wartezimmer, keine Vertretung.',
   },
   {
     number: '02',
@@ -61,148 +47,187 @@ const differentiators = [
   {
     number: '03',
     title: 'Strategie bis Launch',
-    body: 'Wir bauen nach Ihren Wünschen, strukturiert und systematisch. Ihr Input zählt.',
+    body: 'Wir bauen nach Ihren Wünschen, strukturiert und systematisch. Ihr Input zählt — von Tag eins.',
   },
 ]
-
-// ── FounderCard ───────────────────────────────────────────────────────────────
 
 function FounderCard({
   founder,
   shouldReduce,
+  delay,
 }: {
   founder: (typeof founders)[0]
   shouldReduce: boolean | null
+  delay: number
 }) {
   const [hovered, setHovered] = useState(false)
+  const ref = useRef<HTMLDivElement>(null)
+  const isInView = useInView(ref, { once: true, margin: '-40px' })
 
   return (
     <motion.div
-      variants={shouldReduce ? undefined : cardReveal}
-      onMouseEnter={() => setHovered(true)}
-      onMouseLeave={() => setHovered(false)}
-      // flex-col stacks on mobile, flex-row side-by-side on sm+
-      className="flex flex-col sm:flex-row"
+      ref={ref}
+      initial={shouldReduce ? undefined : { opacity: 0, y: 32 }}
+      animate={
+        shouldReduce
+          ? undefined
+          : isInView
+          ? { opacity: 1, y: 0 }
+          : { opacity: 0, y: 32 }
+      }
+      transition={{ duration: 0.85, ease: [0.16, 1, 0.3, 1], delay }}
+      style={{ height: '100%' }}
+    >
+    <motion.div
+      onHoverStart={() => setHovered(true)}
+      onHoverEnd={() => setHovered(false)}
+      className="surface-primary"
+      animate={{
+        borderColor: hovered
+          ? founder.accentBorder
+          : 'rgba(255,255,255,0.09)',
+        boxShadow: hovered
+          ? `inset 0 1px 0 rgba(255,255,255,0.22), 0 24px 60px rgba(0,0,0,0.40), 0 0 60px ${founder.glowColor}`
+          : 'inset 0 1px 0 rgba(255,255,255,0.12), 0 10px 32px rgba(0,0,0,0.24)',
+      }}
+      transition={{ duration: 0.38, ease: [0.16, 1, 0.3, 1] }}
       style={{
-        position: 'relative',
-        background: 'var(--surface)',
-        border: `1px solid ${hovered ? founder.borderHover : 'var(--border)'}`,
-        borderRadius: 8,
+        display: 'flex',
+        flexDirection: 'column',
         overflow: 'hidden',
-        transition: 'border-color 0.35s ease',
-        alignItems: 'stretch',
         height: '100%',
       }}
     >
-      {/* Full-width accent top line */}
-      <div
-        aria-hidden="true"
+      {/* Hover atmosphere bloom */}
+      <motion.div
+        aria-hidden
+        animate={{ opacity: hovered && !shouldReduce ? 1 : 0 }}
+        transition={{ duration: 0.4 }}
+        style={{
+          position: 'absolute',
+          inset: 0,
+          background: `radial-gradient(ellipse at 20% 75%, ${founder.glowColor}, transparent 65%)`,
+          pointerEvents: 'none',
+          zIndex: 0,
+        }}
+      />
+
+      {/* Top accent line */}
+      <motion.div
+        aria-hidden
+        animate={{ opacity: hovered ? 1 : 0.4 }}
+        transition={{ duration: 0.38 }}
         style={{
           position: 'absolute',
           top: 0,
-          left: 0,
-          right: 0,
+          left: '15%',
+          right: '15%',
           height: 1,
-          background: founder.accentColor,
-          opacity: hovered ? 1 : 0.6,
-          transition: 'opacity 0.35s ease',
+          background: `linear-gradient(90deg, transparent, ${founder.accentColor}, transparent)`,
+          pointerEvents: 'none',
+          zIndex: 2,
+        }}
+      />
+
+      {/* Giant initial — decorative */}
+      <div
+        style={{
+          padding: 'clamp(1.5rem, 3vw, 2.25rem)',
+          paddingBottom: '0.5rem',
+          position: 'relative',
+          zIndex: 1,
+          display: 'flex',
+          alignItems: 'flex-start',
+          gap: '1.25rem',
+        }}
+      >
+        {/* Initial badge */}
+        <motion.div
+          animate={{
+            background: hovered ? founder.accentBg : 'rgba(255,255,255,0.04)',
+            borderColor: hovered ? founder.accentBorder : 'rgba(255,255,255,0.09)',
+          }}
+          transition={{ duration: 0.32 }}
+          style={{
+            width: 52,
+            height: 52,
+            borderRadius: 14,
+            border: '1px solid',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            flexShrink: 0,
+          }}
+        >
+          <motion.span
+            animate={{
+              color: hovered ? founder.accentColor : 'rgba(255,255,255,0.22)',
+            }}
+            transition={{ duration: 0.32 }}
+            style={{
+              fontFamily: 'var(--font-display)',
+              fontSize: '1.6rem',
+              fontWeight: 400,
+              fontStyle: 'italic',
+              lineHeight: 1,
+            }}
+          >
+            {founder.initial}
+          </motion.span>
+        </motion.div>
+
+        {/* Role + name */}
+        <div style={{ flex: 1 }}>
+          <p
+            style={{
+              fontFamily: 'var(--font-ui)',
+              fontSize: '0.65rem',
+              fontWeight: 400,
+              textTransform: 'uppercase',
+              letterSpacing: '0.15em',
+              color: 'var(--muted)',
+              marginBottom: '0.35rem',
+            }}
+          >
+            {founder.role}
+          </p>
+          <h3
+            style={{
+              fontFamily: 'var(--font-display)',
+              fontSize: 'clamp(1.15rem, 1.8vw, 1.5rem)',
+              fontWeight: 400,
+              fontStyle: 'italic',
+              color: 'var(--text)',
+              lineHeight: 1.1,
+              letterSpacing: '-0.02em',
+              margin: 0,
+            }}
+          >
+            {founder.name}
+          </h3>
+        </div>
+      </div>
+
+      {/* Divider */}
+      <div
+        style={{
+          height: 1,
+          margin: '0 clamp(1.5rem, 3vw, 2.25rem)',
+          background: 'rgba(255,255,255,0.06)',
+          position: 'relative',
           zIndex: 1,
         }}
       />
 
-      {/* Atmospheric glow — anchored to initial side */}
-      <div
-        aria-hidden="true"
-        style={{
-          position: 'absolute',
-          inset: 0,
-          background: founder.glowBg,
-          pointerEvents: 'none',
-        }}
-      />
-
-      {/* ── LEFT: Giant initial ───────────────────────────────────────────
-          h-28 on mobile (horizontal accent band), full height on sm+.
-          Width: 42% on sm+ so the initial dominates without crowding text.
-      ─────────────────────────────────────────────────────────────────── */}
-      <div
-        className="h-28 sm:h-auto sm:w-[42%] flex-shrink-0 relative flex items-center justify-center"
-        style={{ padding: 'clamp(1.25rem, 3vw, 2.25rem)' }}
-      >
-        <motion.span
-          animate={
-            shouldReduce
-              ? undefined
-              : hovered
-              ? { filter: 'brightness(1.9)', y: 0 }
-              : { filter: 'brightness(1)', y: [0, -6, 0] }
-          }
-          transition={
-            hovered
-              ? { duration: 0.45, ease: [0.16, 1, 0.3, 1] as const }
-              : { duration: 5.5, repeat: Infinity, ease: 'easeInOut' }
-          }
-          style={{
-            fontFamily: 'var(--font-display)',
-            fontSize: 'clamp(5rem, 9vw, 7.5rem)',
-            fontWeight: 400,
-            fontStyle: 'italic',
-            lineHeight: 1,
-            color: founder.initialColor,
-            userSelect: 'none',
-            display: 'block',
-            position: 'relative',
-          }}
-        >
-          {founder.initial}
-        </motion.span>
-      </div>
-
-      {/* ── RIGHT: Info ───────────────────────────────────────────────────
-          flex: 1 fills remaining width on sm+.
-          On mobile (flex-col) it becomes a full-width content block.
-      ─────────────────────────────────────────────────────────────────── */}
+      {/* Bio */}
       <div
         style={{
+          padding: 'clamp(1.25rem, 2.5vw, 1.75rem) clamp(1.5rem, 3vw, 2.25rem)',
           flex: 1,
-          padding: 'clamp(1.75rem, 3vw, 2.5rem)',
-          display: 'flex',
-          flexDirection: 'column',
-          justifyContent: 'center',
-          gap: '0.6rem',
-          minWidth: 0,
+          position: 'relative',
+          zIndex: 1,
         }}
       >
-        {/* Role */}
-        <p
-          style={{
-            fontFamily: 'var(--font-ui)',
-            fontSize: '0.65rem',
-            fontWeight: 400,
-            textTransform: 'uppercase',
-            letterSpacing: '0.16em',
-            color: 'var(--muted)',
-          }}
-        >
-          {founder.role}
-        </p>
-
-        {/* Name */}
-        <h3
-          style={{
-            fontFamily: 'var(--font-display)',
-            fontSize: 'clamp(1.45rem, 2.2vw, 1.9rem)',
-            fontWeight: 400,
-            fontStyle: 'italic',
-            color: 'var(--text)',
-            lineHeight: 1.1,
-            letterSpacing: '-0.02em',
-          }}
-        >
-          {founder.name}
-        </h3>
-
-        {/* Bio */}
         <p
           style={{
             fontFamily: 'var(--font-ui)',
@@ -210,130 +235,163 @@ function FounderCard({
             fontWeight: 300,
             color: 'var(--muted)',
             lineHeight: 1.8,
-            marginTop: '0.2rem',
+            margin: 0,
           }}
         >
           {founder.bio}
         </p>
       </div>
     </motion.div>
-  )
-}
-
-// ── DifferentiatorCard ────────────────────────────────────────────────────────
-
-function DifferentiatorCard({
-  d,
-  shouldReduce,
-}: {
-  d: (typeof differentiators)[0]
-  shouldReduce: boolean | null
-}) {
-  return (
-    <motion.div variants={shouldReduce ? undefined : fadeUp} style={{ height: '100%' }}>
-      <BorderGlow
-        backgroundColor="#0b0b0b"
-        borderRadius={8}
-        glowColor="73 100 50"
-        glowRadius={55}
-        glowIntensity={0.65}
-        coneSpread={28}
-        animated
-        colors={['#C8FF00', '#a8d400', '#7a9900']}
-        fillOpacity={0.06}
-        className="h-full"
-      >
-        <div
-          style={{
-            padding: 'clamp(2rem, 3vw, 2.75rem)',
-            display: 'flex',
-            flexDirection: 'column',
-            height: '100%',
-          }}
-        >
-          <p
-            style={{
-              fontFamily: 'var(--font-display)',
-              fontSize: '0.72rem',
-              fontWeight: 400,
-              fontStyle: 'italic',
-              letterSpacing: '0.06em',
-              color: 'rgba(200,255,0,0.35)',
-              marginBottom: '1.75rem',
-            }}
-          >
-            {d.number}
-          </p>
-          <h4
-            style={{
-              fontFamily: 'var(--font-display)',
-              fontSize: 'clamp(1.2rem, 1.8vw, 1.45rem)',
-              fontWeight: 400,
-              color: 'var(--text)',
-              lineHeight: 1.15,
-              letterSpacing: '-0.01em',
-              marginBottom: '1rem',
-            }}
-          >
-            {d.title}
-          </h4>
-          <p
-            style={{
-              fontSize: '0.875rem',
-              fontWeight: 300,
-              color: 'var(--muted)',
-              lineHeight: 1.8,
-            }}
-          >
-            {d.body}
-          </p>
-        </div>
-      </BorderGlow>
     </motion.div>
   )
 }
 
-// ── WhyUs ─────────────────────────────────────────────────────────────────────
+function DifferentiatorCard({
+  d,
+  shouldReduce,
+  delay,
+}: {
+  d: (typeof differentiators)[0]
+  shouldReduce: boolean | null
+  delay: number
+}) {
+  const ref = useRef<HTMLDivElement>(null)
+  const isInView = useInView(ref, { once: true, margin: '-40px' })
+  const [hovered, setHovered] = useState(false)
+
+  return (
+    <motion.div
+      ref={ref}
+      initial={shouldReduce ? undefined : { opacity: 0, y: 24 }}
+      animate={
+        shouldReduce
+          ? undefined
+          : isInView
+          ? { opacity: 1, y: 0 }
+          : { opacity: 0, y: 24 }
+      }
+      transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1], delay }}
+      style={{ height: '100%' }}
+    >
+    <motion.div
+      onHoverStart={() => setHovered(true)}
+      onHoverEnd={() => setHovered(false)}
+      className="surface-secondary"
+      animate={{
+        borderColor: hovered
+          ? 'rgba(255,255,255,0.14)'
+          : 'rgba(255,255,255,0.07)',
+        boxShadow: hovered
+          ? 'inset 0 1px 0 rgba(255,255,255,0.18), 0 16px 44px rgba(0,0,0,0.30)'
+          : 'inset 0 1px 0 rgba(255,255,255,0.10), 0 6px 18px rgba(0,0,0,0.18)',
+        y: hovered && !shouldReduce ? -3 : 0,
+      }}
+      transition={{ duration: 0.32, ease: [0.16, 1, 0.3, 1] }}
+      style={{
+        padding: 'clamp(1.75rem, 3vw, 2.25rem)',
+        display: 'flex',
+        flexDirection: 'column',
+        gap: '1rem',
+        height: '100%',
+      }}
+    >
+      <p
+        style={{
+          fontFamily: 'var(--font-display)',
+          fontSize: '0.75rem',
+          fontWeight: 400,
+          fontStyle: 'italic',
+          letterSpacing: '0.04em',
+          color: 'rgba(212,131,10,0.55)',
+          margin: 0,
+        }}
+      >
+        {d.number}
+      </p>
+      <h4
+        style={{
+          fontFamily: 'var(--font-display)',
+          fontSize: 'clamp(1.1rem, 1.6vw, 1.35rem)',
+          fontWeight: 400,
+          color: 'var(--text)',
+          lineHeight: 1.15,
+          letterSpacing: '-0.01em',
+          margin: 0,
+        }}
+      >
+        {d.title}
+      </h4>
+      <p
+        style={{
+          fontFamily: 'var(--font-ui)',
+          fontSize: '0.875rem',
+          fontWeight: 300,
+          color: 'var(--muted)',
+          lineHeight: 1.8,
+          margin: 0,
+        }}
+      >
+        {d.body}
+      </p>
+    </motion.div>
+    </motion.div>
+  )
+}
 
 export function WhyUs() {
-  const ref = useRef(null)
   const sectionRef = useRef(null)
-  const isInView = useInView(ref, { once: true, margin: '-80px' })
+  const headerRef = useRef(null)
+  const isInView = useInView(headerRef, { once: true, margin: '-80px' })
   const shouldReduce = useReducedMotion()
-  const [mounted, setMounted] = useState(false)
-  useEffect(() => { setMounted(true) }, [])
 
   const { scrollYProgress } = useScroll({
-    target: mounted ? sectionRef : undefined,
+    target: sectionRef,
     offset: ['start end', 'end start'],
   })
-  const bgY = useTransform(scrollYProgress, [0, 1], [40, -40])
+  const bgY = useTransform(scrollYProgress, [0, 1], [30, -30])
 
   return (
     <section
       ref={sectionRef}
       id="ueber-uns"
       style={{
-        paddingTop: '5rem',
-        paddingBottom: '5rem',
+        paddingTop: '8rem',
+        paddingBottom: '8rem',
         position: 'relative',
         overflow: 'hidden',
       }}
-      className="md:py-32"
     >
-      {/* Decorative background text */}
-      <motion.div
-        aria-hidden="true"
+      {/* Atmospheric bloom */}
+      <div
+        aria-hidden
         style={{
           position: 'absolute',
-          bottom: '10%',
-          right: '-3%',
+          top: '20%',
+          right: '-10%',
+          width: '55vw',
+          height: '65vw',
+          maxWidth: 700,
+          maxHeight: 750,
+          background:
+            'radial-gradient(ellipse at 65% 40%, rgba(198,124,59,0.07) 0%, rgba(184,134,11,0.04) 40%, transparent 66%)',
+          filter: 'blur(80px)',
+          pointerEvents: 'none',
+        }}
+      />
+
+      {/* Decorative background text */}
+      <motion.div
+        aria-hidden
+        style={{
+          position: 'absolute',
+          bottom: '8%',
+          right: '-2%',
           fontFamily: 'var(--font-display)',
-          fontSize: 'clamp(8rem, 18vw, 16rem)',
+          fontSize: 'clamp(7rem, 16vw, 14rem)',
           fontWeight: 400,
           fontStyle: 'italic',
           lineHeight: 1,
-          color: 'rgba(240,237,232,0.015)',
+          color: 'rgba(255,255,255,0.018)',
           pointerEvents: 'none',
           userSelect: 'none',
           y: shouldReduce ? 0 : bgY,
@@ -343,70 +401,125 @@ export function WhyUs() {
       </motion.div>
 
       <div className="container-site" style={{ position: 'relative' }}>
-        <motion.div
-          ref={ref}
-          variants={shouldReduce ? undefined : staggerContainer(0.08)}
-          initial={shouldReduce ? undefined : 'hidden'}
-          animate={shouldReduce ? undefined : isInView ? 'visible' : 'hidden'}
-        >
-          {/* Header */}
+        {/* ── Section header ── */}
+        <div ref={headerRef} style={{ marginBottom: '3.5rem' }}>
           <motion.div
-            variants={shouldReduce ? undefined : fadeUp}
-            style={{ marginBottom: '3.5rem', maxWidth: 720 }}
+            initial={shouldReduce ? undefined : { opacity: 0, y: 10 }}
+            animate={
+              shouldReduce
+                ? undefined
+                : isInView
+                ? { opacity: 1, y: 0 }
+                : { opacity: 0, y: 10 }
+            }
+            transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
+            style={{ marginBottom: '1.1rem', display: 'inline-block' }}
           >
-            <div style={{ overflow: 'hidden' }}>
-              <motion.h2
-                className="display-section"
-                variants={shouldReduce ? undefined : clipRevealUp}
-                style={{ display: 'block' }}
-              >
-                Wenn Sie uns anfragen,{' '}
-                <em style={{ color: 'var(--accent)' }}>sprechen Sie mit uns.</em>
-              </motion.h2>
-            </div>
-            <motion.p
-              variants={shouldReduce ? undefined : blurIn}
+            <span
+              className="surface-floating"
               style={{
-                marginTop: '1.5rem',
-                fontSize: '1rem',
-                fontWeight: 300,
-                color: 'var(--muted)',
-                lineHeight: 1.75,
-                maxWidth: 560,
+                display: 'inline-flex',
+                alignItems: 'center',
+                gap: '0.5rem',
+                padding: '0.35rem 0.9rem',
+                fontFamily: 'var(--font-ui)',
+                fontSize: '0.65rem',
+                fontWeight: 400,
+                textTransform: 'uppercase',
+                letterSpacing: '0.14em',
+                color: 'rgba(255,255,255,0.45)',
               }}
             >
-              Nicht mit einem Account Manager. Nicht mit einem Junior. Mit den
-              Menschen, die Ihre Website bauen — von der ersten Anfrage bis zum Launch.
-            </motion.p>
-          </motion.div>
-
-          {/* Founder cards — stagger via parent container */}
-          <motion.div
-            variants={shouldReduce ? undefined : staggerContainer(0.15)}
-            className="grid grid-cols-1 md:grid-cols-2 gap-5"
-            style={{ marginBottom: '5rem' }}
-          >
-            {founders.map((founder) => (
-              <FounderCard
-                key={founder.name}
-                founder={founder}
-                shouldReduce={shouldReduce}
+              <span
+                style={{
+                  width: 5,
+                  height: 5,
+                  borderRadius: '50%',
+                  background: 'var(--warm-amber)',
+                  boxShadow: '0 0 8px rgba(212,131,10,0.6)',
+                  flexShrink: 0,
+                }}
               />
-            ))}
+              Über uns
+            </span>
           </motion.div>
 
-          {/* Differentiators */}
-          <motion.div
-            variants={shouldReduce ? undefined : staggerContainer(0.1)}
-            style={{ borderTop: '1px solid var(--border)', paddingTop: '4rem' }}
+          <div style={{ overflow: 'hidden' }}>
+            <motion.h2
+              className="display-section"
+              initial={shouldReduce ? undefined : { y: '108%' }}
+              animate={
+                shouldReduce
+                  ? undefined
+                  : isInView
+                  ? { y: '0%' }
+                  : { y: '108%' }
+              }
+              transition={{
+                duration: 0.95,
+                ease: [0.16, 1, 0.3, 1],
+                delay: 0.07,
+              }}
+            >
+              Wenn Sie uns anfragen,{' '}
+              <em>sprechen Sie mit uns.</em>
+            </motion.h2>
+          </div>
+
+          <motion.p
+            initial={shouldReduce ? undefined : { opacity: 0, filter: 'blur(8px)' }}
+            animate={
+              shouldReduce
+                ? undefined
+                : isInView
+                ? { opacity: 1, filter: 'blur(0px)' }
+                : { opacity: 0, filter: 'blur(8px)' }
+            }
+            transition={{ duration: 0.85, ease: [0.16, 1, 0.3, 1], delay: 0.22 }}
+            style={{
+              marginTop: '1.35rem',
+              fontFamily: 'var(--font-ui)',
+              fontSize: '0.975rem',
+              fontWeight: 300,
+              color: 'var(--muted)',
+              lineHeight: 1.75,
+              maxWidth: 520,
+            }}
           >
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-              {differentiators.map((d) => (
-                <DifferentiatorCard key={d.number} d={d} shouldReduce={shouldReduce} />
-              ))}
-            </div>
-          </motion.div>
-        </motion.div>
+            Nicht mit einem Account Manager. Nicht mit einem Junior.
+            Mit den Menschen, die Ihre Website bauen — von der ersten Anfrage bis zum Launch.
+          </motion.p>
+        </div>
+
+        {/* ── Founder cards ── */}
+        <div
+          className="grid grid-cols-1 md:grid-cols-2"
+          style={{ gap: '1rem', marginBottom: '1rem' }}
+        >
+          {founders.map((founder, i) => (
+            <FounderCard
+              key={founder.name}
+              founder={founder}
+              shouldReduce={shouldReduce}
+              delay={0.14 + i * 0.1}
+            />
+          ))}
+        </div>
+
+        {/* ── Differentiators ── */}
+        <div
+          className="grid grid-cols-1 md:grid-cols-3"
+          style={{ gap: '1rem' }}
+        >
+          {differentiators.map((d, i) => (
+            <DifferentiatorCard
+              key={d.number}
+              d={d}
+              shouldReduce={shouldReduce}
+              delay={0.22 + i * 0.08}
+            />
+          ))}
+        </div>
       </div>
     </section>
   )

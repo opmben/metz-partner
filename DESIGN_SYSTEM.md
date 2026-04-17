@@ -145,7 +145,200 @@ box-shadow:
 
 ---
 
-## 5. Typography
+## 5. Surface Token System
+
+The system should be **token-led, not one-off-led**.
+Claude should reuse a coherent family of surfaces and controls before inventing a new glass treatment.
+
+This is not a rigid UI kit.
+It is the default material grammar of the website.
+
+### Surface Archetypes
+
+#### `surface-hero`
+Use for the main hero frame, large featured proof moments, and other dominant cinematic containers.
+
+Qualities:
+- strongest blur in the system
+- deepest glow and edge light
+- large radius
+- visually calm interior with generous padding
+- should feel like a premium frame, not a content box
+
+#### `surface-primary`
+Use for main section cards, featured service panels, proof panels, process containers, and contact shells.
+
+Qualities:
+- clear luminous glass behavior
+- medium-to-strong blur
+- visible but restrained edge highlight
+- slightly elevated from background
+
+#### `surface-secondary`
+Use for supporting cards, nested panels, metadata blocks, stat modules, and supporting informational containers.
+
+Qualities:
+- lighter blur
+- slightly quieter border and glow
+- subordinate to `surface-primary`
+
+#### `surface-muted`
+Use sparingly for quiet utility areas, footer blocks, low-priority metadata, or structural sub-panels.
+
+Qualities:
+- lower glow
+- lower contrast
+- still clearly part of the glass family
+- never collapse into a dead flat rectangle
+
+#### `surface-floating`
+Use for pills, floating badges, micro-panels, nav chips, and compact elevated UI.
+
+Qualities:
+- compact
+- highly rounded
+- denser glass feel
+- stronger edge definition at smaller scale
+
+### Material Tokens
+
+These tokens define the shared material behavior across cards, panels, nav items, and buttons.
+Values are directional defaults, not frozen law.
+
+```css
+/* Surface fills */
+--surface-hero: rgba(255, 255, 255, 0.07);
+--surface-primary: rgba(255, 255, 255, 0.06);
+--surface-secondary: rgba(255, 255, 255, 0.045);
+--surface-muted: rgba(255, 255, 255, 0.03);
+--surface-floating: rgba(255, 255, 255, 0.08);
+
+/* Borders and highlights */
+--surface-border-soft: rgba(255, 255, 255, 0.09);
+--surface-border-strong: rgba(255, 255, 255, 0.16);
+--surface-highlight-top: rgba(255, 255, 255, 0.24);
+--surface-highlight-hot: rgba(255, 255, 255, 0.34);
+
+/* Shadows and glow */
+--surface-shadow-soft: 0 18px 60px rgba(0, 0, 0, 0.28);
+--surface-shadow-deep: 0 28px 90px rgba(0, 0, 0, 0.36);
+--surface-glow-soft: 0 0 36px rgba(255, 255, 255, 0.05);
+--surface-glow-warm: 0 0 56px rgba(212, 131, 10, 0.08);
+
+/* Blur tiers */
+--blur-hero: 32px;
+--blur-primary: 24px;
+--blur-secondary: 18px;
+--blur-muted: 14px;
+
+/* Radius */
+--radius-panel-lg: 32px;
+--radius-panel-md: 24px;
+--radius-panel-sm: 20px;
+--radius-control: 18px;
+--radius-pill: 999px;
+```
+
+### Surface Rules
+- Default to `surface-primary` before inventing a custom section container
+- Use `surface-hero` sparingly for the few moments that should carry the page
+- Nested surfaces should step down in intensity: hero -> primary -> secondary -> muted
+- Different sections may shift atmosphere, but the surface family must still read as one system
+- Free-floating text blocks should be minimized; sections should usually resolve into one or more controlled surfaces
+- Surfaces should feel framed and tactile, never like flat tinted boxes
+
+### Button Families
+
+Buttons should not look like standard SaaS CTAs.
+The default direction is **liquid glass density**, especially for high-priority controls.
+
+#### `button-glass-primary`
+Use for the main CTA.
+
+Qualities:
+- pill or near-pill silhouette
+- denser glass than surrounding panel
+- brighter top-edge sheen
+- subtle inner light
+- stronger hover glow
+
+#### `button-glass-secondary`
+Use for secondary CTA, alternative paths, or section-level supporting actions.
+
+Qualities:
+- same family as primary
+- slightly quieter border and glow
+- still tactile and premium
+
+#### `button-ghost-glass`
+Use for utility actions, less important interactions, and in dense UI contexts.
+
+Qualities:
+- lighter fill
+- still clearly glass
+- should not disappear into the panel
+
+#### `button-pill-micro`
+Use for filters, chips, nav controls, and compact interactive labels.
+
+Qualities:
+- compact floating-glass feel
+- strong rounding
+- clear active and hover state
+- avoid generic SaaS chip styling
+
+### Panel Families
+
+#### `panel-browser`
+Use for screenshots, process visuals, proof frames, and any UI evidence.
+
+Qualities:
+- browser-like chrome or framed top rail is preferred
+- screenshot should feel embedded inside the panel, not attached beneath it
+- image evidence must dominate text decoration
+
+#### `panel-proof`
+Use for selected work, results framing, and project evidence moments.
+
+Qualities:
+- larger and more intentional than support cards
+- image-first
+- copy is short and subordinate
+
+#### `panel-feature`
+Use for service explanation or differentiation blocks.
+
+Qualities:
+- concise
+- visually controlled
+- not a default feature-grid tile repeated mechanically
+
+#### `panel-process`
+Use for the process section.
+
+Qualities:
+- fewer, larger stages over many tiny cards
+- should feel directional and sequenced
+- avoid turning process into a weak four-box explainer
+
+### Interaction States
+- Hover: slightly brighter border, hotter top highlight, slightly stronger lift
+- Active: denser surface, reduced glow, clearer pressed feel
+- Focus: crisp visible focus state that fits the glass family; never rely on barely visible default outlines
+- Disabled: keep shape and material legible; do not flatten into generic washed-out UI
+
+### Explicit Surface No-Gos
+- flat matte cards as the main UI language
+- tiny repeated SaaS tiles with equal weight
+- buttons that look detached from the surface family
+- random one-off panel styles per section
+- screenshots sitting outside the panel logic
+- glass that is so transparent that contrast and legibility collapse
+- glass that is so opaque it becomes ordinary dark UI
+
+---
+
+## 6. Typography
 
 ### Current System
 - **Display:** Instrument Serif — loaded via `next/font/google`, variable `--font-display`
@@ -182,7 +375,7 @@ Labels: `0.7rem`, `font-weight: 400`, `text-transform: uppercase`, `letter-spaci
 
 ---
 
-## 6. Composition Principles
+## 7. Composition Principles
 
 ### Card-First, Surface-Led
 
@@ -217,7 +410,7 @@ Mobile layouts should feel like a **different composition**, not a collapsed des
 
 ---
 
-## 7. Animation System
+## 8. Animation System
 
 ### Philosophy
 Strong but controlled.
@@ -253,7 +446,7 @@ This is not optional.
 
 ---
 
-## 8. Portfolio Presentation
+## 9. Portfolio Presentation
 
 Screenshots are evidence, not decoration.
 

@@ -176,6 +176,7 @@ Claude should prefer:
 - thoughtful motion
 - high-quality responsive behavior, especially on mobile
 - a coherent family of glass panels, luminous cards, and framed surfaces
+- the documented surface archetypes and button families before inventing one-off container logic
 - GSAP Pin & Scrub for scroll-based cinematic moments
 - Framer Motion for entrance animations, hover states, micro-interactions
 
@@ -211,7 +212,23 @@ Motion should feel cinematic and controlled, not scattered.
 
 ---
 
-## 8. Review Checklist
+## 8. Surface System Execution
+
+Default to the documented surface system before inventing a new one.
+
+Execution rules:
+- reuse the same glass family across hero, proof, services, process, contact, nav, and footer surfaces
+- keep button styling inside the same material logic as the surrounding panels
+- do not mix unrelated glass recipes on the same page unless there is a clear hierarchy reason
+- if a section needs a new container treatment, derive it from an existing surface archetype first
+- treat browser frames, proof panels, and CTA shells as part of one controlled surface language
+- prefer card-first and surface-led composition over free-floating text stacks
+- when a control looks like a generic SaaS button or chip, the implementation is wrong
+- when a card could belong to any random UI kit, the implementation is wrong
+
+---
+
+## 9. Review Checklist
 
 Before considering work good enough, check:
 
@@ -227,12 +244,14 @@ Before considering work good enough, check:
 - Are motion and surfaces helping the brand rather than creating chaos?
 - Do glass surfaces have luminous top-edge highlights and proper blur?
 - Does the two-layer system (atmosphere + glass) hold throughout?
+- Do cards, panels, and buttons clearly belong to the same surface family?
+- Does the UI avoid generic SaaS chip and button energy?
 
 If the answer to several of these is "no", the work is not ready.
 
 ---
 
-## 9. Autonomy Level
+## 10. Autonomy Level
 
 **High autonomy is the default.**
 
@@ -255,7 +274,7 @@ Flag the recommendation but do not wait for permission to have an opinion.
 
 ---
 
-## 10. What This File Must Not Become
+## 11. What This File Must Not Become
 
 This file must not drift back into:
 - product truth duplication from `PRD.md`

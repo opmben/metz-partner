@@ -9,7 +9,6 @@ import {
   useSpring,
 } from 'framer-motion'
 import { fadeUp, blurIn, charReveal, charContainer } from '@/lib/animations'
-import { ArrowRight } from 'lucide-react'
 import { ColorBendsBackground } from '@/components/shared/ColorBendsBackground'
 
 const subscribe = () => () => {}
@@ -331,29 +330,22 @@ export function Hero() {
               <motion.a
                 href="#projekte"
                 onClick={scrollTo('#projekte')}
+                className="button-glass-primary"
                 whileHover={shouldReduce ? undefined : { scale: 1.05, y: -3 }}
                 whileTap={shouldReduce ? undefined : { scale: 0.97 }}
                 transition={{ duration: 0.2 }}
                 style={{
-                  background: 'var(--accent)',
-                  color: 'var(--bg)',
                   fontFamily: 'var(--font-ui)',
                   fontSize: '0.8rem',
                   fontWeight: 500,
                   textTransform: 'uppercase',
-                  letterSpacing: '0.1em',
-                  padding: '1rem 2.25rem',
-                  borderRadius: 100,
+                  letterSpacing: '0.12em',
+                  color: 'var(--text)',
                   textDecoration: 'none',
-                  display: 'inline-flex',
-                  alignItems: 'center',
-                  gap: '0.6rem',
                   cursor: 'pointer',
-                  boxShadow: '0 0 40px rgba(200,255,0,0.15)',
                 }}
               >
                 Unsere Arbeiten
-                <ArrowRight size={14} />
               </motion.a>
             </MagneticButton>
 
@@ -361,38 +353,21 @@ export function Hero() {
               <motion.a
                 href="#kontakt"
                 onClick={scrollTo('#kontakt')}
-                whileHover={
-                  shouldReduce
-                    ? undefined
-                    : { scale: 1.05, borderColor: 'rgba(240,237,232,0.25)' }
-                }
+                className="button-ghost-glass"
+                whileHover={shouldReduce ? undefined : { scale: 1.05, y: -2 }}
                 whileTap={shouldReduce ? undefined : { scale: 0.97 }}
                 transition={{ duration: 0.2 }}
                 style={{
-                  color: 'var(--muted)',
                   fontFamily: 'var(--font-ui)',
                   fontSize: '0.8rem',
                   fontWeight: 400,
-                  letterSpacing: '0.06em',
+                  letterSpacing: '0.08em',
+                  color: 'var(--muted)',
                   textDecoration: 'none',
                   cursor: 'pointer',
-                  padding: '1rem 2rem',
-                  border: '1px solid var(--border)',
-                  borderRadius: 100,
-                  display: 'inline-flex',
-                  alignItems: 'center',
-                  gap: '0.5rem',
-                  transition: 'color 0.2s ease',
-                }}
-                onMouseEnter={(e) => {
-                  ;(e.currentTarget as HTMLAnchorElement).style.color = 'var(--text)'
-                }}
-                onMouseLeave={(e) => {
-                  ;(e.currentTarget as HTMLAnchorElement).style.color = 'var(--muted)'
                 }}
               >
                 Gespräch anfragen
-                <ArrowRight size={13} />
               </motion.a>
             </MagneticButton>
           </motion.div>

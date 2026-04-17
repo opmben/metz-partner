@@ -2,50 +2,60 @@
 import { useRef, useState } from 'react'
 import { motion, useInView, useReducedMotion } from 'framer-motion'
 import { Zap, Clock, MapPin, Users } from 'lucide-react'
-import { fadeUp, staggerContainer } from '@/lib/animations'
 
 const signals = [
   {
     icon: Users,
     label: 'Direkt mit den Gründern',
     sub: 'Benedikt & Maximilian',
-    accent: 'var(--accent)',
-    bg: 'rgba(200,255,0,0.07)',
-    glowColor: 'rgba(200,255,0,0.12)',
+    iconColor: 'rgba(212,131,10,0.92)',
+    iconBg: 'rgba(212,131,10,0.10)',
+    iconBorder: 'rgba(212,131,10,0.24)',
+    glowColor: 'rgba(212,131,10,0.15)',
   },
   {
     icon: Clock,
     label: 'Fertig in 2–4 Wochen',
     sub: 'Nicht in Monaten',
-    accent: 'var(--accent-warm)',
-    bg: 'rgba(255,107,53,0.07)',
-    glowColor: 'rgba(255,107,53,0.1)',
+    iconColor: 'rgba(198,124,59,0.92)',
+    iconBg: 'rgba(198,124,59,0.10)',
+    iconBorder: 'rgba(198,124,59,0.24)',
+    glowColor: 'rgba(198,124,59,0.14)',
   },
   {
     icon: Zap,
     label: 'Pagespeed 90+',
     sub: 'Mobiloptimiert & SEO-ready',
-    accent: 'var(--accent)',
-    bg: 'rgba(200,255,0,0.07)',
-    glowColor: 'rgba(200,255,0,0.12)',
+    iconColor: 'rgba(184,134,11,0.92)',
+    iconBg: 'rgba(184,134,11,0.10)',
+    iconBorder: 'rgba(184,134,11,0.24)',
+    glowColor: 'rgba(184,134,11,0.14)',
   },
   {
     icon: MapPin,
     label: 'Aus Koblenz & Region',
     sub: 'Vor Ort, wenn Sie uns brauchen',
-    accent: 'rgba(240,237,232,0.6)',
-    bg: 'rgba(240,237,232,0.04)',
-    glowColor: 'rgba(240,237,232,0.06)',
+    iconColor: 'rgba(255,255,255,0.60)',
+    iconBg: 'rgba(255,255,255,0.06)',
+    iconBorder: 'rgba(255,255,255,0.12)',
+    glowColor: 'rgba(255,255,255,0.06)',
   },
 ]
 
+const cardVariants = {
+  hidden: { opacity: 0, y: 28 },
+  visible: {
+    opacity: 1,
+    y: 0,
+    transition: { duration: 0.85, ease: [0.16, 1, 0.3, 1] as const },
+  },
+}
+
 function SignalCard({
   signal,
-  index,
   shouldReduce,
 }: {
   signal: (typeof signals)[0]
-  index: number
   shouldReduce: boolean | null
 }) {
   const [hovered, setHovered] = useState(false)
@@ -53,95 +63,93 @@ function SignalCard({
 
   return (
     <motion.div
-      variants={shouldReduce ? undefined : fadeUp}
-      onMouseEnter={() => setHovered(true)}
-      onMouseLeave={() => setHovered(false)}
+      variants={shouldReduce ? undefined : cardVariants}
+      onHoverStart={() => setHovered(true)}
+      onHoverEnd={() => setHovered(false)}
+      className="surface-secondary"
+      animate={{
+        borderColor: hovered
+          ? 'rgba(255,255,255,0.17)'
+          : 'rgba(255,255,255,0.09)',
+        boxShadow: hovered
+          ? `inset 0 1px 0 rgba(255,255,255,0.24), 0 20px 56px rgba(0,0,0,0.38), 0 0 52px ${signal.glowColor}`
+          : 'inset 0 1px 0 rgba(255,255,255,0.12), 0 10px 30px rgba(0,0,0,0.24), 0 0 0px transparent',
+        y: hovered && !shouldReduce ? -4 : 0,
+      }}
+      transition={{ duration: 0.38, ease: [0.16, 1, 0.3, 1] }}
       style={{
-        padding: '1.75rem 2rem',
+        padding: '1.75rem 1.75rem',
         display: 'flex',
-        alignItems: 'center',
-        gap: '1rem',
-        position: 'relative',
+        flexDirection: 'column',
+        gap: '1.1rem',
         cursor: 'default',
-        overflow: 'hidden',
+        height: '100%',
       }}
     >
-      {/* Hover glow */}
+      {/* Hover atmosphere bloom */}
       <motion.div
-        aria-hidden="true"
+        aria-hidden
         animate={{ opacity: hovered && !shouldReduce ? 1 : 0 }}
-        transition={{ duration: 0.3 }}
+        transition={{ duration: 0.38 }}
         style={{
           position: 'absolute',
           inset: 0,
-          background: `radial-gradient(ellipse at 30% 50%, ${signal.glowColor}, transparent 70%)`,
+          background: `radial-gradient(ellipse at 20% 25%, ${signal.glowColor}, transparent 68%)`,
           pointerEvents: 'none',
-        }}
-      />
-
-      {/* Top accent line on hover */}
-      <motion.div
-        animate={{ scaleX: hovered && !shouldReduce ? 1 : 0 }}
-        transition={{ duration: 0.4, ease: [0.16, 1, 0.3, 1] }}
-        style={{
-          position: 'absolute',
-          top: 0,
-          left: 0,
-          right: 0,
-          height: 1,
-          background: signal.accent,
-          transformOrigin: 'left',
+          zIndex: 0,
         }}
       />
 
       {/* Icon */}
       <motion.div
         animate={{
-          scale: hovered && !shouldReduce ? 1.1 : 1,
+          scale: hovered && !shouldReduce ? 1.07 : 1,
           boxShadow: hovered
-            ? `0 0 20px ${signal.glowColor}`
+            ? `0 0 24px ${signal.glowColor}`
             : '0 0 0px transparent',
         }}
-        transition={{ duration: 0.3, ease: [0.16, 1, 0.3, 1] }}
+        transition={{ duration: 0.38, ease: [0.16, 1, 0.3, 1] }}
         style={{
-          width: 38,
-          height: 38,
-          borderRadius: 8,
-          background: signal.bg,
+          width: 42,
+          height: 42,
+          borderRadius: 11,
+          background: signal.iconBg,
+          border: `1px solid ${signal.iconBorder}`,
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'center',
-          color: signal.accent,
+          color: signal.iconColor,
           flexShrink: 0,
           position: 'relative',
+          zIndex: 1,
         }}
       >
-        <Icon size={16} />
+        <Icon size={17} strokeWidth={1.5} />
       </motion.div>
 
       {/* Text */}
-      <div style={{ position: 'relative' }}>
+      <div style={{ position: 'relative', zIndex: 1 }}>
         <motion.p
-          animate={{
-            color: hovered ? 'var(--text)' : 'var(--text)',
-            x: hovered && !shouldReduce ? 2 : 0,
-          }}
-          transition={{ duration: 0.25 }}
+          animate={{ x: hovered && !shouldReduce ? 2 : 0 }}
+          transition={{ duration: 0.3 }}
           style={{
+            fontFamily: 'var(--font-ui)',
             fontSize: '0.875rem',
             fontWeight: 400,
             lineHeight: 1.3,
-            marginBottom: '0.2rem',
+            color: 'var(--text)',
+            marginBottom: '0.3rem',
           }}
         >
           {signal.label}
         </motion.p>
         <p
           style={{
+            fontFamily: 'var(--font-ui)',
             fontSize: '0.72rem',
             fontWeight: 300,
             color: 'var(--muted)',
-            lineHeight: 1.4,
+            lineHeight: 1.45,
           }}
         >
           {signal.sub}
@@ -159,29 +167,51 @@ export function ProofStrip() {
   return (
     <section
       style={{
-        borderTop: '1px solid var(--border)',
-        borderBottom: '1px solid var(--border)',
-        background: 'var(--surface)',
+        paddingTop: '3.5rem',
+        paddingBottom: '3.5rem',
         position: 'relative',
+        overflow: 'hidden',
       }}
     >
-      <div className="container-site">
+      {/* Ambient bloom behind cards */}
+      <div
+        aria-hidden
+        style={{
+          position: 'absolute',
+          top: '50%',
+          left: '50%',
+          transform: 'translate(-50%, -50%)',
+          width: '80vw',
+          height: '50vw',
+          maxWidth: 1000,
+          maxHeight: 600,
+          background:
+            'radial-gradient(ellipse at center, rgba(184,134,11,0.055) 0%, transparent 62%)',
+          filter: 'blur(64px)',
+          pointerEvents: 'none',
+        }}
+      />
+
+      <div className="container-site" style={{ position: 'relative' }}>
         <motion.div
           ref={ref}
-          variants={shouldReduce ? undefined : staggerContainer(0.07)}
+          variants={
+            shouldReduce
+              ? undefined
+              : {
+                  hidden: {},
+                  visible: { transition: { staggerChildren: 0.09 } },
+                }
+          }
           initial={shouldReduce ? undefined : 'hidden'}
-          animate={shouldReduce ? undefined : isInView ? 'visible' : 'hidden'}
-          style={{
-            display: 'grid',
-            gap: '1px',
-            background: 'var(--border)',
-          }}
+          animate={
+            shouldReduce ? undefined : isInView ? 'visible' : 'hidden'
+          }
+          style={{ display: 'grid', gap: '1rem' }}
           className="grid-cols-2 md:grid-cols-4"
         >
-          {signals.map((s, i) => (
-            <div key={s.label} style={{ background: 'var(--surface)' }}>
-              <SignalCard signal={s} index={i} shouldReduce={shouldReduce} />
-            </div>
+          {signals.map((s) => (
+            <SignalCard key={s.label} signal={s} shouldReduce={shouldReduce} />
           ))}
         </motion.div>
       </div>

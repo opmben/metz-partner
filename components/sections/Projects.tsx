@@ -21,9 +21,9 @@ function BrowserChrome({ url }: { url: string }) {
   return (
     <div
       style={{
-        height: 42,
-        background: 'rgba(8, 8, 8, 0.94)',
-        borderBottom: '1px solid rgba(255, 255, 255, 0.07)',
+        height: 44,
+        background: 'rgba(6, 6, 6, 0.94)',
+        borderBottom: '1px solid rgba(255, 255, 255, 0.065)',
         display: 'flex',
         alignItems: 'center',
         padding: '0 16px',
@@ -34,10 +34,10 @@ function BrowserChrome({ url }: { url: string }) {
       {/* Traffic lights */}
       <div style={{ display: 'flex', gap: 7, flexShrink: 0 }}>
         {[
-          { fill: '#FF5F57', ring: 'rgba(255,95,87,0.4)' },
-          { fill: '#FEBC2E', ring: 'rgba(254,188,46,0.35)' },
-          { fill: '#28C840', ring: 'rgba(40,200,64,0.35)' },
-        ].map(({ fill, ring }, i) => (
+          { fill: '#FF5F57', glow: 'rgba(255,95,87,0.55)' },
+          { fill: '#FEBC2E', glow: 'rgba(254,188,46,0.50)' },
+          { fill: '#28C840', glow: 'rgba(40,200,64,0.50)' },
+        ].map(({ fill, glow }, i) => (
           <div
             key={i}
             style={{
@@ -45,7 +45,7 @@ function BrowserChrome({ url }: { url: string }) {
               height: 11,
               borderRadius: '50%',
               background: fill,
-              boxShadow: `0 0 5px ${ring}`,
+              boxShadow: `0 0 6px ${glow}`,
               opacity: 0.82,
               flexShrink: 0,
             }}
@@ -57,8 +57,8 @@ function BrowserChrome({ url }: { url: string }) {
       <div
         style={{
           flex: 1,
-          height: 24,
-          background: 'rgba(255, 255, 255, 0.04)',
+          height: 26,
+          background: 'rgba(255, 255, 255, 0.03)',
           border: '1px solid rgba(255, 255, 255, 0.07)',
           borderRadius: 6,
           display: 'flex',
@@ -75,17 +75,18 @@ function BrowserChrome({ url }: { url: string }) {
           height="9"
           viewBox="0 0 7 9"
           fill="none"
-          style={{ flexShrink: 0, opacity: 0.28 }}
+          aria-hidden
+          style={{ flexShrink: 0, opacity: 0.22 }}
         >
           <rect x="0.5" y="3.5" width="6" height="5" rx="1" stroke="white" strokeWidth="1" />
           <path d="M2 3.5V2.5a1.5 1.5 0 1 1 3 0v1" stroke="white" strokeWidth="1" />
         </svg>
         <span
           style={{
-            fontSize: '0.615rem',
+            fontSize: '0.6rem',
             color: 'rgba(255, 255, 255, 0.26)',
             fontFamily: 'var(--font-ui)',
-            letterSpacing: '0.02em',
+            letterSpacing: '0.025em',
             whiteSpace: 'nowrap',
           }}
         >
@@ -93,17 +94,17 @@ function BrowserChrome({ url }: { url: string }) {
         </span>
       </div>
 
-      {/* Spacer mirrors traffic lights */}
-      <div style={{ width: 42, flexShrink: 0 }} />
+      {/* Mirror spacer */}
+      <div style={{ width: 44, flexShrink: 0 }} />
     </div>
   )
 }
 
 // ─────────────────────────────────────────────────────────────────────────────
-// Project Mockup Card
+// Project Browser Card
 // ─────────────────────────────────────────────────────────────────────────────
 
-function ProjectMockupCard({
+function ProjectBrowserCard({
   project,
   featured = true,
   delay = 0,
@@ -122,74 +123,64 @@ function ProjectMockupCard({
     target: cardRef,
     offset: ['start end', 'end start'],
   })
-  const imageY = useTransform(scrollYProgress, [0, 1], ['-30px', '30px'])
+  const imageY = useTransform(scrollYProgress, [0, 1], ['-22px', '22px'])
 
   const displayUrl = project.displayUrl ?? `${project.slug}.de`
 
   return (
     <motion.div
       ref={cardRef}
-      initial={shouldReduce ? undefined : { opacity: 0, y: 36 }}
+      initial={shouldReduce ? undefined : { opacity: 0, y: 52 }}
       animate={
         shouldReduce
           ? undefined
           : isInView
           ? { opacity: 1, y: 0 }
-          : { opacity: 0, y: 36 }
+          : { opacity: 0, y: 52 }
       }
-      transition={{
-        duration: 0.9,
-        ease: [0.16, 1, 0.3, 1],
-        delay,
-      }}
+      transition={{ duration: 1.0, ease: [0.16, 1, 0.3, 1], delay }}
     >
       <Link
         href={`/projekte/${project.slug}`}
-        className="block"
-        style={{ cursor: 'pointer' }}
+        style={{ display: 'block', cursor: 'pointer' }}
       >
         <motion.div
+          className="panel-browser"
           onHoverStart={() => setHovered(true)}
           onHoverEnd={() => setHovered(false)}
           animate={{
             borderColor: hovered
-              ? 'rgba(255,255,255,0.16)'
+              ? 'rgba(255,255,255,0.18)'
               : 'rgba(255,255,255,0.09)',
             boxShadow: hovered
-              ? '0 0 0 1px rgba(255,255,255,0.08), 0 24px 72px rgba(0,0,0,0.65), 0 0 80px rgba(212,131,10,0.07), inset 0 1px 0 rgba(255,255,255,0.16)'
-              : '0 0 0 1px rgba(255,255,255,0.03), 0 12px 48px rgba(0,0,0,0.52), inset 0 1px 0 rgba(255,255,255,0.09)',
+              ? 'inset 0 1px 0 rgba(255,255,255,0.26), 0 36px 90px rgba(0,0,0,0.64), 0 0 96px rgba(212,131,10,0.09)'
+              : 'inset 0 1px 0 rgba(255,255,255,0.13), 0 18px 60px rgba(0,0,0,0.50), 0 0 56px rgba(212,131,10,0.05)',
+            y: hovered ? (shouldReduce ? 0 : -4) : 0,
           }}
-          transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
+          transition={{ duration: 0.45, ease: [0.16, 1, 0.3, 1] }}
           style={{
-            position: 'relative',
-            background: 'rgba(255, 255, 255, 0.035)',
-            backdropFilter: 'blur(28px)',
-            WebkitBackdropFilter: 'blur(28px)',
-            border: '1px solid rgba(255, 255, 255, 0.09)',
-            borderRadius: featured ? 20 : 16,
+            padding: 0,
             overflow: 'hidden',
-            boxShadow:
-              '0 0 0 1px rgba(255,255,255,0.03), 0 12px 48px rgba(0,0,0,0.52), inset 0 1px 0 rgba(255,255,255,0.09)',
+            background: 'linear-gradient(180deg, rgba(255,255,255,0.068), rgba(255,255,255,0.030))',
           }}
         >
-          {/* Luminous top-edge highlight */}
+          {/* Luminous top-edge catchlight — sits above chrome */}
           <div
             aria-hidden
             style={{
               position: 'absolute',
               top: 0,
-              left: '12%',
-              right: '12%',
+              left: '8%',
+              right: '8%',
               height: 1,
-              background: 'rgba(255,255,255,0.20)',
-              borderRadius: '50%',
-              filter: 'blur(0.5px)',
-              zIndex: 10,
+              background:
+                'linear-gradient(90deg, transparent, rgba(255,255,255,0.30) 28%, rgba(255,255,255,0.20) 72%, transparent)',
+              zIndex: 20,
               pointerEvents: 'none',
             }}
           />
 
-          {/* Browser Chrome */}
+          {/* Browser chrome */}
           <BrowserChrome url={displayUrl} />
 
           {/* Screenshot viewport */}
@@ -200,11 +191,11 @@ function ProjectMockupCard({
               overflow: 'hidden',
             }}
           >
-            {/* Image with scroll parallax */}
+            {/* Parallax image wrapper */}
             <motion.div
               style={{
                 position: 'absolute',
-                inset: '-10% 0',
+                inset: '-12% 0',
                 y: shouldReduce ? 0 : imageY,
               }}
             >
@@ -213,8 +204,7 @@ function ProjectMockupCard({
                   style={{
                     position: 'absolute',
                     inset: 0,
-                    background:
-                      'linear-gradient(160deg, #121212 0%, #0a0a0a 100%)',
+                    background: 'linear-gradient(160deg, #141414 0%, #0a0a0a 100%)',
                   }}
                 />
               ) : (
@@ -224,8 +214,8 @@ function ProjectMockupCard({
                   fill
                   sizes={
                     featured
-                      ? '(min-width: 1280px) 60vw, 100vw'
-                      : '(min-width: 1280px) 40vw, 100vw'
+                      ? '(min-width: 1280px) 70vw, 100vw'
+                      : '(min-width: 1280px) 32vw, 100vw'
                   }
                   style={{ objectFit: 'cover', objectPosition: 'top' }}
                   onError={() => setImgError(true)}
@@ -234,14 +224,37 @@ function ProjectMockupCard({
               )}
             </motion.div>
 
-            {/* Hover overlay + glass CTA pill */}
+            {/* Image scale on hover */}
+            {!shouldReduce && (
+              <motion.div
+                animate={{ scale: hovered ? 1.025 : 1 }}
+                transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
+                style={{ position: 'absolute', inset: 0, pointerEvents: 'none' }}
+              />
+            )}
+
+            {/* Bottom atmospheric fade into info strip */}
+            <div
+              aria-hidden
+              style={{
+                position: 'absolute',
+                bottom: 0,
+                left: 0,
+                right: 0,
+                height: '40%',
+                background:
+                  'linear-gradient(to top, rgba(6,6,6,0.82) 0%, rgba(6,6,6,0.30) 60%, transparent 100%)',
+                pointerEvents: 'none',
+                zIndex: 2,
+              }}
+            />
+
+            {/* Hover overlay — darkens and surfaces the CTA pill */}
             <motion.div
               animate={{
-                background: hovered
-                  ? 'rgba(0, 0, 0, 0.30)'
-                  : 'rgba(0, 0, 0, 0)',
+                background: hovered ? 'rgba(0,0,0,0.22)' : 'rgba(0,0,0,0)',
               }}
-              transition={{ duration: 0.4 }}
+              transition={{ duration: 0.38 }}
               style={{
                 position: 'absolute',
                 inset: 0,
@@ -249,46 +262,49 @@ function ProjectMockupCard({
                 alignItems: 'center',
                 justifyContent: 'center',
                 pointerEvents: 'none',
+                zIndex: 3,
               }}
             >
               <motion.div
                 animate={{
                   opacity: hovered ? 1 : 0,
-                  y: hovered ? 0 : 12,
-                  scale: hovered ? 1 : 0.92,
+                  y: hovered ? 0 : 16,
+                  scale: hovered ? 1 : 0.88,
                 }}
-                transition={{ duration: 0.35, ease: [0.16, 1, 0.3, 1] }}
+                transition={{ duration: 0.42, ease: [0.16, 1, 0.3, 1] }}
                 style={{
-                  background: 'rgba(255, 255, 255, 0.07)',
-                  backdropFilter: 'blur(20px)',
-                  WebkitBackdropFilter: 'blur(20px)',
-                  border: '1px solid rgba(255, 255, 255, 0.18)',
-                  borderRadius: 100,
-                  padding: featured ? '0.75rem 2rem' : '0.6rem 1.6rem',
+                  background: 'rgba(255, 255, 255, 0.09)',
+                  backdropFilter: 'blur(28px)',
+                  WebkitBackdropFilter: 'blur(28px)',
+                  border: '1px solid rgba(255, 255, 255, 0.22)',
+                  borderRadius: 999,
+                  padding: featured ? '0.85rem 2.4rem' : '0.65rem 1.8rem',
                   fontFamily: 'var(--font-ui)',
-                  fontSize: featured ? '0.78rem' : '0.72rem',
+                  fontSize: featured ? '0.8rem' : '0.72rem',
                   fontWeight: 400,
-                  letterSpacing: '0.07em',
+                  letterSpacing: '0.08em',
                   textTransform: 'uppercase' as const,
-                  color: 'rgba(255, 255, 255, 0.88)',
+                  color: 'rgba(255, 255, 255, 0.92)',
                   boxShadow:
-                    'inset 0 1px 0 rgba(255,255,255,0.18), 0 4px 24px rgba(0,0,0,0.3)',
-                  whiteSpace: 'nowrap',
+                    'inset 0 1px 0 rgba(255,255,255,0.24), 0 8px 32px rgba(0,0,0,0.32)',
+                  whiteSpace: 'nowrap' as const,
                 }}
               >
-                Ansehen →
+                Projekt ansehen
               </motion.div>
             </motion.div>
           </div>
 
-          {/* Info strip */}
+          {/* Info strip — dark glass */}
           <motion.div
-            animate={{ y: hovered ? 0 : 4 }}
-            transition={{ duration: 0.4, ease: [0.16, 1, 0.3, 1] }}
+            animate={{ y: hovered ? 0 : 6 }}
+            transition={{ duration: 0.42, ease: [0.16, 1, 0.3, 1] }}
             style={{
-              padding: featured ? '1.35rem 1.75rem' : '1rem 1.4rem',
+              padding: featured ? '1.4rem 1.8rem' : '1rem 1.4rem',
+              background: 'rgba(6, 6, 6, 0.68)',
+              backdropFilter: 'blur(20px)',
+              WebkitBackdropFilter: 'blur(20px)',
               borderTop: '1px solid rgba(255,255,255,0.06)',
-              background: 'rgba(0, 0, 0, 0.22)',
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'space-between',
@@ -301,9 +317,9 @@ function ProjectMockupCard({
                   fontSize: '0.6rem',
                   fontWeight: 400,
                   textTransform: 'uppercase',
-                  letterSpacing: '0.14em',
-                  color: 'rgba(255,255,255,0.28)',
-                  marginBottom: '0.3rem',
+                  letterSpacing: '0.15em',
+                  color: 'rgba(255,255,255,0.30)',
+                  marginBottom: '0.32rem',
                   fontFamily: 'var(--font-ui)',
                 }}
               >
@@ -313,7 +329,7 @@ function ProjectMockupCard({
                 style={{
                   fontFamily: 'var(--font-display)',
                   fontSize: featured
-                    ? 'clamp(1.1rem, 1.8vw, 1.45rem)'
+                    ? 'clamp(1.1rem, 1.9vw, 1.5rem)'
                     : 'clamp(0.95rem, 1.3vw, 1.2rem)',
                   fontWeight: 400,
                   fontStyle: 'italic',
@@ -323,28 +339,31 @@ function ProjectMockupCard({
                   whiteSpace: 'nowrap',
                   overflow: 'hidden',
                   textOverflow: 'ellipsis',
+                  margin: 0,
                 }}
               >
                 {project.name}
               </h3>
             </div>
 
+            {/* Arrow circle */}
             <motion.div
               animate={{
                 x: hovered ? 0 : -5,
-                opacity: hovered ? 1 : 0.3,
+                opacity: hovered ? 1 : 0.22,
               }}
-              transition={{ duration: 0.35, ease: 'easeOut' }}
+              transition={{ duration: 0.36, ease: 'easeOut' }}
               style={{
-                width: 36,
-                height: 36,
+                width: 38,
+                height: 38,
                 borderRadius: '50%',
-                border: '1px solid rgba(255,255,255,0.12)',
+                border: '1px solid rgba(255,255,255,0.14)',
                 display: 'flex',
                 alignItems: 'center',
                 justifyContent: 'center',
-                color: 'rgba(255,255,255,0.8)',
+                color: 'rgba(255,255,255,0.85)',
                 flexShrink: 0,
+                background: 'rgba(255,255,255,0.04)',
               }}
             >
               <ArrowUpRight size={15} />
@@ -368,49 +387,67 @@ export function Projects() {
   const realProjects = projects.filter((p) => p.imageReady && p.coverImage)
   if (realProjects.length === 0) return null
 
-  const displayProjects = realProjects.slice(0, 2)
-  const isSingle = displayProjects.length === 1
+  const featuredProject = realProjects[0]
+  const secondaryProjects = realProjects.slice(1, 3)
+  const hasSecondary = secondaryProjects.length > 0
 
   return (
     <section
       id="projekte"
       style={{
-        paddingTop: '6rem',
-        paddingBottom: '6rem',
+        paddingTop: '8rem',
+        paddingBottom: '8rem',
         position: 'relative',
         overflow: 'hidden',
       }}
-      className="md:py-32"
     >
-      {/* Warm atmospheric bloom — sits behind the cards */}
+      {/* Warm atmospheric bloom — asymmetric, sits behind featured card */}
       <div
         aria-hidden
         style={{
           position: 'absolute',
-          top: '40%',
-          left: '50%',
-          transform: 'translate(-50%, -50%)',
+          top: '30%',
+          right: '-10%',
           width: '80vw',
-          height: '60vw',
-          maxWidth: 1100,
+          height: '70vw',
+          maxWidth: 1000,
           maxHeight: 800,
           background:
-            'radial-gradient(ellipse at center, rgba(184,134,11,0.07) 0%, rgba(198,124,59,0.04) 35%, transparent 68%)',
+            'radial-gradient(ellipse at 70% 40%, rgba(212,131,10,0.08) 0%, rgba(198,124,59,0.05) 38%, transparent 65%)',
+          filter: 'blur(90px)',
+          pointerEvents: 'none',
+        }}
+      />
+
+      <div
+        aria-hidden
+        style={{
+          position: 'absolute',
+          bottom: '10%',
+          left: '-5%',
+          width: '50vw',
+          height: '40vw',
+          maxWidth: 600,
+          maxHeight: 500,
+          background:
+            'radial-gradient(ellipse at 30% 60%, rgba(184,134,11,0.05) 0%, transparent 60%)',
           filter: 'blur(72px)',
           pointerEvents: 'none',
         }}
       />
 
       <div className="container-site" style={{ position: 'relative' }}>
-        {/* Section header */}
+
+        {/* ── Section header ── */}
         <div
           ref={headerRef}
-          style={{ marginBottom: '3rem' }}
           className="flex flex-col md:flex-row md:items-end md:justify-between"
+          style={{ marginBottom: '3.5rem', gap: '1.5rem' }}
         >
-          {/* Left: label + headline */}
+          {/* Left — eyebrow + headline */}
           <div>
-            <motion.p
+            {/* Eyebrow label — glass pill */}
+            <motion.div
               initial={shouldReduce ? undefined : { opacity: 0, y: 10 }}
               animate={
                 shouldReduce
@@ -420,34 +457,54 @@ export function Projects() {
                   : { opacity: 0, y: 10 }
               }
               transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
-              style={{
-                fontSize: '0.65rem',
-                fontWeight: 400,
-                textTransform: 'uppercase',
-                letterSpacing: '0.16em',
-                color: 'rgba(255,255,255,0.32)',
-                fontFamily: 'var(--font-ui)',
-                marginBottom: '1rem',
-              }}
+              style={{ marginBottom: '1.1rem', display: 'inline-block' }}
             >
-              Ausgewählte Arbeiten
-            </motion.p>
+              <span
+                className="surface-floating"
+                style={{
+                  display: 'inline-flex',
+                  alignItems: 'center',
+                  gap: '0.5rem',
+                  padding: '0.35rem 0.9rem',
+                  fontFamily: 'var(--font-ui)',
+                  fontSize: '0.65rem',
+                  fontWeight: 400,
+                  textTransform: 'uppercase',
+                  letterSpacing: '0.14em',
+                  color: 'rgba(255,255,255,0.45)',
+                }}
+              >
+                {/* Warm dot */}
+                <span
+                  style={{
+                    width: 5,
+                    height: 5,
+                    borderRadius: '50%',
+                    background: 'var(--warm-amber)',
+                    boxShadow: '0 0 8px rgba(212,131,10,0.6)',
+                    flexShrink: 0,
+                  }}
+                />
+                Ausgewählte Arbeiten
+              </span>
+            </motion.div>
 
+            {/* Headline — clip reveal */}
             <div style={{ overflow: 'hidden' }}>
               <motion.h2
                 className="display-section"
-                initial={shouldReduce ? undefined : { y: '105%' }}
+                initial={shouldReduce ? undefined : { y: '108%' }}
                 animate={
                   shouldReduce
                     ? undefined
                     : isHeaderInView
                     ? { y: '0%' }
-                    : { y: '105%' }
+                    : { y: '108%' }
                 }
                 transition={{
-                  duration: 0.9,
+                  duration: 0.95,
                   ease: [0.16, 1, 0.3, 1],
-                  delay: 0.08,
+                  delay: 0.07,
                 }}
               >
                 Arbeit, die überzeugt.
@@ -455,7 +512,7 @@ export function Projects() {
             </div>
           </div>
 
-          {/* Right: Alle Projekte pill */}
+          {/* Right — Alle Projekte CTA */}
           <motion.div
             initial={shouldReduce ? undefined : { opacity: 0, y: 10 }}
             animate={
@@ -465,72 +522,96 @@ export function Projects() {
                 ? { opacity: 1, y: 0 }
                 : { opacity: 0, y: 10 }
             }
-            transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1], delay: 0.22 }}
-            style={{ marginTop: '1.5rem' }}
-            className="md:mt-0"
+            transition={{
+              duration: 0.7,
+              ease: [0.16, 1, 0.3, 1],
+              delay: 0.24,
+            }}
+            className="md:mb-2"
           >
             <Link
               href="/projekte"
+              className="button-pill-micro"
               style={{
-                display: 'inline-flex',
-                alignItems: 'center',
-                gap: '0.45rem',
-                padding: '0.65rem 1.5rem',
-                background: 'rgba(255,255,255,0.04)',
-                backdropFilter: 'blur(10px)',
-                WebkitBackdropFilter: 'blur(10px)',
-                border: '1px solid rgba(255,255,255,0.10)',
-                borderRadius: 100,
-                color: 'rgba(255,255,255,0.42)',
-                fontFamily: 'var(--font-ui)',
-                fontSize: '0.74rem',
-                fontWeight: 400,
-                letterSpacing: '0.07em',
-                textTransform: 'uppercase',
                 textDecoration: 'none',
-                transition: 'color 0.3s ease, border-color 0.3s ease, background 0.3s ease',
-                boxShadow: 'inset 0 1px 0 rgba(255,255,255,0.07)',
-              }}
-              onMouseEnter={(e) => {
-                const el = e.currentTarget as HTMLAnchorElement
-                el.style.color = 'rgba(255,255,255,0.82)'
-                el.style.borderColor = 'rgba(255,255,255,0.20)'
-                el.style.background = 'rgba(255,255,255,0.07)'
-              }}
-              onMouseLeave={(e) => {
-                const el = e.currentTarget as HTMLAnchorElement
-                el.style.color = 'rgba(255,255,255,0.42)'
-                el.style.borderColor = 'rgba(255,255,255,0.10)'
-                el.style.background = 'rgba(255,255,255,0.04)'
+                color: 'var(--muted)',
+                fontFamily: 'var(--font-ui)',
               }}
             >
               Alle Projekte
-              <ArrowUpRight size={12} />
+              <ArrowUpRight size={13} />
             </Link>
           </motion.div>
         </div>
 
-        {/* Project grid */}
-        <div
-          style={{
-            display: 'grid',
-            gap: '1rem',
-          }}
-          className={
-            isSingle
-              ? 'grid-cols-1'
-              : 'grid-cols-1 md:grid-cols-[minmax(0,3fr)_minmax(0,2fr)]'
-          }
-        >
-          {displayProjects.map((project, i) => (
-            <ProjectMockupCard
-              key={project.slug}
-              project={project}
-              featured={i === 0}
-              delay={i * 0.12}
+        {/* ── Project grid ── */}
+        {hasSecondary ? (
+          // Multi-project: featured large left + secondary grid right
+          <div
+            style={{ display: 'grid', gap: '1rem' }}
+            className="grid-cols-1 md:grid-cols-[minmax(0,3fr)_minmax(0,2fr)]"
+          >
+            <ProjectBrowserCard
+              project={featuredProject}
+              featured
+              delay={0}
             />
-          ))}
-        </div>
+            <div
+              style={{
+                display: 'flex',
+                flexDirection: 'column',
+                gap: '1rem',
+              }}
+            >
+              {secondaryProjects.map((project, i) => (
+                <ProjectBrowserCard
+                  key={project.slug}
+                  project={project}
+                  featured={false}
+                  delay={(i + 1) * 0.12}
+                />
+              ))}
+            </div>
+          </div>
+        ) : (
+          // Single project: full-width featured
+          <ProjectBrowserCard
+            project={featuredProject}
+            featured
+            delay={0}
+          />
+        )}
+
+        {/* ── Bottom CTA strip ── */}
+        <motion.div
+          initial={shouldReduce ? undefined : { opacity: 0, y: 16 }}
+          whileInView={shouldReduce ? undefined : { opacity: 1, y: 0 }}
+          viewport={{ once: true, margin: '-60px' }}
+          transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
+          style={{
+            marginTop: '2.5rem',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+          }}
+        >
+          <Link
+            href="/projekte"
+            className="button-ghost-glass"
+            style={{
+              textDecoration: 'none',
+              fontFamily: 'var(--font-ui)',
+              fontSize: '0.82rem',
+              fontWeight: 400,
+              letterSpacing: '0.04em',
+              color: 'var(--muted)',
+            }}
+          >
+            Alle Projekte ansehen
+            <ArrowUpRight size={15} />
+          </Link>
+        </motion.div>
+
       </div>
     </section>
   )
