@@ -289,28 +289,6 @@ export function Hero() {
             </div>
           </div>
 
-          {/* Subtitle */}
-          <motion.p
-            variants={shouldReduce ? undefined : blurIn}
-            initial={shouldReduce ? undefined : 'hidden'}
-            animate={shouldReduce ? undefined : 'visible'}
-            transition={{ delay: 1.1 }}
-            style={{
-              fontFamily: 'var(--font-ui)',
-              fontSize: 'clamp(1rem, 1.5vw, 1.15rem)',
-              fontWeight: 300,
-              lineHeight: 1.75,
-              color: 'var(--muted)',
-              maxWidth: 500,
-            }}
-          >
-            Wir sind{' '}
-            <span style={{ color: 'var(--text)', fontWeight: 400 }}>
-              Metz & Partner
-            </span>{' '}
-            — Webdeveloper aus Koblenz. Wir bauen Websites die nicht nur gut aussehen,
-            sondern echte Ergebnisse liefern.
-          </motion.p>
 
           {/* CTAs — magnetic */}
           <motion.div
