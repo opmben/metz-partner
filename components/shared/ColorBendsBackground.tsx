@@ -24,8 +24,8 @@ export function ColorBendsBackground() {
         parallax={1}
         noise={0.25}
         iterations={2}
-        intensity={0.7}
-        bandWidth={5}
+        intensity={0.6}
+        bandWidth={4.5}
       />
     </div>
   )
