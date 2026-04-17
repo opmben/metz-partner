@@ -1,550 +1,443 @@
-# DESIGN_SYSTEM.md — Metz & Partner
-# The single source of truth for all visual decisions.
-# If it is not in here, ask before inventing it.
+# DESIGN_SYSTEM.md — Metz & Partner Creative Principles
+
+This document defines the creative direction and design principles for Metz & Partner.
+
+It is intentionally principle-led rather than pixel-prescriptive.
 
 ---
 
-## Design Philosophy
+## 1. Brand Aesthetic
 
-**Industrial-Editorial meets Digital Luxury.**
+Metz & Partner should feel like a design-led studio that operates at a genuinely higher level than anything a regional client has seen before.
 
-Dark. High-contrast. Typographically dominant.
-The aesthetic sits between *Wallpaper Magazine* and a Berlin tech studio.
-Every element should feel intentional — placed, not dropped.
+**Reference points:** ReactBits, Resend, Unseen.co, Oryzo.ai
 
-Primary emotion to evoke: **Confident trust.** The visitor should feel:
-*"These people know exactly what they are doing."*
+The visual territory is:
+- cinematic
+- luminous
+- deep
+- fluid
+- premium without fake luxury
+- controlled but alive
+
+The defining material is **glass**.
+Not glass as a decorative layer — glass as the primary organizational language.
+Every meaningful content surface is a glass panel floating over a living atmospheric background.
+
+The feeling should be: *expensive light passing through deep material.*
 
 ---
 
-## Color Tokens
+## 2. The Two-Layer System
 
-Define these in `globals.css` as `:root` variables.
-Map them in `tailwind.config.ts` under `theme.extend.colors`.
+The site is built on two distinct visual layers that must be kept in tension at all times:
+
+### Layer 1 — The Atmosphere (background)
+A living, fluid, organic animated background.
+It provides all the warmth and color in the system.
+Palette: **warm spectrum — amber, copper, gold, deep ochre** over near-black.
+This is what makes the glass glow.
+
+### Layer 2 — The Glass (foreground)
+All content lives in glass panels floating over the atmosphere.
+Glass is translucent, luminous, with light-catching edges.
+Glass does not have its own strong color — it reflects and refracts the atmosphere beneath.
+
+**The tension between these two layers is the design.**
+Never collapse them into one flat surface.
+Never let the background overpower the foreground content.
+
+---
+
+## 3. Glass Material Specification
+
+### Luminous Glass — The Primary Surface
+
+Glass panels should feel like they catch light from within.
+
+Key qualities:
+- translucent dark base (atmosphere shows through, softened)
+- `backdrop-filter: blur(20px–40px)` — the heavier the content, the more blur
+- luminous top edge: a bright 1px highlight line at the top of each card/panel
+- soft outer glow: a faint warm-white ambient shadow
+- border: barely-there white/silver, brightens on hover or focus
+
+The glass should feel **luminous**, not milky.
+There is a difference: milky glass is flat and opaque.
+Luminous glass appears to have its own inner light.
+
+### Border Radius
+- Cards and panels: **16–24px**
+- Buttons: **100px pill** (fully rounded) or **14–16px** for contained contexts
+- No sharp corners anywhere on the page
+
+### Do not use
+- pure opaque dark cards as the primary surface language
+- flat matte panels with no depth
+- glass that looks like a blurred screenshot instead of a material
+
+---
+
+## 4. Color System
+
+The color system has shifted from accent-color-driven to atmosphere-driven.
+
+### Philosophy
+Color comes from the background atmosphere, not from UI tokens.
+The glass surfaces are near-neutral — they let the atmosphere breathe through.
+CTAs use luminosity and glow, not flat color.
+
+### New Token Direction
 
 ```css
-:root {
-  /* Backgrounds */
-  --bg:          #080808;   /* Main page background */
-  --surface:     #111111;   /* Cards, panels, elevated elements */
-  --surface-2:   #1a1a1a;   /* Hover states, pressed states */
+/* Base */
+--bg:               #0a0a0a;   /* Near black — the void behind everything */
+--surface:          rgba(255, 255, 255, 0.05);   /* Glass base */
+--surface-2:        rgba(255, 255, 255, 0.08);   /* Glass elevated */
+--surface-solid:    #0f0f0f;   /* Solid panels where glass is not used */
 
-  /* Accents */
-  --accent:      #C8FF00;   /* Primary accent — Acid Green */
-  --accent-warm: #FF6B35;   /* Secondary accent — Coral */
-  --accent-dim:  rgba(200, 255, 0, 0.12);  /* For glow backgrounds */
+/* Glass borders */
+--glass-border:        rgba(255, 255, 255, 0.10);
+--glass-border-hover:  rgba(255, 255, 255, 0.22);
+--glass-highlight:     rgba(255, 255, 255, 0.28);  /* Top-edge catchlight */
+--glass-glow:          rgba(255, 255, 255, 0.06);  /* Ambient outer glow */
 
-  /* Text */
-  --text:        #F0EDE8;   /* Primary text — warm off-white */
-  --muted:       rgba(240, 237, 232, 0.45); /* Secondary text */
-  --subtle:      rgba(240, 237, 232, 0.18); /* Decorative text, watermarks */
+/* Text */
+--text:     #FFFFFF;
+--muted:    rgba(255, 255, 255, 0.55);
+--subtle:   rgba(255, 255, 255, 0.25);
 
-  /* Borders */
-  --border:      rgba(240, 237, 232, 0.07);  /* Default borders */
-  --border-hover: rgba(240, 237, 232, 0.14); /* Hovered borders */
-  --border-accent: var(--accent);            /* Highlighted borders */
-}
+/* Warm atmosphere palette (for shader/background use) */
+--warm-amber:  #D4830A;
+--warm-copper: #C67C3B;
+--warm-gold:   #B8860B;
+--warm-dim:    rgba(184, 134, 11, 0.12);  /* For glow contexts */
+
+/* Legacy */
+--accent: #C8FF00;   /* Kept for rare high-contrast moments only — not primary */
 ```
 
-### Tailwind Mapping (`tailwind.config.ts`)
-```typescript
-colors: {
-  bg:      'var(--bg)',
-  surface: 'var(--surface)',
-  's2':    'var(--surface-2)',
-  accent:  'var(--accent)',
-  warm:    'var(--accent-warm)',
-  text:    'var(--text)',
-  muted:   'var(--muted)',
-  subtle:  'var(--subtle)',
-  border:  'var(--border)',
+### Token Rules
+- `--text` is pure white — appropriate only on dark glass
+- Glass token values should be treated as starting points, not locked values
+- The warm palette tokens are for the background shader — not for foreground UI
+- `--accent` (#C8FF00) should be used sparingly if at all — the new system is luminosity-first
+
+### CTA / Button Color
+Primary buttons use **Luminous Glass with Glow**, not a flat color fill.
+
+```css
+/* Primary button */
+background: rgba(255, 255, 255, 0.08);
+border: 1px solid rgba(255, 255, 255, 0.20);
+box-shadow:
+  0 0 40px rgba(255, 255, 255, 0.08),
+  inset 0 1px 0 rgba(255, 255, 255, 0.18);
+
+&:hover {
+  background: rgba(255, 255, 255, 0.12);
+  border-color: rgba(255, 255, 255, 0.35);
+  box-shadow:
+    0 0 60px rgba(255, 255, 255, 0.14),
+    inset 0 1px 0 rgba(255, 255, 255, 0.25);
 }
 ```
-
-### Color Usage Rules
-- `--accent` on dark backgrounds only — never on light
-- `--accent` for: CTAs, key word highlights, active states, stat symbols, top-border reveals
-- `--accent-warm` for: secondary labels, alternate tag highlights, decorative elements
-- Never mix both accents in the same component — pick one per context
-- `--text` is not pure white — this is intentional. Pure white feels harsh.
 
 ---
 
-## Typography
+## 5. Typography
 
-### Font Loading (`layout.tsx`)
-```typescript
-import { Instrument_Serif, DM_Sans } from 'next/font/google'
+### Current System
+- **Display:** Instrument Serif — loaded via `next/font/google`, variable `--font-display`
+- **UI:** DM Sans — loaded via `next/font/google`, variable `--font-ui`
 
-const instrumentSerif = Instrument_Serif({
-  weight: ['400'],
-  style: ['normal', 'italic'],
-  subsets: ['latin'],
-  variable: '--font-display',
-})
+### Font Principles
+The tension between Instrument Serif (editorial, warm, italic) and DM Sans (clean, geometric, neutral) is a strong pairing. Keep it unless a clearly better direction emerges.
 
-const dmSans = DM_Sans({
-  weight: ['300', '400', '500'],
-  style: ['normal', 'italic'],
-  subsets: ['latin'],
-  variable: '--font-ui',
-})
-```
+For the warm glass aesthetic:
+- Instrument Serif Italic is perfect for cinematic display moments against warm atmospheric backgrounds
+- DM Sans provides clean legibility for UI elements on glass surfaces
 
-Apply both variables to `<html>` tag.
+**Future consideration:** Geist (Vercel's font) is a strong UI upgrade candidate — cleaner and more product-grade than DM Sans. Worth evaluating when the site is in a stable state.
 
-### Type Scale
-```
---font-display: var(--font-display), Georgia, serif
---font-ui:      var(--font-ui), system-ui, sans-serif
-```
+### Type Scale (current — from globals.css)
 
-| Name | Font | Size | Weight | Style | Line-height | Letter-spacing |
-|------|------|------|--------|-------|-------------|----------------|
-| `display-hero` | Display | clamp(3.5rem, 7.5vw, 9rem) | 400 | italic | 0.93 | -0.03em |
-| `display-section` | Display | clamp(2rem, 4vw, 4.5rem) | 400 | italic | 1.05 | -0.02em |
-| `display-card` | Display | 1.6rem | 400 | italic | 1.2 | -0.01em |
-| `display-stat` | Display | 2.8rem | 400 | italic | 1 | 0 |
-| `display-manifesto` | Display | clamp(2.5rem, 5vw, 6rem) | 400 | italic | 1.1 | -0.02em |
-| `body` | UI | 1rem | 300 | normal | 1.75 | 0 |
-| `body-sm` | UI | 0.875rem | 300 | normal | 1.7 | 0 |
-| `label` | UI | 0.7rem | 400 | normal | 1 | 0.14em | (uppercase) |
-| `nav` | UI | 0.75rem | 400 | normal | 1 | 0.12em | (uppercase) |
-| `button` | UI | 0.8rem | 500 | normal | 1 | 0.08em | (uppercase) |
+| Class | Size | Line-height | Letter-spacing |
+|-------|------|-------------|----------------|
+| `.display-hero` | clamp(3.5rem, 7.5vw, 9rem) | 0.93 | -0.03em |
+| `.display-section` | clamp(2rem, 4vw, 4.5rem) | 1.1 | -0.02em |
+| `.display-manifesto` | clamp(2rem, 4vw, 4rem) | 1.2 | -0.02em |
+| `.display-card` | 1.35rem | 1.2 | -0.01em |
 
-### Typography Rules
-- Display font: headlines, section titles, stat numbers, testimonial quotes, manifesto
-- UI font: everything else — no exceptions
-- Italic is a tool, not a decoration. Use for: display headlines, emphasized words, quotes
-- Never bold (700+) in display font — size does the heavy lifting
-- Color emphasis: use `--accent` on key words in headlines, not `<strong>` styling
-- All-caps (`text-transform: uppercase`) only for: labels, nav links, button text, tags
+All display classes: `font-family: var(--font-display)`, `font-weight: 400`, `font-style: italic`
+
+Body: `font-family: var(--font-ui)`, `font-weight: 300`, `line-height: 1.75`
+
+Labels: `0.7rem`, `font-weight: 400`, `text-transform: uppercase`, `letter-spacing: 0.14em`
+
+### Typography Rules on Glass
+- White text on glass: use `--text` (#FFFFFF) for headlines, `--muted` for secondary
+- Avoid semi-transparent text on very blurred glass — it reads as muddy
+- Display-size headings can bleed outside the glass panel onto the background for dramatic effect
 
 ---
 
-## Animation System
+## 6. Composition Principles
 
-### Framer Motion — Standard Variants
+### Card-First, Surface-Led
 
-Define these in a shared `lib/animations.ts` file and import where needed.
+All meaningful content should live inside intentional glass containers.
+The background atmosphere is not a surface for content — it is the environment.
 
-```typescript
-// lib/animations.ts
+**Default composition model:**
+1. Background atmosphere (animated, full-page)
+2. Glass panels floating above it
+3. Content organized within the panels
 
-export const fadeUp = {
-  hidden: { opacity: 0, y: 24 },
-  visible: {
-    opacity: 1,
-    y: 0,
-    transition: { duration: 0.85, ease: [0.16, 1, 0.3, 1] }
-  }
-}
+### Section Rhythm
+Each major section has its own atmospheric moment.
+Not every section uses the same background state.
+Different shader configurations, different warmth levels, different densities create rhythm.
 
-export const fadeIn = {
-  hidden: { opacity: 0 },
-  visible: {
-    opacity: 1,
-    transition: { duration: 0.6, ease: 'easeOut' }
-  }
-}
+Section transitions use the **glass panels themselves as the visual separator**.
+No hard dividers. No explicit `<hr>` lines. The panels frame the content and white space separates the sections.
 
-export const slideUpClip = {
-  hidden: { y: '110%' },
-  visible: {
-    y: '0%',
-    transition: { duration: 0.9, ease: [0.16, 1, 0.3, 1] }
-  }
-}
+### Asymmetry and Tension
+Layouts should feel deliberate but not mathematically tidy.
+- Not every card is the same size
+- Not every row is evenly divided
+- Featured content earns more visual space
+- Grid rhythm over grid symmetry
 
-export const staggerContainer = (staggerTime = 0.12) => ({
-  hidden: {},
-  visible: {
-    transition: { staggerChildren: staggerTime }
-  }
-})
-
-export const scaleIn = {
-  hidden: { opacity: 0, scale: 0.92 },
-  visible: {
-    opacity: 1,
-    scale: 1,
-    transition: { duration: 0.7, ease: [0.16, 1, 0.3, 1] }
-  }
-}
-
-export const lineReveal = {
-  hidden: { scaleX: 0, originX: 0 },
-  visible: {
-    scaleX: 1,
-    transition: { duration: 0.6, ease: [0.16, 1, 0.3, 1] }
-  }
-}
-```
-
-### ScrollReveal Pattern
-
-```typescript
-// components/shared/ScrollReveal.tsx
-'use client'
-import { motion, useInView, useReducedMotion } from 'framer-motion'
-import { useRef } from 'react'
-import { fadeUp } from '@/lib/animations'
-
-interface ScrollRevealProps {
-  children: React.ReactNode
-  delay?: number
-  className?: string
-}
-
-export function ScrollReveal({ children, delay = 0, className }: ScrollRevealProps) {
-  const ref = useRef(null)
-  const isInView = useInView(ref, { once: true, margin: '-80px' })
-  const shouldReduce = useReducedMotion()
-
-  return (
-    <motion.div
-      ref={ref}
-      variants={shouldReduce ? undefined : fadeUp}
-      initial={shouldReduce ? undefined : 'hidden'}
-      animate={shouldReduce ? undefined : (isInView ? 'visible' : 'hidden')}
-      transition={{ delay }}
-      className={className}
-    >
-      {children}
-    </motion.div>
-  )
-}
-```
-
-### Animation Rules
-| Context | Variant | Delay Pattern |
-|---------|---------|---------------|
-| Page load (nav) | `fadeUp` | 0.2s, 0.4s, 0.6s |
-| Hero headline lines | `slideUpClip` | 0.7s, 0.85s, 1.0s |
-| Stats strip | `fadeUp` | 1.5s, 1.65s, 1.8s, 1.95s |
-| Section content | `fadeUp` via ScrollReveal | 0s, 0.1s, 0.2s staggered |
-| Cards in grid | `staggerContainer(0.1)` + `scaleIn` | On scroll into view |
-| Service border top | `lineReveal` | On hover (no delay) |
-| Number counters | count from 0 on inView | 1.2s duration, ease out |
+### Mobile
+Mobile-first is a hard requirement.
+Glass effects, blur, and animation must be tested on real devices — not just devtools.
+Reduce blur radius on mobile (performance), but preserve the glass material feeling.
+Mobile layouts should feel like a **different composition**, not a collapsed desktop.
 
 ---
 
-## Component Specifications
+## 7. Animation System
+
+### Philosophy
+Strong but controlled.
+Each section earns one strong animation moment.
+Not everything moves at once — motion has hierarchy.
+
+### Primary Pattern: Pin & Scrub
+Pin sections with GSAP ScrollTrigger.
+Elements animate based on scroll progress (scrub).
+This creates the cinematic feeling of the page as a film sequence.
+
+Use Framer Motion for:
+- entrance animations (fade, slide, clip)
+- hover states
+- micro-interactions
+- page-level stagger reveals
+
+Use GSAP for:
+- scroll-triggered scrub animations
+- complex timeline sequences
+- pinned sections with progress-based animation
+
+### Scroll Animation Principles
+- Parallax depth: glass panels at different scroll speeds creates 3D separation from background
+- Progressive reveal: content emerges as you scroll, not all at once
+- Clip-path reveals: elements emerge from behind a clip boundary
+- Entrance easing: `[0.16, 1, 0.3, 1]` (expo out) for all entrances
+- Entrance duration: 0.85s standard
+
+### Reduced Motion
+Every animation must check `useReducedMotion()` and fall back to a static state.
+This is not optional.
+
+---
+
+## 8. Portfolio Presentation
+
+Screenshots are evidence, not decoration.
+
+### Browser Frame Mockups
+Real project work should be presented inside a **stylized browser frame**.
+The frame itself is a glass panel with:
+- a minimal browser chrome (dots, URL bar as glass element)
+- rounded corners (16–20px)
+- inner glow at the top edge
+- the screenshot inside, full-bleed within the frame
+
+This creates immediate context (this is a website), adds depth (frame within frame), and makes even one screenshot feel premium and intentional.
+
+**Do not:**
+- use raw screenshots floating without context
+- use generic laptop/device mockup images from stock
+- shrink screenshots to thumbnail size where the work isn't visible
+
+---
+
+## 9. Navigation
+
+### Pill Nav — Glassmorphism Upgrade
+Keep the existing pill-shrink-on-scroll concept.
+Upgrade the material to match the new glass system:
+
+**Unscrolled:** Fully transparent, no background.
+Hero atmosphere visible behind nav items.
+Logo and links float directly over the atmosphere.
+
+**Scrolled:** Glass pill with:
+- `background: rgba(255, 255, 255, 0.06)`
+- `backdrop-filter: blur(20px)`
+- `border: 1px solid rgba(255, 255, 255, 0.12)`
+- subtle luminous top edge
+- `max-width: 896px`, centered, with padding-top
+
+The nav should feel like it **belongs** to the glass system, not like a separate UI element.
+
+---
+
+## 10. Footer
+
+The footer is a strong visual close — not a dead administrative list.
+
+**Approach:** Full glassmorphism treatment. Final atmospheric moment.
+Large display headline. Clear last CTA. Clean legal links.
+The footer should make the visitor feel like they just finished watching something great and have one clear action left.
+
+---
+
+## 11. Explicit No-Gos
+
+### Critical
+- flat, non-glass cards used as the primary surface language
+- Acid Green (#C8FF00) used as the dominant visual identity color
+- custom cursor (removed — adds gimmick energy without enough payoff)
+- stock imagery
+- fake proof, invented stats, made-up testimonials
+- too much text / not enough visual evidence of real work
+- generic SaaS feature grids
+- agency bullshit copy
+- sharp corners on cards or panels
+- placeholder gradients used as fake portfolio entries
+
+### Strong Avoid
+- glass effects that look like blurred screenshots instead of a material
+- backgrounds that overpower foreground content (the glass must always win)
+- warm palette colors used in foreground UI (they belong to the atmosphere)
+- motion everywhere with no hierarchy (hierarchy in movement, not saturation)
+- mobile layouts that are only compressed desktop
+- hard section transitions (the glass panels create natural rhythm)
+- browser mockup without real work inside
+
+### Contextual Avoid
+- too many blur layers on mobile (performance)
+- excessive pin & scrub animations that feel like scroll-jail
+- glass panels with so much opacity they cease to be glass
+- warm tones so saturated they feel orange-heavy rather than luxurious
+
+---
+
+## 12. Freedom Clause
+
+These principles are binding.
+Specific layouts are not.
+
+A new direction is valid if it:
+- keeps the two-layer system (atmosphere + glass)
+- respects verified business truth
+- increases distinctiveness
+- improves visual proof
+- keeps the offer commercially readable
+- feels more like Metz & Partner at a higher level, not a safer one
+
+---
+
+## 13. Implementation Appendix
+
+**Source of truth for implementation values.**
+Principles take precedence if they conflict with specific values.
+
+### CSS Variables (to be updated in `app/globals.css`)
+
+```css
+/* Base */
+--bg:            #0a0a0a;
+--surface-solid: #0f0f0f;
+
+/* Glass surfaces */
+--glass:          rgba(255, 255, 255, 0.05);
+--glass-2:        rgba(255, 255, 255, 0.08);
+--glass-border:   rgba(255, 255, 255, 0.10);
+--glass-border-hover: rgba(255, 255, 255, 0.22);
+--glass-highlight: rgba(255, 255, 255, 0.28);
+--glass-glow:     rgba(255, 255, 255, 0.06);
+
+/* Text */
+--text:    #FFFFFF;
+--muted:   rgba(255, 255, 255, 0.55);
+--subtle:  rgba(255, 255, 255, 0.25);
+--border:  rgba(255, 255, 255, 0.10);
+--border-hover: rgba(255, 255, 255, 0.22);
+
+/* Warm atmosphere (background / shader use only) */
+--warm-amber:  #D4830A;
+--warm-copper: #C67C3B;
+--warm-gold:   #B8860B;
+--warm-dim:    rgba(184, 134, 11, 0.12);
+
+/* Legacy accent — use sparingly */
+--accent: #C8FF00;
+```
+
+### Font Variables
+
+```
+--font-display: Instrument Serif (injected by next/font as --font-display)
+--font-ui:      DM Sans (injected by next/font as --font-ui)
+```
+
+Tailwind aliases: `font-display`, `font-ui`
+
+### Container (`.container-site`)
+
+```
+max-width: 1400px, margin: auto
+padding: 1.5rem (mobile) / 3rem (md+) / 4rem (lg+)
+```
+
+### Framer Motion Standards
+
+```typescript
+ease: [0.16, 1, 0.3, 1]   // expo out — all entrances
+entrance duration: 0.85s
+hover: 0.2–0.3s
+useInView: { once: true, margin: '-80px' }
+staggerChildren: 0.10–0.12
+// Always: check useReducedMotion() and skip if true
+```
+
+### Glass Mixin (reference pattern)
+
+```css
+/* Luminous glass panel */
+background: rgba(255, 255, 255, 0.05);
+backdrop-filter: blur(24px);
+-webkit-backdrop-filter: blur(24px);
+border: 1px solid rgba(255, 255, 255, 0.10);
+border-radius: 20px;
+box-shadow:
+  0 0 0 1px rgba(255, 255, 255, 0.05),
+  0 8px 32px rgba(0, 0, 0, 0.4),
+  inset 0 1px 0 rgba(255, 255, 255, 0.15);  /* top-edge highlight */
+```
+
+### Hero Background
+
+Hero uses **ColorBends** (`components/shared/ColorBendsBackground.tsx`).
+Colors should be updated to warm spectrum: amber, copper, gold tones over near-black.
+Do not replace with CSS orbs or static gradients.
 
 ### Navigation
 
-```
-Height: 80px (transparent) / 72px (scrolled + blurred)
-Backdrop on scroll: backdrop-filter: blur(20px); background: rgba(8,8,8,0.85)
-Transition: background 0.4s ease
-Logo: Instrument Serif, 1.25rem, --text, no weight modification
-Links: DM Sans, 0.75rem, uppercase, letter-spacing 0.12em, --muted → --text on hover
-CTA: pill button, --accent bg, --bg text, 0.8rem, uppercase, letter-spacing 0.08em
-```
-
-### Buttons
-
-**Primary (Pill)**
-```css
-background: var(--accent);
-color: var(--bg);
-font-family: var(--font-ui);
-font-size: 0.8rem;
-font-weight: 500;
-text-transform: uppercase;
-letter-spacing: 0.08em;
-padding: 0.9rem 2rem;
-border-radius: 100px;
-border: none;
-cursor: pointer;
-transition: transform 0.2s ease, box-shadow 0.3s ease;
-
-&:hover {
-  transform: scale(1.04) translateY(-2px);
-  box-shadow: 0 20px 60px rgba(200, 255, 0, 0.2);
-}
-```
-
-**Ghost**
-```css
-background: none;
-border: none;
-color: var(--muted);
-font-family: var(--font-ui);
-font-size: 0.8rem;
-font-weight: 400;
-letter-spacing: 0.06em;
-cursor: pointer;
-transition: color 0.2s ease;
-
-&:hover { color: var(--text); }
-```
-
-Do not create any other button variants without design approval.
-
-### Cards (Project Cards)
-
-```
-background: var(--surface)
-border: none (the grid gap acts as the separator)
-overflow: hidden
-cursor: pointer
-aspect-ratio: 16/10 (except featured card)
-
-/* Image/background layer */
-transition: transform 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94)
-&:hover image: scale(1.06)
-
-/* Overlay gradient */
-background: linear-gradient(to top, rgba(8,8,8,0.85) 0%, transparent 50%)
-
-/* Info layer */
-position: absolute, bottom: 0
-padding: 2rem
-translateY(8px) at rest → translateY(0) on hover (0.4s ease)
-
-/* Hover pill (center) */
-"Ansehen →" pill, --accent bg, --bg text
-opacity 0, scale 0.85 → opacity 1, scale 1 on hover (0.3s)
-```
-
-### Service Cards
-
-```
-background: var(--bg)
-border: 1px solid var(--border) — on sides and bottom only
-padding: 3rem 2.5rem
-position: relative
-
-/* Top accent line */
-::before {
-  content: ''
-  position: absolute, top: 0, left: 0, right: 0
-  height: 1px
-  background: var(--accent)
-  transform: scaleX(0), origin: left
-  transition: transform 0.4s ease
-}
-&:hover::before { transform: scaleX(1) }
-&:hover { background: var(--surface) }
-```
-
-### Process Rows
-
-```
-display: grid
-grid-template-columns: 80px 1fr 1fr
-gap: 3rem
-padding: 2.5rem 0
-border-bottom: 1px solid var(--border)
-
-/* Number */
-font-family: display, font-style: italic
-font-size: 3.5rem
-color: rgba(240,237,232,0.08)
-transition: color 0.3s
-&:hover number: color var(--accent)
-
-/* Step name */
-font-family: display, font-style: italic, 1.5rem
-
-/* Step detail */
-font-family: ui, 300, 0.875rem, --muted
-```
-
-### Form Fields
-
-```
-input, textarea, select:
-  background: var(--surface)
-  border: 1px solid var(--border)
-  border-radius: 4px
-  color: var(--text)
-  font-family: var(--font-ui)
-  font-size: 0.95rem
-  font-weight: 300
-  padding: 0.9rem 1.2rem
-  transition: border-color 0.2s
-  width: 100%
-
-  &:focus:
-    outline: none
-    border-color: var(--accent)
-    box-shadow: 0 0 0 3px rgba(200,255,0,0.1)
-
-  &::placeholder:
-    color: var(--muted)
-
-label:
-  font-size: 0.72rem
-  font-weight: 400
-  text-transform: uppercase
-  letter-spacing: 0.1em
-  color: var(--muted)
-  margin-bottom: 0.4rem
-  display: block
-
-error message:
-  font-size: 0.75rem
-  color: #FF6B6B
-  margin-top: 0.3rem
-```
-
-### Section Labels
-
-Pattern used above every section title:
-```
-— Leistungen
-```
-Small dash + uppercase label.
-
-```
-font-size: 0.7rem
-font-weight: 400
-text-transform: uppercase
-letter-spacing: 0.14em
-color: var(--muted)
-display: flex, align-items: center, gap: 0.75rem
-
-::before {
-  content: ''
-  display: block
-  width: 28px
-  height: 1px
-  background: var(--muted)
-}
-```
-
-### Custom Cursor
-
-Two layers. Only on desktop (`pointer` device).
-
-```
-Layer 1 — Dot:
-  width: 8px, height: 8px
-  border-radius: 50%
-  background: var(--accent)
-  position: fixed
-  pointer-events: none
-  z-index: 9999
-  mix-blend-mode: exclusion
-  transform: translate(-50%, -50%)
-  transition: transform 0.1s, opacity 0.2s
-
-Layer 2 — Ring:
-  width: 32px, height: 32px
-  border-radius: 50%
-  border: 1px solid rgba(200, 255, 0, 0.35)
-  position: fixed
-  pointer-events: none
-  z-index: 9998
-  mix-blend-mode: exclusion
-  transition: width 0.35s ease, height 0.35s ease, transform 0.08s linear
-
-On hover over interactive elements:
-  Ring: width/height expand to 56px, border-color intensifies
-  Dot: opacity 0
-```
-
-Use `useCursorPosition` hook with `requestAnimationFrame` — not `mousemove` event directly in state.
-
----
-
-## Layout System
-
-### Container
-```
-max-width: 1400px
-margin: 0 auto
-padding: 0 1.5rem   (mobile)
-padding: 0 3rem     (md+)
-padding: 0 4rem     (xl+)
-```
-
-### Section Spacing
-```
-padding-top: 5rem      (mobile)
-padding-top: 8rem      (md+)
-padding-bottom: 5rem   (mobile)
-padding-bottom: 8rem   (md+)
-```
-
-### Grid Patterns
-- Stats strip: `grid-template-columns: repeat(4, 1fr)` — collapses to 2×2 on mobile
-- Work grid: `grid-template-columns: 2fr 1fr` — stacks on mobile
-- Services: `grid-template-columns: repeat(3, 1fr)` — collapses to 1 on mobile
-- Process: `grid-template-columns: 80px 1fr 1fr` — collapses to single column on mobile
-
-### Responsive Breakpoints (Tailwind defaults)
-```
-sm: 640px   (not commonly used in this project)
-md: 768px   (tablet — layout changes)
-lg: 1024px  (desktop)
-xl: 1280px  (wide desktop)
-2xl: 1536px (max — container caps at 1400px anyway)
-```
-
----
-
-## Background Decorative Elements
-
-### Noise Texture
-Applied as a pseudo-element on `<body>`:
-```css
-body::before {
-  content: '';
-  position: fixed;
-  inset: 0;
-  background-image: url('/noise.png');   /* or SVG data URI */
-  opacity: 0.04;
-  pointer-events: none;
-  z-index: 999;
-}
-```
-Generate a subtle noise PNG at 200×200px and place in `/public/noise.png`.
-
-### Grid Lines (Hero only)
-```css
-background-image:
-  linear-gradient(rgba(240,237,232,0.025) 1px, transparent 1px),
-  linear-gradient(90deg, rgba(240,237,232,0.025) 1px, transparent 1px);
-background-size: 80px 80px;
-```
-
-### Color Orbs (Hero only)
-Three `<div>` elements, `position: absolute`, `border-radius: 50%`, `filter: blur(120px)`.
-Animate with Framer Motion `animate` prop, infinite, no `useInView`.
-
-```typescript
-const orb1 = {
-  animate: {
-    x: [0, -60, 40, 0],
-    y: [0, 40, -30, 0],
-    scale: [1, 1.1, 0.95, 1],
-  },
-  transition: { duration: 12, repeat: Infinity, ease: 'easeInOut' }
-}
-// orb2: 15s, orb3: 18s
-```
-
-Colors:
-- Orb 1 (top right): `radial-gradient(circle, rgba(200,255,0,0.12), transparent 70%)`
-- Orb 2 (bottom left): `radial-gradient(circle, rgba(255,107,53,0.09), transparent 70%)`
-- Orb 3 (center): `radial-gradient(circle, rgba(120,80,255,0.07), transparent 70%)`
-
----
-
-## What This System Prohibits
-
-| Element | Reason |
-|---------|--------|
-| `box-shadow` for decoration | Flat aesthetic — depth via color only |
-| Light/white backgrounds | Dark-only design |
-| `border-radius > 8px` on cards | Keeps the industrial edge |
-| Purple gradients on white | Cliché |
-| Any font other than Instrument Serif + DM Sans | Brand consistency |
-| Multiple accent colors in one component | Dilutes accent impact |
-| CSS `animation` keyframes for complex motion | Use Framer Motion |
-| `transition: all` | Too broad, causes performance issues |
-| Carousels / sliders | Editorial grids only |
-| Stock photography | Real project work or atmospheric gradients |
+Sticky pill nav: transparent at load → glass pill after 80px scroll.
+`marginTop: -72px` on Hero section so atmosphere fills behind the transparent nav.
+Height: 72px → 56px on scroll.

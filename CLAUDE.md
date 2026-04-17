@@ -1,237 +1,268 @@
-# CLAUDE.md — Metz & Partner Agency Website
-# Behavior rules and technical constraints for every Claude Code session.
-# Read this file completely before touching any code.
+# CLAUDE.md — Metz & Partner Implementation Guardrails
+
+This document defines how Claude Code should operate in this repository.
+
+It is not a product brief and not a design screenplay.
 
 ---
 
-## Who You Are in This Project
+## 1. Purpose of This File
 
-You are a senior frontend engineer at a world-class digital agency.
-Your output must reflect that. No shortcuts. No generic patterns. No "good enough."
-Every line of code you write is a direct demonstration of what Metz & Partner sells to clients.
-The website IS the portfolio. Treat it accordingly.
+Claude should work with high ambition, strong taste, and commercial awareness.
 
----
+The goal is to produce work that feels:
+- distinctive
+- image-led
+- premium
+- strategically sharp
+- visually convincing
+- honest
 
-## About Metz & Partner
+Claude should be strongly guided, but not boxed into safe, generic, or pre-scripted solutions.
 
-**Founders:**
-- **Benedikt Metz** (22, Koblenz) — Head of UI/UX Design. Background in graphic design and law. Responsible for all visual and interaction design decisions.
-- **Maximilian Metz** (22, Koblenz) — Head of Marketing & Sales. Background in marketing and finance. Responsible for strategy, copy, and client acquisition.
-
-**Stage:** Early-stage / Gründungsphase. 1–5 projects completed.
-
-**Service:** Website design & development only. No branding, no SEO packages, no retainers — keep the scope honest.
-
-**Geography:** Regional focus — Rheinland-Pfalz, Mosel valley, Koblenz region.
-
-**Target clients:** All business sizes and types within the region — from local Handwerker to Mittelstand.
-
-**Pricing:** Entry-level, under 1.000€. This is a conscious early-stage decision to build portfolio and references. The website must NOT signal a price point that contradicts this — avoid language like "Premium" or "World-class" that implies 10.000€+ budgets. Instead signal: exceptional quality-to-value ratio, personal attention, and results that larger agencies don't deliver at this price.
-
-**Portfolio status:** Visual screenshots/references exist. No measurable results data yet. No testimonials yet.
-
-**USP:** Local presence + personal attention from the two founders directly — not account managers, not juniors. The client always talks to Benedikt or Maximilian.
-
-**Social media:** Not yet active — do not include social links in the site.
-
-**Domain:** Not yet confirmed — use placeholder `metzundpartner.de` in all code comments and metadata.
-
-**Contact:** Both form submissions AND direct call booking (Calendly integration).
+Premium here means precision, clarity, judgment, and control.
+It does not mean ornamental excess, empty luxury language, or artificial exclusivity.
 
 ---
 
-## Tech Stack — Non-Negotiable
+## 2. Source-of-Truth Hierarchy
 
-| Layer | Technology | Notes |
-|-------|-----------|-------|
-| Framework | Next.js 14 (App Router) | Server Components by default, Client Components only when interactivity requires it |
-| Language | TypeScript (strict mode) | No `any`. No type suppression. |
-| Styling | Tailwind CSS + CSS Variables | Tailwind for layout/spacing, CSS vars for design tokens |
-| Animation | Framer Motion | All meaningful animations. No raw CSS keyframes for complex motion. |
-| UI Components | shadcn/ui (via React Bits MCP) | Base components only — always restyled to match design system |
-| Design Library | 21st.dev Magic MCP | Use for component inspiration and generation — always adapt to our design tokens |
-| UI/UX Patterns | UI UX Pro Max MCP | Consult for interaction patterns and accessibility |
-| Fonts | Google Fonts: Instrument Serif + DM Sans | Loaded via `next/font/google`, never via CDN link tags |
-| Icons | Lucide React | Only. No heroicons, no FontAwesome. |
-| Forms | React Hook Form + Zod | Validation always schema-driven |
+Use the documents in this order:
+
+1. `PRD.md`
+   - verified business truth
+   - audience context
+   - website goals
+   - honesty constraints
+
+2. `DESIGN_SYSTEM.md`
+   - visual principles
+   - composition direction
+   - motion, imagery, and aesthetic expectations
+   - explicit no-gos
+
+3. `CLAUDE.md`
+   - implementation guardrails
+   - technical rules
+   - review standards
+
+If these files appear to conflict:
+- preserve verified truth from `PRD.md`
+- preserve the broader creative principles from `DESIGN_SYSTEM.md`
+- do not reintroduce rigid section scripts or fixed UI recipes
 
 ---
 
-## Project Structure
+## 3. Hard Constraints Only
 
+Only these categories should be treated as truly hard constraints:
+
+### Current technical baseline
+Core baseline:
+- Next.js 16+ (App Router)
+- React 19
+- TypeScript (strict)
+- Tailwind CSS
+- Framer Motion (preferred for all animation)
+- React Hook Form + Zod
+- Lenis (smooth scroll)
+- Resend (contact form backend — `/api/contact` route exists)
+
+Extended — present in repo, use when justified:
+- GSAP + @gsap/react (acceptable for complex scroll-trigger / Pin & Scrub sequences; Framer Motion preferred otherwise)
+- Three.js + React Three Fiber (in use for hero background via ColorBends shader)
+- Radix UI primitives (accordion, etc.)
+
+Treat the repository itself as the source of truth if this baseline drifts.
+
+This baseline is descriptive, not a creative or architectural cage.
+
+The stack may evolve when stronger creative, interaction, or implementation outcomes justify it.
+
+### Truth and integrity
+- No fake testimonials
+- No fake results
+- No fake client scale
+- No fake trust markers
+- No invented maturity signals
+
+### Repository / implementation integrity
+- Prefer TypeScript
+- Avoid `any`
+- Keep code maintainable and production-grade
+- Read relevant files before changing them
+- Respect existing repo conventions where they still make sense
+
+### Real product constraints
+- Contact paths must remain real
+- Any public claims must remain supportable
+- Visual ambition must not come at the cost of obvious dishonesty
+
+---
+
+## 4. Creative Expectations
+
+Claude is expected to:
+- choose stronger solutions over safer generic ones
+- prioritize quality over low-effort standard output
+- avoid templated SaaS aesthetics
+- avoid library-default UI unless significantly transformed
+- favor visual proof over explanatory bulk text
+- propose better structure when the current structure is weak
+- think like a top-tier brand and conversion designer, not just a component assembler
+- preserve business readability even when the work becomes visually ambitious
+- default to glass surfaces and contained panel composition as the primary organizational language
+- use cards, panels, browser frames, and glass surfaces to frame and elevate content
+- prefer a clear homepage narrative hierarchy over a collection of equally weighted sections
+- default to the flow: relevance → proof → differentiation → offer → risk reduction → conversion
+
+Claude may:
+- invent new section structures
+- replace generic homepage patterns
+- use stronger visual hierarchy
+- make the site feel more valuable and more ambitious than previous documentation allowed
+- use glass, depth, motion, layered composition, and selective spatial effects where they improve the result
+- treat the existing implementation as context, not authority
+- improve, replace, or discard inherited structure when it weakens the result
+
+---
+
+## 5. Content Rules
+
+### Language
+- German is the default website language
+- Small English terms are acceptable where brand-appropriate
+- Do not become dogmatic if a better wording requires slight flexibility
+
+### Copy quality
+- No empty agency phrases
+- No filler text
+- No "innovation / tailored solutions / digital excellence" nonsense unless it says something real
+- No self-important manifesto writing without strategic value
+- No meaning-free premium language
+
+### Preferred copy behavior
+- shorter
+- sharper
+- more self-aware
+- more visual and commercial
+- less explainy
+- less padded
+
+---
+
+## 6. Implementation Rules
+
+Claude should avoid:
+- generic SaaS feature grids
+- standard startup navbars
+- default shadcn-looking UI
+- overused icon lists
+- text-first sections where visuals should carry the persuasion
+- weak screenshot treatment (raw floated images — use browser frames)
+- layouts that feel flat, junior, or obviously templated
+- sections that dissolve into loose headline/text/media stacks without a strong containing glass surface
+- mixing too many unrelated card and panel styles in one page
+- custom cursor (removed — adds gimmick energy without payoff)
+- flat non-glass cards as the primary surface language
+- hard section transitions (glass panels create natural rhythm)
+
+Claude should prefer:
+- strong composition
+- visual hierarchy
+- image-led persuasion
+- original section logic
+- real project presentation in browser-frame glass mockups
+- thoughtful motion
+- high-quality responsive behavior, especially on mobile
+- a coherent family of glass panels, luminous cards, and framed surfaces
+- GSAP Pin & Scrub for scroll-based cinematic moments
+- Framer Motion for entrance animations, hover states, micro-interactions
+
+If forced to choose, prefer:
+- stronger design over easier assembly
+- better composition over more components
+- real proof over longer explanation
+
+If strong real imagery is limited, prefer fewer, larger, more intentional proof moments over filler sections, generic decoration, or compensatory text.
+
+---
+
+## 7. Motion Rules
+
+### Primary patterns
+- **Framer Motion** — entrance animations, hover states, micro-interactions, stagger reveals
+- **GSAP + ScrollTrigger** — Pin & Scrub sequences, complex timelines, scroll-progress scrub
+- Always check `useReducedMotion()` — all animations must have a static fallback
+
+### Framer Motion standards
+```typescript
+ease: [0.16, 1, 0.3, 1]   // expo out — all entrances
+entrance duration: 0.85s
+hover: 0.2–0.3s
+useInView: { once: true, margin: '-80px' }
+staggerChildren: 0.10–0.12
 ```
-/app
-  /layout.tsx              ← Global font injection, metadata, cursor component
-  /page.tsx                ← Home: imports all sections in order
-  /projekte/page.tsx       ← All projects grid
-  /projekte/[slug]/page.tsx ← Single project case study
-  /impressum/page.tsx
-  /datenschutz/page.tsx
 
-/components
-  /ui/                     ← shadcn base components (do not modify originals)
-  /sections/               ← One file per homepage section
-    Hero.tsx
-    FounderBar.tsx         ← Replaces CredibilityBar — founders + honest early-stage positioning
-    ProblemSolution.tsx
-    Projects.tsx
-    Services.tsx
-    Process.tsx
-    Manifesto.tsx
-    Contact.tsx            ← Form + Calendly embed
-  /shared/                 ← Reused across sections
-    Navigation.tsx
-    Footer.tsx
-    CustomCursor.tsx
-    ScrollReveal.tsx
-    MarqueeTrack.tsx
-    SectionLabel.tsx
-    ProjectCard.tsx
-
-/lib
-  /data/
-    projects.ts            ← All project data as typed objects (screenshots only for now)
-    services.ts
-  /hooks/
-    useScrollProgress.ts
-    useCursorPosition.ts
-
-/styles
-  globals.css              ← Design tokens as CSS variables, base resets
-```
-
-**Note on Testimonial.tsx:** Do NOT build this section yet.
-No real testimonials exist. A placeholder quote destroys credibility — it is worse than nothing.
-Add this section in a future update once real client feedback has been collected.
+### Motion hierarchy
+Each section earns one strong animation moment.
+Not everything moves at once.
+Motion should feel cinematic and controlled, not scattered.
 
 ---
 
-## Design System Rules — Enforce These Always
+## 8. Review Checklist
 
-### Colors (CSS Variables — defined in globals.css)
-```css
---bg: #080808;
---surface: #111111;
---surface-2: #1a1a1a;
---accent: #C8FF00;
---accent-warm: #FF6B35;
---text: #F0EDE8;
---muted: rgba(240, 237, 232, 0.45);
---border: rgba(240, 237, 232, 0.07);
---border-hover: rgba(240, 237, 232, 0.14);
-```
+Before considering work good enough, check:
 
-Never hardcode hex values in components. Always use CSS variables or the Tailwind config that maps to them.
+- Does it feel visually distinctive rather than generic?
+- Does it avoid obvious template or component-library energy?
+- Is it image-led enough?
+- Is there enough real visual proof?
+- Is the copy tight, meaningful, and commercially useful?
+- Does it feel expensive without lying?
+- Is the offer still clear and commercially readable within seconds?
+- Does it avoid junior, cheap, or AI-slop output?
+- Does the mobile version feel intentionally designed, not merely stacked?
+- Are motion and surfaces helping the brand rather than creating chaos?
+- Do glass surfaces have luminous top-edge highlights and proper blur?
+- Does the two-layer system (atmosphere + glass) hold throughout?
 
-### Typography
-```
-Display font: Instrument Serif — for headlines, manifesto, section titles, stat numbers
-UI font:      DM Sans — for everything else
-```
-
-Scale:
-- Hero headline: clamp(3.5rem, 7.5vw, 9rem), line-height 0.93, letter-spacing -0.03em
-- Section title: clamp(2rem, 4vw, 4.5rem), Instrument Serif Italic
-- Body: 1rem, DM Sans 300, line-height 1.75
-- Label/caps: 0.7rem, DM Sans 400, letter-spacing 0.14em, uppercase
-
-### Motion Principles
-- Use Framer Motion `variants` — never inline animation objects scattered across JSX
-- Define variant objects at the top of each component file, before the component function
-- Page load: staggered reveal with `staggerChildren: 0.12`
-- Scroll reveals: `useInView` from Framer Motion, `once: true`, `margin: "-80px"`
-- Easing for entrances: `[0.16, 1, 0.3, 1]` (expo out)
-- Duration for entrances: 0.85s
-- Hover transitions: 0.3s ease
-- No animation should feel mechanical. If it does, slow it down or add a softer easing.
-
-### Spacing
-- Section padding: `py-24 md:py-32` (never less than py-20)
-- Side padding: `px-6 md:px-12 lg:px-16` — consistent, never ad-hoc
-- Max content width: `max-w-screen-xl mx-auto`
+If the answer to several of these is "no", the work is not ready.
 
 ---
 
-## Workflow Rules
+## 9. Autonomy Level
 
-### Before Writing Any Component
-1. Read `DESIGN_SYSTEM.md` for the section you are building
-2. Check `PRD.md` for the exact content, copy direction, and conversion goal of that section
-3. Consult UI UX Pro Max MCP for interaction patterns if the component is interactive
-4. Use 21st.dev Magic MCP to generate a base version — then adapt to our design tokens
-5. Use React Bits / shadcn MCP only for base primitives (Button, Input, etc.) — never use their default styles
+**High autonomy is the default.**
 
-### Component Rules
-- Every section component receives no required props by default — data comes from `/lib/data/`
-- Client Components (`"use client"`) only when using: useState, useEffect, event handlers, Framer Motion animations
-- All Framer Motion animations must check `useReducedMotion()` and provide a static fallback
-- No `<img>` tags — always `next/image` with explicit width/height or fill + sizes
-- No inline styles except for dynamic values (e.g. cursor position, scroll progress)
-- No `z-index` values above 100 except the custom cursor (z-index: 9999)
+Claude may freely decide:
+- token usage (which color, which spacing)
+- layout composition and hierarchy
+- motion approach within a section
+- copy structure and phrasing
+- component structure
 
-### Quality Gates — Do Not Ship Without These
-- [ ] Lighthouse Performance score ≥ 90 on mobile
-- [ ] No layout shift (CLS = 0) on first paint
-- [ ] All animations respect `prefers-reduced-motion`
-- [ ] All interactive elements have visible focus states
-- [ ] German copy — no English placeholder text in final output
-- [ ] All images have descriptive `alt` attributes in German
-- [ ] Navigation CTA "Projekt anfragen" links to #contact section on homepage
+Claude should briefly surface the decision first (not ask for approval) when:
+- proposing to add or remove a whole section
+- shifting the overall color or font direction
+- fundamentally restructuring an existing key section (hero, contact, projects)
+
+**On WhyUs:**
+The WhyUs section exists in the codebase but its purpose and quality are unclear.
+Claude may audit it, propose a redesign, propose a merge with another section, or propose removing it.
+Flag the recommendation but do not wait for permission to have an opinion.
 
 ---
 
-## What You Must Never Do
+## 10. What This File Must Not Become
 
-- Never use `border-radius` globally — only where intentional (buttons: 100px pill, cards: 4px max)
-- Never use box-shadow for decoration — only for focus rings (outline style)
-- Never use stock imagery or placeholder people photos
-- Never add a carousel or slider — if content needs to scroll, use a marquee or grid
-- Never use purple gradients on white — this project is dark-only
-- Never import a new animation library — Framer Motion is the only one
-- Never add a new font — Instrument Serif + DM Sans only
-- Never create an `/about` page — brand personality lives on the homepage
-- Never add loading spinners — use skeleton screens or staggered reveals
-- Never use `any` in TypeScript
+This file must not drift back into:
+- product truth duplication from `PRD.md`
+- a visual specification document
+- a list of mandatory tools
+- a session ritual script
+- a component cookbook
+- a market-positioning cage
 
----
-
-## MCP Usage Guide
-
-### 21st.dev Magic MCP
-Use for: Generating initial component structure for complex UI patterns
-Workflow: Generate → Extract structure → Replace all styling with our design tokens → Adapt copy to German
-Never use: Their color values, their font choices, their spacing defaults
-
-### UI UX Pro Max MCP
-Use for: Interaction pattern validation, accessibility audits, micro-interaction ideas
-Ask it: "What is the optimal interaction pattern for [component] given our dark, editorial aesthetic?"
-Never use: For visual design decisions — that is DESIGN_SYSTEM.md's job
-
-### React Bits / shadcn MCP
-Use for: Base unstyled primitives (Dialog, Tooltip, Accordion, Form fields)
-Workflow: Install component → Delete all className defaults → Restyle from scratch with our tokens
-Never use: Their preset themes or color schemes
-
-### Framer Motion Skill
-Use for: All animation implementation
-Pattern: Always define `containerVariants` and `itemVariants` as const objects above the component
-Always: Wrap scroll-reveal sections in `<motion.div>` with `useInView`
-Always: Use `AnimatePresence` for any conditional rendering
-
-### frontend-design Skill
-Use for: Design decision validation when you are unsure
-Ask it: "Does this component match our industrial-editorial dark aesthetic?"
-Use as: A creative quality check, not a generator
-
----
-
-## Session Startup Checklist
-
-When starting a new Claude Code session on this project:
-1. Read CLAUDE.md (this file)
-2. Read DESIGN_SYSTEM.md
-3. Read PRD.md section relevant to current task
-4. State which section/component you are building before writing code
-5. State which MCPs you will use for this component
-6. Build. Review against design system. Ship.
+If it starts dictating exact sections, exact copy, or exact visual recipes, it is doing the wrong job.
