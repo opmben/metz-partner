@@ -5,16 +5,9 @@ import { useReducedMotion } from 'framer-motion'
 interface DotFieldProps {
   dotRadius?: number
   dotSpacing?: number
-  cursorRadius?: number
-  cursorForce?: number
-  bulgeOnly?: boolean
-  bulgeStrength?: number
-  glowRadius?: number
-  sparkle?: boolean
   waveAmplitude?: number
   gradientFrom?: string
   gradientTo?: string
-  glowColor?: string
   [key: string]: unknown
 }
 
@@ -40,16 +33,9 @@ export function DotFieldBackground() {
       <DotField
         dotRadius={1}
         dotSpacing={14}
-        cursorRadius={420}
-        cursorForce={0.08}
-        bulgeOnly={true}
-        bulgeStrength={52}
-        glowRadius={160}
-        sparkle={false}
         waveAmplitude={0}
         gradientFrom="rgba(207, 220, 60, 0.42)"
         gradientTo="rgba(161, 180, 40, 0.22)"
-        glowColor="#485a06"
       />
     </div>
   )
