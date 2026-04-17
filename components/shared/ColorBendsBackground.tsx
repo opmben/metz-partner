@@ -12,7 +12,7 @@ export function ColorBendsBackground() {
       }}
     >
       <ColorBends
-        colors={["#5227FF","#FF9FFC"]}
+        colors={["#d0ff27","#d1ff9f"]}
         rotation={90}
         speed={0.35}
         transparent={false}
