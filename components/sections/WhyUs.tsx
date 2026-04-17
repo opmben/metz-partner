@@ -233,7 +233,7 @@ function DifferentiatorCard({
     <motion.div variants={shouldReduce ? undefined : fadeUp} style={{ height: '100%' }}>
       <BorderGlow
         backgroundColor="#0b0b0b"
-        borderRadius={8}
+        borderRadius={12}
         glowColor="73 100 50"
         glowRadius={55}
         glowIntensity={0.65}
@@ -249,12 +249,12 @@ function DifferentiatorCard({
               display: 'flex',
               flexDirection: 'column',
               height: '100%',
-              background: 'rgba(255, 255, 255, 0.03)',
-              backdropFilter: 'blur(14px)',
-              WebkitBackdropFilter: 'blur(14px)',
+              background: 'rgba(255, 255, 255, 0.02)',
+              backdropFilter: 'blur(8px)',
+              WebkitBackdropFilter: 'blur(8px)',
               border: '1px solid rgba(255, 255, 255, 0.08)',
               boxShadow: 'inset 0 1px 0 rgba(255,255,255,0.05)',
-              borderRadius: 8,
+              borderRadius: 12,
             }}
           >
           <p
