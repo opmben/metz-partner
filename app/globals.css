@@ -35,8 +35,9 @@
   --warm-gold:   #B8860B;
   --warm-dim:    rgba(184, 134, 11, 0.12);
 
-  /* Legacy accent — use sparingly, not primary color identity */
-  --accent: #C8FF00;
+  /* Primary accent */
+  --accent:     #D3FD51;
+  --accent-dim: rgba(211, 253, 81, 0.12);
 
   /* Surface system: fills */
   --surface-hero:      rgba(255, 255, 255, 0.07);
@@ -115,8 +116,8 @@ body::before {
 
 /* Selection */
 ::selection {
-  background: rgba(212, 131, 10, 0.38);
-  color: #FFFFFF;
+  background: rgba(211, 253, 81, 0.32);
+  color: #0a0a0a;
 }
 
 /* Scrollbar */

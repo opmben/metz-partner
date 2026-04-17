@@ -24,7 +24,7 @@ function WireframeSphere({ mouseX, mouseY }: { mouseX: React.MutableRefObject<nu
       <mesh>
         <icosahedronGeometry args={[2.2, 1]} />
         <meshBasicMaterial
-          color="#C8FF00"
+          color="#D3FD51"
           wireframe
           transparent
           opacity={0.12}
@@ -34,7 +34,7 @@ function WireframeSphere({ mouseX, mouseY }: { mouseX: React.MutableRefObject<nu
       <mesh rotation={[Math.PI * 0.15, Math.PI * 0.1, 0]}>
         <icosahedronGeometry args={[1.55, 1]} />
         <meshBasicMaterial
-          color="#C8FF00"
+          color="#D3FD51"
           wireframe
           transparent
           opacity={0.06}
@@ -44,7 +44,7 @@ function WireframeSphere({ mouseX, mouseY }: { mouseX: React.MutableRefObject<nu
       <mesh>
         <icosahedronGeometry args={[2.8, 2]} />
         <meshBasicMaterial
-          color="#C8FF00"
+          color="#D3FD51"
           wireframe
           transparent
           opacity={0.03}

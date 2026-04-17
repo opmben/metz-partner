@@ -114,14 +114,15 @@ CTAs use luminosity and glow, not flat color.
 --warm-dim:    rgba(184, 134, 11, 0.12);  /* For glow contexts */
 
 /* Legacy */
---accent: #C8FF00;   /* Kept for rare high-contrast moments only — not primary */
+--accent:     #D3FD51;  /* Primary accent — active states, CTAs, icon accents, key highlights */
+--accent-dim: rgba(211, 253, 81, 0.12);
 ```
 
 ### Token Rules
 - `--text` is pure white — appropriate only on dark glass
 - Glass token values should be treated as starting points, not locked values
 - The warm palette tokens are for the background shader — not for foreground UI
-- `--accent` (#C8FF00) should be used sparingly if at all — the new system is luminosity-first
+- `--accent` (#D3FD51) is the primary UI accent — use for active states, icon highlights, eyebrow dots, key glows
 
 ### CTA / Button Color
 Primary buttons use **Luminous Glass with Glow**, not a flat color fill.
@@ -502,7 +503,7 @@ The footer should make the visitor feel like they just finished watching somethi
 
 ### Critical
 - flat, non-glass cards used as the primary surface language
-- Acid Green (#C8FF00) used as the dominant visual identity color
+- Lime/acid green used as a dominating background fill — it belongs in accent moments only
 - custom cursor (removed — adds gimmick energy without enough payoff)
 - stock imagery
 - fake proof, invented stats, made-up testimonials
@@ -577,8 +578,9 @@ Principles take precedence if they conflict with specific values.
 --warm-gold:   #B8860B;
 --warm-dim:    rgba(184, 134, 11, 0.12);
 
-/* Legacy accent — use sparingly */
---accent: #C8FF00;
+/* Primary accent */
+--accent:     #D3FD51;
+--accent-dim: rgba(211, 253, 81, 0.12);
 ```
 
 ### Font Variables

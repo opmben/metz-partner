@@ -427,7 +427,7 @@ function BrandingIllustration({ isVisible }: { isVisible: boolean }) {
       />
 
       {/* Accent swatches */}
-      <motion.rect x="396" y="48" width="66" height="44" rx="5" fill="#C8FF00"
+      <motion.rect x="396" y="48" width="66" height="44" rx="5" fill="#D3FD51"
         initial={{ scale: 0, opacity: 0 }} style={{ transformBox: 'fill-box', transformOrigin: 'center center' }}
         animate={go ? { scale: 1, opacity: 1 } : { scale: 0, opacity: 0 }}
         transition={{ ...t(0.5, 0.8), type: 'spring', stiffness: 240, damping: 20 }}
@@ -496,7 +496,7 @@ function BrandingIllustration({ isVisible }: { isVisible: boolean }) {
       <motion.rect x="306" y="248" width="52" height="4" rx="2" fill="rgba(200,255,0,0.4)" {...fadeIn(1.66, 0.3)} />
 
       {/* Acid green card — slides in from right */}
-      <motion.rect x="432" y="192" width="110" height="66" rx="5" fill="#C8FF00"
+      <motion.rect x="432" y="192" width="110" height="66" rx="5" fill="#D3FD51"
         initial={{ x: 20, opacity: 0 }}
         animate={go ? { x: 0, opacity: 1 } : { x: 20, opacity: 0 }}
         transition={t(0.6, 1.3)}

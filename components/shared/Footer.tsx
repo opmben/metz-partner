@@ -95,8 +95,8 @@ export function Footer() {
                 width: 8,
                 height: 8,
                 borderRadius: '50%',
-                background: 'var(--warm-amber)',
-                boxShadow: '0 0 20px rgba(212,131,10,0.6)',
+                background: 'var(--accent)',
+                boxShadow: '0 0 20px rgba(211,253,81,0.50)',
                 flexShrink: 0,
               }}
             />

@@ -48,7 +48,7 @@ export async function POST(request: Request) {
           <tr>
             <td style="padding:24px 32px;border-bottom:1px solid rgba(240,237,232,0.07);">
               <p style="margin:0;font-size:10px;letter-spacing:0.18em;text-transform:uppercase;color:rgba(240,237,232,0.45);">Metz &amp; Partner</p>
-              <p style="margin:6px 0 0;font-size:10px;letter-spacing:0.14em;text-transform:uppercase;color:#C8FF00;">Neue Anfrage</p>
+              <p style="margin:6px 0 0;font-size:10px;letter-spacing:0.14em;text-transform:uppercase;color:#D3FD51;">Neue Anfrage</p>
             </td>
           </tr>
           <!-- Body -->
@@ -71,7 +71,7 @@ export async function POST(request: Request) {
                 <tr>
                   <td style="padding-bottom:20px;">
                     <p style="margin:0 0 4px;font-size:10px;letter-spacing:0.14em;text-transform:uppercase;color:rgba(240,237,232,0.45);">E-Mail</p>
-                    <p style="margin:0;font-size:16px;"><a href="mailto:${email}" style="color:#C8FF00;text-decoration:none;">${email}</a></p>
+                    <p style="margin:0;font-size:16px;"><a href="mailto:${email}" style="color:#D3FD51;text-decoration:none;">${email}</a></p>
                   </td>
                 </tr>
                 <tr>

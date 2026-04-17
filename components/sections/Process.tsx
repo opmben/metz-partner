@@ -86,7 +86,7 @@ function ProgressRing({
       <motion.circle
         cx="52" cy="52" r={r}
         fill="none"
-        stroke="rgba(212,131,10,0.50)"
+        stroke="rgba(211,253,81,0.60)"
         strokeWidth="1.5"
         strokeDasharray={circumference}
         animate={{ strokeDashoffset: shouldReduce ? dashOffset : dashOffset }}
@@ -287,7 +287,7 @@ function FeaturedPanel({
                 width: i === index ? 22 : 6,
                 background:
                   i === index
-                    ? 'rgba(212,131,10,0.78)'
+                    ? 'rgba(211,253,81,0.80)'
                     : 'rgba(255,255,255,0.16)',
               }}
               transition={{ duration: 0.3, ease: [0.16, 1, 0.3, 1] }}
@@ -416,7 +416,7 @@ function StepSelectorCard({
             ? 'rgba(255,255,255,0.12)'
             : 'rgba(255,255,255,0.07)',
           boxShadow: isActive
-            ? 'inset 0 1px 0 rgba(255,255,255,0.22), 0 12px 36px rgba(0,0,0,0.30), 0 0 42px rgba(212,131,10,0.08)'
+            ? 'inset 0 1px 0 rgba(255,255,255,0.22), 0 12px 36px rgba(0,0,0,0.30), 0 0 42px rgba(211,253,81,0.07)'
             : hovered
             ? 'inset 0 1px 0 rgba(255,255,255,0.14), 0 8px 24px rgba(0,0,0,0.22)'
             : 'inset 0 1px 0 rgba(255,255,255,0.09), 0 4px 14px rgba(0,0,0,0.16)',
@@ -470,7 +470,7 @@ function StepSelectorCard({
             bottom: '20%',
             width: 2,
             background:
-              'linear-gradient(180deg, rgba(212,131,10,0.9), rgba(184,134,11,0.6))',
+              'linear-gradient(180deg, rgba(211,253,81,0.90), rgba(211,253,81,0.60))',
             borderRadius: 2,
             transformOrigin: 'center',
           }}
@@ -480,13 +480,13 @@ function StepSelectorCard({
         <motion.div
           animate={{
             background: isActive
-              ? 'rgba(212,131,10,0.14)'
+              ? 'rgba(211,253,81,0.12)'
               : 'rgba(255,255,255,0.04)',
             borderColor: isActive
-              ? 'rgba(212,131,10,0.30)'
+              ? 'rgba(211,253,81,0.28)'
               : 'rgba(255,255,255,0.08)',
             color: isActive
-              ? 'rgba(212,131,10,0.92)'
+              ? 'rgba(211,253,81,0.92)'
               : 'rgba(255,255,255,0.28)',
           }}
           transition={{ duration: 0.3 }}
@@ -554,7 +554,7 @@ function StepSelectorCard({
           }}
           transition={{ duration: 0.28 }}
           style={{
-            color: 'rgba(212,131,10,0.75)',
+            color: 'rgba(211,253,81,0.80)',
             flexShrink: 0,
             position: 'relative',
             zIndex: 1,
@@ -654,8 +654,8 @@ export function Process() {
                   width: 5,
                   height: 5,
                   borderRadius: '50%',
-                  background: 'var(--warm-amber)',
-                  boxShadow: '0 0 8px rgba(212,131,10,0.6)',
+                  background: 'var(--accent)',
+                  boxShadow: '0 0 8px rgba(211,253,81,0.55)',
                   flexShrink: 0,
                 }}
               />

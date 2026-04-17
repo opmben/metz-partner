@@ -14,22 +14,22 @@ const founders = [
     name: 'Benedikt Metz',
     role: 'Head of UI/UX Design',
     bio: 'Hintergrund in Grafikdesign und Recht. Zuständig für alles, was man sieht — und dafür, dass es rechtlich stimmt.',
-    accentColor: 'rgba(212,131,10,0.92)',
-    accentBg: 'rgba(212,131,10,0.10)',
-    accentBorder: 'rgba(212,131,10,0.24)',
-    glowColor: 'rgba(212,131,10,0.12)',
-    initialFill: 'rgba(212,131,10,0.08)',
+    accentColor: 'rgba(211,253,81,0.92)',
+    accentBg: 'rgba(211,253,81,0.10)',
+    accentBorder: 'rgba(211,253,81,0.24)',
+    glowColor: 'rgba(211,253,81,0.12)',
+    initialFill: 'rgba(211,253,81,0.08)',
   },
   {
     initial: 'M',
     name: 'Maximilian Metz',
     role: 'Head of Marketing & Sales',
     bio: 'Hintergrund in Marketing und Finanzen. Zuständig für Strategie, Wirkung und dafür, dass Ihre Website konvertiert.',
-    accentColor: 'rgba(198,124,59,0.92)',
-    accentBg: 'rgba(198,124,59,0.10)',
-    accentBorder: 'rgba(198,124,59,0.24)',
-    glowColor: 'rgba(198,124,59,0.12)',
-    initialFill: 'rgba(198,124,59,0.08)',
+    accentColor: 'rgba(211,253,81,0.80)',
+    accentBg: 'rgba(211,253,81,0.08)',
+    accentBorder: 'rgba(211,253,81,0.20)',
+    glowColor: 'rgba(211,253,81,0.10)',
+    initialFill: 'rgba(211,253,81,0.07)',
   },
 ]
 
@@ -302,7 +302,7 @@ function DifferentiatorCard({
           fontWeight: 400,
           fontStyle: 'italic',
           letterSpacing: '0.04em',
-          color: 'rgba(212,131,10,0.55)',
+          color: 'rgba(211,253,81,0.55)',
           margin: 0,
         }}
       >
@@ -435,8 +435,8 @@ export function WhyUs() {
                   width: 5,
                   height: 5,
                   borderRadius: '50%',
-                  background: 'var(--warm-amber)',
-                  boxShadow: '0 0 8px rgba(212,131,10,0.6)',
+                  background: 'var(--accent)',
+                  boxShadow: '0 0 8px rgba(211,253,81,0.55)',
                   flexShrink: 0,
                 }}
               />

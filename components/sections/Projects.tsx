@@ -153,8 +153,8 @@ function ProjectBrowserCard({
               ? 'rgba(255,255,255,0.18)'
               : 'rgba(255,255,255,0.09)',
             boxShadow: hovered
-              ? 'inset 0 1px 0 rgba(255,255,255,0.26), 0 36px 90px rgba(0,0,0,0.64), 0 0 96px rgba(212,131,10,0.09)'
-              : 'inset 0 1px 0 rgba(255,255,255,0.13), 0 18px 60px rgba(0,0,0,0.50), 0 0 56px rgba(212,131,10,0.05)',
+              ? 'inset 0 1px 0 rgba(255,255,255,0.26), 0 36px 90px rgba(0,0,0,0.64), 0 0 96px rgba(211,253,81,0.07)'
+              : 'inset 0 1px 0 rgba(255,255,255,0.13), 0 18px 60px rgba(0,0,0,0.50), 0 0 56px rgba(211,253,81,0.04)',
             y: hovered ? (shouldReduce ? 0 : -4) : 0,
           }}
           transition={{ duration: 0.45, ease: [0.16, 1, 0.3, 1] }}
@@ -480,8 +480,8 @@ export function Projects() {
                     width: 5,
                     height: 5,
                     borderRadius: '50%',
-                    background: 'var(--warm-amber)',
-                    boxShadow: '0 0 8px rgba(212,131,10,0.6)',
+                    background: 'var(--accent)',
+                    boxShadow: '0 0 8px rgba(211,253,81,0.55)',
                     flexShrink: 0,
                   }}
                 />
