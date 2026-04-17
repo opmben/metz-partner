@@ -49,7 +49,7 @@ export function DotFieldBackground() {
         waveAmplitude={0}
         gradientFrom="rgba(220, 155, 60, 0.42)"
         gradientTo="rgba(180, 120, 40, 0.22)"
-        glowColor="#5A3A06"
+        glowColor="#485a06"
       />
     </div>
   )
