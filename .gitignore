@@ -39,3 +39,10 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# local tooling
+.claude/
+.playwright-mcp/
+CLAUDE_TASK_LEADIN.md
+PROMPT_TEMPLATE.md
+"tailwind.config 2.ts"
