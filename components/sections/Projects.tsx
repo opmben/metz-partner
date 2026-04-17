@@ -161,7 +161,7 @@ function ProjectBrowserCard({
           style={{
             padding: 0,
             overflow: 'hidden',
-            background: 'linear-gradient(180deg, rgba(255,255,255,0.068), rgba(255,255,255,0.030))',
+            background: 'linear-gradient(180deg, rgba(255,255,255,0.044), rgba(255,255,255,0.020)), rgba(6,6,6,0.46)',
           }}
         >
           {/* Luminous top-edge catchlight — sits above chrome */}

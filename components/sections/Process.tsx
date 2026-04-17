@@ -427,12 +427,12 @@ function StepSelectorCard({
           position: 'relative',
           overflow: 'hidden',
           borderRadius: 20,
-          border: '1px solid rgba(255,255,255,0.07)',
+          border: '1px solid rgba(255,255,255,0.10)',
           backdropFilter: 'blur(18px)',
           WebkitBackdropFilter: 'blur(18px)',
           background: isActive
-            ? 'linear-gradient(180deg, rgba(255,255,255,0.065), rgba(255,255,255,0.030))'
-            : 'linear-gradient(180deg, rgba(255,255,255,0.038), rgba(255,255,255,0.018))',
+            ? 'linear-gradient(180deg, rgba(255,255,255,0.052), rgba(255,255,255,0.024)), rgba(6,6,6,0.50)'
+            : 'linear-gradient(180deg, rgba(255,255,255,0.030), rgba(255,255,255,0.013)), rgba(6,6,6,0.40)',
           padding: '1rem 1.25rem',
           display: 'flex',
           alignItems: 'center',

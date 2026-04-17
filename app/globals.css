@@ -39,27 +39,27 @@
   --accent:     #D3FD51;
   --accent-dim: rgba(211, 253, 81, 0.12);
 
-  /* Surface system: fills */
-  --surface-hero:      rgba(255, 255, 255, 0.07);
-  --surface-primary:   rgba(255, 255, 255, 0.06);
-  --surface-secondary: rgba(255, 255, 255, 0.045);
-  --surface-muted:     rgba(255, 255, 255, 0.03);
-  --surface-floating:  rgba(255, 255, 255, 0.08);
+  /* Surface system: fills — reference values (classes apply layered dark-base + shimmer) */
+  --surface-hero:      rgba(255, 255, 255, 0.038);
+  --surface-primary:   rgba(255, 255, 255, 0.044);
+  --surface-secondary: rgba(255, 255, 255, 0.032);
+  --surface-muted:     rgba(255, 255, 255, 0.020);
+  --surface-floating:  rgba(255, 255, 255, 0.10);
 
   /* Surface system: borders and highlights */
-  --surface-border-soft:      rgba(255, 255, 255, 0.09);
-  --surface-border-strong:    rgba(255, 255, 255, 0.16);
-  --surface-highlight-top:    rgba(255, 255, 255, 0.24);
-  --surface-highlight-hot:    rgba(255, 255, 255, 0.34);
-  --surface-highlight-subtle: rgba(255, 255, 255, 0.12);
+  --surface-border-soft:      rgba(255, 255, 255, 0.11);
+  --surface-border-strong:    rgba(255, 255, 255, 0.18);
+  --surface-highlight-top:    rgba(255, 255, 255, 0.18);
+  --surface-highlight-hot:    rgba(255, 255, 255, 0.26);
+  --surface-highlight-subtle: rgba(255, 255, 255, 0.07);
 
   /* Surface system: elevation and glow */
-  --surface-shadow-soft:  0 18px 60px rgba(0, 0, 0, 0.28);
-  --surface-shadow-deep:  0 28px 90px rgba(0, 0, 0, 0.36);
-  --surface-shadow-float: 0 12px 30px rgba(0, 0, 0, 0.28);
-  --surface-glow-soft:    0 0 36px rgba(255, 255, 255, 0.05);
+  --surface-shadow-soft:  0 18px 60px rgba(0, 0, 0, 0.32);
+  --surface-shadow-deep:  0 28px 90px rgba(0, 0, 0, 0.42);
+  --surface-shadow-float: 0 12px 30px rgba(0, 0, 0, 0.30);
+  --surface-glow-soft:    0 0 20px rgba(255, 255, 255, 0.022);
   --surface-glow-warm:    0 0 56px rgba(212, 131, 10, 0.08);
-  --surface-glow-hot:     0 0 80px rgba(255, 255, 255, 0.10);
+  --surface-glow-hot:     0 0 52px rgba(255, 255, 255, 0.06);
 
   /* Surface system: blur tiers */
   --blur-hero:      32px;
@@ -256,11 +256,11 @@ body::before {
       90deg,
       transparent 0%,
       var(--surface-highlight-top) 12%,
-      rgba(255, 255, 255, 0.18) 50%,
+      rgba(255, 255, 255, 0.12) 50%,
       var(--surface-highlight-top) 88%,
       transparent 100%
     );
-  opacity: 0.9;
+  opacity: 0.75;
   pointer-events: none;
 }
 
@@ -279,15 +279,17 @@ body::before {
   position: absolute;
   inset: 0;
   background:
-    radial-gradient(circle at top left, rgba(255, 255, 255, 0.09), transparent 32%),
-    linear-gradient(180deg, rgba(255, 255, 255, 0.025), transparent 26%);
-  opacity: 0.75;
+    radial-gradient(circle at top left, rgba(255, 255, 255, 0.032), transparent 30%),
+    linear-gradient(180deg, rgba(255, 255, 255, 0.010), transparent 24%);
+  opacity: 0.65;
   pointer-events: none;
   z-index: -1;
 }
 
 .surface-hero {
-  background: linear-gradient(180deg, rgba(255, 255, 255, 0.085), rgba(255, 255, 255, 0.04));
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.038), rgba(255, 255, 255, 0.016)),
+    rgba(6, 6, 6, 0.34);
   border-color: var(--surface-border-strong);
   border-radius: var(--radius-panel-lg);
   backdrop-filter: blur(var(--blur-hero));
@@ -303,37 +305,45 @@ body::before {
 .panel-proof,
 .panel-browser,
 .panel-process {
-  background: linear-gradient(180deg, rgba(255, 255, 255, 0.07), rgba(255, 255, 255, 0.035));
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.044), rgba(255, 255, 255, 0.020)),
+    rgba(6, 6, 6, 0.46);
   border-radius: var(--radius-panel-md);
 }
 
 .surface-secondary,
 .panel-feature {
-  background: linear-gradient(180deg, rgba(255, 255, 255, 0.055), rgba(255, 255, 255, 0.028));
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.036), rgba(255, 255, 255, 0.016)),
+    rgba(6, 6, 6, 0.44);
   border-radius: var(--radius-panel-sm);
   backdrop-filter: blur(var(--blur-secondary));
   -webkit-backdrop-filter: blur(var(--blur-secondary));
 }
 
 .surface-muted {
-  background: linear-gradient(180deg, rgba(255, 255, 255, 0.04), rgba(255, 255, 255, 0.02));
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.022), rgba(255, 255, 255, 0.010)),
+    rgba(6, 6, 6, 0.32);
   border-radius: var(--radius-panel-sm);
   backdrop-filter: blur(var(--blur-muted));
   -webkit-backdrop-filter: blur(var(--blur-muted));
   box-shadow:
-    inset 0 1px 0 rgba(255, 255, 255, 0.08),
-    0 12px 38px rgba(0, 0, 0, 0.2);
+    inset 0 1px 0 rgba(255, 255, 255, 0.06),
+    0 12px 38px rgba(0, 0, 0, 0.22);
 }
 
 .surface-floating {
-  background: linear-gradient(180deg, rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0.05));
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.10), rgba(255, 255, 255, 0.050)),
+    rgba(6, 6, 6, 0.22);
   border-radius: var(--radius-pill);
   backdrop-filter: blur(var(--blur-floating));
   -webkit-backdrop-filter: blur(var(--blur-floating));
   box-shadow:
     inset 0 1px 0 var(--surface-highlight-hot),
     var(--surface-shadow-float),
-    0 0 24px rgba(255, 255, 255, 0.06);
+    0 0 18px rgba(255, 255, 255, 0.04);
 }
 
 .panel-browser {
@@ -368,8 +378,9 @@ body::before {
 
 .panel-process {
   background:
-    linear-gradient(180deg, rgba(255, 255, 255, 0.065), rgba(255, 255, 255, 0.03)),
-    linear-gradient(135deg, rgba(212, 131, 10, 0.06), transparent 42%);
+    linear-gradient(180deg, rgba(255, 255, 255, 0.040), rgba(255, 255, 255, 0.018)),
+    linear-gradient(135deg, rgba(212, 131, 10, 0.05), transparent 38%),
+    rgba(6, 6, 6, 0.46);
 }
 
 :is(
@@ -472,33 +483,41 @@ body::before {
 }
 
 .button-glass-primary {
-  background: linear-gradient(180deg, rgba(255, 255, 255, 0.12), rgba(255, 255, 255, 0.07));
-  border-color: rgba(255, 255, 255, 0.18);
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.13), rgba(255, 255, 255, 0.068)),
+    rgba(6, 6, 6, 0.18);
+  border-color: rgba(255, 255, 255, 0.20);
   box-shadow:
     inset 0 1px 0 var(--surface-highlight-hot),
-    0 12px 30px rgba(0, 0, 0, 0.28),
-    0 0 44px rgba(255, 255, 255, 0.08);
+    0 12px 30px rgba(0, 0, 0, 0.30),
+    0 0 32px rgba(255, 255, 255, 0.055);
 }
 
 .button-glass-secondary {
-  background: linear-gradient(180deg, rgba(255, 255, 255, 0.085), rgba(255, 255, 255, 0.045));
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.090), rgba(255, 255, 255, 0.045)),
+    rgba(6, 6, 6, 0.18);
   box-shadow:
     inset 0 1px 0 var(--surface-highlight-top),
-    0 10px 24px rgba(0, 0, 0, 0.24);
+    0 10px 24px rgba(0, 0, 0, 0.26);
 }
 
 .button-ghost-glass {
-  background: linear-gradient(180deg, rgba(255, 255, 255, 0.05), rgba(255, 255, 255, 0.03));
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.055), rgba(255, 255, 255, 0.026)),
+    rgba(6, 6, 6, 0.24);
   box-shadow:
-    inset 0 1px 0 rgba(255, 255, 255, 0.12),
-    0 8px 22px rgba(0, 0, 0, 0.2);
+    inset 0 1px 0 rgba(255, 255, 255, 0.10),
+    0 8px 22px rgba(0, 0, 0, 0.22);
 }
 
 .button-pill-micro {
-  background: linear-gradient(180deg, rgba(255, 255, 255, 0.095), rgba(255, 255, 255, 0.045));
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.095), rgba(255, 255, 255, 0.044)),
+    rgba(6, 6, 6, 0.20);
   box-shadow:
     inset 0 1px 0 var(--surface-highlight-top),
-    0 6px 18px rgba(0, 0, 0, 0.18);
+    0 6px 18px rgba(0, 0, 0, 0.20);
 }
 
 @media (hover: hover) {
@@ -512,8 +531,8 @@ body::before {
     border-color: var(--surface-border-strong);
     box-shadow:
       inset 0 1px 0 var(--surface-highlight-hot),
-      0 14px 34px rgba(0, 0, 0, 0.3),
-      0 0 52px rgba(255, 255, 255, 0.1);
+      0 14px 34px rgba(0, 0, 0, 0.34),
+      0 0 36px rgba(255, 255, 255, 0.07);
   }
 }
 
