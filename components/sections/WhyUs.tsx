@@ -232,7 +232,7 @@ function DifferentiatorCard({
   return (
     <motion.div variants={shouldReduce ? undefined : fadeUp} style={{ height: '100%' }}>
       <BorderGlow
-        backgroundColor="#0b0b0b"
+        backgroundColor="#transparent"
         borderRadius={12}
         glowColor="73 100 50"
         glowRadius={55}
