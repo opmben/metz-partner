@@ -38,15 +38,15 @@ export function DotFieldBackground() {
       }}
     >
       <DotField
-        dotRadius={1.5}
-        dotSpacing={20}
+        dotRadius={1}
+        dotSpacing={10}
         cursorRadius={420}
         cursorForce={0.08}
         bulgeOnly={true}
         bulgeStrength={52}
         glowRadius={160}
         sparkle={false}
-        waveAmplitude={5}
+        waveAmplitude={1}
         gradientFrom="rgba(220, 155, 60, 0.42)"
         gradientTo="rgba(180, 120, 40, 0.22)"
         glowColor="#5A3A06"
