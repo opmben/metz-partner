@@ -46,7 +46,7 @@ export function DotFieldBackground() {
         bulgeStrength={52}
         glowRadius={160}
         sparkle={false}
-        waveAmplitude={0}
+        waveAmplitude={5}
         gradientFrom="rgba(220, 155, 60, 0.42)"
         gradientTo="rgba(180, 120, 40, 0.22)"
         glowColor="#5A3A06"

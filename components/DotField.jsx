@@ -106,16 +106,27 @@ const DotField = memo(({
 
     const speedInterval = setInterval(updateMouseSpeed, 20);
 
-    let frameCount = 0;
+    // Scroll-driven time — wave flows with scroll, freezes when idle
+    const scrollState = { t: 0, velocity: 0, lastY: typeof window !== 'undefined' ? window.scrollY : 0 };
+
+    function onScroll() {
+      const dy = window.scrollY - scrollState.lastY;
+      scrollState.velocity += Math.abs(dy) * 0.14;
+      scrollState.lastY = window.scrollY;
+    }
+    window.addEventListener('scroll', onScroll, { passive: true });
 
     function tick() {
-      frameCount++;
       const dots = dotsRef.current;
       const m = mouseRef.current;
       const { w, h } = sizeRef.current;
       const p = propsRef.current;
       const len = dots.length;
-      const t = frameCount * 0.02;
+
+      // Decay scroll velocity, advance time — tiny ambient drift so dots feel alive at rest
+      scrollState.velocity *= 0.88;
+      scrollState.t += scrollState.velocity * 0.012 + 0.0025;
+      const t = scrollState.t;
 
       const targetEngagement = Math.min(m.speed / 5, 1);
       engagement.current += (targetEngagement - engagement.current) * 0.06;
@@ -221,6 +232,7 @@ const DotField = memo(({
       clearTimeout(resizeTimer);
       window.removeEventListener('resize', resize);
       window.removeEventListener('mousemove', onMouseMove);
+      window.removeEventListener('scroll', onScroll);
     };
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
