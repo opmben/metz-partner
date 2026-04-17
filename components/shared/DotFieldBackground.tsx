@@ -39,7 +39,7 @@ export function DotFieldBackground() {
     >
       <DotField
         dotRadius={1}
-        dotSpacing={10}
+        dotSpacing={14}
         cursorRadius={420}
         cursorForce={0.08}
         bulgeOnly={true}
