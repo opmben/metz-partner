@@ -231,32 +231,32 @@ function DifferentiatorCard({
 }) {
   return (
     <motion.div variants={shouldReduce ? undefined : fadeUp} style={{ height: '100%' }}>
-        <BorderGlow
-          backgroundColor="rgba(255,255,255,0.03)"
-          borderRadius={16}
-          glowColor="73 100 50"
-          glowRadius={60}
-          glowIntensity={0.45}
-          coneSpread={24}
-          animated
-          colors={['#C8FF00', '#a8d400', '#7a9900']}
-          fillOpacity={0.03}
-          className="h-full"
-        >
-        <div
-          style={{
-            padding: 'clamp(2rem, 3vw, 2.75rem)',
-            display: 'flex',
-            flexDirection: 'column',
-            height: '100%',
-            background: 'linear-gradient(180deg, rgba(255,255,255,0.05) 0%, rgba(255,255,255,0.02) 100%)',
-            backdropFilter: 'blur(16px) saturate(135%)',
-            WebkitBackdropFilter: 'blur(16px) saturate(135%)',
-            border: '1px solid rgba(255,255,255,0.08)',
-            boxShadow: '0 8px 32px rgba(0,0,0,0.24), inset 0 1px 0 rgba(255,255,255,0.05)',
-            borderRadius: 16,
-          }}
-        >
+      <BorderGlow
+        backgroundColor="#0b0b0b"
+        borderRadius={8}
+        glowColor="73 100 50"
+        glowRadius={55}
+        glowIntensity={0.65}
+        coneSpread={28}
+        animated
+        colors={['#C8FF00', '#a8d400', '#7a9900']}
+        fillOpacity={0.06}
+        className="h-full"
+      >
+          <div
+            style={{
+              padding: 'clamp(2rem, 3vw, 2.75rem)',
+              display: 'flex',
+              flexDirection: 'column',
+              height: '100%',
+              background: 'rgba(255, 255, 255, 0.03)',
+              backdropFilter: 'blur(14px)',
+              WebkitBackdropFilter: 'blur(14px)',
+              border: '1px solid rgba(255, 255, 255, 0.08)',
+              boxShadow: 'inset 0 1px 0 rgba(255,255,255,0.05)',
+              borderRadius: 8,
+            }}
+          >
           <p
             style={{
               fontFamily: 'var(--font-display)',
@@ -404,10 +404,7 @@ export function WhyUs() {
           {/* Differentiators */}
           <motion.div
             variants={shouldReduce ? undefined : staggerContainer(0.1)}
-            style={{
-                    borderTop: '1px solid rgba(255,255,255,0.07)',
-                    paddingTop: '4rem',
-                  }}
+            style={{ borderTop: '1px solid var(--border)', paddingTop: '4rem' }}
           >
             <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
               {differentiators.map((d) => (
