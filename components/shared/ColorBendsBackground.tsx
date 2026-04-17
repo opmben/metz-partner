@@ -18,14 +18,14 @@ export function ColorBendsBackground() {
         transparent={false}
         autoRotate={0}
         scale={1}
-        frequency={1.4}
+        frequency={1.5}
         warpStrength={1}
         mouseInfluence={0.6}
         parallax={1}
         noise={0.25}
         iterations={2}
-        intensity={0.8}
-        bandWidth={6}
+        intensity={0.7}
+        bandWidth={5}
       />
     </div>
   )
