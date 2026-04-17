@@ -5,6 +5,7 @@ import { CustomCursor } from '@/components/shared/CustomCursor'
 import { SmoothScroll } from '@/components/shared/SmoothScroll'
 import { PageLoader } from '@/components/shared/PageLoader'
 import { ScrollProgress } from '@/components/shared/ScrollProgress'
+import { DotFieldBackground } from '@/components/shared/DotFieldBackground'
 
 const instrumentSerif = Instrument_Serif({
   weight: ['400'],
@@ -55,10 +56,13 @@ export default function RootLayout({
     >
       <body>
         <SmoothScroll>
-          <PageLoader />
-          <ScrollProgress />
-          <CustomCursor />
-          {children}
+          <DotFieldBackground />
+          <div style={{ position: 'relative', zIndex: 2 }}>
+            <PageLoader />
+            <ScrollProgress />
+            <CustomCursor />
+            {children}
+          </div>
         </SmoothScroll>
       </body>
     </html>
