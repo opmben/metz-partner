@@ -595,6 +595,18 @@ body::before {
   }
 }
 
+/* ─── Services rails layout ──────────────────────────────────────── */
+.services-rails-layout {
+  grid-template-columns: minmax(0, 1fr);
+}
+
+@media (min-width: 768px) {
+  .services-rails-layout {
+    grid-template-columns: 1fr 1.1fr;
+    align-items: start;
+  }
+}
+
 /* ─── Contact layout ─────────────────────────────────────────────── */
 .contact-layout {
   grid-template-columns: minmax(0, 1fr);

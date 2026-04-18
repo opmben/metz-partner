@@ -1,346 +1,689 @@
 'use client'
 
-import { useRef } from 'react'
-import { motion, useInView, useReducedMotion } from 'framer-motion'
+import { useRef, useState, useEffect } from 'react'
+import Image from 'next/image'
+import {
+  motion,
+  AnimatePresence,
+  useInView,
+  useReducedMotion,
+  LayoutGroup,
+} from 'framer-motion'
 import { SectionLabel } from '@/components/shared/SectionLabel'
 import { fadeUp, staggerContainer, clipRevealUp } from '@/lib/animations'
 
 const EASE: [number, number, number, number] = [0.16, 1, 0.3, 1]
+const AUTO_MS = 3600
 
-// ─── Offer modules ────────────────────────────────────────────────────────────
-const modules = [
+// ─── Data ─────────────────────────────────────────────────────────────────────
+
+const rails = [
   {
     id: 'design',
     label: 'Design',
     headline: 'Visuell eigenständig.',
     body: 'Kein Template. Wir entwickeln visuelle Richtung, Struktur und Interface — auf Ihr Unternehmen und Ihre Zielgruppe abgestimmt.',
+    imgPosition: 'top center',
+    isLive: false,
+    gridDots: false,
+    glow: 'rgba(211,253,81,0.052)',
   },
   {
     id: 'entwicklung',
     label: 'Entwicklung',
     headline: 'Sauber implementiert.',
-    body: 'Performant, responsiv, wartbar. Moderner Stack, schnelle Ladezeiten, editierbar wo es sinnvoll ist.',
+    body: 'Performant, responsiv, wartbar. Moderner Stack, schnelle Ladezeiten — editierbar wo es sinnvoll ist.',
+    imgPosition: '38% center',
+    isLive: false,
+    gridDots: true,
+    glow: 'rgba(211,253,81,0.028)',
   },
   {
     id: 'launch',
     label: 'Launch & Übergabe',
     headline: 'Einsatzbereit übergeben.',
     body: 'Deployment, finale Abstimmung, vollständige Übergabe. Ein fertiges Ergebnis — keine offenen Enden.',
+    imgPosition: 'bottom center',
+    isLive: true,
+    gridDots: false,
+    glow: 'rgba(211,253,81,0.072)',
   },
-]
+] as const
 
-// ─── Browser proof visual (inline SVG) ───────────────────────────────────────
-function BrowserProofVisual({ isVisible }: { isVisible: boolean }) {
-  const go = isVisible
-  const t = (dur: number, del: number) => ({ duration: dur, delay: go ? del : 0, ease: EASE })
+// ─── Browser chrome ───────────────────────────────────────────────────────────
 
-  const fi = (del: number, dur = 0.5) => ({
-    initial: { opacity: 0 },
-    animate: go ? { opacity: 1 } : { opacity: 0 },
-    transition: t(dur, del),
-  })
-  const rx = (del: number, dur = 0.5) => ({
-    initial: { scaleX: 0, opacity: 0 },
-    animate: go ? { scaleX: 1, opacity: 1 } : { scaleX: 0, opacity: 0 },
-    style: { transformBox: 'fill-box' as const, transformOrigin: 'left center' },
-    transition: t(dur, del),
-  })
-  const pi = (del: number, k = 280) => ({
-    initial: { scale: 0, opacity: 0 },
-    animate: go ? { scale: 1, opacity: 1 } : { scale: 0, opacity: 0 },
-    transition: { ...t(0.45, del), type: 'spring' as const, stiffness: k, damping: 20 },
-  })
-
+function BrowserChrome({
+  isLive,
+  shouldReduce,
+}: {
+  isLive: boolean
+  shouldReduce: boolean | null
+}) {
   return (
-    <svg
-      viewBox="0 0 560 315"
-      fill="none"
-      style={{ width: '100%', height: '100%', display: 'block' }}
-      aria-hidden="true"
+    <div
+      style={{
+        height: 44,
+        background: 'rgba(6,6,6,0.94)',
+        borderBottom: '1px solid rgba(255,255,255,0.06)',
+        display: 'flex',
+        alignItems: 'center',
+        padding: '0 16px',
+        gap: 12,
+        flexShrink: 0,
+      }}
     >
-      <rect width="560" height="315" fill="#0c0c0c" />
-
-      {/* Ambient glow */}
-      <motion.ellipse cx="480" cy="148" rx="120" ry="90" fill="rgba(200,255,0,0.032)" {...fi(1.2, 0.8)} />
-
-      {/* Browser frame */}
-      <motion.path
-        d="M26,18 H534 Q542,18 542,26 V289 Q542,297 534,297 H26 Q18,297 18,289 V26 Q18,18 26,18 Z"
-        stroke="rgba(240,237,232,0.08)" strokeWidth={1} fill="#0C0C0C"
-        initial={{ pathLength: 0, opacity: 0 }}
-        animate={go ? { pathLength: 1, opacity: 1 } : { pathLength: 0, opacity: 0 }}
-        transition={t(1.1, 0)}
-      />
-
-      {/* Chrome */}
-      <motion.rect x="18" y="18" width="524" height="44" fill="#161616" {...fi(0.3, 0.3)} />
-      <motion.rect x="18" y="50" width="524" height="12" fill="#161616" {...fi(0.3, 0.3)} />
-      <motion.line x1="18" y1="61" x2="542" y2="61" stroke="rgba(240,237,232,0.05)" strokeWidth={1}
-        initial={{ pathLength: 0 }} animate={go ? { pathLength: 1 } : { pathLength: 0 }}
-        transition={t(0.6, 0.5)}
-      />
-
       {/* Traffic lights */}
-      <motion.circle cx="40" cy="40" r="5.5" fill="rgba(255,95,87,0.75)"  {...pi(0.55, 320)} />
-      <motion.circle cx="57" cy="40" r="5.5" fill="rgba(255,189,68,0.75)" {...pi(0.65, 320)} />
-      <motion.circle cx="74" cy="40" r="5.5" fill="rgba(40,200,64,0.75)"  {...pi(0.75, 320)} />
+      <div style={{ display: 'flex', gap: 7, flexShrink: 0 }}>
+        {[
+          { c: '#FF5F57', g: 'rgba(255,95,87,0.55)' },
+          { c: '#FEBC2E', g: 'rgba(254,188,46,0.50)' },
+          { c: '#28C840', g: 'rgba(40,200,64,0.50)' },
+        ].map(({ c, g }, i) => (
+          <div
+            key={i}
+            style={{
+              width: 11,
+              height: 11,
+              borderRadius: '50%',
+              background: c,
+              boxShadow: `0 0 6px ${g}`,
+              opacity: 0.82,
+              flexShrink: 0,
+            }}
+          />
+        ))}
+      </div>
 
       {/* URL bar */}
-      <motion.rect x="148" y="28" width="264" height="24" rx="12"
-        fill="rgba(240,237,232,0.04)" stroke="rgba(240,237,232,0.09)" strokeWidth={1}
-        {...fi(0.65, 0.4)}
-      />
-      <motion.circle cx="164" cy="40" r="4" fill="rgba(200,255,0,0.4)" {...fi(0.75, 0.35)} />
-      <motion.rect x="175" y="36" width="115" height="7" rx="3" fill="rgba(240,237,232,0.22)" {...rx(0.8, 0.5)} />
-
-      {/* Page nav */}
-      <motion.rect x="18" y="62" width="524" height="42" fill="#0E0E0E" {...fi(0.45, 0.4)} />
-      <motion.rect x="18" y="103" width="524" height="1" fill="rgba(240,237,232,0.04)" {...fi(0.3, 0.55)} />
-      <motion.rect x="40" y="75" width="72" height="12" rx="3"
-        fill="rgba(200,255,0,0.12)" stroke="rgba(200,255,0,0.28)" strokeWidth={0.75}
-        {...fi(0.6, 0.55)}
-      />
-      {([152, 196, 250, 290] as const).map((x, i) => (
-        <motion.rect key={x} x={x} y="79" width={([34, 44, 30, 38] as const)[i]} height="5" rx="2"
-          fill="rgba(240,237,232,0.12)" {...rx(0.58 + i * 0.07, 0.38)}
+      <div
+        style={{
+          flex: 1,
+          height: 26,
+          background: 'rgba(255,255,255,0.03)',
+          border: '1px solid rgba(255,255,255,0.07)',
+          borderRadius: 6,
+          display: 'flex',
+          alignItems: 'center',
+          gap: 6,
+          overflow: 'hidden',
+          padding: '0 10px',
+        }}
+      >
+        <motion.div
+          animate={{
+            background: isLive ? 'var(--accent)' : 'rgba(200,255,0,0.4)',
+            boxShadow: isLive
+              ? '0 0 10px rgba(211,253,81,0.85)'
+              : '0 0 4px rgba(211,253,81,0.3)',
+          }}
+          transition={{ duration: 0.45, ease: EASE }}
+          style={{
+            width: 6,
+            height: 6,
+            borderRadius: '50%',
+            flexShrink: 0,
+            animation:
+              isLive && !shouldReduce
+                ? 'heroPulse 1.8s ease-in-out infinite'
+                : 'none',
+          }}
         />
-      ))}
-      <motion.rect x="455" y="69" width="68" height="24" rx="12" fill="rgba(200,255,0,0.85)" {...pi(0.95)} />
-      <motion.rect x="466" y="79" width="46" height="5" rx="2" fill="#0C0C0C" {...fi(1.05, 0.3)} />
+        <span
+          style={{
+            fontFamily: 'var(--font-ui)',
+            fontSize: '0.6rem',
+            color: 'rgba(255,255,255,0.26)',
+            letterSpacing: '0.025em',
+            whiteSpace: 'nowrap',
+          }}
+        >
+          fahrschule-dirk-arnold.de
+        </span>
+        <AnimatePresence>
+          {isLive && (
+            <motion.span
+              initial={{ opacity: 0, scale: 0.8, x: -4 }}
+              animate={{ opacity: 1, scale: 1, x: 0 }}
+              exit={{ opacity: 0, scale: 0.8, x: -4 }}
+              transition={{ duration: 0.3, ease: EASE }}
+              style={{
+                fontFamily: 'var(--font-ui)',
+                fontSize: '0.55rem',
+                fontWeight: 400,
+                letterSpacing: '0.12em',
+                textTransform: 'uppercase',
+                color: 'rgba(211,253,81,0.8)',
+                flexShrink: 0,
+              }}
+            >
+              ● Live
+            </motion.span>
+          )}
+        </AnimatePresence>
+      </div>
 
-      {/* Hero section */}
-      <motion.rect x="18" y="104" width="524" height="130" fill="#080808" {...fi(0.5, 0.6)} />
-      <motion.rect x="40" y="120" width="280" height="18" rx="3" fill="rgba(240,237,232,0.22)" {...rx(0.85, 0.55)} />
-      <motion.rect x="40" y="144" width="240" height="16" rx="3" fill="rgba(240,237,232,0.18)" {...rx(0.5, 0.95)} />
-      <motion.rect x="40" y="168" width="136" height="16" rx="3" fill="rgba(200,255,0,0.65)"  {...rx(0.5, 1.05)} />
-      <motion.rect x="184" y="168" width="80"  height="16" rx="3" fill="rgba(240,237,232,0.18)" {...rx(0.4, 1.13)} />
-      <motion.rect x="40" y="196" width="240" height="5" rx="2" fill="rgba(240,237,232,0.12)" {...fi(1.2, 0.35)} />
-      <motion.rect x="40" y="206" width="200" height="5" rx="2" fill="rgba(240,237,232,0.08)" {...fi(1.28, 0.35)} />
+      <div style={{ width: 44, flexShrink: 0 }} />
+    </div>
+  )
+}
 
-      {/* CTAs */}
-      <motion.rect x="40" y="220" width="118" height="30" rx="15" fill="rgba(200,255,0,0.88)" {...pi(1.28, 260)} />
-      <motion.rect x="56" y="233" width="86"  height="5"  rx="2"  fill="#080808" {...fi(1.38, 0.3)} />
-      <motion.rect x="168" y="220" width="105" height="30" rx="15"
-        fill="rgba(240,237,232,0.05)" stroke="rgba(240,237,232,0.12)" strokeWidth={0.75}
-        {...fi(1.35, 0.4)}
+// ─── Proof surface ────────────────────────────────────────────────────────────
+
+function ProofSurface({
+  activeIndex,
+  shouldReduce,
+}: {
+  activeIndex: number
+  shouldReduce: boolean | null
+}) {
+  const rail = rails[activeIndex]
+
+  return (
+    <motion.div
+      className="panel-browser"
+      initial={shouldReduce ? undefined : { opacity: 0, scale: 0.97 }}
+      whileInView={shouldReduce ? undefined : { opacity: 1, scale: 1 }}
+      viewport={{ once: true, margin: '-60px' }}
+      transition={{ duration: 0.9, ease: EASE, delay: 0.18 }}
+      style={{ padding: 0, overflow: 'hidden', position: 'relative' }}
+    >
+      {/* Per-state atmosphere glow */}
+      <AnimatePresence mode="wait">
+        <motion.div
+          key={`glow-${activeIndex}`}
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          exit={{ opacity: 0 }}
+          transition={{ duration: 0.7 }}
+          aria-hidden
+          style={{
+            position: 'absolute',
+            inset: 0,
+            background: `radial-gradient(ellipse at 80% 25%, ${rail.glow} 0%, transparent 65%)`,
+            pointerEvents: 'none',
+            zIndex: 0,
+          }}
+        />
+      </AnimatePresence>
+
+      {/* Chrome — always visible, state indicator inside */}
+      <div style={{ position: 'relative', zIndex: 1 }}>
+        <BrowserChrome isLive={rail.isLive} shouldReduce={shouldReduce} />
+      </div>
+
+      {/* Screenshot viewport */}
+      <div
+        style={{
+          position: 'relative',
+          aspectRatio: '16/9',
+          overflow: 'hidden',
+          zIndex: 1,
+        }}
+      >
+        <AnimatePresence mode="wait">
+          <motion.div
+            key={`proof-${activeIndex}`}
+            initial={
+              shouldReduce
+                ? undefined
+                : { opacity: 0, filter: 'blur(10px)', scale: 1.015 }
+            }
+            animate={
+              shouldReduce
+                ? undefined
+                : { opacity: 1, filter: 'blur(0px)', scale: 1 }
+            }
+            exit={
+              shouldReduce
+                ? undefined
+                : { opacity: 0, filter: 'blur(10px)', scale: 1.015 }
+            }
+            transition={{ duration: 0.4, ease: EASE }}
+            style={{ position: 'absolute', inset: 0 }}
+          >
+            <Image
+              src="/projekte/Fahrschule-DA.jpg"
+              alt="Fahrschule Dirk Arnold – Website"
+              fill
+              sizes="(min-width: 768px) 50vw, 100vw"
+              style={{
+                objectFit: 'cover',
+                objectPosition: rail.imgPosition,
+              }}
+              priority={activeIndex === 0}
+            />
+
+            {/* Entwicklung: precision grid dot overlay */}
+            {rail.gridDots && !shouldReduce && (
+              <motion.div
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 0.28 }}
+                transition={{ duration: 0.55, delay: 0.18 }}
+                aria-hidden
+                style={{
+                  position: 'absolute',
+                  inset: 0,
+                  backgroundImage:
+                    'radial-gradient(circle, rgba(211,253,81,0.22) 1px, transparent 1px)',
+                  backgroundSize: '24px 24px',
+                  mixBlendMode: 'overlay',
+                  pointerEvents: 'none',
+                }}
+              />
+            )}
+
+            {/* Launch: live badge */}
+            {rail.isLive && (
+              <motion.div
+                initial={{ opacity: 0, y: 8, scale: 0.9 }}
+                animate={{ opacity: 1, y: 0, scale: 1 }}
+                transition={{ duration: 0.4, ease: EASE, delay: 0.18 }}
+                style={{
+                  position: 'absolute',
+                  bottom: '1rem',
+                  right: '1rem',
+                  display: 'inline-flex',
+                  alignItems: 'center',
+                  gap: '0.4rem',
+                  padding: '0.3rem 0.72rem',
+                  background:
+                    'linear-gradient(180deg, rgba(211,253,81,0.14), rgba(211,253,81,0.07)), rgba(6,6,6,0.55)',
+                  border: '1px solid rgba(211,253,81,0.28)',
+                  borderRadius: 999,
+                  backdropFilter: 'blur(14px)',
+                  WebkitBackdropFilter: 'blur(14px)',
+                  boxShadow:
+                    'inset 0 1px 0 rgba(211,253,81,0.18), 0 0 24px rgba(211,253,81,0.1)',
+                  zIndex: 2,
+                }}
+              >
+                <span
+                  style={{
+                    width: 5,
+                    height: 5,
+                    borderRadius: '50%',
+                    background: 'var(--accent)',
+                    boxShadow: '0 0 8px rgba(211,253,81,0.8)',
+                    animation: shouldReduce
+                      ? 'none'
+                      : 'heroPulse 1.8s ease-in-out infinite',
+                    flexShrink: 0,
+                  }}
+                />
+                <span
+                  style={{
+                    fontFamily: 'var(--font-ui)',
+                    fontSize: '0.6rem',
+                    fontWeight: 400,
+                    letterSpacing: '0.13em',
+                    textTransform: 'uppercase',
+                    color: 'rgba(211,253,81,0.92)',
+                  }}
+                >
+                  Live
+                </span>
+              </motion.div>
+            )}
+
+            {/* Bottom atmospheric fade */}
+            <div
+              aria-hidden
+              style={{
+                position: 'absolute',
+                bottom: 0,
+                left: 0,
+                right: 0,
+                height: '38%',
+                background:
+                  'linear-gradient(to top, rgba(6,6,6,0.72) 0%, rgba(6,6,6,0.24) 60%, transparent 100%)',
+                pointerEvents: 'none',
+              }}
+            />
+
+            {/* Project credit */}
+            <div
+              style={{
+                position: 'absolute',
+                bottom: '0.88rem',
+                left: '1rem',
+                zIndex: 2,
+              }}
+            >
+              <p
+                style={{
+                  fontFamily: 'var(--font-ui)',
+                  fontSize: '0.6rem',
+                  fontWeight: 400,
+                  letterSpacing: '0.12em',
+                  textTransform: 'uppercase',
+                  color: 'rgba(255,255,255,0.28)',
+                  margin: '0 0 0.12rem',
+                }}
+              >
+                Fahrschule Dirk Arnold · 2026
+              </p>
+              <p
+                style={{
+                  fontFamily: 'var(--font-display)',
+                  fontStyle: 'italic',
+                  fontSize: '0.78rem',
+                  color: 'rgba(255,255,255,0.5)',
+                  lineHeight: 1,
+                  margin: 0,
+                }}
+              >
+                fahrschule-dirk-arnold.de
+              </p>
+            </div>
+          </motion.div>
+        </AnimatePresence>
+      </div>
+    </motion.div>
+  )
+}
+
+// ─── Single offer rail ────────────────────────────────────────────────────────
+
+function OfferRail({
+  rail,
+  index,
+  isActive,
+  onSelect,
+  shouldReduce,
+}: {
+  rail: (typeof rails)[number]
+  index: number
+  isActive: boolean
+  onSelect: (i: number) => void
+  shouldReduce: boolean | null
+}) {
+  return (
+    <motion.div
+      layout
+      onClick={() => onSelect(index)}
+      onHoverStart={() => onSelect(index)}
+      transition={{ layout: { duration: 0.42, ease: EASE } }}
+      style={{
+        position: 'relative',
+        cursor: 'pointer',
+        userSelect: 'none',
+        isolation: 'isolate',
+        borderRadius: 18,
+        border: `1px solid ${isActive ? 'rgba(255,255,255,0.12)' : 'rgba(255,255,255,0.048)'}`,
+        background: isActive
+          ? 'linear-gradient(180deg, rgba(255,255,255,0.050), rgba(255,255,255,0.020)), rgba(6,6,6,0.42)'
+          : 'transparent',
+        boxShadow: isActive
+          ? 'inset 0 1px 0 rgba(255,255,255,0.14), 0 12px 40px rgba(0,0,0,0.30)'
+          : 'none',
+        padding: isActive
+          ? 'clamp(1.1rem, 2vw, 1.6rem)'
+          : 'clamp(0.82rem, 1.4vw, 1.1rem)',
+        transition:
+          'padding 0.42s cubic-bezier(0.16,1,0.3,1), background 0.35s ease, border-color 0.35s ease, box-shadow 0.35s ease',
+      }}
+    >
+      {/* Lime left-edge accent */}
+      <div
+        aria-hidden
+        style={{
+          position: 'absolute',
+          left: 0,
+          top: '18%',
+          bottom: '18%',
+          width: 2,
+          borderRadius: 2,
+          background: 'var(--accent)',
+          boxShadow: '0 0 12px rgba(211,253,81,0.5)',
+          opacity: isActive ? 1 : 0,
+          transition: 'opacity 0.35s ease',
+        }}
       />
 
-      {/* Footer strip */}
-      <motion.rect x="18" y="234" width="524" height="63" fill="#0A0A0A" {...fi(0.95, 0.4)} />
-      <motion.rect x="40" y="251" width="88" height="32" rx="6"
-        fill="rgba(200,255,0,0.07)" stroke="rgba(200,255,0,0.2)" strokeWidth={0.75}
-        {...pi(1.4, 240)}
-      />
-      <motion.circle cx="420" cy="258" r="4" fill="rgba(200,255,0,0.45)" {...fi(1.45, 0.3)} />
-      <motion.rect x="430" y="255" width="40" height="5" rx="2" fill="rgba(240,237,232,0.15)" {...fi(1.48, 0.3)} />
-    </svg>
+      {/* Header row */}
+      <div
+        style={{
+          display: 'flex',
+          alignItems: 'flex-start',
+          justifyContent: 'space-between',
+          gap: '1rem',
+        }}
+      >
+        <div
+          style={{
+            display: 'flex',
+            flexDirection: 'column',
+            gap: '0.28rem',
+            flex: 1,
+            minWidth: 0,
+          }}
+        >
+          <span
+            style={{
+              fontFamily: 'var(--font-ui)',
+              fontSize: '0.62rem',
+              fontWeight: 400,
+              textTransform: 'uppercase',
+              letterSpacing: '0.14em',
+              color: isActive
+                ? 'rgba(211,253,81,0.78)'
+                : 'rgba(255,255,255,0.26)',
+              transition: 'color 0.35s ease',
+            }}
+          >
+            {rail.label}
+          </span>
+
+          <p
+            style={{
+              fontFamily: 'var(--font-display)',
+              fontSize: isActive
+                ? 'clamp(1.05rem, 1.7vw, 1.3rem)'
+                : 'clamp(0.88rem, 1.3vw, 1.05rem)',
+              fontWeight: 400,
+              fontStyle: 'italic',
+              color: isActive ? 'var(--text)' : 'rgba(255,255,255,0.38)',
+              lineHeight: 1.2,
+              letterSpacing: '-0.015em',
+              margin: 0,
+              transition: 'font-size 0.42s ease, color 0.35s ease',
+            }}
+          >
+            {rail.headline}
+          </p>
+        </div>
+
+        <span
+          style={{
+            fontFamily: 'var(--font-display)',
+            fontStyle: 'italic',
+            fontSize: '0.7rem',
+            letterSpacing: '0.02em',
+            lineHeight: 1,
+            paddingTop: '0.1rem',
+            color: isActive
+              ? 'rgba(211,253,81,0.42)'
+              : 'rgba(255,255,255,0.10)',
+            flexShrink: 0,
+            transition: 'color 0.35s ease',
+          }}
+        >
+          0{index + 1}
+        </span>
+      </div>
+
+      {/* Body — CSS grid accordion (no height animation) */}
+      <div
+        style={{
+          display: 'grid',
+          gridTemplateRows: isActive ? '1fr' : '0fr',
+          transition: 'grid-template-rows 0.42s cubic-bezier(0.16,1,0.3,1)',
+        }}
+      >
+        <div style={{ minHeight: 0, overflow: 'hidden' }}>
+          <p
+            style={{
+              fontFamily: 'var(--font-ui)',
+              fontSize: 'clamp(0.82rem, 1.1vw, 0.88rem)',
+              fontWeight: 300,
+              color: 'var(--muted)',
+              lineHeight: 1.72,
+              margin: '0.72rem 0 0',
+              maxWidth: '46ch',
+              opacity: isActive ? 1 : 0,
+              transition: 'opacity 0.28s ease',
+            }}
+          >
+            {rail.body}
+          </p>
+        </div>
+      </div>
+    </motion.div>
   )
 }
 
 // ─── Services section ─────────────────────────────────────────────────────────
+
 export function Services() {
   const headerRef = useRef<HTMLDivElement>(null)
-  const panelRef = useRef<HTMLDivElement>(null)
   const isHeaderInView = useInView(headerRef, { once: true, margin: '-80px' })
-  const isInView = useInView(panelRef, { once: true, margin: '-60px' })
   const shouldReduce = useReducedMotion()
-  const reduce = Boolean(shouldReduce)
+
+  const [activeIndex, setActiveIndex] = useState(0)
+  const [isPaused, setIsPaused] = useState(false)
+  const [timerKey, setTimerKey] = useState(0)
+
+  const handleSelect = (i: number) => {
+    setActiveIndex(i)
+    setTimerKey((k) => k + 1)
+  }
+
+  useEffect(() => {
+    if (isPaused || shouldReduce) return
+    const timer = setInterval(() => {
+      setActiveIndex((prev) => (prev + 1) % rails.length)
+    }, AUTO_MS)
+    return () => clearInterval(timer)
+  }, [isPaused, shouldReduce, timerKey])
 
   return (
     <section
       id="leistungen"
-      style={{ paddingTop: 'clamp(4rem, 8vw, 8rem)', paddingBottom: 'clamp(4rem, 8vw, 8rem)' }}
+      style={{
+        paddingTop: 'clamp(4rem, 8vw, 8rem)',
+        paddingBottom: 'clamp(4rem, 8vw, 8rem)',
+      }}
     >
       <div className="container-site">
 
-        {/* ── Header ───────────────────────────────────────────────────────── */}
+        {/* ── Section header ── */}
         <motion.div
           ref={headerRef}
-          variants={reduce ? undefined : staggerContainer(0.08)}
-          initial={reduce ? undefined : 'hidden'}
-          animate={reduce ? undefined : isHeaderInView ? 'visible' : 'hidden'}
+          variants={shouldReduce ? undefined : staggerContainer(0.08)}
+          initial={shouldReduce ? undefined : 'hidden'}
+          animate={
+            shouldReduce ? undefined : isHeaderInView ? 'visible' : 'hidden'
+          }
           style={{ marginBottom: 'clamp(2rem, 3.5vw, 2.75rem)' }}
         >
-          <motion.div variants={reduce ? undefined : fadeUp} style={{ marginBottom: '0.875rem' }}>
+          <motion.div
+            variants={shouldReduce ? undefined : fadeUp}
+            style={{ marginBottom: '0.875rem' }}
+          >
             <SectionLabel>● Was Sie bekommen</SectionLabel>
           </motion.div>
           <div style={{ overflow: 'hidden' }}>
             <motion.h2
               className="display-section"
-              variants={reduce ? undefined : clipRevealUp}
+              variants={shouldReduce ? undefined : clipRevealUp}
             >
               Webdesign & Entwicklung.
             </motion.h2>
           </div>
         </motion.div>
 
-        {/* ── Main offer panel ─────────────────────────────────────────────── */}
+        {/* ── Main panel ── */}
         <motion.div
-          ref={panelRef}
           className="surface-primary"
-          initial={reduce ? undefined : { opacity: 0, y: 28 }}
-          animate={reduce ? undefined : isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 28 }}
+          initial={shouldReduce ? undefined : { opacity: 0, y: 28 }}
+          whileInView={shouldReduce ? undefined : { opacity: 1, y: 0 }}
+          viewport={{ once: true, margin: '-60px' }}
           transition={{ duration: 0.85, ease: EASE }}
-          style={{ padding: 'clamp(1.5rem, 3vw, 2.5rem)' }}
+          onMouseEnter={() => setIsPaused(true)}
+          onMouseLeave={() => setIsPaused(false)}
+          style={{ padding: 'clamp(1.25rem, 2.5vw, 2rem)' }}
         >
           <div
-            style={{
-              display: 'grid',
-              gap: 'clamp(2rem, 4vw, 3rem)',
-            }}
-            className="services-layout"
+            className="services-rails-layout"
+            style={{ display: 'grid', gap: 'clamp(1.25rem, 3vw, 1.75rem)' }}
           >
 
-            {/* ── Left: intro + modules + CTA ─────────────────────────────── */}
-            <div style={{ display: 'flex', flexDirection: 'column', gap: 'clamp(1.25rem, 2.5vw, 1.75rem)' }}>
+            {/* ── Left: offer rails + CTA ── */}
+            <div
+              style={{
+                display: 'flex',
+                flexDirection: 'column',
+                gap: 'clamp(1.5rem, 2.5vw, 2rem)',
+              }}
+            >
+              <LayoutGroup id="offer-rails">
+                <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
+                  {rails.map((rail, i) => (
+                    <OfferRail
+                      key={rail.id}
+                      rail={rail}
+                      index={i}
+                      isActive={activeIndex === i}
+                      onSelect={handleSelect}
+                      shouldReduce={shouldReduce}
+                    />
+                  ))}
+                </div>
+              </LayoutGroup>
 
-              {/* Intro */}
-              <motion.p
-                initial={reduce ? undefined : { opacity: 0 }}
-                animate={reduce ? undefined : isInView ? { opacity: 1 } : { opacity: 0 }}
-                transition={{ duration: 0.7, ease: EASE, delay: 0.2 }}
-                style={{
-                  fontFamily: 'var(--font-ui)',
-                  fontSize: 'clamp(0.9rem, 1.2vw, 1rem)',
-                  fontWeight: 300,
-                  color: 'var(--text)',
-                  lineHeight: 1.8,
-                  margin: 0,
-                  maxWidth: '52ch',
-                }}
-              >
-                Ein Angebot. Vollständig umgesetzt — von der ersten Idee bis zum fertigen, einsetzbaren Ergebnis.
-              </motion.p>
-
-              {/* Module cards */}
-              <div
-                style={{
-                  display: 'grid',
-                  gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 200px), 1fr))',
-                  gap: '0.75rem',
-                }}
-              >
-                {modules.map((mod, i) => (
-                  <motion.div
-                    key={mod.id}
-                    className="panel-feature"
-                    initial={reduce ? undefined : { opacity: 0, y: 14 }}
-                    animate={reduce ? undefined : isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 14 }}
-                    transition={{ duration: 0.65, ease: EASE, delay: reduce ? 0 : 0.45 + i * 0.1 }}
-                    style={{
-                      padding: 'clamp(1rem, 1.75vw, 1.375rem)',
-                      display: 'flex',
-                      flexDirection: 'column',
-                      gap: '0.625rem',
-                    }}
-                  >
-                    {/* Label pill */}
-                    <span
-                      className="surface-floating"
-                      style={{
-                        display: 'inline-flex',
-                        alignSelf: 'flex-start',
-                        padding: '0.22rem 0.7rem',
-                        fontSize: '0.6rem',
-                        fontFamily: 'var(--font-ui)',
-                        fontWeight: 400,
-                        letterSpacing: '0.13em',
-                        textTransform: 'uppercase',
-                        color: 'var(--accent)',
-                        whiteSpace: 'nowrap',
-                      }}
-                    >
-                      {mod.label}
-                    </span>
-
-                    {/* Headline */}
-                    <p
-                      style={{
-                        fontFamily: 'var(--font-display)',
-                        fontSize: 'clamp(0.9rem, 1.2vw, 1.05rem)',
-                        fontWeight: 400,
-                        fontStyle: 'italic',
-                        color: 'var(--text)',
-                        lineHeight: 1.25,
-                        margin: 0,
-                      }}
-                    >
-                      {mod.headline}
-                    </p>
-
-                    {/* Body */}
-                    <p
-                      style={{
-                        fontFamily: 'var(--font-ui)',
-                        fontSize: '0.78rem',
-                        fontWeight: 300,
-                        color: 'var(--muted)',
-                        lineHeight: 1.65,
-                        margin: 0,
-                      }}
-                    >
-                      {mod.body}
-                    </p>
-                  </motion.div>
-                ))}
-              </div>
-
-              {/* CTA */}
+              {/* CTA — natural conclusion of the rail system */}
               <motion.div
-                initial={reduce ? undefined : { opacity: 0, y: 8 }}
-                animate={reduce ? undefined : isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 8 }}
-                transition={{ duration: 0.6, ease: EASE, delay: reduce ? 0 : 0.78 }}
+                initial={shouldReduce ? undefined : { opacity: 0, y: 8 }}
+                whileInView={shouldReduce ? undefined : { opacity: 1, y: 0 }}
+                viewport={{ once: true, margin: '-40px' }}
+                transition={{ duration: 0.6, ease: EASE, delay: 0.48 }}
               >
                 <a
                   href="#kontakt"
                   className="button-glass-primary"
-                  style={{ textDecoration: 'none' }}
+                  style={{
+                    textDecoration: 'none',
+                    fontFamily: 'var(--font-ui)',
+                    fontSize: '0.78rem',
+                    fontWeight: 500,
+                    textTransform: 'uppercase',
+                    letterSpacing: '0.11em',
+                    color: 'var(--text)',
+                  }}
                 >
                   Projekt anfragen
-                  <svg width="13" height="13" viewBox="0 0 13 13" fill="none" aria-hidden="true" style={{ marginLeft: 4 }}>
-                    <path d="M2.5 6.5h8M8 3.5l3 3-3 3" stroke="currentColor" strokeWidth="1.25" strokeLinecap="round" strokeLinejoin="round" />
+                  <svg
+                    width="13"
+                    height="13"
+                    viewBox="0 0 13 13"
+                    fill="none"
+                    aria-hidden="true"
+                    style={{ marginLeft: 2 }}
+                  >
+                    <path
+                      d="M2.5 6.5h8M8 3.5l3 3-3 3"
+                      stroke="currentColor"
+                      strokeWidth="1.25"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                    />
                   </svg>
                 </a>
               </motion.div>
             </div>
 
-            {/* ── Right: browser frame proof ───────────────────────────────── */}
-            <motion.div
-              className="panel-browser"
-              initial={reduce ? undefined : { opacity: 0, scale: 0.97 }}
-              animate={reduce ? undefined : isInView ? { opacity: 1, scale: 1 } : { opacity: 0, scale: 0.97 }}
-              transition={{ duration: 0.9, ease: EASE, delay: reduce ? 0 : 0.2 }}
-            >
-              {/* Chrome row */}
-              <div className="browser-chrome">
-                <div style={{ display: 'flex', gap: 5, flexShrink: 0 }}>
-                  {['rgba(255,95,87,0.65)', 'rgba(255,189,68,0.65)', 'rgba(40,200,64,0.65)'].map((c, i) => (
-                    <div key={i} style={{ width: 8, height: 8, borderRadius: '50%', background: c }} />
-                  ))}
-                </div>
-                <div
-                  style={{
-                    flex: 1,
-                    height: 22,
-                    borderRadius: 11,
-                    background: 'rgba(255,255,255,0.04)',
-                    border: '1px solid rgba(255,255,255,0.08)',
-                    display: 'flex',
-                    alignItems: 'center',
-                    gap: 6,
-                    paddingLeft: 10,
-                  }}
-                >
-                  <div style={{ width: 6, height: 6, borderRadius: '50%', background: 'rgba(200,255,0,0.4)' }} />
-                  <div style={{ width: 80, height: 5, borderRadius: 3, background: 'rgba(255,255,255,0.16)' }} />
-                </div>
-              </div>
-
-              {/* Proof visual */}
-              <div className="browser-frame-media" style={{ aspectRatio: '16/9' }}>
-                <BrowserProofVisual isVisible={isInView && !reduce} />
-              </div>
-            </motion.div>
+            {/* ── Right: shared proof surface ── */}
+            <ProofSurface activeIndex={activeIndex} shouldReduce={shouldReduce} />
 
           </div>
         </motion.div>
