@@ -222,28 +222,12 @@ export function ProofStrip() {
                       fontWeight: 400,
                       textTransform: 'uppercase' as const,
                       letterSpacing: '0.16em',
-                      color: 'rgba(255,255,255,0.26)',
+                      color: 'rgba(255,255,255,0.44)',
                     }}
                   >
-                    Live
+                    Unser Stack
                   </span>
                 </div>
-
-                {/* Label */}
-                <p
-                  style={{
-                    fontFamily: 'var(--font-display)',
-                    fontStyle: 'normal',
-                    fontSize: '0.88rem',
-                    fontWeight: 400,
-                    color: 'rgba(255,255,255,0.44)',
-                    lineHeight: 1.2,
-                    margin: 0,
-                    whiteSpace: 'nowrap' as const,
-                  }}
-                >
-                  Stack & Infos
-                </p>
               </div>
 
               {/* ── Vertical separator — md+ only ─────────────────── */}
