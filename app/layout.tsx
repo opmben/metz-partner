@@ -1,7 +1,6 @@
 import type { Metadata } from 'next'
 import { Instrument_Serif, DM_Sans } from 'next/font/google'
 import './globals.css'
-import { CustomCursor } from '@/components/shared/CustomCursor'
 import { SmoothScroll } from '@/components/shared/SmoothScroll'
 import { PageLoader } from '@/components/shared/PageLoader'
 import { ScrollProgress } from '@/components/shared/ScrollProgress'
@@ -60,7 +59,6 @@ export default function RootLayout({
           <div style={{ position: 'relative', zIndex: 2 }}>
             <PageLoader />
             <ScrollProgress />
-            <CustomCursor />
             {children}
           </div>
         </SmoothScroll>

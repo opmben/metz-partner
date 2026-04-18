@@ -512,36 +512,6 @@ export function Projects() {
             </div>
           </div>
 
-          {/* Right — Alle Projekte CTA */}
-          <motion.div
-            initial={shouldReduce ? undefined : { opacity: 0, y: 10 }}
-            animate={
-              shouldReduce
-                ? undefined
-                : isHeaderInView
-                ? { opacity: 1, y: 0 }
-                : { opacity: 0, y: 10 }
-            }
-            transition={{
-              duration: 0.7,
-              ease: [0.16, 1, 0.3, 1],
-              delay: 0.24,
-            }}
-            className="md:mb-2"
-          >
-            <Link
-              href="/projekte"
-              className="button-pill-micro"
-              style={{
-                textDecoration: 'none',
-                color: 'var(--muted)',
-                fontFamily: 'var(--font-ui)',
-              }}
-            >
-              Alle Projekte
-              <ArrowUpRight size={13} />
-            </Link>
-          </motion.div>
         </div>
 
         {/* ── Project grid ── */}

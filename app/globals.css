@@ -572,6 +572,17 @@ body::before {
   }
 }
 
+/* ─── StackBar / ProofStrip marquee ─────────────────────────────── */
+@keyframes stackbar-left {
+  from { transform: translateX(0); }
+  to   { transform: translateX(-50%); }
+}
+
+@keyframes stackbar-right {
+  from { transform: translateX(-50%); }
+  to   { transform: translateX(0); }
+}
+
 /* ─── Services layout ────────────────────────────────────────────── */
 .services-layout {
   grid-template-columns: minmax(0, 1fr);

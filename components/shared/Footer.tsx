@@ -319,7 +319,7 @@ export function Footer() {
               margin: 0,
             }}
           >
-            © 2025 Metz &amp; Partner, Koblenz
+            © 2026 Metz &amp; Partner, Koblenz
           </p>
         </div>
       </div>

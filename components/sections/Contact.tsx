@@ -81,7 +81,7 @@ function FormField({
 const inputBase: React.CSSProperties = {
   background: 'var(--surface)',
   border: '1px solid var(--border)',
-  borderRadius: 4,
+  borderRadius: 8,
   color: 'var(--text)',
   fontFamily: 'var(--font-ui)',
   fontSize: '0.95rem',
@@ -446,15 +446,13 @@ export function Contact() {
                     initial={{ opacity: 0, scale: 0.95 }}
                     animate={{ opacity: 1, scale: 1 }}
                     transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
+                    className="surface-primary"
                     style={{
                       padding: '3rem',
-                      border: '1px solid rgba(200,255,0,0.15)',
-                      borderRadius: 4,
                       display: 'flex',
                       flexDirection: 'column',
                       gap: '1.25rem',
                       alignItems: 'flex-start',
-                      background: 'rgba(200,255,0,0.02)',
                       position: 'relative',
                       overflow: 'hidden',
                     }}
@@ -514,14 +512,12 @@ export function Contact() {
                     variants={shouldReduce ? undefined : staggerContainer(0.06)}
                     initial={shouldReduce ? undefined : 'hidden'}
                     animate={shouldReduce ? undefined : isInView ? 'visible' : 'hidden'}
+                    className="surface-primary"
                     style={{
                       display: 'flex',
                       flexDirection: 'column',
                       gap: '1.5rem',
                       padding: '2.5rem',
-                      border: '1px solid var(--border)',
-                      borderRadius: 4,
-                      background: 'var(--surface)',
                       position: 'relative',
                       overflow: 'hidden',
                     }}
