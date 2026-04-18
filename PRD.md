@@ -105,6 +105,17 @@ This is the only public service. Full stop.
 - How Webdesign & Entwicklung is broken down, structured, or presented on the site is a creative decision — Claude has full autonomy here.
 - The entry price point is under €1,000 — do not use language that implies €10,000+ budgets. Signal exceptional quality-to-value ratio instead.
 
+### Homepage Offer Application
+For the homepage, the services / what-you-get section should present **one public offer only**.
+
+Default section framing:
+- `Was Sie bekommen`
+- one focused offer: `Webdesign & Entwicklung`
+- internal module logic: `Design`, `Entwicklung`, `Launch & Übergabe`
+
+The section should clarify and strengthen the offer.
+It should not expand the business into multiple visible public services.
+
 ---
 
 ## 6. Truth Rules
@@ -216,6 +227,11 @@ What matters most is the logic of the sequence:
 - risk reduction
 - conversion
 - clean close
+
+For the homepage offer section specifically:
+- default framing: `Was Sie bekommen`
+- default structure: one dominant offer section, not a multi-service overview
+- default internal logic: `Design`, `Entwicklung`, `Launch & Übergabe`
 
 ---
 

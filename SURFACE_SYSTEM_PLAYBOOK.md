@@ -310,10 +310,13 @@ Use for:
 - what-you-get surfaces
 
 Rules:
+- the homepage services section should default to one dominant offer panel with internal module hierarchy
 - avoid repeated generic feature-grid rhythm
+- avoid repeated equal-weight service cards
 - some asymmetry is good
 - cards should feel curated, not auto-generated
 - text must stay concise
+- proof should be integrated into the same section, not detached into a separate weak add-on
 
 ### `.panel-process`
 Use for:

@@ -149,6 +149,16 @@ Claude may:
 - less explainy
 - less padded
 
+### Homepage offer section rule
+The homepage services section should not be implemented as a multi-service overview.
+
+Default execution:
+- frame it as `Was Sie bekommen`
+- sell one focused public offer
+- use internal modules rather than equal-weight service cards
+
+If the section reads like a feature grid or a multi-service list, the implementation is wrong.
+
 ---
 
 ## 6. Implementation Rules
