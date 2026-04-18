@@ -595,6 +595,18 @@ body::before {
   }
 }
 
+/* ─── Contact layout ─────────────────────────────────────────────── */
+.contact-layout {
+  grid-template-columns: minmax(0, 1fr);
+}
+
+@media (min-width: 768px) {
+  .contact-layout {
+    grid-template-columns: 1fr 1fr;
+    align-items: start;
+  }
+}
+
 @theme inline {
   --animate-accordion-down:          accordion-down 0.2s ease-out;
   --animate-accordion-up:          accordion-up 0.2s ease-out;
