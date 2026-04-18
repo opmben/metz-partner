@@ -465,30 +465,6 @@ export function WhyUs() {
               <em>sprechen Sie mit uns.</em>
             </motion.h2>
           </div>
-
-          <motion.p
-            initial={shouldReduce ? undefined : { opacity: 0, filter: 'blur(8px)' }}
-            animate={
-              shouldReduce
-                ? undefined
-                : isInView
-                ? { opacity: 1, filter: 'blur(0px)' }
-                : { opacity: 0, filter: 'blur(8px)' }
-            }
-            transition={{ duration: 0.85, ease: [0.16, 1, 0.3, 1], delay: 0.22 }}
-            style={{
-              marginTop: '1.35rem',
-              fontFamily: 'var(--font-ui)',
-              fontSize: '0.975rem',
-              fontWeight: 300,
-              color: 'var(--muted)',
-              lineHeight: 1.75,
-              maxWidth: 520,
-            }}
-          >
-            Nicht mit einem Account Manager. Nicht mit einem Junior.
-            Mit den Menschen, die Ihre Website bauen — von der ersten Anfrage bis zum Launch.
-          </motion.p>
         </div>
 
         {/* ── Founder cards ── */}
