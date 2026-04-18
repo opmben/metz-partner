@@ -101,12 +101,8 @@ function FactItem({ text }: { text: string }) {
       />
       <span
         style={{
-          fontFamily: 'var(--font-display)',
-          fontStyle: 'italic',
-          fontSize: '0.73rem',
-          fontWeight: 400,
-          color: 'rgba(255,255,255,0.48)',
-          letterSpacing: '0.01em',
+          fontFamily: 'var(--font-ui)',
+          fontWeight: 300,
         }}
       >
         {text}
@@ -232,11 +228,11 @@ export function ProofStrip() {
                   </span>
                 </div>
 
-                {/* Italic label */}
+                {/* Label */}
                 <p
                   style={{
                     fontFamily: 'var(--font-display)',
-                    fontStyle: 'italic',
+                    fontStyle: 'normal',
                     fontSize: '0.88rem',
                     fontWeight: 400,
                     color: 'rgba(255,255,255,0.44)',
