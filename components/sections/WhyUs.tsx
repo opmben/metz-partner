@@ -8,6 +8,8 @@ import {
   useTransform,
 } from 'framer-motion'
 
+// ─── Content ──────────────────────────────────────────────────────────────────
+
 const founders = [
   {
     initial: 'B',
@@ -17,8 +19,7 @@ const founders = [
     accentColor: 'rgba(211,253,81,0.92)',
     accentBg: 'rgba(211,253,81,0.10)',
     accentBorder: 'rgba(211,253,81,0.24)',
-    glowColor: 'rgba(211,253,81,0.12)',
-    initialFill: 'rgba(211,253,81,0.08)',
+    glowColor: 'rgba(211,253,81,0.10)',
   },
   {
     initial: 'M',
@@ -27,9 +28,8 @@ const founders = [
     bio: 'Hintergrund in Marketing und Finanzen. Zuständig für Strategie, Wirkung und dafür, dass Ihre Website konvertiert.',
     accentColor: 'rgba(211,253,81,0.80)',
     accentBg: 'rgba(211,253,81,0.08)',
-    accentBorder: 'rgba(211,253,81,0.20)',
-    glowColor: 'rgba(211,253,81,0.10)',
-    initialFill: 'rgba(211,253,81,0.07)',
+    accentBorder: 'rgba(211,253,81,0.18)',
+    glowColor: 'rgba(211,253,81,0.08)',
   },
 ]
 
@@ -37,310 +37,396 @@ const differentiators = [
   {
     number: '01',
     title: 'Direkt & persönlich',
-    body: 'Sie haben immer eine direkte Ansprechperson — kein Ticketsystem, kein Wartezimmer, keine Vertretung.',
+    body: 'Kein Ticketsystem. Keine Vertretung. Immer wir.',
   },
   {
     number: '02',
-    title: 'Regional verankert',
-    body: 'Wir kommen aus Koblenz. Wir kennen die Region, die lokalen Branchen und die typischen Anforderungen.',
+    title: 'Regional & verbunden',
+    body: 'Aus Koblenz. Wir kennen den lokalen Markt.',
   },
   {
     number: '03',
-    title: 'Strategie bis Launch',
-    body: 'Wir bauen nach Ihren Wünschen, strukturiert und systematisch. Ihr Input zählt — von Tag eins.',
+    title: 'Konzept bis Launch',
+    body: 'Strategie, Umsetzung und Übergabe — aus einer Hand.',
   },
 ]
+
+// ─── Founder Card ─────────────────────────────────────────────────────────────
 
 function FounderCard({
   founder,
   shouldReduce,
   delay,
+  featured = false,
 }: {
   founder: (typeof founders)[0]
   shouldReduce: boolean | null
   delay: number
+  featured?: boolean
 }) {
   const [hovered, setHovered] = useState(false)
   const ref = useRef<HTMLDivElement>(null)
   const isInView = useInView(ref, { once: true, margin: '-40px' })
 
+  const xStart = featured ? -28 : 28
+
   return (
     <motion.div
       ref={ref}
-      initial={shouldReduce ? undefined : { opacity: 0, y: 32 }}
+      initial={shouldReduce ? undefined : { opacity: 0, x: xStart, filter: 'blur(12px)' }}
       animate={
         shouldReduce
           ? undefined
           : isInView
-          ? { opacity: 1, y: 0 }
-          : { opacity: 0, y: 32 }
+          ? { opacity: 1, x: 0, filter: 'blur(0px)' }
+          : { opacity: 0, x: xStart, filter: 'blur(12px)' }
       }
-      transition={{ duration: 0.85, ease: [0.16, 1, 0.3, 1], delay }}
+      transition={{ duration: 0.95, ease: [0.16, 1, 0.3, 1], delay }}
       style={{ height: '100%' }}
     >
-    <motion.div
-      onHoverStart={() => setHovered(true)}
-      onHoverEnd={() => setHovered(false)}
-      className="surface-primary"
-      animate={{
-        borderColor: hovered
-          ? founder.accentBorder
-          : 'rgba(255,255,255,0.09)',
-        boxShadow: hovered
-          ? `inset 0 1px 0 rgba(255,255,255,0.22), 0 24px 60px rgba(0,0,0,0.40), 0 0 60px ${founder.glowColor}`
-          : 'inset 0 1px 0 rgba(255,255,255,0.12), 0 10px 32px rgba(0,0,0,0.24)',
-      }}
-      transition={{ duration: 0.38, ease: [0.16, 1, 0.3, 1] }}
-      style={{
-        display: 'flex',
-        flexDirection: 'column',
-        overflow: 'hidden',
-        height: '100%',
-      }}
-    >
-      {/* Hover atmosphere bloom */}
       <motion.div
-        aria-hidden
-        animate={{ opacity: hovered && !shouldReduce ? 1 : 0 }}
-        transition={{ duration: 0.4 }}
-        style={{
-          position: 'absolute',
-          inset: 0,
-          background: `radial-gradient(ellipse at 20% 75%, ${founder.glowColor}, transparent 65%)`,
-          pointerEvents: 'none',
-          zIndex: 0,
+        onHoverStart={() => setHovered(true)}
+        onHoverEnd={() => setHovered(false)}
+        className="surface-primary"
+        animate={{
+          borderColor: hovered
+            ? founder.accentBorder
+            : 'rgba(255,255,255,0.082)',
+          boxShadow: hovered
+            ? `inset 0 1px 0 rgba(255,255,255,0.22), 0 28px 64px rgba(0,0,0,0.48), 0 0 80px ${founder.glowColor}`
+            : 'inset 0 1px 0 rgba(255,255,255,0.12), 0 10px 32px rgba(0,0,0,0.24)',
         }}
-      />
-
-      {/* Top accent line */}
-      <motion.div
-        aria-hidden
-        animate={{ opacity: hovered ? 1 : 0.4 }}
-        transition={{ duration: 0.38 }}
+        transition={{ duration: 0.38, ease: [0.16, 1, 0.3, 1] }}
         style={{
-          position: 'absolute',
-          top: 0,
-          left: '15%',
-          right: '15%',
-          height: 1,
-          background: `linear-gradient(90deg, transparent, ${founder.accentColor}, transparent)`,
-          pointerEvents: 'none',
-          zIndex: 2,
-        }}
-      />
-
-      {/* Giant initial — decorative */}
-      <div
-        style={{
-          padding: 'clamp(1.5rem, 3vw, 2.25rem)',
-          paddingBottom: '0.5rem',
           position: 'relative',
-          zIndex: 1,
+          overflow: 'hidden',
+          height: '100%',
           display: 'flex',
-          alignItems: 'flex-start',
-          gap: '1.25rem',
+          flexDirection: 'column',
         }}
       >
-        {/* Initial badge */}
-        <motion.div
+        {/* Ghost initial — large background glyph */}
+        <motion.span
+          aria-hidden
           animate={{
-            background: hovered ? founder.accentBg : 'rgba(255,255,255,0.04)',
-            borderColor: hovered ? founder.accentBorder : 'rgba(255,255,255,0.09)',
+            opacity: hovered && !shouldReduce ? 0.048 : 0.022,
+            scale: hovered && !shouldReduce ? 1.04 : 1,
           }}
-          transition={{ duration: 0.32 }}
+          transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
           style={{
-            width: 52,
-            height: 52,
-            borderRadius: 14,
-            border: '1px solid',
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            flexShrink: 0,
+            position: 'absolute',
+            bottom: '-0.18em',
+            right: '-0.03em',
+            fontFamily: 'var(--font-display)',
+            fontSize: featured
+              ? 'clamp(9rem, 20vw, 18rem)'
+              : 'clamp(7rem, 14vw, 13rem)',
+            fontWeight: 400,
+            fontStyle: 'italic',
+            lineHeight: 1,
+            color: 'rgba(255,255,255,1)',
+            pointerEvents: 'none',
+            userSelect: 'none',
+            zIndex: 0,
+            transformOrigin: 'bottom right',
           }}
         >
-          <motion.span
+          {founder.initial}
+        </motion.span>
+
+        {/* Top accent line */}
+        <motion.div
+          aria-hidden
+          animate={{ opacity: hovered ? 1 : 0.45, scaleX: hovered ? 1 : 0.6 }}
+          transition={{ duration: 0.42, ease: [0.16, 1, 0.3, 1] }}
+          style={{
+            position: 'absolute',
+            top: 0,
+            left: '15%',
+            right: '15%',
+            height: 1,
+            background: `linear-gradient(90deg, transparent, ${founder.accentColor}, transparent)`,
+            pointerEvents: 'none',
+            zIndex: 2,
+            transformOrigin: 'center',
+          }}
+        />
+
+        {/* Hover bloom */}
+        <motion.div
+          aria-hidden
+          animate={{ opacity: hovered && !shouldReduce ? 1 : 0 }}
+          transition={{ duration: 0.5 }}
+          style={{
+            position: 'absolute',
+            bottom: '-30%',
+            left: '-20%',
+            width: '70%',
+            height: '70%',
+            borderRadius: '50%',
+            background: `radial-gradient(circle, ${founder.glowColor}, transparent 70%)`,
+            filter: 'blur(28px)',
+            pointerEvents: 'none',
+            zIndex: 0,
+          }}
+        />
+
+        {/* Content */}
+        <div
+          style={{
+            padding: featured
+              ? 'clamp(2rem, 3.5vw, 2.75rem)'
+              : 'clamp(1.75rem, 3vw, 2.25rem)',
+            display: 'flex',
+            flexDirection: 'column',
+            flex: 1,
+            position: 'relative',
+            zIndex: 1,
+          }}
+        >
+          {/* Initial badge */}
+          <motion.div
             animate={{
-              color: hovered ? founder.accentColor : 'rgba(255,255,255,0.22)',
+              background: hovered
+                ? founder.accentBg
+                : 'rgba(255,255,255,0.04)',
+              borderColor: hovered
+                ? founder.accentBorder
+                : 'rgba(255,255,255,0.08)',
             }}
             transition={{ duration: 0.32 }}
             style={{
-              fontFamily: 'var(--font-display)',
-              fontSize: '1.6rem',
-              fontWeight: 400,
-              fontStyle: 'italic',
-              lineHeight: 1,
+              width: featured ? 54 : 48,
+              height: featured ? 54 : 48,
+              borderRadius: 13,
+              border: '1px solid',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              flexShrink: 0,
+              marginBottom: '1.5rem',
             }}
           >
-            {founder.initial}
-          </motion.span>
-        </motion.div>
+            <motion.span
+              animate={{
+                color: hovered
+                  ? founder.accentColor
+                  : 'rgba(255,255,255,0.22)',
+              }}
+              transition={{ duration: 0.32 }}
+              style={{
+                fontFamily: 'var(--font-display)',
+                fontSize: featured ? '1.65rem' : '1.4rem',
+                fontWeight: 400,
+                fontStyle: 'italic',
+                lineHeight: 1,
+              }}
+            >
+              {founder.initial}
+            </motion.span>
+          </motion.div>
 
-        {/* Role + name */}
-        <div style={{ flex: 1 }}>
+          {/* Role */}
           <p
             style={{
               fontFamily: 'var(--font-ui)',
-              fontSize: '0.65rem',
+              fontSize: '0.62rem',
               fontWeight: 400,
-              textTransform: 'uppercase',
+              textTransform: 'uppercase' as const,
               letterSpacing: '0.15em',
               color: 'var(--muted)',
-              marginBottom: '0.35rem',
+              margin: '0 0 0.4rem',
             }}
           >
             {founder.role}
           </p>
-          <h3
+
+          {/* Name — clip reveal from bottom */}
+          <div style={{ overflow: 'hidden', marginBottom: '1.5rem' }}>
+            <motion.h3
+              initial={shouldReduce ? undefined : { y: '110%' }}
+              animate={
+                shouldReduce
+                  ? undefined
+                  : isInView
+                  ? { y: '0%' }
+                  : { y: '110%' }
+              }
+              transition={{
+                duration: 0.75,
+                ease: [0.16, 1, 0.3, 1],
+                delay: delay + 0.1,
+              }}
+              style={{
+                fontFamily: 'var(--font-display)',
+                fontSize: featured
+                  ? 'clamp(1.5rem, 2.6vw, 2.25rem)'
+                  : 'clamp(1.2rem, 2vw, 1.75rem)',
+                fontWeight: 400,
+                fontStyle: 'italic',
+                color: 'var(--text)',
+                lineHeight: 1.1,
+                letterSpacing: '-0.02em',
+                margin: 0,
+              }}
+            >
+              {founder.name}
+            </motion.h3>
+          </div>
+
+          {/* Divider */}
+          <motion.div
+            initial={shouldReduce ? undefined : { scaleX: 0 }}
+            animate={
+              shouldReduce ? undefined : isInView ? { scaleX: 1 } : { scaleX: 0 }
+            }
+            transition={{
+              duration: 0.7,
+              ease: [0.16, 1, 0.3, 1],
+              delay: delay + 0.22,
+            }}
             style={{
-              fontFamily: 'var(--font-display)',
-              fontSize: 'clamp(1.15rem, 1.8vw, 1.5rem)',
-              fontWeight: 400,
-              fontStyle: 'italic',
-              color: 'var(--text)',
-              lineHeight: 1.1,
-              letterSpacing: '-0.02em',
+              height: 1,
+              background: 'rgba(255,255,255,0.06)',
+              marginBottom: '1.5rem',
+              transformOrigin: 'left',
+            }}
+          />
+
+          {/* Bio */}
+          <motion.p
+            initial={shouldReduce ? undefined : { opacity: 0, y: 12 }}
+            animate={
+              shouldReduce
+                ? undefined
+                : isInView
+                ? { opacity: 1, y: 0 }
+                : { opacity: 0, y: 12 }
+            }
+            transition={{
+              duration: 0.7,
+              ease: [0.16, 1, 0.3, 1],
+              delay: delay + 0.28,
+            }}
+            style={{
+              fontFamily: 'var(--font-ui)',
+              fontSize: featured ? '0.9rem' : '0.875rem',
+              fontWeight: 300,
+              color: 'var(--muted)',
+              lineHeight: 1.8,
               margin: 0,
+              flex: 1,
             }}
           >
-            {founder.name}
-          </h3>
+            {founder.bio}
+          </motion.p>
         </div>
-      </div>
-
-      {/* Divider */}
-      <div
-        style={{
-          height: 1,
-          margin: '0 clamp(1.5rem, 3vw, 2.25rem)',
-          background: 'rgba(255,255,255,0.06)',
-          position: 'relative',
-          zIndex: 1,
-        }}
-      />
-
-      {/* Bio */}
-      <div
-        style={{
-          padding: 'clamp(1.25rem, 2.5vw, 1.75rem) clamp(1.5rem, 3vw, 2.25rem)',
-          flex: 1,
-          position: 'relative',
-          zIndex: 1,
-        }}
-      >
-        <p
-          style={{
-            fontFamily: 'var(--font-ui)',
-            fontSize: '0.875rem',
-            fontWeight: 300,
-            color: 'var(--muted)',
-            lineHeight: 1.8,
-            margin: 0,
-          }}
-        >
-          {founder.bio}
-        </p>
-      </div>
-    </motion.div>
+      </motion.div>
     </motion.div>
   )
 }
 
-function DifferentiatorCard({
-  d,
+// ─── Differentiator Strip ─────────────────────────────────────────────────────
+
+function DifferentiatorStrip({
   shouldReduce,
-  delay,
 }: {
-  d: (typeof differentiators)[0]
   shouldReduce: boolean | null
-  delay: number
 }) {
   const ref = useRef<HTMLDivElement>(null)
   const isInView = useInView(ref, { once: true, margin: '-40px' })
-  const [hovered, setHovered] = useState(false)
 
   return (
     <motion.div
       ref={ref}
-      initial={shouldReduce ? undefined : { opacity: 0, y: 24 }}
+      initial={shouldReduce ? undefined : { opacity: 0, y: 22 }}
       animate={
         shouldReduce
           ? undefined
           : isInView
           ? { opacity: 1, y: 0 }
-          : { opacity: 0, y: 24 }
+          : { opacity: 0, y: 22 }
       }
-      transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1], delay }}
-      style={{ height: '100%' }}
+      transition={{ duration: 0.85, ease: [0.16, 1, 0.3, 1], delay: 0.36 }}
     >
-    <motion.div
-      onHoverStart={() => setHovered(true)}
-      onHoverEnd={() => setHovered(false)}
-      className="surface-secondary"
-      animate={{
-        borderColor: hovered
-          ? 'rgba(255,255,255,0.14)'
-          : 'rgba(255,255,255,0.07)',
-        boxShadow: hovered
-          ? 'inset 0 1px 0 rgba(255,255,255,0.18), 0 16px 44px rgba(0,0,0,0.30)'
-          : 'inset 0 1px 0 rgba(255,255,255,0.10), 0 6px 18px rgba(0,0,0,0.18)',
-        y: hovered && !shouldReduce ? -3 : 0,
-      }}
-      transition={{ duration: 0.32, ease: [0.16, 1, 0.3, 1] }}
-      style={{
-        padding: 'clamp(1.75rem, 3vw, 2.25rem)',
-        display: 'flex',
-        flexDirection: 'column',
-        gap: '1rem',
-        height: '100%',
-      }}
-    >
-      <p
-        style={{
-          fontFamily: 'var(--font-display)',
-          fontSize: '0.75rem',
-          fontWeight: 400,
-          fontStyle: 'italic',
-          letterSpacing: '0.04em',
-          color: 'rgba(211,253,81,0.55)',
-          margin: 0,
-        }}
-      >
-        {d.number}
-      </p>
-      <h4
-        style={{
-          fontFamily: 'var(--font-display)',
-          fontSize: 'clamp(1.1rem, 1.6vw, 1.35rem)',
-          fontWeight: 400,
-          color: 'var(--text)',
-          lineHeight: 1.15,
-          letterSpacing: '-0.01em',
-          margin: 0,
-        }}
-      >
-        {d.title}
-      </h4>
-      <p
-        style={{
-          fontFamily: 'var(--font-ui)',
-          fontSize: '0.875rem',
-          fontWeight: 300,
-          color: 'var(--muted)',
-          lineHeight: 1.8,
-          margin: 0,
-        }}
-      >
-        {d.body}
-      </p>
-    </motion.div>
+      <div className="surface-secondary" style={{ padding: 0 }}>
+        <div className="flex flex-col md:flex-row">
+          {differentiators.map((d, i) => (
+            <motion.div
+              key={d.number}
+              initial={shouldReduce ? undefined : { opacity: 0 }}
+              animate={
+                shouldReduce ? undefined : isInView ? { opacity: 1 } : { opacity: 0 }
+              }
+              transition={{
+                duration: 0.6,
+                ease: [0.16, 1, 0.3, 1],
+                delay: 0.44 + i * 0.08,
+              }}
+              className={
+                i < differentiators.length - 1
+                  ? 'border-b border-white/[0.055] md:border-b-0 md:border-r'
+                  : ''
+              }
+              style={{
+                flex: 1,
+                padding: '1.35rem 1.85rem',
+              }}
+            >
+              {/* Number */}
+              <p
+                style={{
+                  fontFamily: 'var(--font-display)',
+                  fontStyle: 'italic',
+                  fontSize: '0.68rem',
+                  color: 'rgba(211,253,81,0.48)',
+                  margin: '0 0 0.32rem',
+                  letterSpacing: '0.04em',
+                }}
+              >
+                {d.number}
+              </p>
+
+              {/* Title */}
+              <p
+                style={{
+                  fontFamily: 'var(--font-display)',
+                  fontSize: '0.92rem',
+                  fontWeight: 400,
+                  color: 'var(--text)',
+                  margin: '0 0 0.22rem',
+                  lineHeight: 1.2,
+                }}
+              >
+                {d.title}
+              </p>
+
+              {/* Body */}
+              <p
+                style={{
+                  fontFamily: 'var(--font-ui)',
+                  fontSize: '0.775rem',
+                  fontWeight: 300,
+                  color: 'var(--muted)',
+                  margin: 0,
+                  lineHeight: 1.6,
+                }}
+              >
+                {d.body}
+              </p>
+            </motion.div>
+          ))}
+        </div>
+      </div>
     </motion.div>
   )
 }
 
+// ─── WhyUs ────────────────────────────────────────────────────────────────────
+
 export function WhyUs() {
   const sectionRef = useRef(null)
-  const headerRef = useRef(null)
+  const headerRef = useRef<HTMLDivElement>(null)
   const isInView = useInView(headerRef, { once: true, margin: '-80px' })
   const shouldReduce = useReducedMotion()
 
@@ -348,7 +434,7 @@ export function WhyUs() {
     target: sectionRef,
     offset: ['start end', 'end start'],
   })
-  const bgY = useTransform(scrollYProgress, [0, 1], [30, -30])
+  const bgY = useTransform(scrollYProgress, [0, 1], [40, -40])
 
   return (
     <section
@@ -361,37 +447,37 @@ export function WhyUs() {
         overflow: 'hidden',
       }}
     >
-      {/* Atmospheric bloom */}
+      {/* Atmospheric bloom — warm copper right edge */}
       <div
         aria-hidden
         style={{
           position: 'absolute',
-          top: '20%',
+          top: '10%',
           right: '-10%',
           width: '55vw',
           height: '65vw',
           maxWidth: 700,
           maxHeight: 750,
           background:
-            'radial-gradient(ellipse at 65% 40%, rgba(198,124,59,0.07) 0%, rgba(184,134,11,0.04) 40%, transparent 66%)',
+            'radial-gradient(ellipse at 65% 40%, rgba(198,124,59,0.07) 0%, rgba(184,134,11,0.035) 40%, transparent 66%)',
           filter: 'blur(80px)',
           pointerEvents: 'none',
         }}
       />
 
-      {/* Decorative background text */}
+      {/* Parallax ghost background text */}
       <motion.div
         aria-hidden
         style={{
           position: 'absolute',
-          bottom: '8%',
+          bottom: '4%',
           right: '-2%',
           fontFamily: 'var(--font-display)',
-          fontSize: 'clamp(7rem, 16vw, 14rem)',
+          fontSize: 'clamp(7rem, 17vw, 16rem)',
           fontWeight: 400,
           fontStyle: 'italic',
           lineHeight: 1,
-          color: 'rgba(255,255,255,0.018)',
+          color: 'rgba(255,255,255,0.015)',
           pointerEvents: 'none',
           userSelect: 'none',
           y: shouldReduce ? 0 : bgY,
@@ -403,6 +489,7 @@ export function WhyUs() {
       <div className="container-site" style={{ position: 'relative' }}>
         {/* ── Section header ── */}
         <div ref={headerRef} style={{ marginBottom: '3.5rem' }}>
+          {/* Eyebrow pill */}
           <motion.div
             initial={shouldReduce ? undefined : { opacity: 0, y: 10 }}
             animate={
@@ -425,7 +512,7 @@ export function WhyUs() {
                 fontFamily: 'var(--font-ui)',
                 fontSize: '0.65rem',
                 fontWeight: 400,
-                textTransform: 'uppercase',
+                textTransform: 'uppercase' as const,
                 letterSpacing: '0.14em',
                 color: 'rgba(255,255,255,0.45)',
               }}
@@ -444,6 +531,7 @@ export function WhyUs() {
             </span>
           </motion.div>
 
+          {/* Headline */}
           <div style={{ overflow: 'hidden' }}>
             <motion.h2
               className="display-section"
@@ -467,35 +555,26 @@ export function WhyUs() {
           </div>
         </div>
 
-        {/* ── Founder cards ── */}
+        {/* ── Asymmetric founders grid ── */}
         <div
-          className="grid grid-cols-1 md:grid-cols-2"
+          className="grid grid-cols-1 lg:grid-cols-[3fr_2fr]"
           style={{ gap: '1rem', marginBottom: '1rem' }}
         >
-          {founders.map((founder, i) => (
-            <FounderCard
-              key={founder.name}
-              founder={founder}
-              shouldReduce={shouldReduce}
-              delay={0.14 + i * 0.1}
-            />
-          ))}
+          <FounderCard
+            founder={founders[0]}
+            shouldReduce={shouldReduce}
+            delay={0.14}
+            featured
+          />
+          <FounderCard
+            founder={founders[1]}
+            shouldReduce={shouldReduce}
+            delay={0.22}
+          />
         </div>
 
-        {/* ── Differentiators ── */}
-        <div
-          className="grid grid-cols-1 md:grid-cols-3"
-          style={{ gap: '1rem' }}
-        >
-          {differentiators.map((d, i) => (
-            <DifferentiatorCard
-              key={d.number}
-              d={d}
-              shouldReduce={shouldReduce}
-              delay={0.22 + i * 0.08}
-            />
-          ))}
-        </div>
+        {/* ── Compact differentiator strip ── */}
+        <DifferentiatorStrip shouldReduce={shouldReduce} />
       </div>
     </section>
   )
