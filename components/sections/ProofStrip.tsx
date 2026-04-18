@@ -103,6 +103,7 @@ function FactItem({ text }: { text: string }) {
         style={{
           fontFamily: 'var(--font-ui)',
           fontWeight: 300,
+          color: 'rgba(255,255,255,0.48)',
         }}
       >
         {text}
