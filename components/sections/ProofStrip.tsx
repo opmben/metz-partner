@@ -218,7 +218,7 @@ export function ProofStrip() {
                   <span
                     style={{
                       fontFamily: 'var(--font-ui)',
-                      fontSize: '0.565rem',
+                      fontSize: '0.600rem',
                       fontWeight: 400,
                       textTransform: 'uppercase' as const,
                       letterSpacing: '0.16em',
