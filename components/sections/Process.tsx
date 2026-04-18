@@ -1,15 +1,17 @@
 'use client'
-import { useState, useRef } from 'react'
+import { useRef, useState, useEffect } from 'react'
 import {
   motion,
   AnimatePresence,
   useInView,
   useReducedMotion,
+  useScroll,
+  useTransform,
+  useMotionValueEvent,
+  type MotionValue,
 } from 'framer-motion'
 
-// ─────────────────────────────────────────────────────────────────────────────
-// Data
-// ─────────────────────────────────────────────────────────────────────────────
+// ─── Data ─────────────────────────────────────────────────────────────────────
 
 const steps = [
   {
@@ -42,598 +44,454 @@ const steps = [
   },
 ]
 
-// ─────────────────────────────────────────────────────────────────────────────
-// Progress Ring
-// ─────────────────────────────────────────────────────────────────────────────
+// ─── Step Content (animated crossfade per step) ────────────────────────────────
 
-function ProgressRing({
-  activeIndex,
-  total,
-  shouldReduce,
-}: {
-  activeIndex: number
-  total: number
-  shouldReduce: boolean | null
-}) {
-  const r = 44
-  const circumference = 2 * Math.PI * r
-  const progress = (activeIndex + 1) / total
-  const dashOffset = circumference * (1 - progress)
-
-  return (
-    <svg
-      width="104"
-      height="104"
-      viewBox="0 0 104 104"
-      aria-hidden
-      style={{
-        position: 'absolute',
-        top: '1.5rem',
-        right: '1.5rem',
-        pointerEvents: 'none',
-        zIndex: 1,
-        flexShrink: 0,
-      }}
-    >
-      {/* Track */}
-      <circle
-        cx="52" cy="52" r={r}
-        fill="none"
-        stroke="rgba(255,255,255,0.05)"
-        strokeWidth="1"
-      />
-      {/* Progress arc */}
-      <motion.circle
-        cx="52" cy="52" r={r}
-        fill="none"
-        stroke="rgba(211,253,81,0.60)"
-        strokeWidth="1.5"
-        strokeDasharray={circumference}
-        animate={{ strokeDashoffset: shouldReduce ? dashOffset : dashOffset }}
-        initial={{ strokeDashoffset: circumference }}
-        transition={
-          shouldReduce
-            ? { duration: 0 }
-            : { duration: 0.55, ease: [0.16, 1, 0.3, 1] }
-        }
-        strokeLinecap="round"
-        style={{ rotate: '-90deg', transformOrigin: '52px 52px' }}
-      />
-      {/* Fraction label */}
-      <text
-        x="52" y="48"
-        textAnchor="middle"
-        fontFamily="var(--font-ui)"
-        fontSize="10"
-        fill="rgba(255,255,255,0.28)"
-        letterSpacing="0.05em"
-      >
-        {String(activeIndex + 1).padStart(2, '0')}
-      </text>
-      <text
-        x="52" y="62"
-        textAnchor="middle"
-        fontFamily="var(--font-ui)"
-        fontSize="8"
-        fill="rgba(255,255,255,0.14)"
-        letterSpacing="0.05em"
-      >
-        /{total}
-      </text>
-    </svg>
-  )
-}
-
-// ─────────────────────────────────────────────────────────────────────────────
-// Featured Panel
-// ─────────────────────────────────────────────────────────────────────────────
-
-function FeaturedPanel({
+function StepContent({
   step,
-  index,
   direction,
-  onNext,
-  onPrev,
-  onDotClick,
-  total,
   shouldReduce,
 }: {
   step: (typeof steps)[0]
-  index: number
   direction: number
-  onNext: () => void
-  onPrev: () => void
-  onDotClick: (i: number) => void
-  total: number
   shouldReduce: boolean | null
 }) {
-  const contentVariants = {
+  const variants = {
     enter: (d: number) => ({
-      x: shouldReduce ? 0 : d > 0 ? 36 : -36,
+      x: shouldReduce ? 0 : d > 0 ? 44 : -44,
       opacity: 0,
-      filter: shouldReduce ? 'blur(0px)' : 'blur(7px)',
+      filter: shouldReduce ? 'blur(0px)' : 'blur(8px)',
     }),
-    center: {
-      x: 0,
-      opacity: 1,
-      filter: 'blur(0px)',
-    },
+    center: { x: 0, opacity: 1, filter: 'blur(0px)' },
     exit: (d: number) => ({
-      x: shouldReduce ? 0 : d > 0 ? -36 : 36,
+      x: shouldReduce ? 0 : d > 0 ? -44 : 44,
       opacity: 0,
-      filter: shouldReduce ? 'blur(0px)' : 'blur(7px)',
+      filter: shouldReduce ? 'blur(0px)' : 'blur(8px)',
     }),
   }
 
   return (
-    <div
-      className="panel-process"
-      style={{
-        display: 'flex',
-        flexDirection: 'column',
-        minHeight: 360,
-      }}
-    >
-      {/* Progress ring */}
-      <ProgressRing activeIndex={index} total={total} shouldReduce={shouldReduce} />
-
-      {/* Animated step content */}
-      <AnimatePresence mode="wait" custom={direction}>
-        <motion.div
-          key={step.number}
-          custom={direction}
-          variants={contentVariants}
-          initial="enter"
-          animate="center"
-          exit="exit"
-          transition={{ duration: 0.42, ease: [0.16, 1, 0.3, 1] }}
+    <AnimatePresence mode="wait" custom={direction}>
+      <motion.div
+        key={step.number}
+        custom={direction}
+        variants={variants}
+        initial="enter"
+        animate="center"
+        exit="exit"
+        transition={{ duration: 0.44, ease: [0.16, 1, 0.3, 1] }}
+        style={{ display: 'flex', flexDirection: 'column', gap: '1.5rem' }}
+      >
+        <span
+          className="button-pill-micro"
           style={{
-            padding: 'clamp(1.75rem, 3vw, 2.5rem)',
-            paddingRight: 'clamp(2rem, 12vw, 9rem)',
-            display: 'flex',
-            flexDirection: 'column',
-            gap: '1.35rem',
-            flex: 1,
-            position: 'relative',
-            zIndex: 1,
+            display: 'inline-flex',
+            alignSelf: 'flex-start',
+            pointerEvents: 'none',
+            cursor: 'default',
+            fontFamily: 'var(--font-ui)',
           }}
         >
-          {/* Duration badge */}
-          <div>
-            <span
-              className="button-pill-micro"
-              style={{
-                display: 'inline-flex',
-                pointerEvents: 'none',
-                cursor: 'default',
-                fontFamily: 'var(--font-ui)',
-              }}
-            >
-              {step.duration}
-            </span>
-          </div>
+          {step.duration}
+        </span>
 
-          {/* Title block */}
-          <div style={{ display: 'flex', flexDirection: 'column', gap: '0.45rem' }}>
-            <h3
-              style={{
-                fontFamily: 'var(--font-display)',
-                fontSize: 'clamp(1.8rem, 3.2vw, 2.6rem)',
-                fontWeight: 400,
-                fontStyle: 'italic',
-                color: 'var(--text)',
-                lineHeight: 1.08,
-                letterSpacing: '-0.025em',
-                margin: 0,
-              }}
-            >
-              {step.title}
-            </h3>
-            <p
-              style={{
-                fontFamily: 'var(--font-ui)',
-                fontSize: '0.74rem',
-                fontWeight: 300,
-                color: 'rgba(255,255,255,0.32)',
-                letterSpacing: '0.01em',
-                lineHeight: 1.4,
-                margin: 0,
-              }}
-            >
-              {step.meta}
-            </p>
-          </div>
-
-          {/* Divider */}
-          <div style={{ height: 1, background: 'rgba(255,255,255,0.07)', width: '100%' }} />
-
-          {/* Body */}
+        <div>
+          <h3
+            style={{
+              fontFamily: 'var(--font-display)',
+              fontSize: 'clamp(1.9rem, 3.2vw, 3rem)',
+              fontWeight: 400,
+              fontStyle: 'italic',
+              color: 'var(--text)',
+              lineHeight: 1.06,
+              letterSpacing: '-0.025em',
+              margin: '0 0 0.5rem',
+            }}
+          >
+            {step.title}
+          </h3>
           <p
             style={{
               fontFamily: 'var(--font-ui)',
-              fontSize: '0.9rem',
+              fontSize: '0.74rem',
               fontWeight: 300,
-              color: 'var(--muted)',
-              lineHeight: 1.8,
-              maxWidth: 400,
+              color: 'rgba(255,255,255,0.30)',
+              letterSpacing: '0.01em',
+              lineHeight: 1.4,
               margin: 0,
             }}
           >
-            {step.body}
+            {step.meta}
           </p>
-        </motion.div>
-      </AnimatePresence>
+        </div>
 
-      {/* Bottom bar — progress dots + nav arrows */}
+        <div style={{ height: 1, background: 'rgba(255,255,255,0.07)' }} />
+
+        <p
+          style={{
+            fontFamily: 'var(--font-ui)',
+            fontSize: '0.9rem',
+            fontWeight: 300,
+            color: 'var(--muted)',
+            lineHeight: 1.85,
+            maxWidth: 440,
+            margin: 0,
+          }}
+        >
+          {step.body}
+        </p>
+      </motion.div>
+    </AnimatePresence>
+  )
+}
+
+// ─── Timeline Nav ──────────────────────────────────────────────────────────────
+
+const ITEM_H = 80
+const DOT_Y = 22
+
+function TimelineNav({
+  activeIndex,
+  scrollProgress,
+  shouldReduce,
+}: {
+  activeIndex: number
+  scrollProgress: MotionValue<number>
+  shouldReduce: boolean | null
+}) {
+  const firstDotTop = DOT_Y
+  const lastDotTop = (steps.length - 1) * ITEM_H + DOT_Y
+  const lineableH = lastDotTop - firstDotTop
+
+  const fillH = useTransform(scrollProgress, [0, 1], [0, lineableH])
+
+  return (
+    <div style={{ position: 'relative', paddingLeft: 30 }}>
+      {/* Base line */}
       <div
         style={{
-          padding: '1rem 1.75rem 1.5rem',
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'space-between',
-          borderTop: '1px solid rgba(255,255,255,0.065)',
-          marginTop: 'auto',
-          position: 'relative',
-          zIndex: 1,
+          position: 'absolute',
+          left: 6,
+          top: firstDotTop,
+          width: 1,
+          height: lineableH,
+          background: 'rgba(255,255,255,0.08)',
         }}
-      >
-        {/* Step dots */}
-        <div style={{ display: 'flex', gap: '0.4rem', alignItems: 'center' }}>
-          {steps.map((_, i) => (
-            <motion.button
-              key={i}
-              onClick={() => onDotClick(i)}
-              animate={{
-                width: i === index ? 22 : 6,
-                background:
-                  i === index
-                    ? 'rgba(211,253,81,0.80)'
-                    : 'rgba(255,255,255,0.16)',
-              }}
-              transition={{ duration: 0.3, ease: [0.16, 1, 0.3, 1] }}
-              whileHover={shouldReduce ? undefined : { opacity: 0.9 }}
-              style={{
-                height: 3,
-                borderRadius: 99,
-                border: 'none',
-                cursor: 'pointer',
-                padding: 0,
-                flexShrink: 0,
-              }}
-              aria-label={`Schritt ${i + 1}`}
-            />
-          ))}
-        </div>
+      />
 
-        {/* Nav arrows */}
-        <div style={{ display: 'flex', gap: '0.45rem' }}>
-          {(['prev', 'next'] as const).map((dir) => {
-            const isPrev = dir === 'prev'
-            const disabled = isPrev ? index === 0 : index === total - 1
-            return (
-              <motion.button
-                key={dir}
-                onClick={isPrev ? onPrev : onNext}
-                disabled={disabled}
-                whileHover={!shouldReduce && !disabled ? { scale: 1.08, borderColor: 'rgba(255,255,255,0.20)' } : undefined}
-                whileTap={!shouldReduce && !disabled ? { scale: 0.94 } : undefined}
-                transition={{ duration: 0.2 }}
-                style={{
-                  width: 32,
-                  height: 32,
-                  borderRadius: '50%',
-                  border: '1px solid rgba(255,255,255,0.10)',
-                  background: 'rgba(255,255,255,0.04)',
-                  backdropFilter: 'blur(8px)',
-                  WebkitBackdropFilter: 'blur(8px)',
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  cursor: disabled ? 'default' : 'pointer',
-                  opacity: disabled ? 0.28 : 1,
-                  color: 'rgba(255,255,255,0.75)',
-                  transition: 'opacity 0.2s',
-                  flexShrink: 0,
+      {/* Lime progress fill */}
+      <motion.div
+        style={{
+          position: 'absolute',
+          left: 6,
+          top: firstDotTop,
+          width: 1,
+          height: fillH,
+          background:
+            'linear-gradient(to bottom, rgba(211,253,81,0.72), rgba(211,253,81,0.38))',
+        }}
+      />
+
+      {steps.map((step, i) => {
+        const isActive = i === activeIndex
+        const isPast = i < activeIndex
+        return (
+          <div
+            key={i}
+            style={{
+              height: ITEM_H,
+              display: 'flex',
+              alignItems: 'flex-start',
+              paddingTop: DOT_Y - 6,
+              gap: '1rem',
+              position: 'relative',
+            }}
+          >
+            {/* Dot */}
+            <motion.div
+              animate={{
+                background: isActive
+                  ? 'rgba(211,253,81,0.92)'
+                  : isPast
+                  ? 'rgba(211,253,81,0.36)'
+                  : 'rgba(255,255,255,0.14)',
+                boxShadow: isActive
+                  ? '0 0 14px rgba(211,253,81,0.60), 0 0 4px rgba(211,253,81,0.90)'
+                  : 'none',
+                scale: isActive ? 1.28 : 1,
+              }}
+              transition={{ duration: 0.38, ease: [0.16, 1, 0.3, 1] }}
+              style={{
+                width: 13,
+                height: 13,
+                borderRadius: '50%',
+                flexShrink: 0,
+                position: 'relative',
+                zIndex: 1,
+              }}
+            />
+
+            {/* Label */}
+            <div>
+              <motion.p
+                animate={{
+                  color: isActive
+                    ? 'rgba(255,255,255,0.90)'
+                    : 'rgba(255,255,255,0.28)',
                 }}
-                aria-label={isPrev ? 'Vorheriger Schritt' : 'Nächster Schritt'}
+                transition={{ duration: 0.32 }}
+                style={{
+                  fontFamily: 'var(--font-ui)',
+                  fontSize: '0.82rem',
+                  fontWeight: isActive ? 400 : 300,
+                  margin: '0 0 0.18rem',
+                  lineHeight: 1.2,
+                }}
               >
-                <svg width="11" height="11" viewBox="0 0 11 11" fill="none">
-                  {isPrev
-                    ? <path d="M7 1.5L3.5 5.5l3.5 4" stroke="currentColor" strokeWidth="1.25" strokeLinecap="round" strokeLinejoin="round" />
-                    : <path d="M4 1.5l3.5 4L4 9.5" stroke="currentColor" strokeWidth="1.25" strokeLinecap="round" strokeLinejoin="round" />
-                  }
-                </svg>
-              </motion.button>
-            )
-          })}
-        </div>
-      </div>
+                {step.title}
+              </motion.p>
+              <motion.p
+                animate={{
+                  color: isActive
+                    ? 'rgba(255,255,255,0.36)'
+                    : 'rgba(255,255,255,0.15)',
+                }}
+                transition={{ duration: 0.32 }}
+                style={{
+                  fontFamily: 'var(--font-ui)',
+                  fontSize: '0.65rem',
+                  fontWeight: 300,
+                  margin: 0,
+                  letterSpacing: '0.01em',
+                }}
+              >
+                {step.duration}
+              </motion.p>
+            </div>
+          </div>
+        )
+      })}
     </div>
   )
 }
 
-// ─────────────────────────────────────────────────────────────────────────────
-// Step Selector Card
-// ─────────────────────────────────────────────────────────────────────────────
+// ─── Mobile Step Card ──────────────────────────────────────────────────────────
 
-function StepSelectorCard({
+function MobileStepCard({
   step,
   index,
-  isActive,
-  onSelect,
   shouldReduce,
-  entryDelay,
 }: {
   step: (typeof steps)[0]
   index: number
-  isActive: boolean
-  onSelect: () => void
   shouldReduce: boolean | null
-  entryDelay: number
 }) {
-  const [hovered, setHovered] = useState(false)
-  const ref = useRef<HTMLButtonElement>(null)
+  const ref = useRef<HTMLDivElement>(null)
   const isInView = useInView(ref, { once: true, margin: '-40px' })
 
   return (
-    <motion.button
+    <motion.div
       ref={ref}
-      onClick={onSelect}
-      onHoverStart={() => setHovered(true)}
-      onHoverEnd={() => setHovered(false)}
-      initial={shouldReduce ? undefined : { opacity: 0, x: 28 }}
+      initial={shouldReduce ? undefined : { opacity: 0, y: 28 }}
       animate={
         shouldReduce
           ? undefined
           : isInView
-          ? { opacity: 1, x: 0 }
-          : { opacity: 0, x: 28 }
+          ? { opacity: 1, y: 0 }
+          : { opacity: 0, y: 28 }
       }
       transition={{
-        duration: 0.75,
+        duration: 0.85,
         ease: [0.16, 1, 0.3, 1],
-        delay: entryDelay,
+        delay: index * 0.06,
       }}
-      style={{
-        width: '100%',
-        textAlign: 'left',
-        cursor: 'pointer',
-        padding: 0,
-        background: 'transparent',
-        border: 'none',
-        display: 'block',
-        borderRadius: 20,
-      }}
-      aria-label={`Schritt ${index + 1}: ${step.title}`}
-      aria-pressed={isActive}
     >
-      {/* Glass card */}
-      <motion.div
-        animate={{
-          borderColor: isActive
-            ? 'rgba(255,255,255,0.17)'
-            : hovered
-            ? 'rgba(255,255,255,0.12)'
-            : 'rgba(255,255,255,0.07)',
-          boxShadow: isActive
-            ? 'inset 0 1px 0 rgba(255,255,255,0.22), 0 12px 36px rgba(0,0,0,0.30), 0 0 42px rgba(211,253,81,0.07)'
-            : hovered
-            ? 'inset 0 1px 0 rgba(255,255,255,0.14), 0 8px 24px rgba(0,0,0,0.22)'
-            : 'inset 0 1px 0 rgba(255,255,255,0.09), 0 4px 14px rgba(0,0,0,0.16)',
-          y: isActive ? 0 : hovered && !shouldReduce ? -2 : 0,
-        }}
-        transition={{ duration: 0.32, ease: [0.16, 1, 0.3, 1] }}
+      <div className="panel-process" style={{ padding: 'clamp(1.5rem, 4vw, 2rem)' }}>
+        <div
+          style={{
+            display: 'flex',
+            justifyContent: 'space-between',
+            alignItems: 'flex-start',
+            marginBottom: '1.1rem',
+          }}
+        >
+          <span
+            className="button-pill-micro"
+            style={{
+              display: 'inline-flex',
+              pointerEvents: 'none',
+              cursor: 'default',
+              fontFamily: 'var(--font-ui)',
+            }}
+          >
+            {step.duration}
+          </span>
+          <span
+            style={{
+              fontFamily: 'var(--font-display)',
+              fontStyle: 'italic',
+              fontSize: '0.8rem',
+              color: 'rgba(211,253,81,0.50)',
+            }}
+          >
+            {step.number}
+          </span>
+        </div>
+
+        <h3
+          style={{
+            fontFamily: 'var(--font-display)',
+            fontSize: 'clamp(1.4rem, 5vw, 1.9rem)',
+            fontWeight: 400,
+            fontStyle: 'italic',
+            color: 'var(--text)',
+            lineHeight: 1.1,
+            letterSpacing: '-0.02em',
+            margin: '0 0 0.5rem',
+          }}
+        >
+          {step.title}
+        </h3>
+        <p
+          style={{
+            fontFamily: 'var(--font-ui)',
+            fontSize: '0.74rem',
+            fontWeight: 300,
+            color: 'rgba(255,255,255,0.30)',
+            letterSpacing: '0.01em',
+            margin: '0 0 1rem',
+          }}
+        >
+          {step.meta}
+        </p>
+        <div
+          style={{
+            height: 1,
+            background: 'rgba(255,255,255,0.07)',
+            marginBottom: '1rem',
+          }}
+        />
+        <p
+          style={{
+            fontFamily: 'var(--font-ui)',
+            fontSize: '0.875rem',
+            fontWeight: 300,
+            color: 'var(--muted)',
+            lineHeight: 1.8,
+            margin: 0,
+          }}
+        >
+          {step.body}
+        </p>
+      </div>
+    </motion.div>
+  )
+}
+
+// ─── Desktop Sticky Process ────────────────────────────────────────────────────
+
+function DesktopProcess({ shouldReduce }: { shouldReduce: boolean | null }) {
+  const outerRef = useRef<HTMLDivElement>(null)
+  const [activeIndex, setActiveIndex] = useState(0)
+  const [direction, setDirection] = useState(1)
+  const activeIndexRef = useRef(0)
+
+  const { scrollYProgress } = useScroll({
+    target: outerRef,
+    offset: ['start start', 'end end'],
+  })
+
+  useMotionValueEvent(scrollYProgress, 'change', (v) => {
+    const idx =
+      v >= 0.99
+        ? steps.length - 1
+        : Math.min(steps.length - 1, Math.floor(v * steps.length))
+    if (idx !== activeIndexRef.current) {
+      setDirection(idx > activeIndexRef.current ? 1 : -1)
+      activeIndexRef.current = idx
+      setActiveIndex(idx)
+    }
+  })
+
+  return (
+    /* Outer: tall scrollable container — provides the scroll room */
+    <div ref={outerRef} style={{ height: '400vh', position: 'relative' }}>
+      {/* Inner: pinned viewport — stays fixed while outer scrolls */}
+      <div
         style={{
-          position: 'relative',
+          position: 'sticky',
+          top: 0,
+          height: '100vh',
           overflow: 'hidden',
-          borderRadius: 20,
-          border: '1px solid rgba(255,255,255,0.10)',
-          backdropFilter: 'blur(18px)',
-          WebkitBackdropFilter: 'blur(18px)',
-          background: isActive
-            ? 'linear-gradient(180deg, rgba(255,255,255,0.052), rgba(255,255,255,0.024)), rgba(6,6,6,0.50)'
-            : 'linear-gradient(180deg, rgba(255,255,255,0.030), rgba(255,255,255,0.013)), rgba(6,6,6,0.40)',
-          padding: '1rem 1.25rem',
           display: 'flex',
-          alignItems: 'center',
-          gap: '0.9rem',
+          flexDirection: 'column',
+          justifyContent: 'center',
         }}
       >
-        {/* Top-edge highlight */}
+        {/* Atmospheric bloom */}
         <div
           aria-hidden
           style={{
             position: 'absolute',
-            top: 0,
-            left: '15%',
-            right: '15%',
-            height: 1,
-            background: isActive
-              ? 'linear-gradient(90deg, transparent, rgba(255,255,255,0.22), transparent)'
-              : 'linear-gradient(90deg, transparent, rgba(255,255,255,0.10), transparent)',
-            pointerEvents: 'none',
-            zIndex: 2,
-          }}
-        />
-
-        {/* Active left accent */}
-        <motion.div
-          animate={{
-            scaleY: isActive ? 1 : 0,
-            opacity: isActive ? 1 : 0,
-          }}
-          transition={{ duration: 0.3, ease: [0.16, 1, 0.3, 1] }}
-          style={{
-            position: 'absolute',
-            left: 0,
-            top: '20%',
-            bottom: '20%',
-            width: 2,
+            top: '5%',
+            left: '-8%',
+            width: '55vw',
+            height: '70vw',
+            maxWidth: 700,
+            maxHeight: 800,
             background:
-              'linear-gradient(180deg, rgba(211,253,81,0.90), rgba(211,253,81,0.60))',
-            borderRadius: 2,
-            transformOrigin: 'center',
+              'radial-gradient(ellipse at 35% 45%, rgba(184,134,11,0.08) 0%, rgba(212,131,10,0.04) 40%, transparent 65%)',
+            filter: 'blur(80px)',
+            pointerEvents: 'none',
           }}
         />
 
-        {/* Step number badge */}
-        <motion.div
-          animate={{
-            background: isActive
-              ? 'rgba(211,253,81,0.12)'
-              : 'rgba(255,255,255,0.04)',
-            borderColor: isActive
-              ? 'rgba(211,253,81,0.28)'
-              : 'rgba(255,255,255,0.08)',
-            color: isActive
-              ? 'rgba(211,253,81,0.92)'
-              : 'rgba(255,255,255,0.28)',
-          }}
-          transition={{ duration: 0.3 }}
-          style={{
-            width: 38,
-            height: 38,
-            borderRadius: 10,
-            border: '1px solid',
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            flexShrink: 0,
-            fontFamily: 'var(--font-display)',
-            fontSize: '1rem',
-            fontStyle: 'italic',
-            fontWeight: 400,
-            position: 'relative',
-            zIndex: 1,
-          }}
-        >
-          {step.number}
-        </motion.div>
-
-        {/* Title + duration */}
-        <div style={{ flex: 1, minWidth: 0, position: 'relative', zIndex: 1 }}>
-          <motion.p
-            animate={{
-              color: isActive ? 'var(--text)' : 'rgba(255,255,255,0.52)',
-              x: isActive && !shouldReduce ? 1 : 0,
-            }}
-            transition={{ duration: 0.28 }}
-            style={{
-              fontFamily: 'var(--font-ui)',
-              fontSize: '0.84rem',
-              fontWeight: 400,
-              lineHeight: 1.3,
-              marginBottom: '0.22rem',
-              whiteSpace: 'nowrap',
-              overflow: 'hidden',
-              textOverflow: 'ellipsis',
-            }}
-          >
-            {step.title}
-          </motion.p>
-          <p
-            style={{
-              fontFamily: 'var(--font-ui)',
-              fontSize: '0.65rem',
-              fontWeight: 300,
-              color: 'rgba(255,255,255,0.25)',
-              letterSpacing: '0.01em',
-              lineHeight: 1,
-              margin: 0,
-            }}
-          >
-            {step.duration}
-          </p>
-        </div>
-
-        {/* Active indicator arrow */}
-        <motion.div
-          animate={{
-            opacity: isActive ? 0.6 : 0,
-            x: isActive ? 0 : -6,
-          }}
-          transition={{ duration: 0.28 }}
-          style={{
-            color: 'rgba(211,253,81,0.80)',
-            flexShrink: 0,
-            position: 'relative',
-            zIndex: 1,
-          }}
-        >
-          <svg width="12" height="12" viewBox="0 0 12 12" fill="none">
-            <path d="M4 2.5l4 3.5-4 3.5" stroke="currentColor" strokeWidth="1.3" strokeLinecap="round" strokeLinejoin="round" />
-          </svg>
-        </motion.div>
-      </motion.div>
-    </motion.button>
-  )
-}
-
-// ─────────────────────────────────────────────────────────────────────────────
-// Process Section
-// ─────────────────────────────────────────────────────────────────────────────
-
-export function Process() {
-  const [activeIndex, setActiveIndex] = useState(0)
-  const [direction, setDirection] = useState(1)
-  const sectionRef = useRef(null)
-  const isInView = useInView(sectionRef, { once: true, margin: '-80px' })
-  const shouldReduce = useReducedMotion()
-
-  const navigate = (index: number) => {
-    if (index === activeIndex) return
-    setDirection(index > activeIndex ? 1 : -1)
-    setActiveIndex(index)
-  }
-
-  const goNext = () => { if (activeIndex < steps.length - 1) navigate(activeIndex + 1) }
-  const goPrev = () => { if (activeIndex > 0) navigate(activeIndex - 1) }
-
-  return (
-    <section
-      ref={sectionRef}
-      id="prozess"
-      style={{
-        paddingTop: '8rem',
-        paddingBottom: '8rem',
-        position: 'relative',
-        overflow: 'hidden',
-      }}
-    >
-      {/* Atmospheric bloom — left side, warm */}
-      <div
-        aria-hidden
-        style={{
-          position: 'absolute',
-          top: '15%',
-          left: '-8%',
-          width: '55vw',
-          height: '70vw',
-          maxWidth: 700,
-          maxHeight: 800,
-          background:
-            'radial-gradient(ellipse at 35% 45%, rgba(184,134,11,0.08) 0%, rgba(212,131,10,0.04) 40%, transparent 65%)',
-          filter: 'blur(80px)',
-          pointerEvents: 'none',
-        }}
-      />
-
-      <div className="container-site" style={{ position: 'relative' }}>
-
-        {/* ── Section header ── */}
-        <div style={{ marginBottom: '3.5rem' }}>
-          <motion.div
-            initial={shouldReduce ? undefined : { opacity: 0, y: 10 }}
+        {/* Kinetic background step number */}
+        <AnimatePresence mode="wait">
+          <motion.span
+            key={activeIndex}
+            aria-hidden
+            initial={
+              shouldReduce
+                ? undefined
+                : { opacity: 0, y: '12%', filter: 'blur(24px)' }
+            }
             animate={
               shouldReduce
                 ? undefined
-                : isInView
-                ? { opacity: 1, y: 0 }
-                : { opacity: 0, y: 10 }
+                : { opacity: 1, y: '0%', filter: 'blur(0px)' }
             }
-            transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
-            style={{ marginBottom: '1.1rem', display: 'inline-block' }}
+            exit={
+              shouldReduce
+                ? undefined
+                : { opacity: 0, y: '-12%', filter: 'blur(24px)' }
+            }
+            transition={{ duration: 0.62, ease: [0.16, 1, 0.3, 1] }}
+            style={{
+              position: 'absolute',
+              bottom: '-0.1em',
+              left: '-0.04em',
+              fontFamily: 'var(--font-display)',
+              fontSize: 'clamp(14rem, 30vw, 26rem)',
+              fontWeight: 400,
+              fontStyle: 'italic',
+              lineHeight: 1,
+              color: 'rgba(255,255,255,0.016)',
+              pointerEvents: 'none',
+              userSelect: 'none',
+              zIndex: 0,
+            }}
           >
+            {steps[activeIndex].number}
+          </motion.span>
+        </AnimatePresence>
+
+        {/* Page content */}
+        <div
+          className="container-site"
+          style={{ position: 'relative', zIndex: 1, width: '100%' }}
+        >
+          {/* Section header — compact inside sticky */}
+          <div style={{ marginBottom: '2.5rem' }}>
             <span
               className="surface-floating"
               style={{
@@ -644,9 +502,10 @@ export function Process() {
                 fontFamily: 'var(--font-ui)',
                 fontSize: '0.65rem',
                 fontWeight: 400,
-                textTransform: 'uppercase',
+                textTransform: 'uppercase' as const,
                 letterSpacing: '0.14em',
                 color: 'rgba(255,255,255,0.45)',
+                marginBottom: '0.85rem',
               }}
             >
               <span
@@ -661,80 +520,198 @@ export function Process() {
               />
               Der Ablauf
             </span>
-          </motion.div>
-
-          <div style={{ overflow: 'hidden' }}>
-            <motion.h2
-              className="display-section"
-              initial={shouldReduce ? undefined : { y: '108%' }}
-              animate={
-                shouldReduce
-                  ? undefined
-                  : isInView
-                  ? { y: '0%' }
-                  : { y: '108%' }
-              }
-              transition={{
-                duration: 0.95,
-                ease: [0.16, 1, 0.3, 1],
-                delay: 0.07,
+            <h2
+              style={{
+                fontFamily: 'var(--font-display)',
+                fontSize: 'clamp(1.75rem, 2.8vw, 3.25rem)',
+                fontWeight: 400,
+                fontStyle: 'italic',
+                color: 'var(--text)',
+                lineHeight: 1.1,
+                letterSpacing: '-0.02em',
+                margin: 0,
               }}
             >
               Kein Rätselraten. Kein Warten.
-            </motion.h2>
+            </h2>
+          </div>
+
+          {/* Step panel + timeline grid */}
+          <div
+            className="grid grid-cols-[3fr_2fr]"
+            style={{ gap: '2.5rem', alignItems: 'start' }}
+          >
+            {/* Featured step panel */}
+            <div
+              className="panel-process"
+              style={{ padding: 'clamp(2rem, 3.2vw, 2.75rem)' }}
+            >
+              <StepContent
+                step={steps[activeIndex]}
+                direction={direction}
+                shouldReduce={shouldReduce}
+              />
+            </div>
+
+            {/* Scroll-driven timeline navigation */}
+            <TimelineNav
+              activeIndex={activeIndex}
+              scrollProgress={scrollYProgress}
+              shouldReduce={shouldReduce}
+            />
           </div>
         </div>
 
-        {/* ── Interactive step viewer ── */}
-        <div
-          className="grid grid-cols-1 lg:grid-cols-[3fr_2fr]"
-          style={{ gap: '1rem', alignItems: 'stretch' }}
+        {/* Scroll affordance hint — fades away after first step */}
+        <motion.div
+          animate={{
+            opacity: activeIndex === 0 && !shouldReduce ? 0.55 : 0,
+          }}
+          transition={{ duration: 0.5 }}
+          style={{
+            position: 'absolute',
+            bottom: '2.25rem',
+            right: '3rem',
+            display: 'flex',
+            alignItems: 'center',
+            gap: '0.45rem',
+            pointerEvents: 'none',
+          }}
         >
-          {/* Featured panel */}
-          <motion.div
-            initial={shouldReduce ? undefined : { opacity: 0, y: 44 }}
-            animate={
-              shouldReduce
-                ? undefined
-                : isInView
-                ? { opacity: 1, y: 0 }
-                : { opacity: 0, y: 44 }
-            }
-            transition={{ duration: 1.0, ease: [0.16, 1, 0.3, 1], delay: 0.14 }}
-            style={{ display: 'flex', flexDirection: 'column' }}
+          <p
+            style={{
+              fontFamily: 'var(--font-ui)',
+              fontSize: '0.58rem',
+              fontWeight: 300,
+              color: 'rgba(255,255,255,0.45)',
+              textTransform: 'uppercase' as const,
+              letterSpacing: '0.14em',
+              margin: 0,
+            }}
           >
-            <FeaturedPanel
-              step={steps[activeIndex]}
-              index={activeIndex}
-              direction={direction}
-              onNext={goNext}
-              onPrev={goPrev}
-              onDotClick={navigate}
-              total={steps.length}
-              shouldReduce={shouldReduce}
+            Scrollen
+          </p>
+          <motion.svg
+            animate={shouldReduce ? undefined : { y: [0, 4, 0] }}
+            transition={{ duration: 1.7, repeat: Infinity, ease: 'easeInOut' }}
+            width="12"
+            height="16"
+            viewBox="0 0 12 16"
+            fill="none"
+          >
+            <path
+              d="M6 2v9M3 8l3 4 3-4"
+              stroke="rgba(255,255,255,0.38)"
+              strokeWidth="1.2"
+              strokeLinecap="round"
+              strokeLinejoin="round"
             />
-          </motion.div>
+          </motion.svg>
+        </motion.div>
+      </div>
+    </div>
+  )
+}
 
-          {/* Step selectors */}
-          <div
-            className="grid grid-cols-2 lg:grid-cols-1"
-            style={{ gap: '0.75rem', alignContent: 'start' }}
-          >
+// ─── Process ──────────────────────────────────────────────────────────────────
+
+export function Process() {
+  const shouldReduce = useReducedMotion()
+  const [isDesktop, setIsDesktop] = useState(false)
+
+  useEffect(() => {
+    const mq = window.matchMedia('(min-width: 1024px)')
+    setIsDesktop(mq.matches)
+    const handler = (e: MediaQueryListEvent) => setIsDesktop(e.matches)
+    mq.addEventListener('change', handler)
+    return () => mq.removeEventListener('change', handler)
+  }, [])
+
+  // Reduced motion or mobile: simple stacked card layout
+  if (!isDesktop || shouldReduce) {
+    return (
+      <section
+        id="prozess"
+        style={{
+          paddingTop: '8rem',
+          paddingBottom: '8rem',
+          position: 'relative',
+          overflow: 'hidden',
+        }}
+      >
+        <div
+          aria-hidden
+          style={{
+            position: 'absolute',
+            top: '15%',
+            left: '-8%',
+            width: '55vw',
+            height: '70vw',
+            maxWidth: 700,
+            maxHeight: 800,
+            background:
+              'radial-gradient(ellipse at 35% 45%, rgba(184,134,11,0.08) 0%, rgba(212,131,10,0.04) 40%, transparent 65%)',
+            filter: 'blur(80px)',
+            pointerEvents: 'none',
+          }}
+        />
+
+        <div className="container-site" style={{ position: 'relative' }}>
+          {/* Header */}
+          <div style={{ marginBottom: '3.5rem' }}>
+            <span
+              className="surface-floating"
+              style={{
+                display: 'inline-flex',
+                alignItems: 'center',
+                gap: '0.5rem',
+                padding: '0.35rem 0.9rem',
+                fontFamily: 'var(--font-ui)',
+                fontSize: '0.65rem',
+                fontWeight: 400,
+                textTransform: 'uppercase' as const,
+                letterSpacing: '0.14em',
+                color: 'rgba(255,255,255,0.45)',
+                marginBottom: '1.1rem',
+              }}
+            >
+              <span
+                style={{
+                  width: 5,
+                  height: 5,
+                  borderRadius: '50%',
+                  background: 'var(--accent)',
+                  boxShadow: '0 0 8px rgba(211,253,81,0.55)',
+                  flexShrink: 0,
+                }}
+              />
+              Der Ablauf
+            </span>
+            <h2 className="display-section">
+              Kein Rätselraten. Kein Warten.
+            </h2>
+          </div>
+
+          {/* Stacked step cards */}
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
             {steps.map((step, i) => (
-              <StepSelectorCard
+              <MobileStepCard
                 key={step.number}
                 step={step}
                 index={i}
-                isActive={i === activeIndex}
-                onSelect={() => navigate(i)}
                 shouldReduce={shouldReduce}
-                entryDelay={0.22 + i * 0.08}
               />
             ))}
           </div>
         </div>
+      </section>
+    )
+  }
 
-      </div>
+  // Desktop: cinematic sticky scroll
+  return (
+    <section id="prozess" style={{ position: 'relative' }}>
+      <DesktopProcess shouldReduce={shouldReduce} />
     </section>
   )
 }
