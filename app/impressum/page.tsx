@@ -113,10 +113,10 @@ export default function ImpressumPage() {
               <p>
                 E-Mail:{' '}
                 <a
-                  href="mailto:hallo@metzundpartner.de"
+                  href="mailto:anfragen@metzundpartner.com"
                   style={{ color: 'var(--text)', textDecoration: 'underline' }}
                 >
-                  hallo@metzundpartner.de
+                  anfragen@metzundpartner.com
                 </a>
               </p>
             </div>
