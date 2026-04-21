@@ -1,52 +1,52 @@
 'use client'
 
-import { useRef, useState, useEffect } from 'react'
+import { useRef, useState } from 'react'
 import Image from 'next/image'
 import {
   motion,
   AnimatePresence,
   useInView,
   useReducedMotion,
-  LayoutGroup,
 } from 'framer-motion'
 import { SectionLabel } from '@/components/shared/SectionLabel'
-import { fadeUp, staggerContainer, clipRevealUp } from '@/lib/animations'
 
 const EASE: [number, number, number, number] = [0.16, 1, 0.3, 1]
-const AUTO_MS = 3600
 
 // ─── Data ─────────────────────────────────────────────────────────────────────
 
-const rails = [
+const services = [
   {
-    id: 'design',
-    label: 'Design',
-    headline: 'Visuell eigenständig.',
-    body: 'Kein Template. Wir entwickeln visuelle Richtung, Struktur und Interface — auf Ihr Unternehmen und Ihre Zielgruppe abgestimmt.',
+    id: 'webdesign',
+    number: '01',
+    label: 'Webdesign',
+    title: 'Individuell gestaltet.',
+    body: 'Keine Templates. Design, Struktur und Inhalte werden gezielt auf Ihr Unternehmen und Ihre Zielgruppe abgestimmt.',
     imgPosition: 'top center',
     isLive: false,
     gridDots: false,
-    glow: 'rgba(211,253,81,0.052)',
+    glow: 'rgba(211,253,81,0.048)',
   },
   {
     id: 'entwicklung',
+    number: '02',
     label: 'Entwicklung',
-    headline: 'Sauber implementiert.',
-    body: 'Performant, responsiv, wartbar. Moderner Stack, schnelle Ladezeiten — editierbar wo es sinnvoll ist.',
+    title: 'Technisch sauber umgesetzt.',
+    body: 'Schnell, mobiloptimiert und zuverlässig. Moderne Technologien sorgen für Performance und Stabilität.',
     imgPosition: '38% center',
     isLive: false,
     gridDots: true,
-    glow: 'rgba(211,253,81,0.028)',
+    glow: 'rgba(211,253,81,0.026)',
   },
   {
-    id: 'launch',
-    label: 'Launch & Übergabe',
-    headline: 'Einsatzbereit übergeben.',
-    body: 'Deployment, finale Abstimmung, vollständige Übergabe. Ein fertiges Ergebnis — keine offenen Enden.',
+    id: 'sichtbarkeit',
+    number: '03',
+    label: 'Sichtbarkeit & Betreuung',
+    title: 'Langfristig optimiert.',
+    body: 'SEO-Grundlagen, laufende Anpassungen und regelmäßige Updates – damit Ihre Website dauerhaft Ergebnisse liefert.',
     imgPosition: 'bottom center',
     isLive: true,
     gridDots: false,
-    glow: 'rgba(211,253,81,0.072)',
+    glow: 'rgba(211,253,81,0.068)',
   },
 ] as const
 
@@ -62,31 +62,30 @@ function BrowserChrome({
   return (
     <div
       style={{
-        height: 44,
-        background: 'rgba(6,6,6,0.94)',
-        borderBottom: '1px solid rgba(255,255,255,0.06)',
+        height: 40,
+        background: 'rgba(4,4,4,0.97)',
+        borderBottom: '1px solid rgba(255,255,255,0.055)',
         display: 'flex',
         alignItems: 'center',
-        padding: '0 16px',
-        gap: 12,
+        padding: '0 14px',
+        gap: 10,
         flexShrink: 0,
       }}
     >
-      {/* Traffic lights */}
-      <div style={{ display: 'flex', gap: 7, flexShrink: 0 }}>
+      <div style={{ display: 'flex', gap: 6, flexShrink: 0 }}>
         {[
-          { c: '#FF5F57', g: 'rgba(255,95,87,0.55)' },
-          { c: '#FEBC2E', g: 'rgba(254,188,46,0.50)' },
-          { c: '#28C840', g: 'rgba(40,200,64,0.50)' },
+          { c: '#FF5F57', g: 'rgba(255,95,87,0.5)' },
+          { c: '#FEBC2E', g: 'rgba(254,188,46,0.45)' },
+          { c: '#28C840', g: 'rgba(40,200,64,0.45)' },
         ].map(({ c, g }, i) => (
           <div
             key={i}
             style={{
-              width: 11,
-              height: 11,
+              width: 10,
+              height: 10,
               borderRadius: '50%',
               background: c,
-              boxShadow: `0 0 6px ${g}`,
+              boxShadow: `0 0 5px ${g}`,
               opacity: 0.82,
               flexShrink: 0,
             }}
@@ -94,32 +93,31 @@ function BrowserChrome({
         ))}
       </div>
 
-      {/* URL bar */}
       <div
         style={{
           flex: 1,
-          height: 26,
+          height: 24,
           background: 'rgba(255,255,255,0.03)',
-          border: '1px solid rgba(255,255,255,0.07)',
-          borderRadius: 6,
+          border: '1px solid rgba(255,255,255,0.065)',
+          borderRadius: 5,
           display: 'flex',
           alignItems: 'center',
           gap: 6,
           overflow: 'hidden',
-          padding: '0 10px',
+          padding: '0 9px',
         }}
       >
         <motion.div
           animate={{
-            background: isLive ? 'var(--accent)' : 'rgba(200,255,0,0.4)',
+            background: isLive ? 'var(--accent)' : 'rgba(200,255,0,0.35)',
             boxShadow: isLive
               ? '0 0 10px rgba(211,253,81,0.85)'
               : '0 0 4px rgba(211,253,81,0.3)',
           }}
           transition={{ duration: 0.45, ease: EASE }}
           style={{
-            width: 6,
-            height: 6,
+            width: 5,
+            height: 5,
             borderRadius: '50%',
             flexShrink: 0,
             animation:
@@ -131,8 +129,8 @@ function BrowserChrome({
         <span
           style={{
             fontFamily: 'var(--font-ui)',
-            fontSize: '0.6rem',
-            color: 'rgba(255,255,255,0.26)',
+            fontSize: '0.585rem',
+            color: 'rgba(255,255,255,0.24)',
             letterSpacing: '0.025em',
             whiteSpace: 'nowrap',
           }}
@@ -145,14 +143,14 @@ function BrowserChrome({
               initial={{ opacity: 0, scale: 0.8, x: -4 }}
               animate={{ opacity: 1, scale: 1, x: 0 }}
               exit={{ opacity: 0, scale: 0.8, x: -4 }}
-              transition={{ duration: 0.3, ease: EASE }}
+              transition={{ duration: 0.28, ease: EASE }}
               style={{
                 fontFamily: 'var(--font-ui)',
-                fontSize: '0.55rem',
+                fontSize: '0.52rem',
                 fontWeight: 400,
                 letterSpacing: '0.12em',
                 textTransform: 'uppercase',
-                color: 'rgba(211,253,81,0.8)',
+                color: 'rgba(211,253,81,0.78)',
                 flexShrink: 0,
               }}
             >
@@ -162,60 +160,67 @@ function BrowserChrome({
         </AnimatePresence>
       </div>
 
-      <div style={{ width: 44, flexShrink: 0 }} />
+      <div style={{ width: 40, flexShrink: 0 }} />
     </div>
   )
 }
 
-// ─── Proof surface ────────────────────────────────────────────────────────────
+// ─── Proof panel ──────────────────────────────────────────────────────────────
 
-function ProofSurface({
+function ProofPanel({
   activeIndex,
   shouldReduce,
+  isInView,
 }: {
   activeIndex: number
   shouldReduce: boolean | null
+  isInView: boolean
 }) {
-  const rail = rails[activeIndex]
+  const s = services[activeIndex]
 
   return (
     <motion.div
+      initial={shouldReduce ? undefined : { opacity: 0, y: 28, scale: 0.975 }}
+      animate={
+        shouldReduce
+          ? undefined
+          : isInView
+          ? { opacity: 1, y: 0, scale: 1 }
+          : { opacity: 0, y: 28, scale: 0.975 }
+      }
+      transition={{ duration: 1.05, ease: EASE, delay: 0.2 }}
       className="panel-browser"
-      initial={shouldReduce ? undefined : { opacity: 0, scale: 0.97 }}
-      whileInView={shouldReduce ? undefined : { opacity: 1, scale: 1 }}
-      viewport={{ once: true, margin: '-60px' }}
-      transition={{ duration: 0.9, ease: EASE, delay: 0.18 }}
       style={{ padding: 0, overflow: 'hidden', position: 'relative' }}
     >
-      {/* Per-state atmosphere glow */}
+      {/* Per-state atmosphere */}
       <AnimatePresence mode="wait">
         <motion.div
-          key={`glow-${activeIndex}`}
+          key={`atm-${activeIndex}`}
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
-          transition={{ duration: 0.7 }}
+          transition={{ duration: 0.6 }}
           aria-hidden
           style={{
             position: 'absolute',
             inset: 0,
-            background: `radial-gradient(ellipse at 80% 25%, ${rail.glow} 0%, transparent 65%)`,
+            background: `radial-gradient(ellipse at 75% 22%, ${s.glow} 0%, transparent 64%)`,
             pointerEvents: 'none',
             zIndex: 0,
           }}
         />
       </AnimatePresence>
 
-      {/* Chrome — always visible, state indicator inside */}
+      {/* Chrome */}
       <div style={{ position: 'relative', zIndex: 1 }}>
-        <BrowserChrome isLive={rail.isLive} shouldReduce={shouldReduce} />
+        <BrowserChrome isLive={s.isLive} shouldReduce={shouldReduce} />
       </div>
 
-      {/* Screenshot viewport */}
+      {/* Screenshot */}
       <div
         style={{
           position: 'relative',
-          aspectRatio: '16/9',
+          aspectRatio: '16/10',
           overflow: 'hidden',
           zIndex: 1,
         }}
@@ -226,7 +231,7 @@ function ProofSurface({
             initial={
               shouldReduce
                 ? undefined
-                : { opacity: 0, filter: 'blur(10px)', scale: 1.015 }
+                : { opacity: 0, filter: 'blur(10px)', scale: 1.018 }
             }
             animate={
               shouldReduce
@@ -236,7 +241,7 @@ function ProofSurface({
             exit={
               shouldReduce
                 ? undefined
-                : { opacity: 0, filter: 'blur(10px)', scale: 1.015 }
+                : { opacity: 0, filter: 'blur(10px)', scale: 1.018 }
             }
             transition={{ duration: 0.4, ease: EASE }}
             style={{ position: 'absolute', inset: 0 }}
@@ -245,27 +250,27 @@ function ProofSurface({
               src="/projekte/Fahrschule-DA.jpg"
               alt="Fahrschule Dirk Arnold – Website"
               fill
-              sizes="(min-width: 768px) 50vw, 100vw"
+              sizes="(min-width: 768px) 56vw, 100vw"
               style={{
                 objectFit: 'cover',
-                objectPosition: rail.imgPosition,
+                objectPosition: s.imgPosition,
               }}
               priority={activeIndex === 0}
             />
 
-            {/* Entwicklung: precision grid dot overlay */}
-            {rail.gridDots && !shouldReduce && (
+            {/* Entwicklung: dot grid overlay */}
+            {s.gridDots && !shouldReduce && (
               <motion.div
                 initial={{ opacity: 0 }}
-                animate={{ opacity: 0.28 }}
-                transition={{ duration: 0.55, delay: 0.18 }}
+                animate={{ opacity: 0.25 }}
+                transition={{ duration: 0.5, delay: 0.15 }}
                 aria-hidden
                 style={{
                   position: 'absolute',
                   inset: 0,
                   backgroundImage:
                     'radial-gradient(circle, rgba(211,253,81,0.22) 1px, transparent 1px)',
-                  backgroundSize: '24px 24px',
+                  backgroundSize: '22px 22px',
                   mixBlendMode: 'overlay',
                   pointerEvents: 'none',
                 }}
@@ -273,27 +278,27 @@ function ProofSurface({
             )}
 
             {/* Launch: live badge */}
-            {rail.isLive && (
+            {s.isLive && (
               <motion.div
                 initial={{ opacity: 0, y: 8, scale: 0.9 }}
                 animate={{ opacity: 1, y: 0, scale: 1 }}
-                transition={{ duration: 0.4, ease: EASE, delay: 0.18 }}
+                transition={{ duration: 0.38, ease: EASE, delay: 0.18 }}
                 style={{
                   position: 'absolute',
                   bottom: '1rem',
                   right: '1rem',
                   display: 'inline-flex',
                   alignItems: 'center',
-                  gap: '0.4rem',
-                  padding: '0.3rem 0.72rem',
+                  gap: '0.38rem',
+                  padding: '0.28rem 0.7rem',
                   background:
-                    'linear-gradient(180deg, rgba(211,253,81,0.14), rgba(211,253,81,0.07)), rgba(6,6,6,0.55)',
-                  border: '1px solid rgba(211,253,81,0.28)',
+                    'linear-gradient(180deg, rgba(211,253,81,0.13), rgba(211,253,81,0.065)), rgba(6,6,6,0.52)',
+                  border: '1px solid rgba(211,253,81,0.26)',
                   borderRadius: 999,
                   backdropFilter: 'blur(14px)',
                   WebkitBackdropFilter: 'blur(14px)',
                   boxShadow:
-                    'inset 0 1px 0 rgba(211,253,81,0.18), 0 0 24px rgba(211,253,81,0.1)',
+                    'inset 0 1px 0 rgba(211,253,81,0.16), 0 0 22px rgba(211,253,81,0.09)',
                   zIndex: 2,
                 }}
               >
@@ -313,11 +318,11 @@ function ProofSurface({
                 <span
                   style={{
                     fontFamily: 'var(--font-ui)',
-                    fontSize: '0.6rem',
+                    fontSize: '0.58rem',
                     fontWeight: 400,
                     letterSpacing: '0.13em',
                     textTransform: 'uppercase',
-                    color: 'rgba(211,253,81,0.92)',
+                    color: 'rgba(211,253,81,0.9)',
                   }}
                 >
                   Live
@@ -325,7 +330,7 @@ function ProofSurface({
               </motion.div>
             )}
 
-            {/* Bottom atmospheric fade */}
+            {/* Bottom fade */}
             <div
               aria-hidden
               style={{
@@ -333,9 +338,9 @@ function ProofSurface({
                 bottom: 0,
                 left: 0,
                 right: 0,
-                height: '38%',
+                height: '36%',
                 background:
-                  'linear-gradient(to top, rgba(6,6,6,0.72) 0%, rgba(6,6,6,0.24) 60%, transparent 100%)',
+                  'linear-gradient(to top, rgba(6,6,6,0.72) 0%, rgba(6,6,6,0.22) 60%, transparent 100%)',
                 pointerEvents: 'none',
               }}
             />
@@ -352,12 +357,12 @@ function ProofSurface({
               <p
                 style={{
                   fontFamily: 'var(--font-ui)',
-                  fontSize: '0.6rem',
+                  fontSize: '0.58rem',
                   fontWeight: 400,
                   letterSpacing: '0.12em',
                   textTransform: 'uppercase',
-                  color: 'rgba(255,255,255,0.28)',
-                  margin: '0 0 0.12rem',
+                  color: 'rgba(255,255,255,0.26)',
+                  margin: '0 0 0.1rem',
                 }}
               >
                 Fahrschule Dirk Arnold · 2026
@@ -366,8 +371,8 @@ function ProofSurface({
                 style={{
                   fontFamily: 'var(--font-display)',
                   fontStyle: 'italic',
-                  fontSize: '0.78rem',
-                  color: 'rgba(255,255,255,0.5)',
+                  fontSize: '0.75rem',
+                  color: 'rgba(255,255,255,0.48)',
                   lineHeight: 1,
                   margin: 0,
                 }}
@@ -382,162 +387,193 @@ function ProofSurface({
   )
 }
 
-// ─── Single offer rail ────────────────────────────────────────────────────────
+// ─── Service card ─────────────────────────────────────────────────────────────
 
-function OfferRail({
-  rail,
+function ServiceCard({
+  service,
   index,
   isActive,
-  onSelect,
+  onActivate,
   shouldReduce,
+  delay,
+  isInView,
 }: {
-  rail: (typeof rails)[number]
+  service: (typeof services)[number]
   index: number
   isActive: boolean
-  onSelect: (i: number) => void
+  onActivate: (i: number) => void
   shouldReduce: boolean | null
+  delay: number
+  isInView: boolean
 }) {
   return (
     <motion.div
-      layout
-      onClick={() => onSelect(index)}
-      onHoverStart={() => onSelect(index)}
-      transition={{ layout: { duration: 0.42, ease: EASE } }}
-      style={{
-        position: 'relative',
-        cursor: 'pointer',
-        userSelect: 'none',
-        isolation: 'isolate',
-        borderRadius: 18,
-        border: `1px solid ${isActive ? 'rgba(255,255,255,0.12)' : 'rgba(255,255,255,0.048)'}`,
-        background: isActive
-          ? 'linear-gradient(180deg, rgba(255,255,255,0.050), rgba(255,255,255,0.020)), rgba(6,6,6,0.42)'
-          : 'transparent',
-        boxShadow: isActive
-          ? 'inset 0 1px 0 rgba(255,255,255,0.14), 0 12px 40px rgba(0,0,0,0.30)'
-          : 'none',
-        padding: isActive
-          ? 'clamp(1.1rem, 2vw, 1.6rem)'
-          : 'clamp(0.82rem, 1.4vw, 1.1rem)',
-        transition:
-          'padding 0.42s cubic-bezier(0.16,1,0.3,1), background 0.35s ease, border-color 0.35s ease, box-shadow 0.35s ease',
-      }}
+      initial={shouldReduce ? undefined : { opacity: 0, y: 20, filter: 'blur(8px)' }}
+      animate={
+        shouldReduce
+          ? undefined
+          : isInView
+          ? { opacity: 1, y: 0, filter: 'blur(0px)' }
+          : { opacity: 0, y: 20, filter: 'blur(8px)' }
+      }
+      transition={{ duration: 0.78, ease: EASE, delay }}
+      onHoverStart={() => onActivate(index)}
+      style={{ position: 'relative', isolation: 'isolate' }}
     >
-      {/* Lime left-edge accent */}
-      <div
-        aria-hidden
-        style={{
-          position: 'absolute',
-          left: 0,
-          top: '18%',
-          bottom: '18%',
-          width: 2,
-          borderRadius: 2,
-          background: 'var(--accent)',
-          boxShadow: '0 0 12px rgba(211,253,81,0.5)',
-          opacity: isActive ? 1 : 0,
-          transition: 'opacity 0.35s ease',
+      {/* Glass card surface — manual recipe for full animate control */}
+      <motion.div
+        animate={{
+          background: isActive
+            ? 'linear-gradient(160deg, rgba(255,255,255,0.048) 0%, rgba(255,255,255,0.018) 100%), rgba(6,6,6,0.46)'
+            : 'linear-gradient(160deg, rgba(255,255,255,0.028) 0%, rgba(255,255,255,0.010) 100%), rgba(6,6,6,0.32)',
+          borderColor: isActive
+            ? 'rgba(255,255,255,0.13)'
+            : 'rgba(255,255,255,0.068)',
+          boxShadow: isActive
+            ? 'inset 0 1px 0 rgba(255,255,255,0.16), 0 14px 48px rgba(0,0,0,0.32), 0 0 64px rgba(211,253,81,0.04)'
+            : 'inset 0 1px 0 rgba(255,255,255,0.07), 0 6px 20px rgba(0,0,0,0.18)',
+          y: isActive && !shouldReduce ? -4 : 0,
         }}
-      />
-
-      {/* Header row */}
-      <div
+        transition={{ duration: 0.35, ease: EASE }}
         style={{
-          display: 'flex',
-          alignItems: 'flex-start',
-          justifyContent: 'space-between',
-          gap: '1rem',
+          position: 'relative',
+          borderRadius: 20,
+          border: '1px solid',
+          backdropFilter: 'blur(18px)',
+          WebkitBackdropFilter: 'blur(18px)',
+          padding: 'clamp(1.1rem, 1.8vw, 1.5rem)',
+          overflow: 'hidden',
         }}
       >
+        {/* Luminous top highlight */}
         <div
+          aria-hidden
           style={{
-            display: 'flex',
-            flexDirection: 'column',
-            gap: '0.28rem',
-            flex: 1,
-            minWidth: 0,
+            position: 'absolute',
+            inset: '0 0 auto 0',
+            height: 1,
+            background:
+              'linear-gradient(90deg, transparent 0%, rgba(255,255,255,0.14) 12%, rgba(255,255,255,0.10) 50%, rgba(255,255,255,0.14) 88%, transparent 100%)',
+            opacity: 0.8,
+            pointerEvents: 'none',
           }}
-        >
-          <span
+        />
+
+        {/* Active lime top accent */}
+        <motion.div
+          aria-hidden
+          animate={{
+            opacity: isActive ? 1 : 0,
+            scaleX: isActive ? 1 : 0.25,
+          }}
+          transition={{ duration: 0.4, ease: EASE }}
+          style={{
+            position: 'absolute',
+            top: 0,
+            left: '10%',
+            right: '10%',
+            height: 1,
+            background:
+              'linear-gradient(90deg, transparent, rgba(211,253,81,0.75), transparent)',
+            pointerEvents: 'none',
+            zIndex: 2,
+            transformOrigin: 'center',
+          }}
+        />
+
+        {/* Inner content */}
+        <div style={{ position: 'relative', zIndex: 1 }}>
+          {/* Number + label */}
+          <div
             style={{
-              fontFamily: 'var(--font-ui)',
-              fontSize: '0.62rem',
-              fontWeight: 400,
-              textTransform: 'uppercase',
-              letterSpacing: '0.14em',
-              color: isActive
-                ? 'rgba(211,253,81,0.78)'
-                : 'rgba(255,255,255,0.26)',
-              transition: 'color 0.35s ease',
+              display: 'flex',
+              alignItems: 'center',
+              gap: '0.55rem',
+              marginBottom: 'clamp(0.6rem, 1vw, 0.88rem)',
             }}
           >
-            {rail.label}
-          </span>
+            <motion.span
+              animate={{
+                color: isActive
+                  ? 'rgba(211,253,81,0.58)'
+                  : 'rgba(255,255,255,0.16)',
+              }}
+              transition={{ duration: 0.32 }}
+              style={{
+                fontFamily: 'var(--font-display)',
+                fontStyle: 'italic',
+                fontSize: '0.6rem',
+                letterSpacing: '0.04em',
+                flexShrink: 0,
+              }}
+            >
+              {service.number}
+            </motion.span>
 
-          <p
+            <motion.div
+              animate={{
+                background: isActive
+                  ? 'rgba(211,253,81,0.32)'
+                  : 'rgba(255,255,255,0.08)',
+                width: isActive ? 22 : 14,
+              }}
+              transition={{ duration: 0.38, ease: EASE }}
+              style={{ height: 1, flexShrink: 0 }}
+            />
+
+            <motion.span
+              animate={{
+                color: isActive
+                  ? 'rgba(211,253,81,0.72)'
+                  : 'rgba(255,255,255,0.28)',
+              }}
+              transition={{ duration: 0.32 }}
+              style={{
+                fontFamily: 'var(--font-ui)',
+                fontSize: '0.575rem',
+                fontWeight: 400,
+                textTransform: 'uppercase' as const,
+                letterSpacing: '0.155em',
+              }}
+            >
+              {service.label}
+            </motion.span>
+          </div>
+
+          {/* Title */}
+          <motion.h3
+            animate={{
+              color: isActive ? 'rgba(255,255,255,1)' : 'rgba(255,255,255,0.65)',
+            }}
+            transition={{ duration: 0.32 }}
             style={{
               fontFamily: 'var(--font-display)',
-              fontSize: isActive
-                ? 'clamp(1.05rem, 1.7vw, 1.3rem)'
-                : 'clamp(0.88rem, 1.3vw, 1.05rem)',
-              fontWeight: 400,
               fontStyle: 'italic',
-              color: isActive ? 'var(--text)' : 'rgba(255,255,255,0.38)',
-              lineHeight: 1.2,
+              fontSize: 'clamp(1.05rem, 1.55vw, 1.25rem)',
+              fontWeight: 400,
+              lineHeight: 1.15,
               letterSpacing: '-0.015em',
-              margin: 0,
-              transition: 'font-size 0.42s ease, color 0.35s ease',
+              margin: '0 0 clamp(0.45rem, 0.8vw, 0.65rem)',
             }}
           >
-            {rail.headline}
-          </p>
-        </div>
+            {service.title}
+          </motion.h3>
 
-        <span
-          style={{
-            fontFamily: 'var(--font-display)',
-            fontStyle: 'italic',
-            fontSize: '0.7rem',
-            letterSpacing: '0.02em',
-            lineHeight: 1,
-            paddingTop: '0.1rem',
-            color: isActive
-              ? 'rgba(211,253,81,0.42)'
-              : 'rgba(255,255,255,0.10)',
-            flexShrink: 0,
-            transition: 'color 0.35s ease',
-          }}
-        >
-          0{index + 1}
-        </span>
-      </div>
-
-      {/* Body — CSS grid accordion (no height animation) */}
-      <div
-        style={{
-          display: 'grid',
-          gridTemplateRows: isActive ? '1fr' : '0fr',
-          transition: 'grid-template-rows 0.42s cubic-bezier(0.16,1,0.3,1)',
-        }}
-      >
-        <div style={{ minHeight: 0, overflow: 'hidden' }}>
+          {/* Body */}
           <p
             style={{
               fontFamily: 'var(--font-ui)',
-              fontSize: 'clamp(0.82rem, 1.1vw, 0.88rem)',
+              fontSize: 'clamp(0.78rem, 1.02vw, 0.85rem)',
               fontWeight: 300,
-              color: 'var(--muted)',
+              color: 'rgba(255,255,255,0.48)',
               lineHeight: 1.72,
-              margin: '0.72rem 0 0',
-              maxWidth: '46ch',
-              opacity: isActive ? 1 : 0,
-              transition: 'opacity 0.28s ease',
+              margin: 0,
             }}
           >
-            {rail.body}
+            {service.body}
           </p>
         </div>
-      </div>
+      </motion.div>
     </motion.div>
   )
 }
@@ -546,25 +582,11 @@ function OfferRail({
 
 export function Services() {
   const headerRef = useRef<HTMLDivElement>(null)
+  const panelRef = useRef<HTMLDivElement>(null)
   const isHeaderInView = useInView(headerRef, { once: true, margin: '-80px' })
+  const isPanelInView = useInView(panelRef, { once: true, margin: '-60px' })
   const shouldReduce = useReducedMotion()
-
   const [activeIndex, setActiveIndex] = useState(0)
-  const [isPaused, setIsPaused] = useState(false)
-  const [timerKey, setTimerKey] = useState(0)
-
-  const handleSelect = (i: number) => {
-    setActiveIndex(i)
-    setTimerKey((k) => k + 1)
-  }
-
-  useEffect(() => {
-    if (isPaused || shouldReduce) return
-    const timer = setInterval(() => {
-      setActiveIndex((prev) => (prev + 1) % rails.length)
-    }, AUTO_MS)
-    return () => clearInterval(timer)
-  }, [isPaused, shouldReduce, timerKey])
 
   return (
     <section
@@ -572,45 +594,103 @@ export function Services() {
       style={{
         paddingTop: 'clamp(4rem, 8vw, 8rem)',
         paddingBottom: 'clamp(4rem, 8vw, 8rem)',
+        position: 'relative',
+        overflow: 'hidden',
       }}
     >
-      <div className="container-site">
+      {/* Section atmosphere */}
+      <div
+        aria-hidden
+        style={{
+          position: 'absolute',
+          bottom: '-5%',
+          left: '-8%',
+          width: '52vw',
+          height: '52vw',
+          maxWidth: 640,
+          maxHeight: 640,
+          background:
+            'radial-gradient(ellipse at 35% 65%, rgba(212,131,10,0.065) 0%, rgba(184,134,11,0.025) 45%, transparent 70%)',
+          filter: 'blur(72px)',
+          pointerEvents: 'none',
+        }}
+      />
+
+      <div className="container-site" style={{ position: 'relative' }}>
 
         {/* ── Section header ── */}
-        <motion.div
-          ref={headerRef}
-          variants={shouldReduce ? undefined : staggerContainer(0.08)}
-          initial={shouldReduce ? undefined : 'hidden'}
-          animate={
-            shouldReduce ? undefined : isHeaderInView ? 'visible' : 'hidden'
-          }
-          style={{ marginBottom: 'clamp(2rem, 3.5vw, 2.75rem)' }}
-        >
+        <div ref={headerRef} style={{ marginBottom: 'clamp(1.75rem, 3vw, 2.5rem)' }}>
+
           <motion.div
-            variants={shouldReduce ? undefined : fadeUp}
-            style={{ marginBottom: '0.875rem' }}
+            initial={shouldReduce ? undefined : { opacity: 0, y: 10 }}
+            animate={
+              shouldReduce
+                ? undefined
+                : isHeaderInView
+                ? { opacity: 1, y: 0 }
+                : { opacity: 0, y: 10 }
+            }
+            transition={{ duration: 0.7, ease: EASE }}
+            style={{ marginBottom: '0.8rem' }}
           >
             <SectionLabel>● Was Sie bekommen</SectionLabel>
           </motion.div>
-          <div style={{ overflow: 'hidden' }}>
+
+          <div style={{ overflow: 'hidden', marginBottom: '0.85rem' }}>
             <motion.h2
               className="display-section"
-              variants={shouldReduce ? undefined : clipRevealUp}
+              initial={shouldReduce ? undefined : { y: '108%' }}
+              animate={
+                shouldReduce
+                  ? undefined
+                  : isHeaderInView
+                  ? { y: '0%' }
+                  : { y: '108%' }
+              }
+              transition={{ duration: 0.92, ease: EASE, delay: 0.07 }}
             >
-              Websites, die für Sie arbeiten.
+              Alles, was Ihre Website erfolgreich macht.
             </motion.h2>
           </div>
-        </motion.div>
+
+          <motion.p
+            initial={shouldReduce ? undefined : { opacity: 0, y: 10 }}
+            animate={
+              shouldReduce
+                ? undefined
+                : isHeaderInView
+                ? { opacity: 1, y: 0 }
+                : { opacity: 0, y: 10 }
+            }
+            transition={{ duration: 0.75, ease: EASE, delay: 0.22 }}
+            style={{
+              fontFamily: 'var(--font-ui)',
+              fontSize: 'clamp(0.85rem, 1.2vw, 0.95rem)',
+              fontWeight: 300,
+              color: 'rgba(255,255,255,0.42)',
+              lineHeight: 1.65,
+              margin: 0,
+              maxWidth: '60ch',
+            }}
+          >
+            Von Design über Technik bis zur Sichtbarkeit – wir kümmern uns um alle entscheidenden Bereiche.
+          </motion.p>
+        </div>
 
         {/* ── Main panel ── */}
         <motion.div
+          ref={panelRef}
           className="surface-primary"
           initial={shouldReduce ? undefined : { opacity: 0, y: 28 }}
-          whileInView={shouldReduce ? undefined : { opacity: 1, y: 0 }}
-          viewport={{ once: true, margin: '-60px' }}
-          transition={{ duration: 0.85, ease: EASE }}
-          onMouseEnter={() => setIsPaused(true)}
-          onMouseLeave={() => setIsPaused(false)}
+          animate={
+            shouldReduce
+              ? undefined
+              : isPanelInView
+              ? { opacity: 1, y: 0 }
+              : { opacity: 0, y: 28 }
+          }
+          transition={{ duration: 0.9, ease: EASE, delay: 0.08 }}
+          onMouseLeave={() => setActiveIndex(0)}
           style={{ padding: 'clamp(1.25rem, 2.5vw, 2rem)' }}
         >
           <div
@@ -618,35 +698,39 @@ export function Services() {
             style={{ display: 'grid', gap: 'clamp(1.25rem, 3vw, 1.75rem)' }}
           >
 
-            {/* ── Left: offer rails + CTA ── */}
+            {/* ── Left: service cards + CTA ── */}
             <div
               style={{
                 display: 'flex',
                 flexDirection: 'column',
-                gap: 'clamp(1.5rem, 2.5vw, 2rem)',
+                gap: 'clamp(0.55rem, 1vw, 0.75rem)',
               }}
             >
-              <LayoutGroup id="offer-rails">
-                <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
-                  {rails.map((rail, i) => (
-                    <OfferRail
-                      key={rail.id}
-                      rail={rail}
-                      index={i}
-                      isActive={activeIndex === i}
-                      onSelect={handleSelect}
-                      shouldReduce={shouldReduce}
-                    />
-                  ))}
-                </div>
-              </LayoutGroup>
+              {services.map((s, i) => (
+                <ServiceCard
+                  key={s.id}
+                  service={s}
+                  index={i}
+                  isActive={activeIndex === i}
+                  onActivate={setActiveIndex}
+                  shouldReduce={shouldReduce}
+                  delay={0.28 + i * 0.09}
+                  isInView={isPanelInView}
+                />
+              ))}
 
-              {/* CTA — natural conclusion of the rail system */}
+              {/* CTA */}
               <motion.div
                 initial={shouldReduce ? undefined : { opacity: 0, y: 8 }}
-                whileInView={shouldReduce ? undefined : { opacity: 1, y: 0 }}
-                viewport={{ once: true, margin: '-40px' }}
-                transition={{ duration: 0.6, ease: EASE, delay: 0.48 }}
+                animate={
+                  shouldReduce
+                    ? undefined
+                    : isPanelInView
+                    ? { opacity: 1, y: 0 }
+                    : { opacity: 0, y: 8 }
+                }
+                transition={{ duration: 0.65, ease: EASE, delay: 0.62 }}
+                style={{ paddingTop: 'clamp(0.5rem, 1vw, 0.875rem)' }}
               >
                 <a
                   href="#kontakt"
@@ -661,7 +745,7 @@ export function Services() {
                     color: 'var(--text)',
                   }}
                 >
-                  Projekt anfragen
+                  Projekt besprechen
                   <svg
                     width="13"
                     height="13"
@@ -682,8 +766,12 @@ export function Services() {
               </motion.div>
             </div>
 
-            {/* ── Right: shared proof surface ── */}
-            <ProofSurface activeIndex={activeIndex} shouldReduce={shouldReduce} />
+            {/* ── Right: proof panel ── */}
+            <ProofPanel
+              activeIndex={activeIndex}
+              shouldReduce={shouldReduce}
+              isInView={isPanelInView}
+            />
 
           </div>
         </motion.div>

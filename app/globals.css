@@ -602,7 +602,7 @@ body::before {
 
 @media (min-width: 768px) {
   .services-rails-layout {
-    grid-template-columns: 1fr 1.1fr;
+    grid-template-columns: 1fr 1.35fr;
     align-items: start;
   }
 }
