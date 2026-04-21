@@ -135,7 +135,6 @@ function BrowserChrome({
             whiteSpace: 'nowrap',
           }}
         >
-          fahrschule-dirk-arnold.de
         </span>
         <AnimatePresence>
           {isLive && (
@@ -380,42 +379,6 @@ function ProofPanel({
                 pointerEvents: 'none',
               }}
             />
-
-            {/* Project credit */}
-            <div
-              style={{
-                position: 'absolute',
-                bottom: '0.88rem',
-                left: '1rem',
-                zIndex: 2,
-              }}
-            >
-              <p
-                style={{
-                  fontFamily: 'var(--font-ui)',
-                  fontSize: '0.58rem',
-                  fontWeight: 400,
-                  letterSpacing: '0.12em',
-                  textTransform: 'uppercase',
-                  color: 'rgba(255,255,255,0.26)',
-                  margin: '0 0 0.1rem',
-                }}
-              >
-                Fahrschule Dirk Arnold · 2026
-              </p>
-              <p
-                style={{
-                  fontFamily: 'var(--font-display)',
-                  fontStyle: 'italic',
-                  fontSize: '0.75rem',
-                  color: 'rgba(255,255,255,0.48)',
-                  lineHeight: 1,
-                  margin: 0,
-                }}
-              >
-                fahrschule-dirk-arnold.de
-              </p>
-            </div>
           </motion.div>
         </AnimatePresence>
       </div>
