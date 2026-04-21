@@ -15,7 +15,6 @@ const TECH: { name: string; dot: string }[] = [
   { name: 'GSAP',          dot: 'rgba(136,206,68,0.86)'  },
   { name: 'Zod',           dot: 'rgba(99,179,237,0.84)'  },
   { name: 'Resend',        dot: 'rgba(255,255,255,0.62)' },
-  { name: 'Lenis',         dot: 'rgba(255,255,255,0.46)' },
 ]
 
 const FACTS: string[] = [

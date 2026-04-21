@@ -72,7 +72,7 @@ export default async function ProjectPage({ params }: Props) {
         <div
           style={{
             position: 'relative',
-            height: '70vh',
+            height: '70dvh',
             minHeight: 400,
             background: 'var(--surface)',
           }}
@@ -246,7 +246,7 @@ export default async function ProjectPage({ params }: Props) {
                     style={{
                       position: 'relative',
                       aspectRatio: '16/10',
-                      borderRadius: 4,
+                      borderRadius: 16,
                       overflow: 'hidden',
                       background: 'var(--surface)',
                     }}

@@ -97,7 +97,7 @@ export function FAQ() {
                     value={String(i)}
                     style={{
                       border: '1px solid var(--border)',
-                      borderRadius: 6,
+                      borderRadius: 16,
                       background: 'rgba(255,255,255,0.02)',
                       overflow: 'hidden',
                     }}

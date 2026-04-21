@@ -54,7 +54,7 @@ export function Header() {
     >
       <motion.div
         animate={{
-          maxWidth: scrolled && !open ? 896 : 9999,
+          maxWidth: scrolled && !open ? '896px' : '9999px',
           borderRadius: scrolled && !open ? 12 : 0,
           borderColor: scrolled || open
             ? 'rgba(240, 237, 232, 0.07)'
@@ -78,6 +78,7 @@ export function Header() {
           backdropFilter: { duration: 0.4 },
         }}
         style={{
+          maxWidth: '9999px',
           marginLeft: 'auto',
           marginRight: 'auto',
           borderWidth: 1,

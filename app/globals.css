@@ -173,6 +173,7 @@ body::before {
   line-height: 0.93;
   letter-spacing: -0.03em;
   color: var(--text);
+  text-wrap: balance;
 }
 
 .display-section {
@@ -184,6 +185,7 @@ body::before {
   letter-spacing: -0.02em;
   color: var(--text);
   margin: 0;
+  text-wrap: balance;
 }
 
 .display-manifesto {
@@ -195,6 +197,7 @@ body::before {
   letter-spacing: -0.02em;
   color: var(--text);
   margin: 0;
+  text-wrap: balance;
 }
 
 .display-card {
