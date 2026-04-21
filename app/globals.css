@@ -557,9 +557,29 @@ body::before {
 
 /* ─── Responsive Surface Tuning ──────────────────────────────────── */
 @media (max-width: 767px) {
-  :is(.surface-hero, .surface-primary, .panel-browser, .panel-proof, .panel-process) {
-    backdrop-filter: blur(18px);
-    -webkit-backdrop-filter: blur(18px);
+  :is(
+    .surface-hero,
+    .surface-primary,
+    .surface-secondary,
+    .surface-muted,
+    .surface-floating,
+    .panel-browser,
+    .panel-proof,
+    .panel-feature,
+    .panel-process
+  ) {
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+  }
+
+  :is(
+    .button-glass-primary,
+    .button-glass-secondary,
+    .button-ghost-glass,
+    .button-pill-micro
+  ) {
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
   }
 
   .surface-hero {
@@ -574,6 +594,19 @@ body::before {
   .panel-feature,
   .surface-muted {
     border-radius: 20px;
+  }
+}
+
+/* ─── Mobile glass card utility ──────────────────────────────────── */
+.glass-card-blur {
+  backdrop-filter: blur(18px);
+  -webkit-backdrop-filter: blur(18px);
+}
+
+@media (max-width: 767px) {
+  .glass-card-blur {
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
   }
 }
 

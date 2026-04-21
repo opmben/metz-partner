@@ -168,32 +168,48 @@ function BrowserChrome({
 
 function VideoProof() {
   const videoRef = useRef<HTMLVideoElement>(null)
+  const containerRef = useRef<HTMLDivElement>(null)
 
   useEffect(() => {
     const v = videoRef.current
-    if (!v) return
-    v.play().catch(() => {/* autoplay blocked — video stays paused */})
+    const el = containerRef.current
+    if (!v || !el) return
+
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          v.play().catch(() => {})
+        } else {
+          v.pause()
+        }
+      },
+      { threshold: 0.1 }
+    )
+    observer.observe(el)
+    return () => observer.disconnect()
   }, [])
 
   return (
-    <video
-      ref={videoRef}
-      src="/projekte/Video DESIGN 720p cmpr.mp4"
-      autoPlay
-      muted
-      loop
-      playsInline
-      aria-hidden="true"
-      style={{
-        position: 'absolute',
-        inset: 0,
-        width: '100%',
-        height: '100%',
-        objectFit: 'cover',
-        objectPosition: 'top center',
-        display: 'block',
-      }}
-    />
+    <div ref={containerRef} style={{ position: 'absolute', inset: 0 }}>
+      <video
+        ref={videoRef}
+        src="/projekte/Video DESIGN 720p cmpr.mp4"
+        muted
+        loop
+        playsInline
+        preload="none"
+        aria-hidden="true"
+        style={{
+          position: 'absolute',
+          inset: 0,
+          width: '100%',
+          height: '100%',
+          objectFit: 'cover',
+          objectPosition: 'top center',
+          display: 'block',
+        }}
+      />
+    </div>
   )
 }
 
@@ -434,12 +450,11 @@ function ServiceCard({
           y: isActive && !shouldReduce ? -4 : 0,
         }}
         transition={{ duration: 0.35, ease: EASE }}
+        className="glass-card-blur"
         style={{
           position: 'relative',
           borderRadius: 20,
           border: '1px solid',
-          backdropFilter: 'blur(18px)',
-          WebkitBackdropFilter: 'blur(18px)',
           padding: 'clamp(1.1rem, 1.8vw, 1.5rem)',
           overflow: 'hidden',
         }}

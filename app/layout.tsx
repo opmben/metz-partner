@@ -3,7 +3,6 @@ import { Instrument_Serif, DM_Sans } from 'next/font/google'
 import './globals.css'
 import { PageLoader } from '@/components/shared/PageLoader'
 import { ScrollProgress } from '@/components/shared/ScrollProgress'
-import { DotFieldBackground } from '@/components/shared/DotFieldBackground'
 
 const instrumentSerif = Instrument_Serif({
   weight: ['400'],
@@ -53,7 +52,6 @@ export default function RootLayout({
       className={`${instrumentSerif.variable} ${dmSans.variable}`}
     >
       <body>
-        <DotFieldBackground />
         <div style={{ position: 'relative', zIndex: 2 }}>
           <PageLoader />
           <ScrollProgress />

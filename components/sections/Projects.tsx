@@ -6,8 +6,6 @@ import {
   motion,
   useInView,
   useReducedMotion,
-  useScroll,
-  useTransform,
 } from 'framer-motion'
 import { projects } from '@/lib/data/projects'
 import { ArrowUpRight } from 'lucide-react'
@@ -119,12 +117,6 @@ function ProjectBrowserCard({
   const cardRef = useRef<HTMLDivElement>(null)
   const isInView = useInView(cardRef, { once: true, margin: '-60px' })
 
-  const { scrollYProgress } = useScroll({
-    target: cardRef,
-    offset: ['start end', 'end start'],
-  })
-  const imageY = useTransform(scrollYProgress, [0, 1], ['-22px', '22px'])
-
   const displayUrl = project.displayUrl ?? `${project.slug}.de`
 
   return (
@@ -191,12 +183,11 @@ function ProjectBrowserCard({
               overflow: 'hidden',
             }}
           >
-            {/* Parallax image wrapper */}
-            <motion.div
+            {/* Image wrapper */}
+            <div
               style={{
                 position: 'absolute',
-                inset: '-12% 0',
-                y: shouldReduce ? 0 : imageY,
+                inset: 0,
               }}
             >
               {imgError ? (
@@ -222,7 +213,7 @@ function ProjectBrowserCard({
                   priority={featured}
                 />
               )}
-            </motion.div>
+            </div>
 
             {/* Image scale on hover */}
             {!shouldReduce && (

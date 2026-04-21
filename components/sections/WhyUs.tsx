@@ -4,8 +4,6 @@ import {
   motion,
   useInView,
   useReducedMotion,
-  useScroll,
-  useTransform,
 } from 'framer-motion'
 
 // ─── Content ──────────────────────────────────────────────────────────────────
@@ -425,20 +423,12 @@ function DifferentiatorStrip({
 // ─── WhyUs ────────────────────────────────────────────────────────────────────
 
 export function WhyUs() {
-  const sectionRef = useRef(null)
   const headerRef = useRef<HTMLDivElement>(null)
   const isInView = useInView(headerRef, { once: true, margin: '-80px' })
   const shouldReduce = useReducedMotion()
 
-  const { scrollYProgress } = useScroll({
-    target: sectionRef,
-    offset: ['start end', 'end start'],
-  })
-  const bgY = useTransform(scrollYProgress, [0, 1], [40, -40])
-
   return (
     <section
-      ref={sectionRef}
       id="ueber-uns"
       style={{
         paddingTop: '8rem',
@@ -465,8 +455,8 @@ export function WhyUs() {
         }}
       />
 
-      {/* Parallax ghost background text */}
-      <motion.div
+      {/* Ghost background text */}
+      <div
         aria-hidden
         style={{
           position: 'absolute',
@@ -480,11 +470,10 @@ export function WhyUs() {
           color: 'rgba(255,255,255,0.015)',
           pointerEvents: 'none',
           userSelect: 'none',
-          y: shouldReduce ? 0 : bgY,
         }}
       >
         M&P
-      </motion.div>
+      </div>
 
       <div className="container-site" style={{ position: 'relative' }}>
         {/* ── Section header ── */}
