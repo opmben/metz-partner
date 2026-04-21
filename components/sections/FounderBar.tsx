@@ -245,7 +245,7 @@ export function FounderBar() {
                 lineHeight: 1.6,
               }}
             >
-              Wenn Sie uns anfragen, sprechen Sie mit uns.
+              Direkte Zusammenarbeit. Ohne Umwege.
               <br />
               <span style={{ color: 'var(--muted)' }}>
                 Nicht mit einem Account Manager. Nicht mit einem Junior.
