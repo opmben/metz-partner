@@ -179,7 +179,7 @@ function VideoProof() {
   return (
     <video
       ref={videoRef}
-      src="/projekte/fahrschule-da-demo.mp4"
+      src="/projekte/Video DESIGN 720p cmpr.mp4"
       autoPlay
       muted
       loop
