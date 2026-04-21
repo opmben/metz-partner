@@ -549,8 +549,8 @@ export function WhyUs() {
                 delay: 0.07,
               }}
             >
-              Wenn Sie uns anfragen,{' '}
-              <em>sprechen Sie mit uns.</em>
+              Direkte Zusammenarbeit.{' '}
+              <em>Ohne Umwege.</em>
             </motion.h2>
           </div>
         </div>
