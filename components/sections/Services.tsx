@@ -597,7 +597,7 @@ export function Services() {
               className="display-section"
               variants={shouldReduce ? undefined : clipRevealUp}
             >
-              Webdesign & Entwicklung.
+              Websites, die für Sie arbeiten.
             </motion.h2>
           </div>
         </motion.div>
