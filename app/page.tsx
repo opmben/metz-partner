@@ -8,8 +8,6 @@ import { Services } from '@/components/sections/Services'
 import { Process } from '@/components/sections/Process'
 import { Manifesto } from '@/components/sections/Manifesto'
 import { Contact } from '@/components/sections/Contact'
-import { StickyCTA } from '@/components/shared/StickyCTA'
-
 export default function Home() {
   return (
     <>
@@ -25,7 +23,6 @@ export default function Home() {
         <Contact />
       </main>
       <Footer />
-      <StickyCTA />
     </>
   )
 }

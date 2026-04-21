@@ -434,7 +434,8 @@ export function WhyUs() {
         paddingTop: '8rem',
         paddingBottom: '8rem',
         position: 'relative',
-        overflow: 'hidden',
+        overflow: 'clip',
+        overflowClipMargin: '200px',
       }}
     >
       {/* Atmospheric bloom — warm copper right edge */}
@@ -449,7 +450,7 @@ export function WhyUs() {
           maxWidth: 700,
           maxHeight: 750,
           background:
-            'radial-gradient(ellipse at 65% 40%, rgba(198,124,59,0.07) 0%, rgba(184,134,11,0.035) 40%, transparent 66%)',
+            'radial-gradient(ellipse at 65% 40%, rgba(198,124,59,0.13) 0%, rgba(184,134,11,0.065) 40%, transparent 66%)',
           filter: 'blur(80px)',
           pointerEvents: 'none',
         }}

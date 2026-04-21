@@ -167,7 +167,8 @@ export function Contact() {
         paddingTop: 'clamp(5rem, 8vw, 10rem)',
         paddingBottom: 'clamp(5rem, 8vw, 10rem)',
         position: 'relative',
-        overflow: 'hidden',
+        overflow: 'clip',
+        overflowClipMargin: '200px',
       }}
     >
       {/* Atmospheric glows */}
@@ -182,7 +183,7 @@ export function Contact() {
           maxWidth: 700,
           maxHeight: 700,
           background:
-            'radial-gradient(ellipse at 40% 50%, rgba(211,253,81,0.055) 0%, transparent 65%)',
+            'radial-gradient(ellipse at 40% 50%, rgba(211,253,81,0.10) 0%, transparent 65%)',
           filter: 'blur(90px)',
           pointerEvents: 'none',
         }}
@@ -191,14 +192,14 @@ export function Contact() {
         aria-hidden
         style={{
           position: 'absolute',
-          bottom: '0%',
+          bottom: '8%',
           right: '-5%',
           width: '48vw',
           height: '42vw',
           maxWidth: 620,
           maxHeight: 540,
           background:
-            'radial-gradient(ellipse at 65% 50%, rgba(212,131,10,0.07) 0%, transparent 60%)',
+            'radial-gradient(ellipse at 65% 50%, rgba(212,131,10,0.13) 0%, transparent 60%)',
           filter: 'blur(100px)',
           pointerEvents: 'none',
         }}

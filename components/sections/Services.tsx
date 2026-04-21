@@ -610,7 +610,8 @@ export function Services() {
         paddingTop: 'clamp(4rem, 8vw, 8rem)',
         paddingBottom: 'clamp(4rem, 8vw, 8rem)',
         position: 'relative',
-        overflow: 'hidden',
+        overflow: 'clip',
+        overflowClipMargin: '200px',
       }}
     >
       {/* Section atmosphere */}
@@ -625,7 +626,7 @@ export function Services() {
           maxWidth: 640,
           maxHeight: 640,
           background:
-            'radial-gradient(ellipse at 35% 65%, rgba(212,131,10,0.065) 0%, rgba(184,134,11,0.025) 45%, transparent 70%)',
+            'radial-gradient(ellipse at 35% 65%, rgba(212,131,10,0.12) 0%, rgba(184,134,11,0.05) 45%, transparent 70%)',
           filter: 'blur(72px)',
           pointerEvents: 'none',
         }}

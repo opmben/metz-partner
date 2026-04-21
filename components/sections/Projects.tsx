@@ -389,7 +389,8 @@ export function Projects() {
         paddingTop: '8rem',
         paddingBottom: '8rem',
         position: 'relative',
-        overflow: 'hidden',
+        overflow: 'clip',
+        overflowClipMargin: '200px',
       }}
     >
       {/* Warm atmospheric bloom — asymmetric, sits behind featured card */}
@@ -404,7 +405,7 @@ export function Projects() {
           maxWidth: 1000,
           maxHeight: 800,
           background:
-            'radial-gradient(ellipse at 70% 40%, rgba(212,131,10,0.08) 0%, rgba(198,124,59,0.05) 38%, transparent 65%)',
+            'radial-gradient(ellipse at 70% 40%, rgba(212,131,10,0.14) 0%, rgba(198,124,59,0.09) 38%, transparent 65%)',
           filter: 'blur(90px)',
           pointerEvents: 'none',
         }}
@@ -421,7 +422,7 @@ export function Projects() {
           maxWidth: 600,
           maxHeight: 500,
           background:
-            'radial-gradient(ellipse at 30% 60%, rgba(184,134,11,0.05) 0%, transparent 60%)',
+            'radial-gradient(ellipse at 30% 60%, rgba(184,134,11,0.09) 0%, transparent 60%)',
           filter: 'blur(72px)',
           pointerEvents: 'none',
         }}
@@ -435,51 +436,8 @@ export function Projects() {
           className="flex flex-col md:flex-row md:items-end md:justify-between"
           style={{ marginBottom: '3.5rem', gap: '1.5rem' }}
         >
-          {/* Left — eyebrow + headline */}
+          {/* Left — headline only, no eyebrow pill — this section leads with proof, not orientation */}
           <div>
-            {/* Eyebrow label — glass pill */}
-            <motion.div
-              initial={shouldReduce ? undefined : { opacity: 0, y: 10 }}
-              animate={
-                shouldReduce
-                  ? undefined
-                  : isHeaderInView
-                  ? { opacity: 1, y: 0 }
-                  : { opacity: 0, y: 10 }
-              }
-              transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
-              style={{ marginBottom: '1.1rem', display: 'inline-block' }}
-            >
-              <span
-                className="surface-floating"
-                style={{
-                  display: 'inline-flex',
-                  alignItems: 'center',
-                  gap: '0.5rem',
-                  padding: '0.35rem 0.9rem',
-                  fontFamily: 'var(--font-ui)',
-                  fontSize: '0.65rem',
-                  fontWeight: 400,
-                  textTransform: 'uppercase',
-                  letterSpacing: '0.14em',
-                  color: 'rgba(255,255,255,0.45)',
-                }}
-              >
-                {/* Warm dot */}
-                <span
-                  style={{
-                    width: 5,
-                    height: 5,
-                    borderRadius: '50%',
-                    background: 'var(--accent)',
-                    boxShadow: '0 0 8px rgba(211,253,81,0.55)',
-                    flexShrink: 0,
-                  }}
-                />
-                Ausgewählte Arbeiten
-              </span>
-            </motion.div>
-
             {/* Headline — clip reveal */}
             <div style={{ overflow: 'hidden' }}>
               <motion.h2
@@ -495,12 +453,35 @@ export function Projects() {
                 transition={{
                   duration: 0.95,
                   ease: [0.16, 1, 0.3, 1],
-                  delay: 0.07,
                 }}
               >
                 Arbeit, die überzeugt.
               </motion.h2>
             </div>
+
+            {/* Inline caption — plain, no glass surface */}
+            <motion.p
+              initial={shouldReduce ? undefined : { opacity: 0 }}
+              animate={
+                shouldReduce
+                  ? undefined
+                  : isHeaderInView
+                  ? { opacity: 1 }
+                  : { opacity: 0 }
+              }
+              transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1], delay: 0.18 }}
+              style={{
+                fontFamily: 'var(--font-ui)',
+                fontSize: '0.65rem',
+                fontWeight: 400,
+                textTransform: 'uppercase',
+                letterSpacing: '0.14em',
+                color: 'rgba(255,255,255,0.22)',
+                margin: '0.7rem 0 0',
+              }}
+            >
+              Ausgewählte Arbeiten
+            </motion.p>
           </div>
 
         </div>

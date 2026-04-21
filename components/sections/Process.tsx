@@ -439,7 +439,7 @@ function DesktopProcess({ shouldReduce }: { shouldReduce: boolean | null }) {
             maxWidth: 700,
             maxHeight: 800,
             background:
-              'radial-gradient(ellipse at 35% 45%, rgba(184,134,11,0.08) 0%, rgba(212,131,10,0.04) 40%, transparent 65%)',
+              'radial-gradient(ellipse at 35% 45%, rgba(184,134,11,0.14) 0%, rgba(212,131,10,0.07) 40%, transparent 65%)',
             filter: 'blur(80px)',
             pointerEvents: 'none',
           }}
@@ -492,19 +492,12 @@ function DesktopProcess({ shouldReduce }: { shouldReduce: boolean | null }) {
         >
           {/* Section header — compact inside sticky */}
           <div style={{ marginBottom: '2.5rem' }}>
-            <span
-              className="surface-floating"
+            {/* Plain inline label — no glass pill; the cinematic sticky context doesn't need the pill language */}
+            <div
               style={{
                 display: 'inline-flex',
                 alignItems: 'center',
                 gap: '0.5rem',
-                padding: '0.35rem 0.9rem',
-                fontFamily: 'var(--font-ui)',
-                fontSize: '0.65rem',
-                fontWeight: 400,
-                textTransform: 'uppercase' as const,
-                letterSpacing: '0.14em',
-                color: 'rgba(255,255,255,0.45)',
                 marginBottom: '0.85rem',
               }}
             >
@@ -518,8 +511,19 @@ function DesktopProcess({ shouldReduce }: { shouldReduce: boolean | null }) {
                   flexShrink: 0,
                 }}
               />
-              Der Ablauf
-            </span>
+              <span
+                style={{
+                  fontFamily: 'var(--font-ui)',
+                  fontSize: '0.65rem',
+                  fontWeight: 400,
+                  textTransform: 'uppercase' as const,
+                  letterSpacing: '0.14em',
+                  color: 'rgba(255,255,255,0.38)',
+                }}
+              >
+                Der Ablauf
+              </span>
+            </div>
             <h2
               style={{
                 fontFamily: 'var(--font-display)',
@@ -650,7 +654,7 @@ export function Process() {
             maxWidth: 700,
             maxHeight: 800,
             background:
-              'radial-gradient(ellipse at 35% 45%, rgba(184,134,11,0.08) 0%, rgba(212,131,10,0.04) 40%, transparent 65%)',
+              'radial-gradient(ellipse at 35% 45%, rgba(184,134,11,0.14) 0%, rgba(212,131,10,0.07) 40%, transparent 65%)',
             filter: 'blur(80px)',
             pointerEvents: 'none',
           }}
@@ -659,19 +663,11 @@ export function Process() {
         <div className="container-site" style={{ position: 'relative' }}>
           {/* Header */}
           <div style={{ marginBottom: '3.5rem' }}>
-            <span
-              className="surface-floating"
+            <div
               style={{
                 display: 'inline-flex',
                 alignItems: 'center',
                 gap: '0.5rem',
-                padding: '0.35rem 0.9rem',
-                fontFamily: 'var(--font-ui)',
-                fontSize: '0.65rem',
-                fontWeight: 400,
-                textTransform: 'uppercase' as const,
-                letterSpacing: '0.14em',
-                color: 'rgba(255,255,255,0.45)',
                 marginBottom: '1.1rem',
               }}
             >
@@ -685,8 +681,19 @@ export function Process() {
                   flexShrink: 0,
                 }}
               />
-              Der Ablauf
-            </span>
+              <span
+                style={{
+                  fontFamily: 'var(--font-ui)',
+                  fontSize: '0.65rem',
+                  fontWeight: 400,
+                  textTransform: 'uppercase' as const,
+                  letterSpacing: '0.14em',
+                  color: 'rgba(255,255,255,0.38)',
+                }}
+              >
+                Der Ablauf
+              </span>
+            </div>
             <h2 className="display-section">
               Kein Rätselraten. Kein Warten.
             </h2>
