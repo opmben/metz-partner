@@ -14,8 +14,8 @@ const founders = [
   {
     initial: 'B',
     name: 'Benedikt Metz',
-    role: 'Head of UI/UX Design',
-    bio: 'Hintergrund in Grafikdesign und Recht. Zuständig für alles, was man sieht — und dafür, dass es rechtlich stimmt.',
+    role: 'Head of Design & Struktur',
+    bio: 'Hintergrund in Design und Recht. Verantwortlich für Gestaltung, Nutzerführung und dafür, dass Ihre Website nicht nur gut aussieht, sondern auch sauber aufgebaut ist.',
     accentColor: 'rgba(211,253,81,0.92)',
     accentBg: 'rgba(211,253,81,0.10)',
     accentBorder: 'rgba(211,253,81,0.24)',
@@ -24,8 +24,8 @@ const founders = [
   {
     initial: 'M',
     name: 'Maximilian Metz',
-    role: 'Head of Marketing & Sales',
-    bio: 'Hintergrund in Marketing und Finanzen. Zuständig für Strategie, Wirkung und dafür, dass Ihre Website konvertiert.',
+    role: 'Head of Strategie & Wachstum',
+    bio: 'Fokus auf Marketing und Conversion. Zuständig für Strategie, Wirkung und dafür, dass Ihre Website messbar Anfragen generiert.',
     accentColor: 'rgba(211,253,81,0.80)',
     accentBg: 'rgba(211,253,81,0.08)',
     accentBorder: 'rgba(211,253,81,0.18)',
@@ -37,17 +37,17 @@ const differentiators = [
   {
     number: '01',
     title: 'Direkt & persönlich',
-    body: 'Kein Ticketsystem. Keine Vertretung. Immer wir.',
+    body: 'Kein Ticketsystem. Keine Weitergabe. Sie sprechen immer mit uns.',
   },
   {
     number: '02',
-    title: 'Regional & verbunden',
-    body: 'Aus Koblenz. Wir kennen den lokalen Markt.',
+    title: 'Regional & erreichbar',
+    body: 'Aus Koblenz. Wir kennen den Markt und sind jederzeit erreichbar.',
   },
   {
     number: '03',
-    title: 'Konzept bis Launch',
-    body: 'Strategie, Umsetzung und Übergabe — aus einer Hand.',
+    title: 'Von Idee bis Ergebnis',
+    body: 'Strategie, Umsetzung und Launch – alles aus einer Hand.',
   },
 ]
 
