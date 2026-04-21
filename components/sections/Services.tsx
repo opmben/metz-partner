@@ -1,6 +1,6 @@
 'use client'
 
-import { useRef, useState } from 'react'
+import { useRef, useState, useEffect } from 'react'
 import Image from 'next/image'
 import {
   motion,
@@ -165,6 +165,39 @@ function BrowserChrome({
   )
 }
 
+// ─── Video proof (state 0 only) ───────────────────────────────────────────────
+
+function VideoProof() {
+  const videoRef = useRef<HTMLVideoElement>(null)
+
+  useEffect(() => {
+    const v = videoRef.current
+    if (!v) return
+    v.play().catch(() => {/* autoplay blocked — video stays paused */})
+  }, [])
+
+  return (
+    <video
+      ref={videoRef}
+      src="/projekte/fahrschule-da-demo.mp4"
+      autoPlay
+      muted
+      loop
+      playsInline
+      aria-hidden="true"
+      style={{
+        position: 'absolute',
+        inset: 0,
+        width: '100%',
+        height: '100%',
+        objectFit: 'cover',
+        objectPosition: 'top center',
+        display: 'block',
+      }}
+    />
+  )
+}
+
 // ─── Proof panel ──────────────────────────────────────────────────────────────
 
 function ProofPanel({
@@ -216,7 +249,7 @@ function ProofPanel({
         <BrowserChrome isLive={s.isLive} shouldReduce={shouldReduce} />
       </div>
 
-      {/* Screenshot */}
+      {/* Proof area */}
       <div
         style={{
           position: 'relative',
@@ -246,17 +279,20 @@ function ProofPanel({
             transition={{ duration: 0.4, ease: EASE }}
             style={{ position: 'absolute', inset: 0 }}
           >
-            <Image
-              src="/projekte/Fahrschule-DA.jpg"
-              alt="Fahrschule Dirk Arnold – Website"
-              fill
-              sizes="(min-width: 768px) 56vw, 100vw"
-              style={{
-                objectFit: 'cover',
-                objectPosition: s.imgPosition,
-              }}
-              priority={activeIndex === 0}
-            />
+            {activeIndex === 0 ? (
+              <VideoProof />
+            ) : (
+              <Image
+                src="/projekte/Fahrschule-DA.jpg"
+                alt="Fahrschule Dirk Arnold – Website"
+                fill
+                sizes="(min-width: 768px) 56vw, 100vw"
+                style={{
+                  objectFit: 'cover',
+                  objectPosition: s.imgPosition,
+                }}
+              />
+            )}
 
             {/* Entwicklung: dot grid overlay */}
             {s.gridDots && !shouldReduce && (
