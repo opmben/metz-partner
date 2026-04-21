@@ -298,8 +298,7 @@ function ProofPanel({
               <VideoProof />
             ) : (
               <Image
-                src="/projekte/Fahrschule-DA.jpg"
-                alt="Fahrschule Dirk Arnold – Website"
+                src="public/visuals/firmbee-com-eMemmpUojlw-unsplash.jpg"
                 fill
                 sizes="(min-width: 768px) 56vw, 100vw"
                 style={{
