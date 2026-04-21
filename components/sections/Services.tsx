@@ -299,6 +299,7 @@ function ProofPanel({
             ) : (
               <Image
                 src="public/visuals/firmbee-com-eMemmpUojlw-unsplash.jpg"
+                alt="SEO"
                 fill
                 sizes="(min-width: 768px) 56vw, 100vw"
                 style={{
