@@ -561,13 +561,14 @@ function ServiceCard({
             }}
             transition={{ duration: 0.32 }}
             style={{
-              fontFamily: 'var(--font-display)',
-              fontStyle: 'italic',
-              fontSize: 'clamp(1.05rem, 1.55vw, 1.25rem)',
-              fontWeight: 400,
-              lineHeight: 1.15,
-              letterSpacing: '-0.015em',
-              margin: '0 0 clamp(0.45rem, 0.8vw, 0.65rem)',
+              fontFamily: 'var(--font-ui)',
+              fontSize: 'clamp(1.5rem, 2vw, 2rem)',
+              fontWeight: 500,
+              fontStyle: 'normal',
+              letterSpacing: '-0.03em',
+              lineHeight: 1.08,
+              color: 'var(--text)',
+              margin: 0,
             }}
           >
             {service.title}
