@@ -199,7 +199,7 @@ function FounderCard({
               style={{
                 position: 'absolute',
                 inset: 0,
-                background: 'rgba(0,0,0,0.18)',
+                background: 'rgba(0,0,0,0.06)',
                 pointerEvents: 'none',
                 zIndex: 1,
               }}
@@ -212,7 +212,7 @@ function FounderCard({
                 position: 'absolute',
                 inset: 0,
                 background:
-                  'radial-gradient(ellipse at 45% 45%, transparent 22%, rgba(0,0,0,0.52) 80%, rgba(0,0,0,0.72) 100%)',
+                  'radial-gradient(ellipse at 45% 45%, transparent 32%, rgba(0,0,0,0.24) 80%, rgba(0,0,0,0.38) 100%)',
                 pointerEvents: 'none',
                 zIndex: 2,
               }}
@@ -224,7 +224,7 @@ function FounderCard({
               style={{
                 position: 'absolute',
                 inset: 0,
-                background: 'linear-gradient(to bottom, rgba(8,8,8,0.32) 0%, transparent 28%)',
+                background: 'linear-gradient(to bottom, rgba(8,8,8,0.18) 0%, transparent 22%)',
                 pointerEvents: 'none',
                 zIndex: 2,
               }}
@@ -238,7 +238,7 @@ function FounderCard({
                 position: 'absolute',
                 inset: 0,
                 background:
-                  'linear-gradient(to bottom, transparent 40%, rgba(8,8,8,0.96) 100%)',
+                  'linear-gradient(to bottom, transparent 50%, rgba(8,8,8,0.88) 100%)',
                 pointerEvents: 'none',
                 zIndex: 3,
               }}
@@ -252,7 +252,7 @@ function FounderCard({
                 position: 'absolute',
                 inset: 0,
                 background:
-                  'linear-gradient(to right, transparent 48%, rgba(8,8,8,0.92) 100%)',
+                  'linear-gradient(to right, transparent 52%, rgba(8,8,8,0.78) 100%)',
                 pointerEvents: 'none',
                 zIndex: 3,
               }}
@@ -264,7 +264,7 @@ function FounderCard({
                 position: 'absolute',
                 inset: 0,
                 background:
-                  'linear-gradient(to bottom, transparent 55%, rgba(8,8,8,0.72) 100%)',
+                  'linear-gradient(to bottom, transparent 60%, rgba(8,8,8,0.52) 100%)',
                 pointerEvents: 'none',
                 zIndex: 3,
               }}
