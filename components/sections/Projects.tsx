@@ -376,7 +376,7 @@ export function Projects() {
   const shouldReduce = useReducedMotion()
 
   const realProjects = projects.filter((p) => p.imageReady && p.coverImage)
-  if (realProjects.length === 0) return null
+  if (realProjects.length < 2) return null
 
   const featuredProject = realProjects[0]
   const secondaryProjects = realProjects.slice(1, 3)
