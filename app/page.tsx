@@ -5,6 +5,7 @@ import { ProofStrip } from '@/components/sections/ProofStrip'
 import { Projects } from '@/components/sections/Projects'
 import { WhyUs } from '@/components/sections/WhyUs'
 import { Services } from '@/components/sections/Services'
+import { Pricing } from '@/components/sections/Pricing'
 import { Process } from '@/components/sections/Process'
 import { Manifesto } from '@/components/sections/Manifesto'
 import { Contact } from '@/components/sections/Contact'
@@ -18,6 +19,7 @@ export default function Home() {
         <Projects />
         <WhyUs />
         <Services />
+        <Pricing />
         <Process />
         <Manifesto />
         <Contact />

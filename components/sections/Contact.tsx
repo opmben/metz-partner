@@ -208,7 +208,7 @@ export function Contact() {
       <div className="container-site" style={{ position: 'relative' }}>
 
         {/* ── Section header ── */}
-        <div ref={headerRef} style={{ marginBottom: 'clamp(3rem, 5vw, 4.5rem)' }}>
+        <div id="kontakt-heading" ref={headerRef} style={{ marginBottom: 'clamp(3rem, 5vw, 4.5rem)' }}>
           <motion.div
             initial={shouldReduce ? undefined : { opacity: 0, y: 10 }}
             animate={

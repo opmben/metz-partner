@@ -211,8 +211,9 @@ The homepage will usually work best when structured in this order:
 3. Why Metz & Partner
 4. Services / What You Get
 5. Process
-6. Contact
-7. Footer
+6. Pricing
+7. Contact
+8. Footer
 
 This is the preferred conversion structure for Metz & Partner at the current stage.
 
