@@ -60,18 +60,18 @@ function FounderCard({
   founder,
   shouldReduce,
   delay,
-  featured = false,
+  slideFrom = 28,
 }: {
   founder: (typeof founders)[0]
   shouldReduce: boolean | null
   delay: number
-  featured?: boolean
+  slideFrom?: number
 }) {
   const [hovered, setHovered] = useState(false)
   const ref = useRef<HTMLDivElement>(null)
   const isInView = useInView(ref, { once: true, margin: '-40px' })
 
-  const xStart = featured ? -28 : 28
+  const xStart = slideFrom
 
   return (
     <motion.div
@@ -121,9 +121,7 @@ function FounderCard({
             bottom: '-0.18em',
             right: '-0.03em',
             fontFamily: 'var(--font-display)',
-            fontSize: featured
-              ? 'clamp(9rem, 20vw, 18rem)'
-              : 'clamp(7rem, 14vw, 13rem)',
+            fontSize: 'clamp(7rem, 14vw, 14rem)',
             fontWeight: 400,
             fontStyle: 'italic',
             lineHeight: 1,
@@ -277,9 +275,7 @@ function FounderCard({
           <div
             style={{
               flex: 1,
-              padding: featured
-                ? 'clamp(2rem, 3.5vw, 2.75rem)'
-                : 'clamp(1.75rem, 3vw, 2.25rem)',
+              padding: 'clamp(1.75rem, 3vw, 2.5rem)',
               display: 'flex',
               flexDirection: 'column',
               position: 'relative',
@@ -319,9 +315,7 @@ function FounderCard({
                 }}
                 style={{
                   fontFamily: 'var(--font-display)',
-                  fontSize: featured
-                    ? 'clamp(1.5rem, 2.6vw, 2.25rem)'
-                    : 'clamp(1.2rem, 2vw, 1.75rem)',
+                  fontSize: 'clamp(1.3rem, 2.2vw, 2rem)',
                   fontWeight: 400,
                   fontStyle: 'italic',
                   color: 'var(--text)',
@@ -370,7 +364,7 @@ function FounderCard({
               }}
               style={{
                 fontFamily: 'var(--font-ui)',
-                fontSize: featured ? '0.9rem' : '0.875rem',
+                fontSize: '0.9rem',
                 fontWeight: 300,
                 color: 'var(--muted)',
                 lineHeight: 1.8,
@@ -610,14 +604,14 @@ export function WhyUs() {
 
         {/* ── Asymmetric founders grid ── */}
         <div
-          className="grid grid-cols-1 lg:grid-cols-[3fr_2fr]"
+          className="grid grid-cols-1 lg:grid-cols-2"
           style={{ gap: '1rem', marginBottom: '1rem' }}
         >
           <FounderCard
             founder={founders[0]}
             shouldReduce={shouldReduce}
             delay={0.14}
-            featured
+            slideFrom={-28}
           />
           <FounderCard
             founder={founders[1]}
