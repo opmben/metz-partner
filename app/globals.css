@@ -652,6 +652,37 @@ body::before {
   }
 }
 
+/* ─── Founder card layout ────────────────────────────────────────── */
+.founder-card-body {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  position: relative;
+  z-index: 1;
+  min-height: 0;
+}
+
+@media (min-width: 768px) {
+  .founder-card-body {
+    flex-direction: row;
+  }
+}
+
+.founder-portrait-zone {
+  flex-shrink: 0;
+  position: relative;
+  height: clamp(220px, 55vw, 300px);
+  overflow: hidden;
+}
+
+@media (min-width: 768px) {
+  .founder-portrait-zone {
+    height: auto;
+    align-self: stretch;
+    width: 36%;
+  }
+}
+
 /* ─── Contact layout ─────────────────────────────────────────────── */
 .contact-layout {
   grid-template-columns: minmax(0, 1fr);

@@ -1,5 +1,6 @@
 'use client'
 import { useRef, useState } from 'react'
+import Image from 'next/image'
 import {
   motion,
   useInView,
@@ -18,6 +19,8 @@ const founders = [
     accentBg: 'rgba(211,253,81,0.10)',
     accentBorder: 'rgba(211,253,81,0.24)',
     glowColor: 'rgba(211,253,81,0.10)',
+    portrait: '/founders/benedikt.png',
+    portraitAlt: 'Benedikt Metz – Head of Design & Struktur bei Metz & Partner',
   },
   {
     initial: 'M',
@@ -28,6 +31,8 @@ const founders = [
     accentBg: 'rgba(211,253,81,0.08)',
     accentBorder: 'rgba(211,253,81,0.18)',
     glowColor: 'rgba(211,253,81,0.08)',
+    portrait: '/founders/maximilian.png',
+    portraitAlt: 'Maximilian Metz – Head of Strategie & Wachstum bei Metz & Partner',
   },
 ]
 
@@ -103,11 +108,11 @@ function FounderCard({
           flexDirection: 'column',
         }}
       >
-        {/* Ghost initial — large background glyph */}
+        {/* Ghost initial — atmospheric depth behind text zone */}
         <motion.span
           aria-hidden
           animate={{
-            opacity: hovered && !shouldReduce ? 0.048 : 0.022,
+            opacity: hovered && !shouldReduce ? 0.036 : 0.014,
             scale: hovered && !shouldReduce ? 1.04 : 1,
           }}
           transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
@@ -169,155 +174,213 @@ function FounderCard({
           }}
         />
 
-        {/* Content */}
-        <div
-          style={{
-            padding: featured
-              ? 'clamp(2rem, 3.5vw, 2.75rem)'
-              : 'clamp(1.75rem, 3vw, 2.25rem)',
-            display: 'flex',
-            flexDirection: 'column',
-            flex: 1,
-            position: 'relative',
-            zIndex: 1,
-          }}
-        >
-          {/* Initial badge */}
-          <motion.div
-            animate={{
-              background: hovered
-                ? founder.accentBg
-                : 'rgba(255,255,255,0.04)',
-              borderColor: hovered
-                ? founder.accentBorder
-                : 'rgba(255,255,255,0.08)',
-            }}
-            transition={{ duration: 0.32 }}
+        {/* Card body: portrait zone + text zone */}
+        <div className="founder-card-body">
+
+          {/* ── Portrait zone ── */}
+          <div className="founder-portrait-zone">
+            {/* Portrait image */}
+            <motion.div
+              animate={{ opacity: hovered ? 1 : 0.88 }}
+              transition={{ duration: 0.45, ease: [0.16, 1, 0.3, 1] }}
+              style={{ position: 'absolute', inset: 0 }}
+            >
+              <Image
+                src={founder.portrait}
+                alt={founder.portraitAlt}
+                fill
+                style={{ objectFit: 'cover', objectPosition: '50% 18%' }}
+                sizes="(max-width: 767px) 100vw, (max-width: 1023px) 36vw, 20vw"
+                loading="lazy"
+              />
+            </motion.div>
+
+            {/* Tonal base — slight darkening to harmonize studio background */}
+            <div
+              aria-hidden
+              style={{
+                position: 'absolute',
+                inset: 0,
+                background: 'rgba(0,0,0,0.18)',
+                pointerEvents: 'none',
+                zIndex: 1,
+              }}
+            />
+
+            {/* Radial vignette — edge darkening */}
+            <div
+              aria-hidden
+              style={{
+                position: 'absolute',
+                inset: 0,
+                background:
+                  'radial-gradient(ellipse at 45% 45%, transparent 22%, rgba(0,0,0,0.52) 80%, rgba(0,0,0,0.72) 100%)',
+                pointerEvents: 'none',
+                zIndex: 2,
+              }}
+            />
+
+            {/* Top edge fade */}
+            <div
+              aria-hidden
+              style={{
+                position: 'absolute',
+                inset: 0,
+                background: 'linear-gradient(to bottom, rgba(8,8,8,0.32) 0%, transparent 28%)',
+                pointerEvents: 'none',
+                zIndex: 2,
+              }}
+            />
+
+            {/* Mobile: bottom fade into card */}
+            <div
+              aria-hidden
+              className="md:hidden"
+              style={{
+                position: 'absolute',
+                inset: 0,
+                background:
+                  'linear-gradient(to bottom, transparent 40%, rgba(8,8,8,0.96) 100%)',
+                pointerEvents: 'none',
+                zIndex: 3,
+              }}
+            />
+
+            {/* Desktop: right fade + bottom fade into card */}
+            <div
+              aria-hidden
+              className="hidden md:block"
+              style={{
+                position: 'absolute',
+                inset: 0,
+                background:
+                  'linear-gradient(to right, transparent 48%, rgba(8,8,8,0.92) 100%)',
+                pointerEvents: 'none',
+                zIndex: 3,
+              }}
+            />
+            <div
+              aria-hidden
+              className="hidden md:block"
+              style={{
+                position: 'absolute',
+                inset: 0,
+                background:
+                  'linear-gradient(to bottom, transparent 55%, rgba(8,8,8,0.72) 100%)',
+                pointerEvents: 'none',
+                zIndex: 3,
+              }}
+            />
+          </div>
+
+          {/* ── Text zone ── */}
+          <div
             style={{
-              width: featured ? 54 : 48,
-              height: featured ? 54 : 48,
-              borderRadius: 13,
-              border: '1px solid',
+              flex: 1,
+              padding: featured
+                ? 'clamp(2rem, 3.5vw, 2.75rem)'
+                : 'clamp(1.75rem, 3vw, 2.25rem)',
               display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-              flexShrink: 0,
-              marginBottom: '1.5rem',
+              flexDirection: 'column',
+              position: 'relative',
+              zIndex: 1,
             }}
           >
-            <motion.span
-              animate={{
-                color: hovered
-                  ? founder.accentColor
-                  : 'rgba(255,255,255,0.22)',
-              }}
-              transition={{ duration: 0.32 }}
+            {/* Role */}
+            <p
               style={{
-                fontFamily: 'var(--font-display)',
-                fontSize: featured ? '1.65rem' : '1.4rem',
+                fontFamily: 'var(--font-ui)',
+                fontSize: '0.62rem',
                 fontWeight: 400,
-                fontStyle: 'italic',
-                lineHeight: 1,
+                textTransform: 'uppercase' as const,
+                letterSpacing: '0.15em',
+                color: 'var(--muted)',
+                margin: '0 0 0.4rem',
               }}
             >
-              {founder.initial}
-            </motion.span>
-          </motion.div>
+              {founder.role}
+            </p>
 
-          {/* Role */}
-          <p
-            style={{
-              fontFamily: 'var(--font-ui)',
-              fontSize: '0.62rem',
-              fontWeight: 400,
-              textTransform: 'uppercase' as const,
-              letterSpacing: '0.15em',
-              color: 'var(--muted)',
-              margin: '0 0 0.4rem',
-            }}
-          >
-            {founder.role}
-          </p>
+            {/* Name — clip reveal from bottom */}
+            <div style={{ overflow: 'hidden', marginBottom: '1.5rem' }}>
+              <motion.h3
+                initial={shouldReduce ? undefined : { y: '110%' }}
+                animate={
+                  shouldReduce
+                    ? undefined
+                    : isInView
+                    ? { y: '0%' }
+                    : { y: '110%' }
+                }
+                transition={{
+                  duration: 0.75,
+                  ease: [0.16, 1, 0.3, 1],
+                  delay: delay + 0.1,
+                }}
+                style={{
+                  fontFamily: 'var(--font-display)',
+                  fontSize: featured
+                    ? 'clamp(1.5rem, 2.6vw, 2.25rem)'
+                    : 'clamp(1.2rem, 2vw, 1.75rem)',
+                  fontWeight: 400,
+                  fontStyle: 'italic',
+                  color: 'var(--text)',
+                  lineHeight: 1.1,
+                  letterSpacing: '-0.02em',
+                  margin: 0,
+                }}
+              >
+                {founder.name}
+              </motion.h3>
+            </div>
 
-          {/* Name — clip reveal from bottom */}
-          <div style={{ overflow: 'hidden', marginBottom: '1.5rem' }}>
-            <motion.h3
-              initial={shouldReduce ? undefined : { y: '110%' }}
+            {/* Divider */}
+            <motion.div
+              initial={shouldReduce ? undefined : { scaleX: 0 }}
+              animate={
+                shouldReduce ? undefined : isInView ? { scaleX: 1 } : { scaleX: 0 }
+              }
+              transition={{
+                duration: 0.7,
+                ease: [0.16, 1, 0.3, 1],
+                delay: delay + 0.22,
+              }}
+              style={{
+                height: 1,
+                background: 'rgba(255,255,255,0.06)',
+                marginBottom: '1.5rem',
+                transformOrigin: 'left',
+              }}
+            />
+
+            {/* Bio */}
+            <motion.p
+              initial={shouldReduce ? undefined : { opacity: 0, y: 12 }}
               animate={
                 shouldReduce
                   ? undefined
                   : isInView
-                  ? { y: '0%' }
-                  : { y: '110%' }
+                  ? { opacity: 1, y: 0 }
+                  : { opacity: 0, y: 12 }
               }
               transition={{
-                duration: 0.75,
+                duration: 0.7,
                 ease: [0.16, 1, 0.3, 1],
-                delay: delay + 0.1,
+                delay: delay + 0.28,
               }}
               style={{
-                fontFamily: 'var(--font-display)',
-                fontSize: featured
-                  ? 'clamp(1.5rem, 2.6vw, 2.25rem)'
-                  : 'clamp(1.2rem, 2vw, 1.75rem)',
-                fontWeight: 400,
-                fontStyle: 'italic',
-                color: 'var(--text)',
-                lineHeight: 1.1,
-                letterSpacing: '-0.02em',
+                fontFamily: 'var(--font-ui)',
+                fontSize: featured ? '0.9rem' : '0.875rem',
+                fontWeight: 300,
+                color: 'var(--muted)',
+                lineHeight: 1.8,
                 margin: 0,
+                flex: 1,
               }}
             >
-              {founder.name}
-            </motion.h3>
+              {founder.bio}
+            </motion.p>
           </div>
-
-          {/* Divider */}
-          <motion.div
-            initial={shouldReduce ? undefined : { scaleX: 0 }}
-            animate={
-              shouldReduce ? undefined : isInView ? { scaleX: 1 } : { scaleX: 0 }
-            }
-            transition={{
-              duration: 0.7,
-              ease: [0.16, 1, 0.3, 1],
-              delay: delay + 0.22,
-            }}
-            style={{
-              height: 1,
-              background: 'rgba(255,255,255,0.06)',
-              marginBottom: '1.5rem',
-              transformOrigin: 'left',
-            }}
-          />
-
-          {/* Bio */}
-          <motion.p
-            initial={shouldReduce ? undefined : { opacity: 0, y: 12 }}
-            animate={
-              shouldReduce
-                ? undefined
-                : isInView
-                ? { opacity: 1, y: 0 }
-                : { opacity: 0, y: 12 }
-            }
-            transition={{
-              duration: 0.7,
-              ease: [0.16, 1, 0.3, 1],
-              delay: delay + 0.28,
-            }}
-            style={{
-              fontFamily: 'var(--font-ui)',
-              fontSize: featured ? '0.9rem' : '0.875rem',
-              fontWeight: 300,
-              color: 'var(--muted)',
-              lineHeight: 1.8,
-              margin: 0,
-              flex: 1,
-            }}
-          >
-            {founder.bio}
-          </motion.p>
         </div>
       </motion.div>
     </motion.div>
