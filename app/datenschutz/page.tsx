@@ -20,7 +20,7 @@ const sections = [
   {
     title: 'Verantwortlicher',
     content:
-      'Verantwortlich für die Datenverarbeitung auf dieser Website ist: Metz & Partner GbR, Benedikt Metz & Maximilian Metz, Koblenz. E-Mail: anfragen@metzundpartner.com',
+      'Verantwortlich für die Datenverarbeitung auf dieser Website ist: Benedikt Metz, Maximilian Metz & Pavel Baev GbR, Metz & Partner Webdesign. E-Mail: anfragen@metzundpartner.com',
   },
   {
     title: 'Erhebung und Speicherung personenbezogener Daten',
