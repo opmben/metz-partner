@@ -309,8 +309,7 @@ export function Hero() {
           >
             <MagneticButton shouldReduce={shouldReduce}>
               <motion.a
-                href="#projekte"
-                onClick={scrollTo('#projekte')}
+                href="/projekte"
                 className="button-glass-primary"
                 whileHover={shouldReduce ? undefined : { scale: 1.05, y: -3 }}
                 whileTap={shouldReduce ? undefined : { scale: 0.97 }}
