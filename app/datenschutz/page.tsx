@@ -20,7 +20,7 @@ const sections = [
   {
     title: 'Verantwortlicher',
     content:
-      'Verantwortlich für die Datenverarbeitung auf dieser Website ist: Metz & Partner GbR, Benedikt Metz & Maximilian Metz, Koblenz. E-Mail: hallo@metzundpartner.de',
+      'Verantwortlich für die Datenverarbeitung auf dieser Website ist: Metz & Partner GbR, Benedikt Metz & Maximilian Metz, Koblenz. E-Mail: anfragen@metzundpartner.com',
   },
   {
     title: 'Erhebung und Speicherung personenbezogener Daten',
@@ -55,7 +55,7 @@ const sections = [
   {
     title: 'Ihre Rechte',
     content:
-      'Sie haben das Recht auf Auskunft über die bei uns gespeicherten personenbezogenen Daten, Berichtigung, Löschung, Einschränkung der Verarbeitung sowie Datenübertragbarkeit. Zur Ausübung dieser Rechte wenden Sie sich bitte an hallo@metzundpartner.de.',
+      'Sie haben das Recht auf Auskunft über die bei uns gespeicherten personenbezogenen Daten, Berichtigung, Löschung, Einschränkung der Verarbeitung sowie Datenübertragbarkeit. Zur Ausübung dieser Rechte wenden Sie sich bitte an anfragen@metzundpartner.com.',
   },
 ]
 
