@@ -99,7 +99,7 @@ export default function ImpressumPage() {
             <div style={{ borderTop: '1px solid var(--border)', paddingTop: '2rem' }}>
               <p style={sectionHeading}>Angaben gemäß § 5 TMG</p>
               <p>
-                Metz & Partner GbR
+                Benedikt Metz, Maximilian Metz & Pavel Baev GbR, Metz & Partner Webdesign
                 <br />
                 Benedikt Metz & Maximilian Metz
                 <br />
