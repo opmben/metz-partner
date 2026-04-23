@@ -403,10 +403,10 @@ function PricingCard({
           <div
             style={{
               fontFamily: 'var(--font-ui)',
-              fontSize: '0.54rem',
+              fontSize: '0.68rem',
               fontWeight: 400,
               textTransform: 'uppercase' as const,
-              letterSpacing: '0.15em',
+              letterSpacing: '0.13em',
               color: 'rgba(255,255,255,0.18)',
               marginBottom: '0.25rem',
             }}

@@ -20,7 +20,7 @@ export default function ImpressumPage() {
   return (
     <>
       <Navigation />
-      <main style={{ paddingTop: '8rem', paddingBottom: '6rem' }}>
+      <main style={{ paddingTop: 'clamp(5rem, 10vw, 8rem)', paddingBottom: 'clamp(3.5rem, 8vw, 6rem)' }}>
         <div className="container-site" style={{ maxWidth: 680 }}>
 
           {/* Breadcrumb */}

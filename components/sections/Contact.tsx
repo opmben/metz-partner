@@ -468,7 +468,7 @@ export function Contact() {
                           style={{
                             fontFamily: 'var(--font-display)',
                             fontStyle: 'italic',
-                            fontSize: '0.58rem',
+                            fontSize: '0.72rem',
                             color: 'rgba(211,253,81,0.80)',
                             lineHeight: 1,
                             letterSpacing: '0.02em',

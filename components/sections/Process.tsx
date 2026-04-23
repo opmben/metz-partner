@@ -585,11 +585,11 @@ function DesktopProcess({ shouldReduce }: { shouldReduce: boolean | null }) {
           <p
             style={{
               fontFamily: 'var(--font-ui)',
-              fontSize: '0.58rem',
+              fontSize: '0.65rem',
               fontWeight: 300,
               color: 'rgba(255,255,255,0.45)',
               textTransform: 'uppercase' as const,
-              letterSpacing: '0.14em',
+              letterSpacing: '0.13em',
               margin: 0,
             }}
           >

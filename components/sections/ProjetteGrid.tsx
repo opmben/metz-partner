@@ -12,7 +12,7 @@ export function ProjetteGrid() {
   const shouldReduce = useReducedMotion()
 
   return (
-    <section style={{ paddingTop: '10rem', paddingBottom: '8rem' }}>
+    <section style={{ paddingTop: 'clamp(5rem, 10vw, 10rem)', paddingBottom: 'clamp(4rem, 8vw, 8rem)' }}>
       <div className="container-site">
         <motion.div
           ref={ref}
