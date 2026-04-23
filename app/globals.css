@@ -628,29 +628,7 @@ body::before {
   to   { transform: translateX(0); }
 }
 
-/* ─── Services layout ────────────────────────────────────────────── */
-.services-layout {
-  grid-template-columns: minmax(0, 1fr);
-}
-
-@media (min-width: 768px) {
-  .services-layout {
-    grid-template-columns: 1fr 1fr;
-    align-items: start;
-  }
-}
-
-/* ─── Services rails layout ──────────────────────────────────────── */
-.services-rails-layout {
-  grid-template-columns: minmax(0, 1fr);
-}
-
-@media (min-width: 768px) {
-  .services-rails-layout {
-    grid-template-columns: 1fr 1.35fr;
-    align-items: start;
-  }
-}
+/* ─── Services layout — handled via Tailwind utilities in component ─ */
 
 /* ─── Founder card layout ────────────────────────────────────────── */
 .founder-card-body {

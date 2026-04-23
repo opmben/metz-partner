@@ -1,70 +1,96 @@
 'use client'
 
-import { useRef, useState, useEffect } from 'react'
+import { useRef, useState } from 'react'
 import Image from 'next/image'
-import {
-  motion,
-  AnimatePresence,
-  useInView,
-  useReducedMotion,
-} from 'framer-motion'
+import Link from 'next/link'
+import { motion, useInView, useReducedMotion } from 'framer-motion'
 import { SectionLabel } from '@/components/shared/SectionLabel'
 
 const EASE: [number, number, number, number] = [0.16, 1, 0.3, 1]
 
 // ─── Data ─────────────────────────────────────────────────────────────────────
 
-const services = [
+const modules = [
   {
-    id: 'webdesign',
     number: '01',
     label: 'Webdesign',
     title: 'Individuell statt Template.',
-    body: 'Keine Templates. Design, Struktur und Inhalte werden gezielt auf Ihr Unternehmen und Ihre Zielgruppe abgestimmt.',
-    imgPosition: 'top center',
-    isLive: false,
-    gridDots: false,
-    glow: 'rgba(211,253,81,0.048)',
+    body: 'Design und Struktur werden gezielt auf Ihr Unternehmen und Ihre Zielgruppe abgestimmt — kein Baukasten.',
   },
   {
-    id: 'entwicklung',
     number: '02',
     label: 'Entwicklung',
     title: 'Schnell. Stabil. Zuverlässig.',
-    body: 'Schnell, mobiloptimiert und zuverlässig. Moderne Technologien sorgen für Performance und Stabilität.',
-    imgPosition: '38% center',
-    isLive: false,
-    gridDots: true,
-    glow: 'rgba(211,253,81,0.026)',
+    body: 'Mobiloptimiert, performant, langfristig stabil. Moderne Technologien ohne unnötige Komplexität.',
   },
   {
-    id: 'sichtbarkeit',
     number: '03',
-    label: 'Sichtbarkeit & Betreuung',
-    title: 'Ihre Website entwickelt sich weiter.',
-    body: 'SEO-Grundlagen, laufende Anpassungen und regelmäßige Updates – damit Ihre Website dauerhaft Ergebnisse liefert.',
-    imgPosition: 'bottom center',
-    isLive: true,
-    gridDots: false,
-    glow: 'rgba(211,253,81,0.068)',
+    label: 'Sichtbarkeit',
+    title: 'Ihre Website wächst mit.',
+    body: 'SEO-Grundlagen, laufende Pflege und regelmäßige Updates — damit die Website dauerhaft wirkt.',
   },
-] as const
+]
 
-// ─── Browser chrome ───────────────────────────────────────────────────────────
+// ─── Before Chrome ────────────────────────────────────────────────────────────
 
-function BrowserChrome({
-  isLive,
-  shouldReduce,
-}: {
-  isLive: boolean
-  shouldReduce: boolean | null
-}) {
+function BeforeChrome() {
+  return (
+    <div
+      style={{
+        height: 36,
+        background: 'rgba(4,4,4,0.97)',
+        borderBottom: '1px solid rgba(255,255,255,0.04)',
+        display: 'flex',
+        alignItems: 'center',
+        padding: '0 12px',
+        gap: 8,
+        flexShrink: 0,
+      }}
+    >
+      <div style={{ display: 'flex', gap: 5 }}>
+        {['#FF5F57', '#FEBC2E', '#28C840'].map((c, i) => (
+          <div
+            key={i}
+            style={{ width: 8, height: 8, borderRadius: '50%', background: c, opacity: 0.32 }}
+          />
+        ))}
+      </div>
+      <div
+        style={{
+          flex: 1,
+          height: 20,
+          background: 'rgba(255,255,255,0.015)',
+          border: '1px solid rgba(255,255,255,0.04)',
+          borderRadius: 4,
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+        }}
+      >
+        <span
+          style={{
+            fontFamily: 'var(--font-ui)',
+            fontSize: '0.5rem',
+            color: 'rgba(255,255,255,0.15)',
+            letterSpacing: '0.02em',
+          }}
+        >
+          fahrschule-dirk-arnold.de
+        </span>
+      </div>
+    </div>
+  )
+}
+
+// ─── After Chrome ─────────────────────────────────────────────────────────────
+
+function AfterChrome({ shouldReduce }: { shouldReduce: boolean | null }) {
   return (
     <div
       style={{
         height: 40,
         background: 'rgba(4,4,4,0.97)',
-        borderBottom: '1px solid rgba(255,255,255,0.055)',
+        borderBottom: '1px solid rgba(255,255,255,0.065)',
         display: 'flex',
         alignItems: 'center',
         padding: '0 14px',
@@ -72,7 +98,7 @@ function BrowserChrome({
         flexShrink: 0,
       }}
     >
-      <div style={{ display: 'flex', gap: 6, flexShrink: 0 }}>
+      <div style={{ display: 'flex', gap: 6 }}>
         {[
           { c: '#FF5F57', g: 'rgba(255,95,87,0.5)' },
           { c: '#FEBC2E', g: 'rgba(254,188,46,0.45)' },
@@ -92,7 +118,6 @@ function BrowserChrome({
           />
         ))}
       </div>
-
       <div
         style={{
           flex: 1,
@@ -103,505 +128,49 @@ function BrowserChrome({
           display: 'flex',
           alignItems: 'center',
           gap: 6,
-          overflow: 'hidden',
           padding: '0 9px',
         }}
       >
-        <motion.div
-          animate={{
-            background: isLive ? 'var(--accent)' : 'rgba(200,255,0,0.35)',
-            boxShadow: isLive
-              ? '0 0 10px rgba(211,253,81,0.85)'
-              : '0 0 4px rgba(211,253,81,0.3)',
-          }}
-          transition={{ duration: 0.45, ease: EASE }}
+        <div
           style={{
             width: 5,
             height: 5,
             borderRadius: '50%',
+            background: 'var(--accent)',
+            boxShadow: '0 0 10px rgba(211,253,81,0.85)',
+            animation: shouldReduce ? 'none' : 'heroPulse 1.8s ease-in-out infinite',
             flexShrink: 0,
-            animation:
-              isLive && !shouldReduce
-                ? 'heroPulse 1.8s ease-in-out infinite'
-                : 'none',
           }}
         />
         <span
           style={{
             fontFamily: 'var(--font-ui)',
             fontSize: '0.585rem',
-            color: 'rgba(255,255,255,0.24)',
+            color: 'rgba(255,255,255,0.26)',
             letterSpacing: '0.025em',
-            whiteSpace: 'nowrap',
           }}
         >
+          fahrschule-dirk-arnold.de
         </span>
-        <AnimatePresence>
-          {isLive && (
-            <motion.span
-              initial={{ opacity: 0, scale: 0.8, x: -4 }}
-              animate={{ opacity: 1, scale: 1, x: 0 }}
-              exit={{ opacity: 0, scale: 0.8, x: -4 }}
-              transition={{ duration: 0.28, ease: EASE }}
-              style={{
-                fontFamily: 'var(--font-ui)',
-                fontSize: '0.52rem',
-                fontWeight: 400,
-                letterSpacing: '0.12em',
-                textTransform: 'uppercase',
-                color: 'rgba(211,253,81,0.78)',
-                flexShrink: 0,
-              }}
-            >
-              ● Live
-            </motion.span>
-          )}
-        </AnimatePresence>
       </div>
-
       <div style={{ width: 40, flexShrink: 0 }} />
     </div>
   )
 }
 
-// ─── Video proof (state 0 only) ───────────────────────────────────────────────
-
-function VideoProof() {
-  const videoRef = useRef<HTMLVideoElement>(null)
-  const containerRef = useRef<HTMLDivElement>(null)
-
-  useEffect(() => {
-    const v = videoRef.current
-    const el = containerRef.current
-    if (!v || !el) return
-
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        if (entry.isIntersecting) {
-          v.play().catch(() => {})
-        } else {
-          v.pause()
-        }
-      },
-      { threshold: 0.1 }
-    )
-    observer.observe(el)
-    return () => observer.disconnect()
-  }, [])
-
-  return (
-    <div ref={containerRef} style={{ position: 'absolute', inset: 0 }}>
-      <video
-        ref={videoRef}
-        src="/projekte/Video DESIGN 720p cmpr.mp4"
-        muted
-        loop
-        playsInline
-        preload="none"
-        aria-hidden="true"
-        style={{
-          position: 'absolute',
-          inset: 0,
-          width: '100%',
-          height: '100%',
-          objectFit: 'cover',
-          objectPosition: 'top center',
-          display: 'block',
-        }}
-      />
-    </div>
-  )
-}
-
-// ─── Proof panel ──────────────────────────────────────────────────────────────
-
-function ProofPanel({
-  activeIndex,
-  shouldReduce,
-  isInView,
-}: {
-  activeIndex: number
-  shouldReduce: boolean | null
-  isInView: boolean
-}) {
-  const s = services[activeIndex]
-
-  return (
-    <motion.div
-      initial={shouldReduce ? undefined : { opacity: 0, y: 28, scale: 0.975 }}
-      animate={
-        shouldReduce
-          ? undefined
-          : isInView
-          ? { opacity: 1, y: 0, scale: 1 }
-          : { opacity: 0, y: 28, scale: 0.975 }
-      }
-      transition={{ duration: 1.05, ease: EASE, delay: 0.2 }}
-      className="panel-browser"
-      style={{ padding: 0, overflow: 'hidden', position: 'relative' }}
-    >
-      {/* Per-state atmosphere */}
-      <AnimatePresence mode="wait">
-        <motion.div
-          key={`atm-${activeIndex}`}
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          exit={{ opacity: 0 }}
-          transition={{ duration: 0.6 }}
-          aria-hidden
-          style={{
-            position: 'absolute',
-            inset: 0,
-            background: `radial-gradient(ellipse at 75% 22%, ${s.glow} 0%, transparent 64%)`,
-            pointerEvents: 'none',
-            zIndex: 0,
-          }}
-        />
-      </AnimatePresence>
-
-      {/* Chrome */}
-      <div style={{ position: 'relative', zIndex: 1 }}>
-        <BrowserChrome isLive={s.isLive} shouldReduce={shouldReduce} />
-      </div>
-
-      {/* Proof area */}
-      <div
-        style={{
-          position: 'relative',
-          aspectRatio: '16/10',
-          overflow: 'hidden',
-          zIndex: 1,
-        }}
-      >
-        <AnimatePresence mode="wait">
-          <motion.div
-            key={`proof-${activeIndex}`}
-            initial={
-              shouldReduce
-                ? undefined
-                : { opacity: 0, filter: 'blur(10px)', scale: 1.018 }
-            }
-            animate={
-              shouldReduce
-                ? undefined
-                : { opacity: 1, filter: 'blur(0px)', scale: 1 }
-            }
-            exit={
-              shouldReduce
-                ? undefined
-                : { opacity: 0, filter: 'blur(10px)', scale: 1.018 }
-            }
-            transition={{ duration: 0.4, ease: EASE }}
-            style={{ position: 'absolute', inset: 0 }}
-          >
-            {activeIndex === 0 ? (
-              <VideoProof />
-            ) : (
-              <Image
-                src="/visuals/firmbee-com-eMemmpUojlw-unsplash.jpg"
-                alt="SEO"
-                fill
-                sizes="(min-width: 768px) 56vw, 100vw"
-                style={{
-                  objectFit: 'cover',
-                  objectPosition: s.imgPosition,
-                }}
-              />
-            )}
-
-            {/* Entwicklung: dot grid overlay */}
-            {s.gridDots && !shouldReduce && (
-              <motion.div
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 0.25 }}
-                transition={{ duration: 0.5, delay: 0.15 }}
-                aria-hidden
-                style={{
-                  position: 'absolute',
-                  inset: 0,
-                  backgroundImage:
-                    'radial-gradient(circle, rgba(211,253,81,0.22) 1px, transparent 1px)',
-                  backgroundSize: '22px 22px',
-                  mixBlendMode: 'overlay',
-                  pointerEvents: 'none',
-                }}
-              />
-            )}
-
-            {/* Launch: live badge */}
-            {s.isLive && (
-              <motion.div
-                initial={{ opacity: 0, y: 8, scale: 0.9 }}
-                animate={{ opacity: 1, y: 0, scale: 1 }}
-                transition={{ duration: 0.38, ease: EASE, delay: 0.18 }}
-                style={{
-                  position: 'absolute',
-                  bottom: '1rem',
-                  right: '1rem',
-                  display: 'inline-flex',
-                  alignItems: 'center',
-                  gap: '0.38rem',
-                  padding: '0.28rem 0.7rem',
-                  background:
-                    'linear-gradient(180deg, rgba(211,253,81,0.13), rgba(211,253,81,0.065)), rgba(6,6,6,0.52)',
-                  border: '1px solid rgba(211,253,81,0.26)',
-                  borderRadius: 999,
-                  backdropFilter: 'blur(14px)',
-                  WebkitBackdropFilter: 'blur(14px)',
-                  boxShadow:
-                    'inset 0 1px 0 rgba(211,253,81,0.16), 0 0 22px rgba(211,253,81,0.09)',
-                  zIndex: 2,
-                }}
-              >
-                <span
-                  style={{
-                    width: 5,
-                    height: 5,
-                    borderRadius: '50%',
-                    background: 'var(--accent)',
-                    boxShadow: '0 0 8px rgba(211,253,81,0.8)',
-                    animation: shouldReduce
-                      ? 'none'
-                      : 'heroPulse 1.8s ease-in-out infinite',
-                    flexShrink: 0,
-                  }}
-                />
-                <span
-                  style={{
-                    fontFamily: 'var(--font-ui)',
-                    fontSize: '0.58rem',
-                    fontWeight: 400,
-                    letterSpacing: '0.13em',
-                    textTransform: 'uppercase',
-                    color: 'rgba(211,253,81,0.9)',
-                  }}
-                >
-                  Live
-                </span>
-              </motion.div>
-            )}
-
-            {/* Bottom fade */}
-            <div
-              aria-hidden
-              style={{
-                position: 'absolute',
-                bottom: 0,
-                left: 0,
-                right: 0,
-                height: '36%',
-                background:
-                  'linear-gradient(to top, rgba(6,6,6,0.72) 0%, rgba(6,6,6,0.22) 60%, transparent 100%)',
-                pointerEvents: 'none',
-              }}
-            />
-          </motion.div>
-        </AnimatePresence>
-      </div>
-    </motion.div>
-  )
-}
-
-// ─── Service card ─────────────────────────────────────────────────────────────
-
-function ServiceCard({
-  service,
-  index,
-  isActive,
-  onActivate,
-  shouldReduce,
-  delay,
-  isInView,
-}: {
-  service: (typeof services)[number]
-  index: number
-  isActive: boolean
-  onActivate: (i: number) => void
-  shouldReduce: boolean | null
-  delay: number
-  isInView: boolean
-}) {
-  return (
-    <motion.div
-      initial={shouldReduce ? undefined : { opacity: 0, y: 20, filter: 'blur(8px)' }}
-      animate={
-        shouldReduce
-          ? undefined
-          : isInView
-          ? { opacity: 1, y: 0, filter: 'blur(0px)' }
-          : { opacity: 0, y: 20, filter: 'blur(8px)' }
-      }
-      transition={{ duration: 0.78, ease: EASE, delay }}
-      onHoverStart={() => onActivate(index)}
-      style={{ position: 'relative', isolation: 'isolate' }}
-    >
-      {/* Glass card surface — manual recipe for full animate control */}
-      <motion.div
-        animate={{
-          background: isActive
-            ? 'linear-gradient(160deg, rgba(255,255,255,0.048) 0%, rgba(255,255,255,0.018) 100%), rgba(6,6,6,0.46)'
-            : 'linear-gradient(160deg, rgba(255,255,255,0.028) 0%, rgba(255,255,255,0.010) 100%), rgba(6,6,6,0.32)',
-          borderColor: isActive
-            ? 'rgba(255,255,255,0.13)'
-            : 'rgba(255,255,255,0.068)',
-          boxShadow: isActive
-            ? 'inset 0 1px 0 rgba(255,255,255,0.16), 0 14px 48px rgba(0,0,0,0.32), 0 0 64px rgba(211,253,81,0.04)'
-            : 'inset 0 1px 0 rgba(255,255,255,0.07), 0 6px 20px rgba(0,0,0,0.18)',
-          y: isActive && !shouldReduce ? -4 : 0,
-        }}
-        transition={{ duration: 0.35, ease: EASE }}
-        className="glass-card-blur"
-        style={{
-          position: 'relative',
-          borderRadius: 20,
-          border: '1px solid',
-          padding: 'clamp(1.1rem, 1.8vw, 1.5rem)',
-          overflow: 'hidden',
-        }}
-      >
-        {/* Luminous top highlight */}
-        <div
-          aria-hidden
-          style={{
-            position: 'absolute',
-            inset: '0 0 auto 0',
-            height: 1,
-            background:
-              'linear-gradient(90deg, transparent 0%, rgba(255,255,255,0.14) 12%, rgba(255,255,255,0.10) 50%, rgba(255,255,255,0.14) 88%, transparent 100%)',
-            opacity: 0.8,
-            pointerEvents: 'none',
-          }}
-        />
-
-        {/* Active lime top accent */}
-        <motion.div
-          aria-hidden
-          animate={{
-            opacity: isActive ? 1 : 0,
-            scaleX: isActive ? 1 : 0.25,
-          }}
-          transition={{ duration: 0.4, ease: EASE }}
-          style={{
-            position: 'absolute',
-            top: 0,
-            left: '10%',
-            right: '10%',
-            height: 1,
-            background:
-              'linear-gradient(90deg, transparent, rgba(211,253,81,0.75), transparent)',
-            pointerEvents: 'none',
-            zIndex: 2,
-            transformOrigin: 'center',
-          }}
-        />
-
-        {/* Inner content */}
-        <div style={{ position: 'relative', zIndex: 1 }}>
-          {/* Number + label */}
-          <div
-            style={{
-              display: 'flex',
-              alignItems: 'center',
-              gap: '0.55rem',
-              marginBottom: 'clamp(0.6rem, 1vw, 0.88rem)',
-            }}
-          >
-            <motion.span
-              animate={{
-                color: isActive
-                  ? 'rgba(211,253,81,0.58)'
-                  : 'rgba(255,255,255,0.16)',
-              }}
-              transition={{ duration: 0.32 }}
-              style={{
-                fontFamily: 'var(--font-display)',
-                fontStyle: 'italic',
-                fontSize: '0.6rem',
-                letterSpacing: '0.04em',
-                flexShrink: 0,
-              }}
-            >
-              {service.number}
-            </motion.span>
-
-            <motion.div
-              animate={{
-                background: isActive
-                  ? 'rgba(211,253,81,0.32)'
-                  : 'rgba(255,255,255,0.08)',
-                width: isActive ? 22 : 14,
-              }}
-              transition={{ duration: 0.38, ease: EASE }}
-              style={{ height: 1, flexShrink: 0 }}
-            />
-
-            <motion.span
-              animate={{
-                color: isActive
-                  ? 'rgba(211,253,81,0.72)'
-                  : 'rgba(255,255,255,0.28)',
-              }}
-              transition={{ duration: 0.32 }}
-              style={{
-                fontFamily: 'var(--font-ui)',
-                fontSize: '0.575rem',
-                fontWeight: 400,
-                textTransform: 'uppercase' as const,
-                letterSpacing: '0.155em',
-              }}
-            >
-              {service.label}
-            </motion.span>
-          </div>
-
-          {/* Title */}
-          <motion.h3
-            animate={{
-              color: isActive ? 'rgba(255,255,255,1)' : 'rgba(255,255,255,0.65)',
-            }}
-            transition={{ duration: 0.32 }}
-            style={{
-              fontFamily: 'var(--font-ui)',
-              fontSize: 'clamp(1.15rem, 1.45vw, 1.85rem)',
-              fontWeight: 500,
-              fontStyle: 'normal',
-              letterSpacing: '-0.04em',
-              lineHeight: 1.02,
-              color: 'var(--text)',
-              margin: 0,
-            }}
-          >
-            {service.title}
-          </motion.h3>
-
-          {/* Body */}
-          <p
-            style={{
-              fontFamily: 'var(--font-ui)',
-              fontSize: 'clamp(0.78rem, 1.02vw, 0.85rem)',
-              fontWeight: 300,
-              color: 'rgba(255,255,255,0.48)',
-              lineHeight: 1.72,
-              margin: 0,
-            }}
-          >
-            {service.body}
-          </p>
-        </div>
-      </motion.div>
-    </motion.div>
-  )
-}
-
-// ─── Services section ─────────────────────────────────────────────────────────
+// ─── Services ─────────────────────────────────────────────────────────────────
 
 export function Services() {
   const headerRef = useRef<HTMLDivElement>(null)
-  const panelRef = useRef<HTMLDivElement>(null)
+  const proofRef = useRef<HTMLDivElement>(null)
+  const stripRef = useRef<HTMLDivElement>(null)
+
   const isHeaderInView = useInView(headerRef, { once: true, margin: '-80px' })
-  const isPanelInView = useInView(panelRef, { once: true, margin: '-60px' })
+  const isProofInView = useInView(proofRef, { once: true, margin: '-60px' })
+  const isStripInView = useInView(stripRef, { once: true, margin: '-60px' })
   const shouldReduce = useReducedMotion()
-  const [activeIndex, setActiveIndex] = useState(0)
+
+  const [afterHovered, setAfterHovered] = useState(false)
 
   return (
     <section
@@ -631,12 +200,27 @@ export function Services() {
           pointerEvents: 'none',
         }}
       />
+      <div
+        aria-hidden
+        style={{
+          position: 'absolute',
+          top: '10%',
+          right: '-5%',
+          width: '40vw',
+          height: '40vw',
+          maxWidth: 520,
+          maxHeight: 520,
+          background:
+            'radial-gradient(ellipse at 65% 35%, rgba(211,253,81,0.04) 0%, transparent 65%)',
+          filter: 'blur(80px)',
+          pointerEvents: 'none',
+        }}
+      />
 
       <div className="container-site" style={{ position: 'relative' }}>
 
         {/* ── Section header ── */}
         <div ref={headerRef} style={{ marginBottom: 'clamp(1.75rem, 3vw, 2.5rem)' }}>
-
           <motion.div
             initial={shouldReduce ? undefined : { opacity: 0, y: 10 }}
             animate={
@@ -665,7 +249,7 @@ export function Services() {
               }
               transition={{ duration: 0.92, ease: EASE, delay: 0.07 }}
             >
-              Alles, was Ihre Website erfolgreich macht.
+              Webdesign, das Anfragen bringt.
             </motion.h2>
           </div>
 
@@ -686,110 +270,374 @@ export function Services() {
               color: 'rgba(255,255,255,0.42)',
               lineHeight: 1.65,
               margin: 0,
-              maxWidth: '60ch',
+              maxWidth: '56ch',
             }}
           >
-            Von Design über Technik bis zur Sichtbarkeit – wir kümmern uns um alle entscheidenden Bereiche.
+            Design, Entwicklung, SEO — alles aus einer Hand. Maßgeschneidert
+            für Ihr Unternehmen, nicht von der Stange.
           </motion.p>
         </div>
 
-        {/* ── Main panel ── */}
+        {/* ── Before / After proof ── */}
+        <div
+          ref={proofRef}
+          className="grid grid-cols-1 md:grid-cols-[5fr_8fr]"
+          style={{ gap: '1rem', alignItems: 'stretch' }}
+        >
+
+          {/* ── Before frame ── */}
+          <motion.div
+            className="order-last md:order-none panel-browser"
+            initial={shouldReduce ? undefined : { opacity: 0, x: -28, filter: 'blur(12px)' }}
+            animate={
+              shouldReduce
+                ? undefined
+                : isProofInView
+                ? { opacity: 1, x: 0, filter: 'blur(0px)' }
+                : { opacity: 0, x: -28, filter: 'blur(12px)' }
+            }
+            transition={{ duration: 1.0, ease: EASE, delay: 0.1 }}
+            style={{ padding: 0, overflow: 'hidden', display: 'flex', flexDirection: 'column' }}
+          >
+            <BeforeChrome />
+
+            {/* Image area — stretches to match After frame height */}
+            <div style={{ flex: 1, position: 'relative', minHeight: 180, overflow: 'hidden' }}>
+              <Image
+                src="/projekte/fahrschule-da-before.jpg"
+                alt="Fahrschule Dirk Arnold – Website vor der Überarbeitung"
+                fill
+                style={{
+                  objectFit: 'cover',
+                  objectPosition: 'top',
+                  filter: 'saturate(0.22) brightness(0.60)',
+                }}
+                sizes="(max-width: 767px) 100vw, 38vw"
+              />
+
+              {/* Darkening overlay */}
+              <div
+                aria-hidden
+                style={{
+                  position: 'absolute',
+                  inset: 0,
+                  background: 'rgba(6,6,6,0.26)',
+                  pointerEvents: 'none',
+                }}
+              />
+
+              {/* Bottom fade */}
+              <div
+                aria-hidden
+                style={{
+                  position: 'absolute',
+                  bottom: 0,
+                  left: 0,
+                  right: 0,
+                  height: '45%',
+                  background: 'linear-gradient(to top, rgba(6,6,6,0.80) 0%, transparent 100%)',
+                  pointerEvents: 'none',
+                }}
+              />
+
+              {/* Vorher label */}
+              <div
+                style={{
+                  position: 'absolute',
+                  bottom: '0.75rem',
+                  left: '0.75rem',
+                  display: 'inline-flex',
+                  alignItems: 'center',
+                  padding: '0.22rem 0.65rem',
+                  background: 'rgba(6,6,6,0.70)',
+                  border: '1px solid rgba(255,255,255,0.10)',
+                  borderRadius: 999,
+                  backdropFilter: 'blur(12px)',
+                  WebkitBackdropFilter: 'blur(12px)',
+                  zIndex: 2,
+                }}
+              >
+                <span
+                  style={{
+                    fontFamily: 'var(--font-ui)',
+                    fontSize: '0.52rem',
+                    fontWeight: 400,
+                    letterSpacing: '0.14em',
+                    textTransform: 'uppercase' as const,
+                    color: 'rgba(255,255,255,0.36)',
+                  }}
+                >
+                  Vorher
+                </span>
+              </div>
+            </div>
+          </motion.div>
+
+          {/* ── After frame ── */}
+          <motion.div
+            className="order-first md:order-none"
+            initial={shouldReduce ? undefined : { opacity: 0, x: 28, filter: 'blur(12px)' }}
+            animate={
+              shouldReduce
+                ? undefined
+                : isProofInView
+                ? { opacity: 1, x: 0, filter: 'blur(0px)' }
+                : { opacity: 0, x: 28, filter: 'blur(12px)' }
+            }
+            transition={{ duration: 1.0, ease: EASE, delay: 0.2 }}
+            style={{ display: 'block' }}
+          >
+            <Link
+              href="/projekte/fahrschule-rhein-hunsrueck"
+              style={{ display: 'block', height: '100%' }}
+            >
+              <motion.div
+                className="panel-browser"
+                onHoverStart={() => !shouldReduce && setAfterHovered(true)}
+                onHoverEnd={() => setAfterHovered(false)}
+                animate={{
+                  borderColor: afterHovered
+                    ? 'rgba(255,255,255,0.20)'
+                    : 'rgba(255,255,255,0.10)',
+                  boxShadow: afterHovered
+                    ? 'inset 0 1px 0 rgba(255,255,255,0.28), 0 32px 80px rgba(0,0,0,0.58), 0 0 80px rgba(211,253,81,0.07)'
+                    : 'inset 0 1px 0 rgba(255,255,255,0.14), 0 18px 56px rgba(0,0,0,0.44)',
+                }}
+                transition={{ duration: 0.42, ease: EASE }}
+                style={{
+                  padding: 0,
+                  overflow: 'hidden',
+                  height: '100%',
+                  display: 'flex',
+                  flexDirection: 'column',
+                }}
+              >
+                <AfterChrome shouldReduce={shouldReduce} />
+
+                {/* Image area — sets height for the whole row via aspect-ratio */}
+                <div
+                  style={{
+                    position: 'relative',
+                    aspectRatio: '16/9',
+                    width: '100%',
+                    overflow: 'hidden',
+                  }}
+                >
+                  <Image
+                    src="/projekte/fahrschule-da-after.jpg"
+                    alt="Fahrschule Dirk Arnold – neue Website von Metz & Partner"
+                    fill
+                    style={{ objectFit: 'cover', objectPosition: 'top' }}
+                    sizes="(max-width: 767px) 100vw, 62vw"
+                    priority
+                  />
+
+                  {/* Subtle image scale on hover */}
+                  {!shouldReduce && (
+                    <motion.div
+                      animate={{ scale: afterHovered ? 1.018 : 1 }}
+                      transition={{ duration: 0.7, ease: EASE }}
+                      style={{
+                        position: 'absolute',
+                        inset: 0,
+                        pointerEvents: 'none',
+                      }}
+                    />
+                  )}
+
+                  {/* Bottom fade */}
+                  <div
+                    aria-hidden
+                    style={{
+                      position: 'absolute',
+                      bottom: 0,
+                      left: 0,
+                      right: 0,
+                      height: '32%',
+                      background:
+                        'linear-gradient(to top, rgba(6,6,6,0.68) 0%, transparent 100%)',
+                      pointerEvents: 'none',
+                      zIndex: 1,
+                    }}
+                  />
+
+                  {/* Nachher badge */}
+                  <div
+                    style={{
+                      position: 'absolute',
+                      bottom: '0.85rem',
+                      left: '0.85rem',
+                      display: 'inline-flex',
+                      alignItems: 'center',
+                      gap: '0.38rem',
+                      padding: '0.28rem 0.7rem',
+                      background:
+                        'linear-gradient(180deg, rgba(211,253,81,0.13), rgba(211,253,81,0.065)), rgba(6,6,6,0.52)',
+                      border: '1px solid rgba(211,253,81,0.26)',
+                      borderRadius: 999,
+                      backdropFilter: 'blur(14px)',
+                      WebkitBackdropFilter: 'blur(14px)',
+                      boxShadow:
+                        'inset 0 1px 0 rgba(211,253,81,0.16), 0 0 22px rgba(211,253,81,0.09)',
+                      zIndex: 2,
+                    }}
+                  >
+                    <span
+                      style={{
+                        width: 5,
+                        height: 5,
+                        borderRadius: '50%',
+                        background: 'var(--accent)',
+                        boxShadow: '0 0 8px rgba(211,253,81,0.8)',
+                        animation: shouldReduce
+                          ? 'none'
+                          : 'heroPulse 1.8s ease-in-out infinite',
+                        flexShrink: 0,
+                      }}
+                    />
+                    <span
+                      style={{
+                        fontFamily: 'var(--font-ui)',
+                        fontSize: '0.52rem',
+                        fontWeight: 400,
+                        letterSpacing: '0.13em',
+                        textTransform: 'uppercase' as const,
+                        color: 'rgba(211,253,81,0.9)',
+                      }}
+                    >
+                      Nachher
+                    </span>
+                  </div>
+
+                  {/* Hover CTA — project link */}
+                  <motion.div
+                    animate={{
+                      opacity: afterHovered ? 1 : 0,
+                      y: afterHovered ? 0 : 8,
+                    }}
+                    transition={{ duration: 0.32, ease: EASE }}
+                    style={{
+                      position: 'absolute',
+                      bottom: '0.85rem',
+                      right: '0.85rem',
+                      display: 'inline-flex',
+                      alignItems: 'center',
+                      gap: '0.4rem',
+                      padding: '0.28rem 0.75rem',
+                      background: 'rgba(6,6,6,0.62)',
+                      border: '1px solid rgba(255,255,255,0.16)',
+                      borderRadius: 999,
+                      backdropFilter: 'blur(14px)',
+                      WebkitBackdropFilter: 'blur(14px)',
+                      zIndex: 2,
+                    }}
+                  >
+                    <span
+                      style={{
+                        fontFamily: 'var(--font-ui)',
+                        fontSize: '0.52rem',
+                        fontWeight: 400,
+                        letterSpacing: '0.12em',
+                        textTransform: 'uppercase' as const,
+                        color: 'rgba(255,255,255,0.80)',
+                      }}
+                    >
+                      Projekt ansehen
+                    </span>
+                  </motion.div>
+                </div>
+              </motion.div>
+            </Link>
+          </motion.div>
+
+        </div>
+
+        {/* ── Bausteine strip ── */}
         <motion.div
-          ref={panelRef}
-          className="surface-primary"
-          initial={shouldReduce ? undefined : { opacity: 0, y: 28 }}
+          ref={stripRef}
+          className="surface-secondary flex flex-col md:flex-row"
+          initial={shouldReduce ? undefined : { opacity: 0, y: 22 }}
           animate={
             shouldReduce
               ? undefined
-              : isPanelInView
+              : isStripInView
               ? { opacity: 1, y: 0 }
-              : { opacity: 0, y: 28 }
+              : { opacity: 0, y: 22 }
           }
-          transition={{ duration: 0.9, ease: EASE, delay: 0.08 }}
-          onMouseLeave={() => setActiveIndex(0)}
-          style={{ padding: 'clamp(1.25rem, 2.5vw, 2rem)' }}
+          transition={{ duration: 0.85, ease: EASE, delay: 0.18 }}
+          style={{ marginTop: '1rem', padding: 0 }}
         >
-          <div
-            className="services-rails-layout"
-            style={{ display: 'grid', gap: 'clamp(1.25rem, 3vw, 1.75rem)' }}
-          >
-
-            {/* ── Left: service cards + CTA ── */}
-            <div
+          {modules.map((m, i) => (
+            <motion.div
+              key={m.number}
+              initial={shouldReduce ? undefined : { opacity: 0 }}
+              animate={
+                shouldReduce
+                  ? undefined
+                  : isStripInView
+                  ? { opacity: 1 }
+                  : { opacity: 0 }
+              }
+              transition={{ duration: 0.6, ease: EASE, delay: 0.28 + i * 0.08 }}
               style={{
-                display: 'flex',
-                flexDirection: 'column',
-                gap: 'clamp(0.55rem, 1vw, 0.75rem)',
+                flex: 1,
+                padding: '1.35rem 1.85rem',
+                borderBottom: i < modules.length - 1 ? '1px solid rgba(255,255,255,0.055)' : 'none',
               }}
+              className={i < modules.length - 1 ? 'md:border-b-0 md:border-r md:border-white/[0.055]' : ''}
             >
-              {services.map((s, i) => (
-                <ServiceCard
-                  key={s.id}
-                  service={s}
-                  index={i}
-                  isActive={activeIndex === i}
-                  onActivate={setActiveIndex}
-                  shouldReduce={shouldReduce}
-                  delay={0.28 + i * 0.09}
-                  isInView={isPanelInView}
-                />
-              ))}
-
-              {/* CTA */}
-              <motion.div
-                initial={shouldReduce ? undefined : { opacity: 0, y: 8 }}
-                animate={
-                  shouldReduce
-                    ? undefined
-                    : isPanelInView
-                    ? { opacity: 1, y: 0 }
-                    : { opacity: 0, y: 8 }
-                }
-                transition={{ duration: 0.65, ease: EASE, delay: 0.62 }}
-                style={{ paddingTop: 'clamp(0.5rem, 1vw, 0.875rem)' }}
+              <p
+                style={{
+                  fontFamily: 'var(--font-display)',
+                  fontStyle: 'italic',
+                  fontSize: '0.62rem',
+                  color: 'rgba(211,253,81,0.40)',
+                  margin: '0 0 0.28rem',
+                  letterSpacing: '0.04em',
+                }}
               >
-                <a
-                  href="#kontakt"
-                  className="button-glass-primary"
-                  style={{
-                    textDecoration: 'none',
-                    fontFamily: 'var(--font-ui)',
-                    fontSize: '0.78rem',
-                    fontWeight: 500,
-                    textTransform: 'uppercase',
-                    letterSpacing: '0.11em',
-                    color: 'var(--text)',
-                  }}
-                >
-                  Projekt besprechen
-                  <svg
-                    width="13"
-                    height="13"
-                    viewBox="0 0 13 13"
-                    fill="none"
-                    aria-hidden="true"
-                    style={{ marginLeft: 2 }}
-                  >
-                    <path
-                      d="M2.5 6.5h8M8 3.5l3 3-3 3"
-                      stroke="currentColor"
-                      strokeWidth="1.25"
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                    />
-                  </svg>
-                </a>
-              </motion.div>
-            </div>
-
-            {/* ── Right: proof panel ── */}
-            <ProofPanel
-              activeIndex={activeIndex}
-              shouldReduce={shouldReduce}
-              isInView={isPanelInView}
-            />
-
-          </div>
+                {m.number}
+              </p>
+              <p
+                style={{
+                  fontFamily: 'var(--font-ui)',
+                  fontSize: '0.82rem',
+                  fontWeight: 500,
+                  color: 'rgba(255,255,255,0.97)',
+                  margin: '0 0 0.18rem',
+                  letterSpacing: '0.04em',
+                  textTransform: 'uppercase' as const,
+                }}
+              >
+                {m.label}
+              </p>
+              <p
+                style={{
+                  fontFamily: 'var(--font-display)',
+                  fontStyle: 'italic',
+                  fontSize: '0.88rem',
+                  fontWeight: 400,
+                  color: 'rgba(255,255,255,0.38)',
+                  margin: '0 0 0.45rem',
+                  lineHeight: 1.25,
+                }}
+              >
+                {m.title}
+              </p>
+              <p
+                style={{
+                  fontFamily: 'var(--font-ui)',
+                  fontSize: '0.75rem',
+                  fontWeight: 300,
+                  color: 'var(--muted)',
+                  margin: 0,
+                  lineHeight: 1.6,
+                }}
+              >
+                {m.body}
+              </p>
+            </motion.div>
+          ))}
         </motion.div>
 
       </div>
