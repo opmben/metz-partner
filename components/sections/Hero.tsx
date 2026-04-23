@@ -14,6 +14,8 @@ import { ColorBendsBackground } from '@/components/shared/ColorBendsBackground'
 const subscribe = () => () => {}
 const getClientSnapshot = () => true
 const getServerSnapshot = () => false
+const getMobileSnapshot = () => typeof window !== 'undefined' && window.innerWidth < 768
+const getMobileServerSnapshot = () => false
 
 /* ── per-character split text ── */
 function SplitText({
@@ -96,6 +98,7 @@ function MagneticButton({
 /* ── Hero component ── */
 export function Hero() {
   const mounted = useSyncExternalStore(subscribe, getClientSnapshot, getServerSnapshot)
+  const isMobile = useSyncExternalStore(subscribe, getMobileSnapshot, getMobileServerSnapshot)
   const shouldReduce = useReducedMotion()
   const sectionRef = useRef<HTMLElement>(null)
 
@@ -138,15 +141,15 @@ export function Hero() {
         }}
       />
 
-      {/* ColorBends GLSL shader background — SSR-safe */}
-      {mounted && !shouldReduce && <ColorBendsBackground />}
+      {/* ColorBends GLSL shader background — SSR-safe, desktop-only (GPU cost on mobile) */}
+      {mounted && !shouldReduce && !isMobile && <ColorBendsBackground />}
 
       {/* Main content — parallax fade on scroll */}
       <motion.div
         className="container-site"
         style={{
-          paddingTop: '8rem',
-          paddingBottom: '6rem',
+          paddingTop: 'clamp(5rem, 12vh, 8rem)',
+          paddingBottom: 'clamp(3.5rem, 8vh, 6rem)',
           width: '100%',
           y: shouldReduce ? 0 : parallaxY,
           opacity: shouldReduce ? 1 : parallaxOpacity,

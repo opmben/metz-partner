@@ -245,6 +245,7 @@ export function Footer() {
               <Link
                 key={link.href}
                 href={link.href}
+                className="link-footer"
                 style={{
                   fontFamily: 'var(--font-ui)',
                   fontSize: '0.72rem',
@@ -287,6 +288,7 @@ export function Footer() {
               <Link
                 key={link.href}
                 href={link.href}
+                className="link-footer"
                 style={{
                   fontFamily: 'var(--font-ui)',
                   fontSize: '0.7rem',

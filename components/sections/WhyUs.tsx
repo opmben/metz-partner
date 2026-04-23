@@ -488,8 +488,8 @@ export function WhyUs() {
     <section
       id="ueber-uns"
       style={{
-        paddingTop: '8rem',
-        paddingBottom: '8rem',
+        paddingTop: 'clamp(4rem, 8vw, 8rem)',
+        paddingBottom: 'clamp(4rem, 8vw, 8rem)',
         position: 'relative',
         overflow: 'clip',
         overflowClipMargin: '200px',

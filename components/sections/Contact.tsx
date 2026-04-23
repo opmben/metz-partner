@@ -62,11 +62,13 @@ function attachGlassFocus(el: HTMLInputElement | HTMLTextAreaElement | null) {
 // ─── Form field wrapper ───────────────────────────────────────────────────────
 
 function FormField({
+  id,
   label,
   error,
   children,
   shouldReduce,
 }: {
+  id: string
   label: string
   error?: string
   children: React.ReactNode
@@ -78,6 +80,7 @@ function FormField({
       style={{ display: 'flex', flexDirection: 'column', gap: '0.45rem' }}
     >
       <label
+        htmlFor={id}
         style={{
           fontFamily: 'var(--font-ui)',
           fontSize: '0.68rem',
@@ -675,11 +678,13 @@ export function Contact() {
                   {/* Name + Company */}
                   <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
                     <FormField
+                      id="field-name"
                       label="Ihr Name *"
                       error={errors.name?.message}
                       shouldReduce={shouldReduce}
                     >
                       <input
+                        id="field-name"
                         {...register('name')}
                         placeholder="Max Mustermann"
                         style={glassInput}
@@ -689,8 +694,9 @@ export function Contact() {
                         }}
                       />
                     </FormField>
-                    <FormField label="Unternehmen (optional)" shouldReduce={shouldReduce}>
+                    <FormField id="field-company" label="Unternehmen (optional)" shouldReduce={shouldReduce}>
                       <input
+                        id="field-company"
                         {...register('company')}
                         placeholder="Muster GmbH"
                         style={glassInput}
@@ -703,11 +709,13 @@ export function Contact() {
                   </div>
 
                   <FormField
+                    id="field-email"
                     label="E-Mail-Adresse *"
                     error={errors.email?.message}
                     shouldReduce={shouldReduce}
                   >
                     <input
+                      id="field-email"
                       {...register('email')}
                       type="email"
                       placeholder="max@muster.de"
@@ -720,12 +728,14 @@ export function Contact() {
                   </FormField>
 
                   <FormField
+                    id="field-message"
                     label="Kurze Projektbeschreibung *"
                     error={errors.message?.message}
                     shouldReduce={shouldReduce}
                   >
                     <div style={{ position: 'relative' }}>
                       <textarea
+                        id="field-message"
                         {...register('message')}
                         placeholder="Wir sind ein Handwerksbetrieb aus Koblenz und suchen eine neue Website…"
                         rows={4}

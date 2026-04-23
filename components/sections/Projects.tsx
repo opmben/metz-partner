@@ -1,5 +1,5 @@
 'use client'
-import { useRef, useState } from 'react'
+import { useRef, useState, useEffect } from 'react'
 import Link from 'next/link'
 import Image from 'next/image'
 import {
@@ -113,9 +113,14 @@ function ProjectBrowserCard({
 }) {
   const [hovered, setHovered] = useState(false)
   const [imgError, setImgError] = useState(false)
+  const [isTouch, setIsTouch] = useState(false)
   const shouldReduce = useReducedMotion()
   const cardRef = useRef<HTMLDivElement>(null)
   const isInView = useInView(cardRef, { once: true, margin: '-60px' })
+
+  useEffect(() => {
+    setIsTouch(window.matchMedia('(hover: none) and (pointer: coarse)').matches)
+  }, [])
 
   const displayUrl = project.displayUrl ?? `${project.slug}.de`
 
@@ -305,10 +310,10 @@ function ProjectBrowserCard({
             <div style={{ minWidth: 0 }}>
               <p
                 style={{
-                  fontSize: '0.6rem',
+                  fontSize: '0.65rem',
                   fontWeight: 400,
                   textTransform: 'uppercase',
-                  letterSpacing: '0.15em',
+                  letterSpacing: '0.13em',
                   color: 'rgba(255,255,255,0.30)',
                   marginBottom: '0.32rem',
                   fontFamily: 'var(--font-ui)',
@@ -337,11 +342,12 @@ function ProjectBrowserCard({
               </h3>
             </div>
 
-            {/* Arrow circle */}
+            {/* Arrow circle — always visible on touch devices */}
             <motion.div
+              className="project-card-arrow"
               animate={{
-                x: hovered ? 0 : -5,
-                opacity: hovered ? 1 : 0.22,
+                x: hovered ? 0 : isTouch ? 0 : -5,
+                opacity: hovered ? 1 : isTouch ? 0.55 : 0.22,
               }}
               transition={{ duration: 0.36, ease: 'easeOut' }}
               style={{
@@ -386,8 +392,8 @@ export function Projects() {
     <section
       id="projekte"
       style={{
-        paddingTop: '8rem',
-        paddingBottom: '8rem',
+        paddingTop: 'clamp(4rem, 8vw, 8rem)',
+        paddingBottom: 'clamp(4rem, 8vw, 8rem)',
         position: 'relative',
         overflow: 'clip',
         overflowClipMargin: '200px',

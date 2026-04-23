@@ -61,8 +61,8 @@ export function Manifesto() {
   return (
     <section
       style={{
-        paddingTop: '11rem',
-        paddingBottom: '11rem',
+        paddingTop: 'clamp(5rem, 10vw, 11rem)',
+        paddingBottom: 'clamp(5rem, 10vw, 11rem)',
         position: 'relative',
         overflow: 'hidden',
         textAlign: 'center',

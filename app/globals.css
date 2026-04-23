@@ -171,7 +171,7 @@ body::before {
 /* ─── Typography ──────────────────────────────────────────────────── */
 .display-hero {
   font-family: var(--font-display), Georgia, serif;
-  font-size: clamp(3.5rem, 7.5vw, 9rem);
+  font-size: clamp(2.2rem, 9vw, 9rem);
   font-weight: 400;
   font-style: italic;
   line-height: 0.93;
@@ -560,6 +560,27 @@ body::before {
     inset 0 1px 0 var(--surface-highlight-hot),
     0 0 0 3px rgba(255, 255, 255, 0.08),
     0 0 0 6px rgba(212, 131, 10, 0.12);
+}
+
+/* ─── Focus-visible for footer/nav links ────────────────────────── */
+.link-footer:focus-visible {
+  outline: 2px solid rgba(211, 253, 81, 0.60);
+  outline-offset: 3px;
+  border-radius: 3px;
+  color: var(--text) !important;
+  opacity: 1 !important;
+}
+
+/* ─── Touch-device project card affordance ───────────────────────── */
+@media (hover: none) and (pointer: coarse) {
+  .project-card-arrow {
+    opacity: 0.55 !important;
+    transform: translateX(0) !important;
+  }
+  .project-card-cta {
+    opacity: 1 !important;
+    transform: translateY(0) !important;
+  }
 }
 
 /* ─── Responsive Surface Tuning ──────────────────────────────────── */

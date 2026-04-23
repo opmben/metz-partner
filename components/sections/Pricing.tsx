@@ -226,9 +226,9 @@ function PricingCard({
             <span
               style={{
                 fontFamily: 'var(--font-ui)',
-                fontSize: '0.54rem',
+                fontSize: '0.62rem',
                 fontWeight: 400,
-                letterSpacing: '0.14em',
+                letterSpacing: '0.12em',
                 textTransform: 'uppercase' as const,
                 color: 'rgba(211,253,81,0.82)',
               }}
@@ -393,12 +393,11 @@ function PricingCard({
           })}
         </ul>
 
-        {/* Ideal für — left-border annotation */}
+        {/* Ideal für — indented annotation */}
         <div
           style={{
             marginBottom: '1.25rem',
             paddingLeft: '0.85rem',
-            borderLeft: '1.5px solid rgba(255,255,255,0.09)',
           }}
         >
           <div

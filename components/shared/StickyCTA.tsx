@@ -48,7 +48,7 @@ export function StickyCTA() {
             position: 'fixed',
             bottom: '2rem',
             left: '50%',
-            translateX: '-50%',
+            x: '-50%',
             zIndex: 90,
             pointerEvents: 'auto',
           }}

@@ -637,8 +637,8 @@ export function Process() {
       <section
         id="prozess"
         style={{
-          paddingTop: '8rem',
-          paddingBottom: '8rem',
+          paddingTop: 'clamp(4rem, 8vw, 8rem)',
+          paddingBottom: 'clamp(4rem, 8vw, 8rem)',
           position: 'relative',
           overflow: 'hidden',
         }}
