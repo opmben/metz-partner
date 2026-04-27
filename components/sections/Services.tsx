@@ -1,160 +1,317 @@
 'use client'
 
-import { useRef, useState } from 'react'
-import Image from 'next/image'
-import Link from 'next/link'
+import { useRef } from 'react'
 import { motion, useInView, useReducedMotion } from 'framer-motion'
-import { SectionLabel } from '@/components/shared/SectionLabel'
 
 const EASE: [number, number, number, number] = [0.16, 1, 0.3, 1]
 
 // ─── Data ─────────────────────────────────────────────────────────────────────
 
-const modules = [
+const services = [
   {
-    number: '01',
-    label: 'Webdesign',
-    title: 'Individuell statt Template.',
-    body: 'Design und Struktur werden gezielt auf Ihr Unternehmen und Ihre Zielgruppe abgestimmt — kein Baukasten.',
+    id: 'seo' as const,
+    label: 'SEO & Sichtbarkeit',
+    body: 'Solide SEO-Grundlagen, Google Business Profile und Keyword-Tracking. Sichtbarkeit, die dauerhaft wirkt.',
   },
   {
-    number: '02',
-    label: 'Entwicklung',
-    title: 'Schnell. Stabil. Zuverlässig.',
-    body: 'Mobiloptimiert, performant, langfristig stabil. Moderne Technologien ohne unnötige Komplexität.',
+    id: 'webdesign' as const,
+    label: 'Webdesign & Entwicklung',
+    body: 'Individuell gestaltet, technisch sauber, auf Anfragen ausgerichtet. Kein Template — eine Website, die wirklich zu Ihrem Unternehmen passt.',
   },
   {
-    number: '03',
-    label: 'Sichtbarkeit',
-    title: 'Ihre Website wächst mit.',
-    body: 'SEO-Grundlagen, laufende Pflege und regelmäßige Updates — damit die Website dauerhaft wirkt.',
+    id: 'betreuung' as const,
+    label: 'Betreuung & Weiterentwicklung',
+    body: 'Hosting, Wartung und laufende Optimierungen. Ein langfristiger Partner, kein einmaliger Dienstleister.',
   },
 ]
 
-// ─── Before Chrome ────────────────────────────────────────────────────────────
+type Service = (typeof services)[number]
 
-function BeforeChrome() {
+// ─── Scroll helper ─────────────────────────────────────────────────────────────
+
+function scrollToContact(e: React.MouseEvent<HTMLAnchorElement>) {
+  e.preventDefault()
+  const target = document.getElementById('kontakt-heading')
+  if (!target) return
+  window.scrollTo({ top: target.getBoundingClientRect().top + window.scrollY - 80, behavior: 'smooth' })
+}
+
+// ─── Scene: SEO — keyword grid + search circle ────────────────────────────────
+
+function SeoScene() {
+  const rows = [
+    'Rankings · Analytics · SERP · Indexing',
+    'Analytics · SERP · Indexing · Rankings',
+    'SERP · Indexing · Rankings · Analytics',
+    'Indexing · Rankings · Analytics · SERP',
+    'Rankings · Analytics · SERP · Indexing',
+    'Analytics · SERP · Indexing · Rankings',
+    'SERP · Indexing · Rankings · Analytics',
+    'Indexing · Rankings · Analytics · SERP',
+    'Rankings · Analytics · SERP · Indexing',
+  ]
+
   return (
-    <div
-      style={{
-        height: 36,
-        background: 'rgba(4,4,4,0.97)',
-        borderBottom: '1px solid rgba(255,255,255,0.04)',
-        display: 'flex',
-        alignItems: 'center',
-        padding: '0 12px',
-        gap: 8,
-        flexShrink: 0,
-      }}
+    <svg
+      width="100%"
+      height="100%"
+      viewBox="0 0 340 200"
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+      aria-hidden
+      preserveAspectRatio="xMidYMid slice"
+      style={{ display: 'block' }}
     >
-      <div style={{ display: 'flex', gap: 5 }}>
-        {['#FF5F57', '#FEBC2E', '#28C840'].map((c, i) => (
-          <div
-            key={i}
-            style={{ width: 8, height: 8, borderRadius: '50%', background: c, opacity: 0.32 }}
-          />
-        ))}
-      </div>
-      <div
-        style={{
-          flex: 1,
-          height: 20,
-          background: 'rgba(255,255,255,0.015)',
-          border: '1px solid rgba(255,255,255,0.04)',
-          borderRadius: 4,
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'center',
-        }}
-      >
-        <span
-          style={{
-            fontFamily: 'var(--font-ui)',
-            fontSize: '0.5rem',
-            color: 'rgba(255,255,255,0.15)',
-            letterSpacing: '0.02em',
-          }}
+      <defs>
+        <radialGradient id="seoVignette" cx="50%" cy="50%" r="55%">
+          <stop offset="25%" stopColor="transparent" stopOpacity="0"/>
+          <stop offset="100%" stopColor="rgba(4,4,4,0.88)" stopOpacity="1"/>
+        </radialGradient>
+      </defs>
+
+      {/* Keyword grid */}
+      {rows.map((row, i) => (
+        <text
+          key={i}
+          x={i % 2 === 0 ? 8 : 32}
+          y={20 + i * 21}
+          fontFamily="sans-serif"
+          fontSize="11"
+          fill={i % 2 === 0 ? 'rgba(255,255,255,0.12)' : 'rgba(255,255,255,0.085)'}
+          letterSpacing="1.5"
         >
-          fahrschule-dirk-arnold.de
-        </span>
-      </div>
-    </div>
+          {row}
+        </text>
+      ))}
+
+      {/* Edge vignette to fade keywords */}
+      <rect x="0" y="0" width="340" height="200" fill="url(#seoVignette)"/>
+
+      {/* Search icon ring */}
+      <circle cx="170" cy="100" r="36"
+        fill="rgba(255,255,255,0.04)" stroke="rgba(255,255,255,0.22)" strokeWidth="0.75"/>
+      {/* Glass-style inner highlight */}
+      <path d="M 136 86 A 36 36 0 0 1 204 86"
+        stroke="rgba(255,255,255,0.13)" strokeWidth="0.5" fill="none"/>
+
+      {/* Search icon */}
+      <circle cx="163" cy="93" r="12"
+        fill="none" stroke="rgba(255,255,255,0.65)" strokeWidth="1.5"/>
+      <line x1="172" y1="102" x2="181" y2="111"
+        stroke="rgba(255,255,255,0.65)" strokeWidth="2" strokeLinecap="round"/>
+    </svg>
   )
 }
 
-// ─── After Chrome ─────────────────────────────────────────────────────────────
+// ─── Scene: Webdesign — clean browser frame ───────────────────────────────────
 
-function AfterChrome({ shouldReduce }: { shouldReduce: boolean | null }) {
+function WebdesignScene() {
   return (
-    <div
-      style={{
-        height: 40,
-        background: 'rgba(4,4,4,0.97)',
-        borderBottom: '1px solid rgba(255,255,255,0.065)',
-        display: 'flex',
-        alignItems: 'center',
-        padding: '0 14px',
-        gap: 10,
-        flexShrink: 0,
-      }}
+    <svg
+      width="100%"
+      height="100%"
+      viewBox="0 0 340 200"
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+      aria-hidden
+      preserveAspectRatio="xMidYMid slice"
+      style={{ display: 'block' }}
     >
-      <div style={{ display: 'flex', gap: 6 }}>
-        {[
-          { c: '#FF5F57', g: 'rgba(255,95,87,0.5)' },
-          { c: '#FEBC2E', g: 'rgba(254,188,46,0.45)' },
-          { c: '#28C840', g: 'rgba(40,200,64,0.45)' },
-        ].map(({ c, g }, i) => (
-          <div
-            key={i}
-            style={{
-              width: 10,
-              height: 10,
-              borderRadius: '50%',
-              background: c,
-              boxShadow: `0 0 5px ${g}`,
-              opacity: 0.82,
-              flexShrink: 0,
-            }}
-          />
-        ))}
-      </div>
+      {/* Subtle shadow layer */}
+      <rect x="36" y="28" width="268" height="156" rx="14"
+        fill="rgba(0,0,0,0.22)" transform="translate(5,7)"/>
+
+      {/* Browser frame */}
+      <rect x="36" y="28" width="268" height="156" rx="14"
+        fill="rgba(255,255,255,0.04)" stroke="rgba(255,255,255,0.14)" strokeWidth="0.75"/>
+
+      {/* Chrome bar */}
+      <rect x="36" y="28" width="268" height="34" rx="14" fill="rgba(255,255,255,0.028)"/>
+      <line x1="36" y1="62" x2="304" y2="62"
+        stroke="rgba(255,255,255,0.06)" strokeWidth="0.5"/>
+
+      {/* Traffic dots */}
+      <circle cx="56" cy="45" r="4.5" fill="#FF5F57" opacity="0.28"/>
+      <circle cx="69" cy="45" r="4.5" fill="#FEBC2E" opacity="0.28"/>
+      <circle cx="82" cy="45" r="4.5" fill="#28C840" opacity="0.28"/>
+
+      {/* URL bar */}
+      <rect x="98" y="37" width="184" height="16" rx="8"
+        fill="rgba(255,255,255,0.035)" stroke="rgba(255,255,255,0.05)" strokeWidth="0.5"/>
+      <circle cx="108" cy="45" r="2.5" fill="rgba(211,253,81,0.60)"/>
+
+      {/* Page content — minimal */}
+      {/* Nav bar */}
+      <rect x="44" y="70" width="252" height="16" rx="3"
+        fill="rgba(255,255,255,0.018)" stroke="rgba(255,255,255,0.04)" strokeWidth="0.4"/>
+      {/* Hero heading */}
+      <rect x="44" y="96" width="150" height="12" rx="4" fill="rgba(255,255,255,0.07)"/>
+      {/* Body lines */}
+      <rect x="44" y="114" width="210" height="7" rx="2.5" fill="rgba(255,255,255,0.04)"/>
+      <rect x="44" y="125" width="190" height="7" rx="2.5" fill="rgba(255,255,255,0.03)"/>
+      {/* CTA block */}
+      <rect x="44" y="142" width="82" height="20" rx="10"
+        fill="rgba(211,253,81,0.09)" stroke="rgba(211,253,81,0.20)" strokeWidth="0.5"/>
+    </svg>
+  )
+}
+
+// ─── Scene: Betreuung — gentle trend line + refresh mark ─────────────────────
+
+function BetreuungScene() {
+  return (
+    <svg
+      width="100%"
+      height="100%"
+      viewBox="0 0 340 200"
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+      aria-hidden
+      preserveAspectRatio="xMidYMid slice"
+      style={{ display: 'block' }}
+    >
+      <defs>
+        <linearGradient id="betrLineGrad" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0%" stopColor="rgba(255,255,255,0.045)"/>
+          <stop offset="100%" stopColor="rgba(255,255,255,0)"/>
+        </linearGradient>
+      </defs>
+
+      {/* Subtle horizontal grid */}
+      {[160, 120, 80, 40].map((y) => (
+        <line key={y} x1="20" y1={y} x2="320" y2={y}
+          stroke="rgba(255,255,255,0.04)" strokeWidth="0.5"/>
+      ))}
+
+      {/* Area fill under line */}
+      <path d="M 44 162 C 110 148, 170 128, 230 98 L 296 58 L 296 170 L 44 170 Z"
+        fill="url(#betrLineGrad)"/>
+
+      {/* Trend line */}
+      <path d="M 44 162 C 110 148, 170 128, 230 98 L 296 58"
+        stroke="rgba(255,255,255,0.38)" strokeWidth="1.5" fill="none"/>
+
+      {/* Data points */}
+      <circle cx="44"  cy="162" r="3.5" fill="rgba(255,255,255,0.32)"/>
+      <circle cx="148" cy="128" r="3.5" fill="rgba(255,255,255,0.40)"/>
+      <circle cx="296" cy="58"  r="5.5" fill="rgba(211,253,81,0.78)"/>
+      <circle cx="296" cy="58"  r="10"
+        stroke="rgba(211,253,81,0.18)" strokeWidth="0.75" fill="none"/>
+
+      {/* Refresh icon — centered, quiet */}
+      <circle cx="170" cy="110" r="24"
+        fill="rgba(255,255,255,0.028)" stroke="rgba(255,255,255,0.07)" strokeWidth="0.75"/>
+      <path d="M 160 110 A 10 10 0 1 1 174 118"
+        stroke="rgba(255,255,255,0.38)" strokeWidth="1.5" fill="none" strokeLinecap="round"/>
+      <path d="M 174 114 L 174 118 L 178 118"
+        stroke="rgba(255,255,255,0.38)" strokeWidth="1.5"
+        strokeLinecap="round" strokeLinejoin="round"/>
+    </svg>
+  )
+}
+
+// ─── Scene dispatcher ──────────────────────────────────────────────────────────
+
+function SceneRenderer({ id }: { id: Service['id'] }) {
+  if (id === 'seo') return <SeoScene />
+  if (id === 'webdesign') return <WebdesignScene />
+  return <BetreuungScene />
+}
+
+// ─── Service card ──────────────────────────────────────────────────────────────
+
+function ServiceCard({
+  service,
+  index,
+  isInView,
+  shouldReduce,
+}: {
+  service: Service
+  index: number
+  isInView: boolean
+  shouldReduce: boolean | null
+}) {
+  return (
+    <motion.div
+      initial={shouldReduce ? undefined : { opacity: 0, y: 20 }}
+      animate={
+        shouldReduce
+          ? undefined
+          : isInView
+          ? { opacity: 1, y: 0 }
+          : { opacity: 0, y: 20 }
+      }
+      transition={{ duration: 0.80, ease: EASE, delay: 0.10 + index * 0.10 }}
+      style={{ height: '100%' }}
+    >
       <div
-        style={{
-          flex: 1,
-          height: 24,
-          background: 'rgba(255,255,255,0.03)',
-          border: '1px solid rgba(255,255,255,0.065)',
-          borderRadius: 5,
-          display: 'flex',
-          alignItems: 'center',
-          gap: 6,
-          padding: '0 9px',
-        }}
+        className="surface-primary"
+        style={{ height: '100%', display: 'flex', flexDirection: 'column', padding: 0, overflow: 'hidden' }}
       >
+        {/* Visual zone */}
         <div
+          aria-hidden
           style={{
-            width: 5,
-            height: 5,
-            borderRadius: '50%',
-            background: 'var(--accent)',
-            boxShadow: '0 0 10px rgba(211,253,81,0.85)',
-            animation: shouldReduce ? 'none' : 'heroPulse 1.8s ease-in-out infinite',
+            position: 'relative',
+            height: 'clamp(170px, 20vw, 220px)',
+            overflow: 'hidden',
             flexShrink: 0,
-          }}
-        />
-        <span
-          style={{
-            fontFamily: 'var(--font-ui)',
-            fontSize: '0.585rem',
-            color: 'rgba(255,255,255,0.26)',
-            letterSpacing: '0.025em',
+            background: 'rgba(4,4,4,0.18)',
+            borderBottom: '1px solid rgba(255,255,255,0.055)',
           }}
         >
-          fahrschule-dirk-arnold.de
-        </span>
+          <SceneRenderer id={service.id} />
+          {/* Bottom fade */}
+          <div style={{
+            position: 'absolute', bottom: 0, left: 0, right: 0,
+            height: '50%',
+            background: 'linear-gradient(to top, rgba(6,6,6,0.75) 0%, transparent 100%)',
+            pointerEvents: 'none',
+          }}/>
+        </div>
+
+        {/* Content zone */}
+        <div style={{
+          flex: 1,
+          display: 'flex',
+          flexDirection: 'column',
+          padding: 'clamp(1rem, 1.45vw, 1.25rem)',
+          background: 'linear-gradient(180deg, rgba(6,6,6,0.72) 0%, rgba(6,6,6,0.58) 100%)',
+        }}>
+          {/* Clip-reveal headline */}
+          <div style={{ overflow: 'hidden', marginBottom: '0.45rem' }}>
+            <motion.h3
+              initial={shouldReduce ? undefined : { y: '110%' }}
+              animate={shouldReduce ? undefined : isInView ? { y: '0%' } : { y: '110%' }}
+              transition={{ duration: 0.72, ease: EASE, delay: 0.20 + index * 0.10 }}
+              style={{
+                fontFamily: 'var(--font-ui)',
+                fontStyle: 'normal',
+                fontSize: 'clamp(1rem, 1.25vw, 1.18rem)',
+                fontWeight: 500,
+                letterSpacing: '0',
+                lineHeight: 1.25,
+                color: 'rgba(255,255,255,0.9)',
+                margin: 0,
+              }}
+            >
+              {service.label}
+            </motion.h3>
+          </div>
+
+          <p style={{
+            fontFamily: 'var(--font-ui)',
+            fontSize: 'clamp(0.78rem, 1vw, 0.84rem)',
+            fontWeight: 300,
+            color: 'var(--muted)',
+            lineHeight: 1.60,
+            margin: 0,
+          }}>
+            {service.body}
+          </p>
+        </div>
       </div>
-      <div style={{ width: 40, flexShrink: 0 }} />
-    </div>
+    </motion.div>
   )
 }
 
@@ -162,483 +319,107 @@ function AfterChrome({ shouldReduce }: { shouldReduce: boolean | null }) {
 
 export function Services() {
   const headerRef = useRef<HTMLDivElement>(null)
-  const proofRef = useRef<HTMLDivElement>(null)
-  const stripRef = useRef<HTMLDivElement>(null)
+  const gridRef = useRef<HTMLDivElement>(null)
 
   const isHeaderInView = useInView(headerRef, { once: true, margin: '-80px' })
-  const isProofInView = useInView(proofRef, { once: true, margin: '-60px' })
-  const isStripInView = useInView(stripRef, { once: true, margin: '-60px' })
+  const isGridInView = useInView(gridRef, { once: true, margin: '-60px' })
   const shouldReduce = useReducedMotion()
-
-  const [afterHovered, setAfterHovered] = useState(false)
 
   return (
     <section
       id="leistungen"
       style={{
-        paddingTop: 'clamp(4rem, 8vw, 8rem)',
+        paddingTop: 'clamp(3rem, 6vw, 6rem)',
         paddingBottom: 'clamp(4rem, 8vw, 8rem)',
         position: 'relative',
         overflow: 'clip',
         overflowClipMargin: '200px',
       }}
     >
-      {/* Section atmosphere */}
-      <div
-        aria-hidden
-        style={{
-          position: 'absolute',
-          bottom: '-5%',
-          left: '-8%',
-          width: '52vw',
-          height: '52vw',
-          maxWidth: 640,
-          maxHeight: 640,
-          background:
-            'radial-gradient(ellipse at 35% 65%, rgba(212,131,10,0.12) 0%, rgba(184,134,11,0.05) 45%, transparent 70%)',
-          filter: 'blur(72px)',
-          pointerEvents: 'none',
-        }}
-      />
-      <div
-        aria-hidden
-        style={{
-          position: 'absolute',
-          top: '10%',
-          right: '-5%',
-          width: '40vw',
-          height: '40vw',
-          maxWidth: 520,
-          maxHeight: 520,
-          background:
-            'radial-gradient(ellipse at 65% 35%, rgba(211,253,81,0.04) 0%, transparent 65%)',
-          filter: 'blur(80px)',
-          pointerEvents: 'none',
-        }}
-      />
+      {/* Atmosphere */}
+      <div aria-hidden style={{
+        position: 'absolute', top: '5%', left: '50%', transform: 'translateX(-50%)',
+        width: '60vw', height: '60vw', maxWidth: 720, maxHeight: 720,
+        background: 'radial-gradient(ellipse at 50% 40%, rgba(212,131,10,0.07) 0%, transparent 68%)',
+        filter: 'blur(80px)', pointerEvents: 'none',
+      }}/>
 
       <div className="container-site" style={{ position: 'relative' }}>
 
-        {/* ── Section header ── */}
-        <div ref={headerRef} style={{ marginBottom: 'clamp(1.75rem, 3vw, 2.5rem)' }}>
-          <motion.div
-            initial={shouldReduce ? undefined : { opacity: 0, y: 10 }}
-            animate={
-              shouldReduce
-                ? undefined
-                : isHeaderInView
-                ? { opacity: 1, y: 0 }
-                : { opacity: 0, y: 10 }
-            }
-            transition={{ duration: 0.7, ease: EASE }}
-            style={{ marginBottom: '0.8rem' }}
-          >
-            <SectionLabel>● Was Sie bekommen</SectionLabel>
-          </motion.div>
-
-          <div style={{ overflow: 'hidden', marginBottom: '0.85rem' }}>
+        {/* ── Centered header ── */}
+        <div
+          ref={headerRef}
+          style={{ textAlign: 'center', marginBottom: 'clamp(2rem, 3vw, 2.75rem)' }}
+        >
+          {/* Headline */}
+          <div style={{ overflow: 'hidden', marginBottom: '1rem' }}>
             <motion.h2
               className="display-section"
               initial={shouldReduce ? undefined : { y: '108%' }}
-              animate={
-                shouldReduce
-                  ? undefined
-                  : isHeaderInView
-                  ? { y: '0%' }
-                  : { y: '108%' }
-              }
-              transition={{ duration: 0.92, ease: EASE, delay: 0.07 }}
+              animate={shouldReduce ? undefined : isHeaderInView ? { y: '0%' } : { y: '108%' }}
+              transition={{ duration: 0.90, ease: EASE, delay: 0.07 }}
+              style={{ maxWidth: '22ch', margin: '0 auto' }}
             >
-              Webdesign, das Anfragen bringt.
+              Leistungen, die Ihre Website wirksam machen.
             </motion.h2>
           </div>
 
+          {/* Subcopy */}
           <motion.p
             initial={shouldReduce ? undefined : { opacity: 0, y: 10 }}
-            animate={
-              shouldReduce
-                ? undefined
-                : isHeaderInView
-                ? { opacity: 1, y: 0 }
-                : { opacity: 0, y: 10 }
-            }
-            transition={{ duration: 0.75, ease: EASE, delay: 0.22 }}
+            animate={shouldReduce ? undefined : isHeaderInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 10 }}
+            transition={{ duration: 0.70, ease: EASE, delay: 0.20 }}
             style={{
               fontFamily: 'var(--font-ui)',
-              fontSize: 'clamp(0.85rem, 1.2vw, 0.95rem)',
+              fontSize: 'clamp(0.84rem, 1.18vw, 0.93rem)',
               fontWeight: 300,
-              color: 'rgba(255,255,255,0.42)',
+              color: 'rgba(255,255,255,0.40)',
               lineHeight: 1.65,
-              margin: 0,
-              maxWidth: '56ch',
+              margin: '0 auto 2rem',
+              maxWidth: '48ch',
             }}
           >
-            Design, Entwicklung, SEO — alles aus einer Hand. Maßgeschneidert
-            für Ihr Unternehmen, nicht von der Stange.
+            Design, Entwicklung und Sichtbarkeit — alles aus einer Hand,
+            maßgeschneidert für Ihr Unternehmen.
           </motion.p>
-        </div>
 
-        {/* ── Before / After proof ── */}
-        <div
-          ref={proofRef}
-          className="grid grid-cols-1 md:grid-cols-[5fr_8fr]"
-          style={{ gap: '1rem', alignItems: 'stretch' }}
-        >
-
-          {/* ── Before frame ── */}
+          {/* CTA */}
           <motion.div
-            className="order-last md:order-none panel-browser"
-            initial={shouldReduce ? undefined : { opacity: 0, x: -28, filter: 'blur(12px)' }}
-            animate={
-              shouldReduce
-                ? undefined
-                : isProofInView
-                ? { opacity: 1, x: 0, filter: 'blur(0px)' }
-                : { opacity: 0, x: -28, filter: 'blur(12px)' }
-            }
-            transition={{ duration: 1.0, ease: EASE, delay: 0.1 }}
-            style={{ padding: 0, overflow: 'hidden', display: 'flex', flexDirection: 'column' }}
+            initial={shouldReduce ? undefined : { opacity: 0, y: 8 }}
+            animate={shouldReduce ? undefined : isHeaderInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 8 }}
+            transition={{ duration: 0.65, ease: EASE, delay: 0.30 }}
           >
-            <BeforeChrome />
-
-            {/* Image area — stretches to match After frame height */}
-            <div style={{ flex: 1, position: 'relative', minHeight: 180, overflow: 'hidden' }}>
-              <Image
-                src="/projekte/fahrschule-da-before.jpg"
-                alt="Fahrschule Dirk Arnold – Website vor der Überarbeitung"
-                fill
-                style={{
-                  objectFit: 'cover',
-                  objectPosition: 'top',
-                  filter: 'saturate(0.22) brightness(0.60)',
-                }}
-                sizes="(max-width: 767px) 100vw, 38vw"
-              />
-
-              {/* Darkening overlay */}
-              <div
-                aria-hidden
-                style={{
-                  position: 'absolute',
-                  inset: 0,
-                  background: 'rgba(6,6,6,0.26)',
-                  pointerEvents: 'none',
-                }}
-              />
-
-              {/* Bottom fade */}
-              <div
-                aria-hidden
-                style={{
-                  position: 'absolute',
-                  bottom: 0,
-                  left: 0,
-                  right: 0,
-                  height: '45%',
-                  background: 'linear-gradient(to top, rgba(6,6,6,0.80) 0%, transparent 100%)',
-                  pointerEvents: 'none',
-                }}
-              />
-
-              {/* Vorher label */}
-              <div
-                style={{
-                  position: 'absolute',
-                  bottom: '0.75rem',
-                  left: '0.75rem',
-                  display: 'inline-flex',
-                  alignItems: 'center',
-                  padding: '0.22rem 0.65rem',
-                  background: 'rgba(6,6,6,0.70)',
-                  border: '1px solid rgba(255,255,255,0.10)',
-                  borderRadius: 999,
-                  backdropFilter: 'blur(12px)',
-                  WebkitBackdropFilter: 'blur(12px)',
-                  zIndex: 2,
-                }}
-              >
-                <span
-                  style={{
-                    fontFamily: 'var(--font-ui)',
-                    fontSize: '0.52rem',
-                    fontWeight: 400,
-                    letterSpacing: '0.14em',
-                    textTransform: 'uppercase' as const,
-                    color: 'rgba(255,255,255,0.36)',
-                  }}
-                >
-                  Vorher
-                </span>
-              </div>
-            </div>
-          </motion.div>
-
-          {/* ── After frame ── */}
-          <motion.div
-            className="order-first md:order-none"
-            initial={shouldReduce ? undefined : { opacity: 0, x: 28, filter: 'blur(12px)' }}
-            animate={
-              shouldReduce
-                ? undefined
-                : isProofInView
-                ? { opacity: 1, x: 0, filter: 'blur(0px)' }
-                : { opacity: 0, x: 28, filter: 'blur(12px)' }
-            }
-            transition={{ duration: 1.0, ease: EASE, delay: 0.2 }}
-            style={{ display: 'block' }}
-          >
-            <Link
-              href="/projekte/fahrschule-rhein-hunsrueck"
-              style={{ display: 'block', height: '100%' }}
-            >
-              <motion.div
-                className="panel-browser"
-                onHoverStart={() => !shouldReduce && setAfterHovered(true)}
-                onHoverEnd={() => setAfterHovered(false)}
-                animate={{
-                  borderColor: afterHovered
-                    ? 'rgba(255,255,255,0.20)'
-                    : 'rgba(255,255,255,0.10)',
-                  boxShadow: afterHovered
-                    ? 'inset 0 1px 0 rgba(255,255,255,0.28), 0 32px 80px rgba(0,0,0,0.58), 0 0 80px rgba(211,253,81,0.07)'
-                    : 'inset 0 1px 0 rgba(255,255,255,0.14), 0 18px 56px rgba(0,0,0,0.44)',
-                }}
-                transition={{ duration: 0.42, ease: EASE }}
-                style={{
-                  padding: 0,
-                  overflow: 'hidden',
-                  height: '100%',
-                  display: 'flex',
-                  flexDirection: 'column',
-                }}
-              >
-                <AfterChrome shouldReduce={shouldReduce} />
-
-                {/* Image area — sets height for the whole row via aspect-ratio */}
-                <div
-                  style={{
-                    position: 'relative',
-                    aspectRatio: '16/9',
-                    width: '100%',
-                    overflow: 'hidden',
-                  }}
-                >
-                  <Image
-                    src="/projekte/fahrschule-da-after.jpg"
-                    alt="Fahrschule Dirk Arnold – neue Website von Metz & Partner"
-                    fill
-                    style={{ objectFit: 'cover', objectPosition: 'top' }}
-                    sizes="(max-width: 767px) 100vw, 62vw"
-                    priority
-                  />
-
-                  {/* Subtle image scale on hover */}
-                  {!shouldReduce && (
-                    <motion.div
-                      animate={{ scale: afterHovered ? 1.018 : 1 }}
-                      transition={{ duration: 0.7, ease: EASE }}
-                      style={{
-                        position: 'absolute',
-                        inset: 0,
-                        pointerEvents: 'none',
-                      }}
-                    />
-                  )}
-
-                  {/* Bottom fade */}
-                  <div
-                    aria-hidden
-                    style={{
-                      position: 'absolute',
-                      bottom: 0,
-                      left: 0,
-                      right: 0,
-                      height: '32%',
-                      background:
-                        'linear-gradient(to top, rgba(6,6,6,0.68) 0%, transparent 100%)',
-                      pointerEvents: 'none',
-                      zIndex: 1,
-                    }}
-                  />
-
-                  {/* Nachher badge */}
-                  <div
-                    style={{
-                      position: 'absolute',
-                      bottom: '0.85rem',
-                      left: '0.85rem',
-                      display: 'inline-flex',
-                      alignItems: 'center',
-                      gap: '0.38rem',
-                      padding: '0.28rem 0.7rem',
-                      background:
-                        'linear-gradient(180deg, rgba(211,253,81,0.13), rgba(211,253,81,0.065)), rgba(6,6,6,0.52)',
-                      border: '1px solid rgba(211,253,81,0.26)',
-                      borderRadius: 999,
-                      backdropFilter: 'blur(14px)',
-                      WebkitBackdropFilter: 'blur(14px)',
-                      boxShadow:
-                        'inset 0 1px 0 rgba(211,253,81,0.16), 0 0 22px rgba(211,253,81,0.09)',
-                      zIndex: 2,
-                    }}
-                  >
-                    <span
-                      style={{
-                        width: 5,
-                        height: 5,
-                        borderRadius: '50%',
-                        background: 'var(--accent)',
-                        boxShadow: '0 0 8px rgba(211,253,81,0.8)',
-                        animation: shouldReduce
-                          ? 'none'
-                          : 'heroPulse 1.8s ease-in-out infinite',
-                        flexShrink: 0,
-                      }}
-                    />
-                    <span
-                      style={{
-                        fontFamily: 'var(--font-ui)',
-                        fontSize: '0.52rem',
-                        fontWeight: 400,
-                        letterSpacing: '0.13em',
-                        textTransform: 'uppercase' as const,
-                        color: 'rgba(211,253,81,0.9)',
-                      }}
-                    >
-                      Nachher
-                    </span>
-                  </div>
-
-                  {/* Hover CTA — project link */}
-                  <motion.div
-                    animate={{
-                      opacity: afterHovered ? 1 : 0,
-                      y: afterHovered ? 0 : 8,
-                    }}
-                    transition={{ duration: 0.32, ease: EASE }}
-                    style={{
-                      position: 'absolute',
-                      bottom: '0.85rem',
-                      right: '0.85rem',
-                      display: 'inline-flex',
-                      alignItems: 'center',
-                      gap: '0.4rem',
-                      padding: '0.28rem 0.75rem',
-                      background: 'rgba(6,6,6,0.62)',
-                      border: '1px solid rgba(255,255,255,0.16)',
-                      borderRadius: 999,
-                      backdropFilter: 'blur(14px)',
-                      WebkitBackdropFilter: 'blur(14px)',
-                      zIndex: 2,
-                    }}
-                  >
-                    <span
-                      style={{
-                        fontFamily: 'var(--font-ui)',
-                        fontSize: '0.52rem',
-                        fontWeight: 400,
-                        letterSpacing: '0.12em',
-                        textTransform: 'uppercase' as const,
-                        color: 'rgba(255,255,255,0.80)',
-                      }}
-                    >
-                      Projekt ansehen
-                    </span>
-                  </motion.div>
-                </div>
-              </motion.div>
-            </Link>
-          </motion.div>
-
-        </div>
-
-        {/* ── Bausteine strip ── */}
-        <motion.div
-          ref={stripRef}
-          className="surface-secondary flex flex-col md:flex-row"
-          initial={shouldReduce ? undefined : { opacity: 0, y: 22 }}
-          animate={
-            shouldReduce
-              ? undefined
-              : isStripInView
-              ? { opacity: 1, y: 0 }
-              : { opacity: 0, y: 22 }
-          }
-          transition={{ duration: 0.85, ease: EASE, delay: 0.18 }}
-          style={{ marginTop: '1rem', padding: 0 }}
-        >
-          {modules.map((m, i) => (
-            <motion.div
-              key={m.number}
-              initial={shouldReduce ? undefined : { opacity: 0 }}
-              animate={
-                shouldReduce
-                  ? undefined
-                  : isStripInView
-                  ? { opacity: 1 }
-                  : { opacity: 0 }
-              }
-              transition={{ duration: 0.6, ease: EASE, delay: 0.28 + i * 0.08 }}
+            <a
+              href="#kontakt"
+              onClick={scrollToContact}
+              className="button-glass-secondary"
               style={{
-                flex: 1,
-                padding: '1.35rem 1.85rem',
-                borderBottom: i < modules.length - 1 ? '1px solid rgba(255,255,255,0.055)' : 'none',
+                fontFamily: 'var(--font-ui)',
+                fontSize: '0.72rem',
+                fontWeight: 400,
+                textTransform: 'uppercase' as const,
+                letterSpacing: '0.12em',
+                textDecoration: 'none',
+                color: 'var(--text)',
               }}
-              className={i < modules.length - 1 ? 'md:border-b-0 md:border-r md:border-white/[0.055]' : ''}
             >
-              <p
-                style={{
-                  fontFamily: 'var(--font-display)',
-                  fontStyle: 'italic',
-                  fontSize: '0.62rem',
-                  color: 'rgba(211,253,81,0.40)',
-                  margin: '0 0 0.28rem',
-                  letterSpacing: '0.04em',
-                }}
-              >
-                {m.number}
-              </p>
-              <p
-                style={{
-                  fontFamily: 'var(--font-ui)',
-                  fontSize: '0.82rem',
-                  fontWeight: 500,
-                  color: 'rgba(255,255,255,0.97)',
-                  margin: '0 0 0.18rem',
-                  letterSpacing: '0.04em',
-                  textTransform: 'uppercase' as const,
-                }}
-              >
-                {m.label}
-              </p>
-              <p
-                style={{
-                  fontFamily: 'var(--font-display)',
-                  fontStyle: 'italic',
-                  fontSize: '0.88rem',
-                  fontWeight: 400,
-                  color: 'rgba(255,255,255,0.38)',
-                  margin: '0 0 0.45rem',
-                  lineHeight: 1.25,
-                }}
-              >
-                {m.title}
-              </p>
-              <p
-                style={{
-                  fontFamily: 'var(--font-ui)',
-                  fontSize: '0.75rem',
-                  fontWeight: 300,
-                  color: 'var(--muted)',
-                  margin: 0,
-                  lineHeight: 1.6,
-                }}
-              >
-                {m.body}
-              </p>
-            </motion.div>
+              Projekt anfragen
+            </a>
+          </motion.div>
+        </div>
+
+        {/* ── Equal 3-col card grid ── */}
+        <div ref={gridRef} className="services-cards-grid">
+          {services.map((service, i) => (
+            <ServiceCard
+              key={service.id}
+              service={service}
+              index={i}
+              isInView={isGridInView}
+              shouldReduce={shouldReduce}
+            />
           ))}
-        </motion.div>
+        </div>
 
       </div>
     </section>

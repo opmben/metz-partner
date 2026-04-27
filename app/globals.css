@@ -649,7 +649,19 @@ body::before {
   to   { transform: translateX(0); }
 }
 
-/* ─── Services layout — handled via Tailwind utilities in component ─ */
+/* ─── Services section layout ──────────────────────────────────────── */
+.services-cards-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1rem;
+  align-items: stretch;
+}
+
+@media (min-width: 900px) {
+  .services-cards-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
 
 /* ─── Founder card layout ────────────────────────────────────────── */
 .founder-card-body {
