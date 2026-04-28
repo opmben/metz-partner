@@ -159,9 +159,9 @@ function PricingCard({
           aria-hidden
           style={{
             position: 'absolute',
-            inset: '-22% -16%',
+            inset: '-28% -20%',
             background:
-              'radial-gradient(ellipse at 50% 42%, rgba(212,131,10,0.12) 0%, rgba(184,134,11,0.04) 50%, transparent 70%)',
+              'radial-gradient(ellipse at 50% 42%, rgba(212,131,10,0.20) 0%, rgba(184,134,11,0.08) 50%, transparent 70%)',
             filter: 'blur(40px)',
             pointerEvents: 'none',
             zIndex: -1,
@@ -179,25 +179,25 @@ function PricingCard({
           padding: 'clamp(1.25rem, 2vw, 1.875rem)',
           ...(highlighted
             ? {
-                borderColor: 'rgba(255,255,255,0.20)',
+                borderColor: 'rgba(255,255,255,0.28)',
                 boxShadow:
-                  'inset 0 1px 0 rgba(255,255,255,0.24), 0 32px 90px rgba(0,0,0,0.44), 0 0 80px rgba(212,131,10,0.09)',
+                  'inset 0 1px 0 rgba(255,255,255,0.30), 0 32px 90px rgba(0,0,0,0.48), 0 0 60px rgba(212,131,10,0.18), 0 0 120px rgba(212,131,10,0.08)',
               }
             : {}),
         }}
       >
-        {/* Warm top edge — Growth only, slightly more defined */}
+        {/* Warm top edge — Growth only, stronger */}
         {highlighted && (
           <div
             aria-hidden
             style={{
               position: 'absolute',
               top: 0,
-              left: '12%',
-              right: '12%',
-              height: 1,
+              left: '8%',
+              right: '8%',
+              height: 2,
               background:
-                'linear-gradient(90deg, transparent, rgba(212,131,10,0.52), rgba(255,255,255,0.16), rgba(212,131,10,0.52), transparent)',
+                'linear-gradient(90deg, transparent, rgba(212,131,10,0.80), rgba(255,255,255,0.22), rgba(212,131,10,0.80), transparent)',
               pointerEvents: 'none',
               zIndex: 1,
             }}
@@ -213,24 +213,35 @@ function PricingCard({
               right: 'clamp(1.1rem, 1.8vw, 1.5rem)',
               display: 'inline-flex',
               alignItems: 'center',
-              padding: '0.22rem 0.65rem',
+              gap: '0.35rem',
+              padding: '0.28rem 0.75rem',
               background:
-                'linear-gradient(180deg, rgba(211,253,81,0.12), rgba(211,253,81,0.042))',
-              border: '1px solid rgba(211,253,81,0.24)',
+                'linear-gradient(180deg, rgba(211,253,81,0.18), rgba(211,253,81,0.07))',
+              border: '1px solid rgba(211,253,81,0.38)',
               borderRadius: 999,
               backdropFilter: 'blur(14px)',
               WebkitBackdropFilter: 'blur(14px)',
-              boxShadow: 'inset 0 1px 0 rgba(211,253,81,0.11)',
+              boxShadow: 'inset 0 1px 0 rgba(211,253,81,0.18), 0 0 16px rgba(211,253,81,0.10)',
             }}
           >
             <span
               style={{
+                width: 4,
+                height: 4,
+                borderRadius: '50%',
+                background: 'rgba(211,253,81,0.88)',
+                boxShadow: '0 0 6px rgba(211,253,81,0.60)',
+                flexShrink: 0,
+              }}
+            />
+            <span
+              style={{
                 fontFamily: 'var(--font-ui)',
                 fontSize: '0.62rem',
-                fontWeight: 400,
+                fontWeight: 500,
                 letterSpacing: '0.12em',
                 textTransform: 'uppercase' as const,
-                color: 'rgba(211,253,81,0.82)',
+                color: 'rgba(211,253,81,0.92)',
               }}
             >
               {plan.badge}

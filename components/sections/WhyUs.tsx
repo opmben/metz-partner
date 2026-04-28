@@ -1,478 +1,111 @@
 'use client'
-import { useRef, useState } from 'react'
-import Image from 'next/image'
-import {
-  motion,
-  useInView,
-  useReducedMotion,
-} from 'framer-motion'
+import { useRef } from 'react'
+import { motion, useInView, useReducedMotion } from 'framer-motion'
+import { X, Check } from 'lucide-react'
 
 // ─── Content ──────────────────────────────────────────────────────────────────
 
-const founders = [
-  {
-    initial: 'B',
-    name: 'Benedikt Metz',
-    role: 'Head of Design & Struktur',
-    bio: 'Hintergrund in Design und Recht. Verantwortlich für Gestaltung, Nutzerführung und dafür, dass Ihre Website nicht nur gut aussieht, sondern auch sauber aufgebaut ist.',
-    accentColor: 'rgba(211,253,81,0.92)',
-    accentBg: 'rgba(211,253,81,0.10)',
-    accentBorder: 'rgba(211,253,81,0.24)',
-    glowColor: 'rgba(211,253,81,0.10)',
-    portrait: '/founders/benedikt.png',
-    portraitAlt: 'Benedikt Metz – Head of Design & Struktur bei Metz & Partner',
-  },
-  {
-    initial: 'M',
-    name: 'Maximilian Metz',
-    role: 'Head of Strategie & Wachstum',
-    bio: 'Fokus auf Marketing und Conversion. Zuständig für Strategie, Wirkung und dafür, dass Ihre Website messbar Anfragen generiert.',
-    accentColor: 'rgba(211,253,81,0.80)',
-    accentBg: 'rgba(211,253,81,0.08)',
-    accentBorder: 'rgba(211,253,81,0.18)',
-    glowColor: 'rgba(211,253,81,0.08)',
-    portrait: '/founders/maximilian.png',
-    portraitAlt: 'Maximilian Metz – Head of Strategie & Wachstum bei Metz & Partner',
-  },
+const problems = [
+  'Baukasten-Look ohne Wiedererkennung',
+  'Langsame Ladezeiten auf Mobilgeräten',
+  'Keine klare Nutzerführung',
+  'Fehlende SEO-Grundlage',
+  'Kein direkter Ansprechpartner nach Launch',
 ]
 
-const differentiators = [
-  {
-    number: '01',
-    title: 'Direkt & persönlich',
-    body: 'Kein Ticketsystem. Keine Weitergabe. Sie sprechen immer mit uns.',
-  },
-  {
-    number: '02',
-    title: 'Regional & erreichbar',
-    body: 'Aus Koblenz. Wir kennen den Markt und sind jederzeit erreichbar.',
-  },
-  {
-    number: '03',
-    title: 'Von Idee bis Ergebnis',
-    body: 'Strategie, Umsetzung und Launch – alles aus einer Hand.',
-  },
+const solutions = [
+  'Individuelles Design passend zu Ihrem Unternehmen',
+  'Performance und mobile Optimierung von Anfang an',
+  'Klare Struktur für mehr Anfragen',
+  'SEO-Basis für lokale Sichtbarkeit',
+  'Direkte Zusammenarbeit mit den Umsetzern',
 ]
 
-// ─── Founder Card ─────────────────────────────────────────────────────────────
+const EASE: [number, number, number, number] = [0.16, 1, 0.3, 1]
 
-function FounderCard({
-  founder,
-  shouldReduce,
+// ─── Comparison Item ──────────────────────────────────────────────────────────
+
+function ComparisonItem({
+  text,
+  type,
   delay,
-  slideFrom = 28,
+  isInView,
+  shouldReduce,
+  isLast,
 }: {
-  founder: (typeof founders)[0]
-  shouldReduce: boolean | null
+  text: string
+  type: 'problem' | 'solution'
   delay: number
-  slideFrom?: number
+  isInView: boolean
+  shouldReduce: boolean | null
+  isLast: boolean
 }) {
-  const [hovered, setHovered] = useState(false)
-  const ref = useRef<HTMLDivElement>(null)
-  const isInView = useInView(ref, { once: true, margin: '-40px' })
-
-  const xStart = slideFrom
-
   return (
     <motion.div
-      ref={ref}
-      initial={shouldReduce ? undefined : { opacity: 0, x: xStart, filter: 'blur(12px)' }}
+      initial={shouldReduce ? undefined : { opacity: 0, y: 8 }}
       animate={
-        shouldReduce
-          ? undefined
-          : isInView
-          ? { opacity: 1, x: 0, filter: 'blur(0px)' }
-          : { opacity: 0, x: xStart, filter: 'blur(12px)' }
+        shouldReduce ? undefined : isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 8 }
       }
-      transition={{ duration: 0.95, ease: [0.16, 1, 0.3, 1], delay }}
-      style={{ height: '100%' }}
+      transition={{ duration: 0.55, ease: EASE, delay }}
+      style={{
+        display: 'flex',
+        alignItems: 'flex-start',
+        gap: '0.75rem',
+        paddingTop: '0.72rem',
+        paddingBottom: '0.72rem',
+        borderBottom: isLast ? 'none' : '1px solid rgba(255,255,255,0.045)',
+      }}
     >
-      <motion.div
-        onHoverStart={() => setHovered(true)}
-        onHoverEnd={() => setHovered(false)}
-        className="surface-primary"
-        animate={{
-          borderColor: hovered
-            ? founder.accentBorder
-            : 'rgba(255,255,255,0.082)',
-          boxShadow: hovered
-            ? `inset 0 1px 0 rgba(255,255,255,0.22), 0 28px 64px rgba(0,0,0,0.48), 0 0 80px ${founder.glowColor}`
-            : 'inset 0 1px 0 rgba(255,255,255,0.12), 0 10px 32px rgba(0,0,0,0.24)',
-        }}
-        transition={{ duration: 0.38, ease: [0.16, 1, 0.3, 1] }}
+      {/* Icon badge */}
+      <span
+        aria-hidden
         style={{
-          position: 'relative',
-          overflow: 'hidden',
-          height: '100%',
+          flexShrink: 0,
+          marginTop: '0.2rem',
           display: 'flex',
-          flexDirection: 'column',
+          alignItems: 'center',
+          justifyContent: 'center',
+          width: 18,
+          height: 18,
+          borderRadius: '50%',
+          background:
+            type === 'problem'
+              ? 'rgba(255, 75, 75, 0.09)'
+              : 'rgba(211, 253, 81, 0.09)',
+          border: `1px solid ${
+            type === 'problem'
+              ? 'rgba(255, 80, 80, 0.16)'
+              : 'rgba(211, 253, 81, 0.20)'
+          }`,
         }}
       >
-        {/* Ghost initial — atmospheric depth behind text zone */}
-        <motion.span
-          aria-hidden
-          animate={{
-            opacity: hovered && !shouldReduce ? 0.036 : 0.014,
-            scale: hovered && !shouldReduce ? 1.04 : 1,
-          }}
-          transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
-          style={{
-            position: 'absolute',
-            bottom: '-0.18em',
-            right: '-0.03em',
-            fontFamily: 'var(--font-display)',
-            fontSize: 'clamp(7rem, 14vw, 14rem)',
-            fontWeight: 400,
-            fontStyle: 'italic',
-            lineHeight: 1,
-            color: 'rgba(255,255,255,1)',
-            pointerEvents: 'none',
-            userSelect: 'none',
-            zIndex: 0,
-            transformOrigin: 'bottom right',
-          }}
-        >
-          {founder.initial}
-        </motion.span>
+        {type === 'problem' ? (
+          <X
+            size={9}
+            strokeWidth={2.8}
+            style={{ color: 'rgba(255, 88, 88, 0.62)' }}
+          />
+        ) : (
+          <Check
+            size={9}
+            strokeWidth={2.8}
+            style={{ color: 'rgba(211, 253, 81, 0.88)' }}
+          />
+        )}
+      </span>
 
-        {/* Top accent line */}
-        <motion.div
-          aria-hidden
-          animate={{ opacity: hovered ? 1 : 0.45, scaleX: hovered ? 1 : 0.6 }}
-          transition={{ duration: 0.42, ease: [0.16, 1, 0.3, 1] }}
-          style={{
-            position: 'absolute',
-            top: 0,
-            left: '15%',
-            right: '15%',
-            height: 1,
-            background: `linear-gradient(90deg, transparent, ${founder.accentColor}, transparent)`,
-            pointerEvents: 'none',
-            zIndex: 2,
-            transformOrigin: 'center',
-          }}
-        />
-
-        {/* Hover bloom */}
-        <motion.div
-          aria-hidden
-          animate={{ opacity: hovered && !shouldReduce ? 1 : 0 }}
-          transition={{ duration: 0.5 }}
-          style={{
-            position: 'absolute',
-            bottom: '-30%',
-            left: '-20%',
-            width: '70%',
-            height: '70%',
-            borderRadius: '50%',
-            background: `radial-gradient(circle, ${founder.glowColor}, transparent 70%)`,
-            filter: 'blur(28px)',
-            pointerEvents: 'none',
-            zIndex: 0,
-          }}
-        />
-
-        {/* Card body: portrait zone + text zone */}
-        <div className="founder-card-body">
-
-          {/* ── Portrait zone ── */}
-          <div className="founder-portrait-zone">
-            {/* Portrait image */}
-            <motion.div
-              animate={{ opacity: hovered ? 1 : 0.88 }}
-              transition={{ duration: 0.45, ease: [0.16, 1, 0.3, 1] }}
-              style={{ position: 'absolute', inset: 0 }}
-            >
-              <Image
-                src={founder.portrait}
-                alt={founder.portraitAlt}
-                fill
-                style={{ objectFit: 'cover', objectPosition: '50% 18%' }}
-                sizes="(max-width: 767px) 100vw, (max-width: 1023px) 36vw, 20vw"
-                loading="lazy"
-              />
-            </motion.div>
-
-            {/* Tonal base — slight darkening to harmonize studio background */}
-            <div
-              aria-hidden
-              style={{
-                position: 'absolute',
-                inset: 0,
-                background: 'rgba(0,0,0,0.06)',
-                pointerEvents: 'none',
-                zIndex: 1,
-              }}
-            />
-
-            {/* Radial vignette — edge darkening */}
-            <div
-              aria-hidden
-              style={{
-                position: 'absolute',
-                inset: 0,
-                background:
-                  'radial-gradient(ellipse at 45% 45%, transparent 32%, rgba(0,0,0,0.24) 80%, rgba(0,0,0,0.38) 100%)',
-                pointerEvents: 'none',
-                zIndex: 2,
-              }}
-            />
-
-            {/* Top edge fade */}
-            <div
-              aria-hidden
-              style={{
-                position: 'absolute',
-                inset: 0,
-                background: 'linear-gradient(to bottom, rgba(8,8,8,0.18) 0%, transparent 22%)',
-                pointerEvents: 'none',
-                zIndex: 2,
-              }}
-            />
-
-            {/* Mobile: bottom fade into card */}
-            <div
-              aria-hidden
-              className="md:hidden"
-              style={{
-                position: 'absolute',
-                inset: 0,
-                background:
-                  'linear-gradient(to bottom, transparent 50%, rgba(8,8,8,0.88) 100%)',
-                pointerEvents: 'none',
-                zIndex: 3,
-              }}
-            />
-
-            {/* Desktop: right fade + bottom fade into card */}
-            <div
-              aria-hidden
-              className="hidden md:block"
-              style={{
-                position: 'absolute',
-                inset: 0,
-                background:
-                  'linear-gradient(to right, transparent 52%, rgba(8,8,8,0.78) 100%)',
-                pointerEvents: 'none',
-                zIndex: 3,
-              }}
-            />
-            <div
-              aria-hidden
-              className="hidden md:block"
-              style={{
-                position: 'absolute',
-                inset: 0,
-                background:
-                  'linear-gradient(to bottom, transparent 60%, rgba(8,8,8,0.52) 100%)',
-                pointerEvents: 'none',
-                zIndex: 3,
-              }}
-            />
-          </div>
-
-          {/* ── Text zone ── */}
-          <div
-            style={{
-              flex: 1,
-              padding: 'clamp(1.75rem, 3vw, 2.5rem)',
-              display: 'flex',
-              flexDirection: 'column',
-              position: 'relative',
-              zIndex: 1,
-            }}
-          >
-            {/* Role */}
-            <p
-              style={{
-                fontFamily: 'var(--font-ui)',
-                fontSize: '0.62rem',
-                fontWeight: 400,
-                textTransform: 'uppercase' as const,
-                letterSpacing: '0.15em',
-                color: 'var(--muted)',
-                margin: '0 0 0.4rem',
-              }}
-            >
-              {founder.role}
-            </p>
-
-            {/* Name — clip reveal from bottom */}
-            <div style={{ overflow: 'hidden', marginBottom: '1.5rem' }}>
-              <motion.h3
-                initial={shouldReduce ? undefined : { y: '110%' }}
-                animate={
-                  shouldReduce
-                    ? undefined
-                    : isInView
-                    ? { y: '0%' }
-                    : { y: '110%' }
-                }
-                transition={{
-                  duration: 0.75,
-                  ease: [0.16, 1, 0.3, 1],
-                  delay: delay + 0.1,
-                }}
-                style={{
-                  fontFamily: 'var(--font-display)',
-                  fontSize: 'clamp(1.3rem, 2.2vw, 2rem)',
-                  fontWeight: 400,
-                  fontStyle: 'italic',
-                  color: 'var(--text)',
-                  lineHeight: 1.1,
-                  letterSpacing: '-0.02em',
-                  margin: 0,
-                }}
-              >
-                {founder.name}
-              </motion.h3>
-            </div>
-
-            {/* Divider */}
-            <motion.div
-              initial={shouldReduce ? undefined : { scaleX: 0 }}
-              animate={
-                shouldReduce ? undefined : isInView ? { scaleX: 1 } : { scaleX: 0 }
-              }
-              transition={{
-                duration: 0.7,
-                ease: [0.16, 1, 0.3, 1],
-                delay: delay + 0.22,
-              }}
-              style={{
-                height: 1,
-                background: 'rgba(255,255,255,0.06)',
-                marginBottom: '1.5rem',
-                transformOrigin: 'left',
-              }}
-            />
-
-            {/* Bio */}
-            <motion.p
-              initial={shouldReduce ? undefined : { opacity: 0, y: 12 }}
-              animate={
-                shouldReduce
-                  ? undefined
-                  : isInView
-                  ? { opacity: 1, y: 0 }
-                  : { opacity: 0, y: 12 }
-              }
-              transition={{
-                duration: 0.7,
-                ease: [0.16, 1, 0.3, 1],
-                delay: delay + 0.28,
-              }}
-              style={{
-                fontFamily: 'var(--font-ui)',
-                fontSize: '0.9rem',
-                fontWeight: 300,
-                color: 'var(--muted)',
-                lineHeight: 1.8,
-                margin: 0,
-                flex: 1,
-              }}
-            >
-              {founder.bio}
-            </motion.p>
-          </div>
-        </div>
-      </motion.div>
-    </motion.div>
-  )
-}
-
-// ─── Differentiator Strip ─────────────────────────────────────────────────────
-
-function DifferentiatorStrip({
-  shouldReduce,
-}: {
-  shouldReduce: boolean | null
-}) {
-  const ref = useRef<HTMLDivElement>(null)
-  const isInView = useInView(ref, { once: true, margin: '-40px' })
-
-  return (
-    <motion.div
-      ref={ref}
-      initial={shouldReduce ? undefined : { opacity: 0, y: 22 }}
-      animate={
-        shouldReduce
-          ? undefined
-          : isInView
-          ? { opacity: 1, y: 0 }
-          : { opacity: 0, y: 22 }
-      }
-      transition={{ duration: 0.85, ease: [0.16, 1, 0.3, 1], delay: 0.36 }}
-    >
-      <div className="surface-secondary" style={{ padding: 0 }}>
-        <div className="flex flex-col md:flex-row">
-          {differentiators.map((d, i) => (
-            <motion.div
-              key={d.number}
-              initial={shouldReduce ? undefined : { opacity: 0 }}
-              animate={
-                shouldReduce ? undefined : isInView ? { opacity: 1 } : { opacity: 0 }
-              }
-              transition={{
-                duration: 0.6,
-                ease: [0.16, 1, 0.3, 1],
-                delay: 0.44 + i * 0.08,
-              }}
-              className={
-                i < differentiators.length - 1
-                  ? 'border-b border-white/[0.055] md:border-b-0 md:border-r'
-                  : ''
-              }
-              style={{
-                flex: 1,
-                padding: '1.35rem 1.85rem',
-              }}
-            >
-              {/* Number */}
-              <p
-                style={{
-                  fontFamily: 'var(--font-display)',
-                  fontStyle: 'italic',
-                  fontSize: '0.68rem',
-                  color: 'rgba(211,253,81,0.48)',
-                  margin: '0 0 0.32rem',
-                  letterSpacing: '0.04em',
-                }}
-              >
-                {d.number}
-              </p>
-
-              {/* Title */}
-              <p
-                style={{
-                  fontFamily: 'var(--font-display)',
-                  fontSize: '0.92rem',
-                  fontWeight: 400,
-                  color: 'var(--text)',
-                  margin: '0 0 0.22rem',
-                  lineHeight: 1.2,
-                }}
-              >
-                {d.title}
-              </p>
-
-              {/* Body */}
-              <p
-                style={{
-                  fontFamily: 'var(--font-ui)',
-                  fontSize: '0.775rem',
-                  fontWeight: 300,
-                  color: 'var(--muted)',
-                  margin: 0,
-                  lineHeight: 1.6,
-                }}
-              >
-                {d.body}
-              </p>
-            </motion.div>
-          ))}
-        </div>
-      </div>
+      {/* Text */}
+      <span
+        style={{
+          fontFamily: 'var(--font-ui)',
+          fontSize: '0.875rem',
+          fontWeight: 300,
+          lineHeight: 1.6,
+          color: type === 'problem' ? 'var(--muted)' : 'var(--text)',
+        }}
+      >
+        {text}
+      </span>
     </motion.div>
   )
 }
@@ -481,7 +114,12 @@ function DifferentiatorStrip({
 
 export function WhyUs() {
   const headerRef = useRef<HTMLDivElement>(null)
-  const isInView = useInView(headerRef, { once: true, margin: '-80px' })
+  const problemRef = useRef<HTMLDivElement>(null)
+  const solutionRef = useRef<HTMLDivElement>(null)
+
+  const isHeaderInView = useInView(headerRef, { once: true, margin: '-80px' })
+  const isProblemInView = useInView(problemRef, { once: true, margin: '-60px' })
+  const isSolutionInView = useInView(solutionRef, { once: true, margin: '-60px' })
   const shouldReduce = useReducedMotion()
 
   return (
@@ -495,89 +133,45 @@ export function WhyUs() {
         overflowClipMargin: '200px',
       }}
     >
-      {/* Atmospheric bloom — warm copper right edge */}
+      {/* Warm copper bloom — top left */}
       <div
         aria-hidden
         style={{
           position: 'absolute',
-          top: '10%',
-          right: '-10%',
-          width: '55vw',
-          height: '65vw',
-          maxWidth: 700,
-          maxHeight: 750,
+          top: '5%',
+          left: '-12%',
+          width: '60vw',
+          height: '70vw',
+          maxWidth: 750,
+          maxHeight: 800,
           background:
-            'radial-gradient(ellipse at 65% 40%, rgba(198,124,59,0.13) 0%, rgba(184,134,11,0.065) 40%, transparent 66%)',
+            'radial-gradient(ellipse at 35% 45%, rgba(198,124,59,0.12) 0%, rgba(184,134,11,0.06) 42%, transparent 66%)',
           filter: 'blur(80px)',
           pointerEvents: 'none',
         }}
       />
 
-      {/* Ghost background text */}
+      {/* Accent bloom — lower right, behind solution card */}
       <div
         aria-hidden
         style={{
           position: 'absolute',
-          bottom: '4%',
-          right: '-2%',
-          fontFamily: 'var(--font-display)',
-          fontSize: 'clamp(7rem, 17vw, 16rem)',
-          fontWeight: 400,
-          fontStyle: 'italic',
-          lineHeight: 1,
-          color: 'rgba(255,255,255,0.015)',
+          bottom: '8%',
+          right: '-8%',
+          width: '45vw',
+          height: '45vw',
+          maxWidth: 560,
+          maxHeight: 560,
+          background:
+            'radial-gradient(ellipse, rgba(211,253,81,0.038) 0%, transparent 60%)',
+          filter: 'blur(70px)',
           pointerEvents: 'none',
-          userSelect: 'none',
         }}
-      >
-        M&P
-      </div>
+      />
 
       <div className="container-site" style={{ position: 'relative' }}>
         {/* ── Section header ── */}
-        <div ref={headerRef} style={{ marginBottom: '3.5rem' }}>
-          {/* Eyebrow pill */}
-          <motion.div
-            initial={shouldReduce ? undefined : { opacity: 0, y: 10 }}
-            animate={
-              shouldReduce
-                ? undefined
-                : isInView
-                ? { opacity: 1, y: 0 }
-                : { opacity: 0, y: 10 }
-            }
-            transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
-            style={{ marginBottom: '1.1rem', display: 'inline-block' }}
-          >
-            <span
-              className="surface-floating"
-              style={{
-                display: 'inline-flex',
-                alignItems: 'center',
-                gap: '0.5rem',
-                padding: '0.35rem 0.9rem',
-                fontFamily: 'var(--font-ui)',
-                fontSize: '0.65rem',
-                fontWeight: 400,
-                textTransform: 'uppercase' as const,
-                letterSpacing: '0.14em',
-                color: 'rgba(255,255,255,0.45)',
-              }}
-            >
-              <span
-                style={{
-                  width: 5,
-                  height: 5,
-                  borderRadius: '50%',
-                  background: 'var(--accent)',
-                  boxShadow: '0 0 8px rgba(211,253,81,0.55)',
-                  flexShrink: 0,
-                }}
-              />
-              Über uns
-            </span>
-          </motion.div>
-
+        <div ref={headerRef} style={{ marginBottom: '3.5rem', maxWidth: 640 }}>
           {/* Headline */}
           <div style={{ overflow: 'hidden' }}>
             <motion.h2
@@ -586,42 +180,289 @@ export function WhyUs() {
               animate={
                 shouldReduce
                   ? undefined
-                  : isInView
+                  : isHeaderInView
                   ? { y: '0%' }
                   : { y: '108%' }
               }
-              transition={{
-                duration: 0.95,
-                ease: [0.16, 1, 0.3, 1],
-                delay: 0.07,
-              }}
+              transition={{ duration: 0.95, ease: EASE, delay: 0.07 }}
             >
-              Direkte Zusammenarbeit.{' '}
-              <em>Ohne Umwege.</em>
+              Warum nicht einfach{' '}
+              <em>irgendeine Website?</em>
             </motion.h2>
           </div>
+
+          {/* Subcopy */}
+          <motion.p
+            initial={shouldReduce ? undefined : { opacity: 0, y: 14 }}
+            animate={
+              shouldReduce
+                ? undefined
+                : isHeaderInView
+                ? { opacity: 1, y: 0 }
+                : { opacity: 0, y: 14 }
+            }
+            transition={{ duration: 0.8, ease: EASE, delay: 0.18 }}
+            style={{
+              fontFamily: 'var(--font-ui)',
+              fontSize: '0.95rem',
+              fontWeight: 300,
+              color: 'var(--muted)',
+              lineHeight: 1.75,
+              margin: '1.1rem 0 0',
+            }}
+          >
+            Viele Websites sehen auf den ersten Blick okay aus. Entscheidend ist,
+            ob sie Vertrauen schaffen, gefunden werden und Anfragen auslösen.
+          </motion.p>
         </div>
 
-        {/* ── Asymmetric founders grid ── */}
+        {/* ── Comparison Cards ── */}
         <div
           className="grid grid-cols-1 lg:grid-cols-2"
-          style={{ gap: '1rem', marginBottom: '1rem' }}
+          style={{ gap: '1rem', alignItems: 'stretch' }}
         >
-          <FounderCard
-            founder={founders[0]}
-            shouldReduce={shouldReduce}
-            delay={0.14}
-            slideFrom={-28}
-          />
-          <FounderCard
-            founder={founders[1]}
-            shouldReduce={shouldReduce}
-            delay={0.22}
-          />
-        </div>
 
-        {/* ── Compact differentiator strip ── */}
-        <DifferentiatorStrip shouldReduce={shouldReduce} />
+          {/* Left — Problem card */}
+          <motion.div
+            ref={problemRef}
+            initial={
+              shouldReduce ? undefined : { opacity: 0, x: -30, filter: 'blur(10px)' }
+            }
+            animate={
+              shouldReduce
+                ? undefined
+                : isProblemInView
+                ? { opacity: 1, x: 0, filter: 'blur(0px)' }
+                : { opacity: 0, x: -30, filter: 'blur(10px)' }
+            }
+            transition={{ duration: 0.9, ease: EASE, delay: 0.1 }}
+            style={{ height: '100%' }}
+          >
+            <div
+              className="surface-secondary"
+              style={{
+                height: '100%',
+                padding: 'clamp(1.75rem, 3vw, 2.5rem)',
+                opacity: 0.88,
+              }}
+            >
+              {/* Card header */}
+              <div style={{ marginBottom: '1.6rem' }}>
+                <div
+                  style={{
+                    display: 'inline-flex',
+                    alignItems: 'center',
+                    gap: '0.5rem',
+                    marginBottom: '0.7rem',
+                  }}
+                >
+                  <span
+                    aria-hidden
+                    style={{
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                      width: 22,
+                      height: 22,
+                      borderRadius: '50%',
+                      background: 'rgba(255, 75, 75, 0.08)',
+                      border: '1px solid rgba(255, 80, 80, 0.15)',
+                      flexShrink: 0,
+                    }}
+                  >
+                    <X
+                      size={11}
+                      strokeWidth={2.5}
+                      style={{ color: 'rgba(255, 88, 88, 0.58)' }}
+                    />
+                  </span>
+                  <span
+                    style={{
+                      fontFamily: 'var(--font-ui)',
+                      fontSize: '0.62rem',
+                      fontWeight: 400,
+                      textTransform: 'uppercase' as const,
+                      letterSpacing: '0.14em',
+                      color: 'rgba(255,88,88,0.42)',
+                    }}
+                  >
+                    Häufige Probleme
+                  </span>
+                </div>
+
+                <h3
+                  style={{
+                    fontFamily: 'var(--font-display)',
+                    fontSize: 'clamp(1.15rem, 2vw, 1.45rem)',
+                    fontWeight: 400,
+                    fontStyle: 'italic',
+                    color: 'var(--muted)',
+                    lineHeight: 1.18,
+                    letterSpacing: '-0.02em',
+                    margin: 0,
+                  }}
+                >
+                  Was häufig schiefläuft
+                </h3>
+              </div>
+
+              {/* Divider */}
+              <div
+                style={{
+                  height: 1,
+                  background: 'rgba(255,255,255,0.055)',
+                  marginBottom: '1.4rem',
+                }}
+              />
+
+              {/* Items */}
+              <div>
+                {problems.map((text, i) => (
+                  <ComparisonItem
+                    key={i}
+                    text={text}
+                    type="problem"
+                    delay={0.22 + i * 0.07}
+                    isInView={isProblemInView}
+                    shouldReduce={shouldReduce}
+                    isLast={i === problems.length - 1}
+                  />
+                ))}
+              </div>
+            </div>
+          </motion.div>
+
+          {/* Right — Solution card */}
+          <motion.div
+            ref={solutionRef}
+            initial={
+              shouldReduce ? undefined : { opacity: 0, x: 30, filter: 'blur(10px)' }
+            }
+            animate={
+              shouldReduce
+                ? undefined
+                : isSolutionInView
+                ? { opacity: 1, x: 0, filter: 'blur(0px)' }
+                : { opacity: 0, x: 30, filter: 'blur(10px)' }
+            }
+            transition={{ duration: 0.9, ease: EASE, delay: 0.18 }}
+            style={{ height: '100%' }}
+          >
+            <div
+              className="surface-primary"
+              style={{
+                height: '100%',
+                padding: 'clamp(1.75rem, 3vw, 2.5rem)',
+                position: 'relative',
+              }}
+            >
+              {/* Accent bloom inside card */}
+              <div
+                aria-hidden
+                style={{
+                  position: 'absolute',
+                  bottom: '-25%',
+                  left: '-15%',
+                  width: '85%',
+                  height: '85%',
+                  background:
+                    'radial-gradient(circle, rgba(211,253,81,0.048) 0%, transparent 65%)',
+                  filter: 'blur(36px)',
+                  pointerEvents: 'none',
+                  zIndex: 0,
+                }}
+              />
+
+              {/* Content above bloom */}
+              <div style={{ position: 'relative', zIndex: 1 }}>
+                {/* Card header */}
+                <div style={{ marginBottom: '1.6rem' }}>
+                  <div
+                    style={{
+                      display: 'inline-flex',
+                      alignItems: 'center',
+                      gap: '0.5rem',
+                      marginBottom: '0.7rem',
+                    }}
+                  >
+                    <span
+                      aria-hidden
+                      style={{
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        width: 22,
+                        height: 22,
+                        borderRadius: '50%',
+                        background: 'rgba(211, 253, 81, 0.10)',
+                        border: '1px solid rgba(211, 253, 81, 0.22)',
+                        flexShrink: 0,
+                      }}
+                    >
+                      <Check
+                        size={11}
+                        strokeWidth={2.5}
+                        style={{ color: 'rgba(211, 253, 81, 0.90)' }}
+                      />
+                    </span>
+                    <span
+                      style={{
+                        fontFamily: 'var(--font-ui)',
+                        fontSize: '0.62rem',
+                        fontWeight: 400,
+                        textTransform: 'uppercase' as const,
+                        letterSpacing: '0.14em',
+                        color: 'rgba(211,253,81,0.55)',
+                      }}
+                    >
+                      Metz & Partner
+                    </span>
+                  </div>
+
+                  <h3
+                    style={{
+                      fontFamily: 'var(--font-display)',
+                      fontSize: 'clamp(1.15rem, 2vw, 1.45rem)',
+                      fontWeight: 400,
+                      fontStyle: 'italic',
+                      color: 'var(--text)',
+                      lineHeight: 1.18,
+                      letterSpacing: '-0.02em',
+                      margin: 0,
+                    }}
+                  >
+                    Was Sie bei Metz & Partner bekommen
+                  </h3>
+                </div>
+
+                {/* Accent divider */}
+                <div
+                  style={{
+                    height: 1,
+                    background:
+                      'linear-gradient(90deg, rgba(211,253,81,0.20), rgba(255,255,255,0.06) 55%, transparent)',
+                    marginBottom: '1.4rem',
+                  }}
+                />
+
+                {/* Items */}
+                <div>
+                  {solutions.map((text, i) => (
+                    <ComparisonItem
+                      key={i}
+                      text={text}
+                      type="solution"
+                      delay={0.30 + i * 0.07}
+                      isInView={isSolutionInView}
+                      shouldReduce={shouldReduce}
+                      isLast={i === solutions.length - 1}
+                    />
+                  ))}
+                </div>
+              </div>
+            </div>
+          </motion.div>
+        </div>
       </div>
     </section>
   )

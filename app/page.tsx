@@ -5,6 +5,7 @@ import { ProofStrip } from '@/components/sections/ProofStrip'
 import { Projects } from '@/components/sections/Projects'
 import { WhyUs } from '@/components/sections/WhyUs'
 import { Services } from '@/components/sections/Services'
+import { Founders } from '@/components/sections/Founders'
 import { Pricing } from '@/components/sections/Pricing'
 import { Process } from '@/components/sections/Process'
 import { Manifesto } from '@/components/sections/Manifesto'
@@ -16,9 +17,10 @@ export default function Home() {
       <main>
         <Hero />
         <ProofStrip />
+        <Founders />
+        <Services />
         <Projects />
         <WhyUs />
-        <Services />
         <Pricing />
         <Process />
         <Manifesto />

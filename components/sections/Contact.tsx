@@ -212,47 +212,6 @@ export function Contact() {
 
         {/* ── Section header ── */}
         <div id="kontakt-heading" ref={headerRef} style={{ marginBottom: 'clamp(3rem, 5vw, 4.5rem)' }}>
-          <motion.div
-            initial={shouldReduce ? undefined : { opacity: 0, y: 10 }}
-            animate={
-              shouldReduce
-                ? undefined
-                : isHeaderInView
-                ? { opacity: 1, y: 0 }
-                : { opacity: 0, y: 10 }
-            }
-            transition={{ duration: 0.7, ease: EASE }}
-            style={{ marginBottom: '1.1rem', display: 'inline-block' }}
-          >
-            <span
-              className="surface-floating"
-              style={{
-                display: 'inline-flex',
-                alignItems: 'center',
-                gap: '0.5rem',
-                padding: '0.35rem 0.9rem',
-                fontFamily: 'var(--font-ui)',
-                fontSize: '0.65rem',
-                fontWeight: 400,
-                textTransform: 'uppercase' as const,
-                letterSpacing: '0.14em',
-                color: 'rgba(255,255,255,0.45)',
-              }}
-            >
-              <span
-                style={{
-                  width: 5,
-                  height: 5,
-                  borderRadius: '50%',
-                  background: 'var(--accent)',
-                  boxShadow: '0 0 8px rgba(211,253,81,0.55)',
-                  flexShrink: 0,
-                }}
-              />
-              Kontakt
-            </span>
-          </motion.div>
-
           <div style={{ overflow: 'hidden' }}>
             <motion.h2
               className="display-section"
