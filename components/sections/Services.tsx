@@ -193,19 +193,19 @@ function BetreuungScene() {
 
       {/* Data points */}
       <circle cx="44"  cy="162" r="3.5" fill="rgba(255,255,255,0.32)"/>
-      <circle cx="148" cy="128" r="3.5" fill="rgba(255,255,255,0.40)"/>
       <circle cx="296" cy="58"  r="5.5" fill="rgba(211,253,81,0.78)"/>
       <circle cx="296" cy="58"  r="10"
         stroke="rgba(211,253,81,0.18)" strokeWidth="0.75" fill="none"/>
 
-      {/* Refresh icon — centered, quiet */}
-      <circle cx="170" cy="110" r="24"
-        fill="rgba(255,255,255,0.028)" stroke="rgba(255,255,255,0.07)" strokeWidth="0.75"/>
-      <path d="M 160 110 A 10 10 0 1 1 174 118"
-        stroke="rgba(255,255,255,0.38)" strokeWidth="1.5" fill="none" strokeLinecap="round"/>
-      <path d="M 174 114 L 174 118 L 178 118"
-        stroke="rgba(255,255,255,0.38)" strokeWidth="1.5"
-        strokeLinecap="round" strokeLinejoin="round"/>
+
+      {/* Uptime bar strip — bottom edge */}
+      {Array.from({ length: 26 }, (_, i) => (
+        <rect key={i}
+          x={44 + i * 9.8} y={179} width="7.5" height="10" rx="2"
+          fill={i >= 24 ? 'rgba(211,253,81,0.65)' : i === 11 ? 'rgba(255,255,255,0.09)' : 'rgba(255,255,255,0.22)'}
+          opacity={0.55 + i * 0.017}
+        />
+      ))}
     </svg>
   )
 }
@@ -383,29 +383,6 @@ export function Services() {
             maßgeschneidert für Ihr Unternehmen.
           </motion.p>
 
-          {/* CTA */}
-          <motion.div
-            initial={shouldReduce ? undefined : { opacity: 0, y: 8 }}
-            animate={shouldReduce ? undefined : isHeaderInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 8 }}
-            transition={{ duration: 0.65, ease: EASE, delay: 0.30 }}
-          >
-            <a
-              href="#kontakt"
-              onClick={scrollToContact}
-              className="button-glass-secondary"
-              style={{
-                fontFamily: 'var(--font-ui)',
-                fontSize: '0.72rem',
-                fontWeight: 400,
-                textTransform: 'uppercase' as const,
-                letterSpacing: '0.12em',
-                textDecoration: 'none',
-                color: 'var(--text)',
-              }}
-            >
-              Projekt anfragen
-            </a>
-          </motion.div>
         </div>
 
         {/* ── Equal 3-col card grid ── */}
