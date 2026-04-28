@@ -214,7 +214,7 @@ export function Hero() {
           </motion.div>
 
           {/* Headline — character-level animation */}
-          <div style={{ display: 'flex', flexDirection: 'column', gap: 0 }}>
+          <div style={{ display: 'flex', flexDirection: 'column', gap: 0, width: '100%', maxWidth: 1320 }}>
             {/* Line 1 */}
             <div style={{ overflow: 'hidden' }}>
               <motion.div
@@ -236,7 +236,12 @@ export function Hero() {
             <div style={{ overflow: 'hidden' }}>
               <motion.div
                 className="display-hero"
-                style={{ display: 'block', fontStyle: 'italic' }}
+                style={{
+                  display: 'block',
+                  fontStyle: 'italic',
+                  whiteSpace: 'nowrap',
+                  fontSize: 'clamp(1.72rem, 7.4vw, 8.5rem)',
+                }}
                 initial={shouldReduce ? undefined : { y: '110%' }}
                 animate={shouldReduce ? undefined : { y: '0%' }}
                 transition={{
