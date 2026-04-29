@@ -10,11 +10,9 @@ export function CustomCursor() {
   const mounted = useSyncExternalStore(subscribe, getClientSnapshot, getServerSnapshot)
   const [isPointer, setIsPointer] = useState(false)
   const [isVisible, setIsVisible] = useState(false)
-  const [isPointerDevice, setIsPointerDevice] = useState(false)
-
-  useEffect(() => {
-    setIsPointerDevice(window.matchMedia('(pointer: fine)').matches)
-  }, [])
+  const [isPointerDevice] = useState(
+    () => typeof window !== 'undefined' ? window.matchMedia('(pointer: fine)').matches : false
+  )
 
   // Raw cursor position
   const cursorX = useMotionValue(-100)

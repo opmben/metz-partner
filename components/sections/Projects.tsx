@@ -1,5 +1,5 @@
 'use client'
-import { useRef, useState, useEffect } from 'react'
+import { useRef, useState } from 'react'
 import Link from 'next/link'
 import Image from 'next/image'
 import {
@@ -113,14 +113,12 @@ function ProjectBrowserCard({
 }) {
   const [hovered, setHovered] = useState(false)
   const [imgError, setImgError] = useState(false)
-  const [isTouch, setIsTouch] = useState(false)
+  const [isTouch] = useState(
+    () => typeof window !== 'undefined' ? window.matchMedia('(hover: none) and (pointer: coarse)').matches : false
+  )
   const shouldReduce = useReducedMotion()
   const cardRef = useRef<HTMLDivElement>(null)
   const isInView = useInView(cardRef, { once: true, margin: '-60px' })
-
-  useEffect(() => {
-    setIsTouch(window.matchMedia('(hover: none) and (pointer: coarse)').matches)
-  }, [])
 
   const displayUrl = project.displayUrl ?? `${project.slug}.de`
 
