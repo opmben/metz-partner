@@ -197,20 +197,6 @@ function YourProjectArt() {
         }}
       />
 
-      {/* Outer ring — slow pulse */}
-      <motion.div
-        animate={shouldReduce ? undefined : { opacity: [0.15, 0.3, 0.15], scale: [1, 1.08, 1] }}
-        transition={shouldReduce ? undefined : { duration: 4, repeat: Infinity, ease: 'easeInOut' }}
-        style={{
-          position: 'absolute',
-          width: 72,
-          height: 72,
-          borderRadius: '50%',
-          border: '1px solid rgba(211,253,81,0.22)',
-          pointerEvents: 'none',
-        }}
-      />
-
       {/* Inner circle with + */}
       <motion.div
         animate={shouldReduce ? undefined : { opacity: [0.6, 1, 0.6] }}
