@@ -397,11 +397,13 @@ export function ProjectCard({ project, featured = false }: ProjectCardProps) {
         onMouseLeave={handleMouseLeave}
         style={{
           position: 'relative',
-          background: 'var(--surface)',
+          background: 'linear-gradient(180deg, rgba(255,255,255,0.044), rgba(255,255,255,0.020)), rgba(6,6,6,0.46)',
           border: '1px solid var(--border)',
-          borderRadius: 8,
+          borderRadius: 16,
           overflow: 'hidden',
           cursor: 'pointer',
+          backdropFilter: 'blur(var(--blur-primary))',
+          WebkitBackdropFilter: 'blur(var(--blur-primary))',
           rotateX: shouldReduce ? 0 : rotateX,
           rotateY: shouldReduce ? 0 : rotateY,
           transformStyle: 'preserve-3d',
@@ -410,9 +412,10 @@ export function ProjectCard({ project, featured = false }: ProjectCardProps) {
         }}
         animate={{
           scale: hovered ? 1.015 : 1,
+          borderColor: hovered ? 'rgba(255,255,255,0.22)' : 'rgba(255,255,255,0.10)',
           boxShadow: hovered
-            ? '0 20px 60px rgba(0,0,0,0.5), 0 4px 16px rgba(0,0,0,0.3)'
-            : '0 2px 8px rgba(0,0,0,0.2)',
+            ? 'inset 0 1px 0 rgba(255,255,255,0.26), 0 28px 90px rgba(0,0,0,0.42), 0 0 52px rgba(255,255,255,0.06)'
+            : 'inset 0 1px 0 rgba(255,255,255,0.07), 0 18px 60px rgba(0,0,0,0.32), 0 0 20px rgba(255,255,255,0.022)',
         }}
         transition={{ duration: 0.4, ease: [0.16, 1, 0.3, 1] }}
       >
@@ -504,11 +507,13 @@ export function YourProjectSlot() {
         onMouseLeave={handleMouseLeave}
         style={{
           position: 'relative',
-          background: 'var(--surface)',
+          background: 'linear-gradient(180deg, rgba(255,255,255,0.044), rgba(255,255,255,0.020)), rgba(6,6,6,0.46)',
           border: '1px solid var(--border)',
-          borderRadius: 8,
+          borderRadius: 16,
           overflow: 'hidden',
           cursor: 'pointer',
+          backdropFilter: 'blur(var(--blur-primary))',
+          WebkitBackdropFilter: 'blur(var(--blur-primary))',
           rotateX: shouldReduce ? 0 : rotateX,
           rotateY: shouldReduce ? 0 : rotateY,
           transformStyle: 'preserve-3d',
@@ -517,12 +522,10 @@ export function YourProjectSlot() {
         }}
         animate={{
           scale: hovered ? 1.015 : 1,
+          borderColor: hovered ? 'rgba(211,253,81,0.25)' : 'rgba(255,255,255,0.10)',
           boxShadow: hovered
-            ? '0 20px 60px rgba(0,0,0,0.5), 0 4px 16px rgba(0,0,0,0.3)'
-            : '0 2px 8px rgba(0,0,0,0.2)',
-          borderColor: hovered
-            ? 'rgba(211,253,81,0.25)'
-            : 'rgba(255,255,255,0.10)',
+            ? 'inset 0 1px 0 rgba(255,255,255,0.26), 0 28px 90px rgba(0,0,0,0.42), 0 0 52px rgba(255,255,255,0.06)'
+            : 'inset 0 1px 0 rgba(255,255,255,0.07), 0 18px 60px rgba(0,0,0,0.32), 0 0 20px rgba(255,255,255,0.022)',
         }}
         transition={{ duration: 0.4, ease: [0.16, 1, 0.3, 1] }}
       >
