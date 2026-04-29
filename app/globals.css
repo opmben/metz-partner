@@ -40,10 +40,10 @@
   --accent-dim: rgba(211, 253, 81, 0.12);
 
   /* Surface system: fills — reference values (classes apply layered dark-base + shimmer) */
-  --surface-hero:      rgba(255, 255, 255, 0.030);
-  --surface-primary:   rgba(255, 255, 255, 0.034);
-  --surface-secondary: rgba(255, 255, 255, 0.025);
-  --surface-muted:     rgba(255, 255, 255, 0.015);
+  --surface-hero:      rgba(255, 255, 255, 0.025);
+  --surface-primary:   rgba(255, 255, 255, 0.030);
+  --surface-secondary: rgba(255, 255, 255, 0.020);
+  --surface-muted:     rgba(255, 255, 255, 0.012);
   --surface-floating:  rgba(255, 255, 255, 0.10);
 
   /* Surface system: borders and highlights */
