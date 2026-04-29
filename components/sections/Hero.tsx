@@ -240,7 +240,6 @@ export function Hero() {
                   display: 'block',
                   fontStyle: 'italic',
                   whiteSpace: 'nowrap',
-                  fontSize: 'clamp(1.72rem, 7.4vw, 8.5rem)',
                 }}
                 initial={shouldReduce ? undefined : { y: '110%' }}
                 animate={shouldReduce ? undefined : { y: '0%' }}

@@ -171,7 +171,7 @@ body::before {
 /* ─── Typography ──────────────────────────────────────────────────── */
 .display-hero {
   font-family: var(--font-display), Georgia, serif;
-  font-size: clamp(2.2rem, 9vw, 9rem);
+  font-size: clamp(1.72rem, 9vw, 9rem);
   font-weight: 400;
   font-style: italic;
   line-height: 0.93;
