@@ -11,7 +11,6 @@ interface ProjectCardProps {
   featured?: boolean
 }
 
-// Category-specific visual themes for placeholder art
 const categoryThemes: Record<string, {
   bg: string
   glow1: string
@@ -55,15 +54,8 @@ const defaultTheme = {
   blockAccent: 'rgba(200,255,0,0.32)',
 }
 
-function PlaceholderArt({
-  project,
-  featured,
-}: {
-  project: Project
-  featured: boolean
-}) {
+function PlaceholderArt({ project }: { project: Project }) {
   const theme = categoryThemes[project.category] ?? defaultTheme
-  const pad = featured ? '1.4rem' : '1rem'
   const shouldReduce = useReducedMotion()
 
   return (
@@ -76,7 +68,6 @@ function PlaceholderArt({
         background: theme.bg,
       }}
     >
-      {/* Ambient glows */}
       <motion.div
         animate={shouldReduce ? undefined : { x: [0, 15, -10, 0], y: [0, -10, 8, 0], scale: [1, 1.08, 0.95, 1] }}
         transition={shouldReduce ? undefined : { duration: 10, repeat: Infinity, ease: 'easeInOut' }}
@@ -97,80 +88,59 @@ function PlaceholderArt({
           filter: 'blur(30px)', pointerEvents: 'none',
         }}
       />
-
-      {/* Grid lines */}
       <motion.div
         animate={shouldReduce ? undefined : {
-          backgroundPosition: ['0px 0px', `${featured ? 36 : 28}px ${featured ? 36 : 28}px`],
+          backgroundPosition: ['0px 0px', '28px 28px'],
         }}
         transition={shouldReduce ? undefined : { duration: 20, repeat: Infinity, ease: 'linear' }}
         style={{
           position: 'absolute', inset: 0,
           backgroundImage: `linear-gradient(${theme.lineColor} 1px, transparent 1px), linear-gradient(90deg, ${theme.lineColor} 1px, transparent 1px)`,
-          backgroundSize: featured ? '36px 36px' : '28px 28px',
+          backgroundSize: '28px 28px',
           pointerEvents: 'none',
         }}
       />
-
-      {/* Website skeleton wireframe */}
-      <div style={{ position: 'absolute', inset: 0, padding: pad }}>
-        {/* Nav */}
+      <div style={{ position: 'absolute', inset: 0, padding: '1rem' }}>
         <div style={{
           display: 'flex', justifyContent: 'space-between', alignItems: 'center',
-          paddingBottom: featured ? '0.9rem' : '0.65rem',
-          marginBottom: featured ? '1.4rem' : '1rem',
+          paddingBottom: '0.65rem',
+          marginBottom: '1rem',
           borderBottom: `1px solid rgba(240,237,232,0.055)`,
         }}>
-          <div style={{ width: featured ? 58 : 44, height: featured ? 8 : 6, borderRadius: 4, background: 'rgba(240,237,232,0.28)' }} />
+          <div style={{ width: 44, height: 6, borderRadius: 4, background: 'rgba(240,237,232,0.28)' }} />
           <div style={{ display: 'flex', gap: '0.4rem' }}>
-            {(featured ? [36, 28, 40] : [26, 20, 30]).map((w, i) => (
-              <div key={i} style={{ width: w, height: featured ? 4 : 3, borderRadius: 2, background: 'rgba(240,237,232,0.1)' }} />
+            {[26, 20, 30].map((w, i) => (
+              <div key={i} style={{ width: w, height: 3, borderRadius: 2, background: 'rgba(240,237,232,0.1)' }} />
             ))}
           </div>
-          <div style={{ width: featured ? 50 : 38, height: featured ? 18 : 13, borderRadius: 9, background: theme.accentBar }} />
+          <div style={{ width: 38, height: 13, borderRadius: 9, background: theme.accentBar }} />
         </div>
-
-        {/* Hero text */}
-        <div style={{ marginBottom: featured ? '1.4rem' : '1rem' }}>
+        <div style={{ marginBottom: '1rem' }}>
           {[76, 56, 40].map((pct, i) => (
             <div key={i} style={{
               width: `${pct}%`,
-              height: featured ? (i === 0 ? 12 : 10) : (i === 0 ? 8 : 7),
+              height: i === 0 ? 8 : 7,
               borderRadius: 3,
               background: i === 2 ? theme.blockAccent : `rgba(240,237,232,${0.22 - i * 0.04})`,
-              marginBottom: featured ? '0.55rem' : '0.4rem',
+              marginBottom: '0.4rem',
             }} />
           ))}
           <motion.div
             animate={shouldReduce ? undefined : { opacity: [0.7, 0.45, 0.7] }}
             transition={shouldReduce ? undefined : { duration: 3, repeat: Infinity, ease: 'easeInOut' }}
             style={{
-              display: 'inline-block', marginTop: featured ? '0.5rem' : '0.3rem',
-              width: featured ? 68 : 50, height: featured ? 20 : 15,
+              display: 'inline-block', marginTop: '0.3rem',
+              width: 50, height: 15,
               borderRadius: 10, background: theme.accentBar,
             }}
           />
         </div>
-
-        {/* Content blocks (featured only) */}
-        {featured && (
-          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: '0.6rem' }}>
-            {[0.08, 0.055, 0.07].map((op, i) => (
-              <div key={i} style={{ height: 56, borderRadius: 3, background: `rgba(240,237,232,${op})`, border: '1px solid rgba(240,237,232,0.04)' }} />
-            ))}
-          </div>
-        )}
-
-        {!featured && (
-          <div style={{ display: 'flex', flexDirection: 'column', gap: '0.4rem' }}>
-            {[90, 70].map((pct, i) => (
-              <div key={i} style={{ width: `${pct}%`, height: 5, borderRadius: 2, background: `rgba(240,237,232,${0.09 - i * 0.02})` }} />
-            ))}
-          </div>
-        )}
+        <div style={{ display: 'flex', flexDirection: 'column', gap: '0.4rem' }}>
+          {[90, 70].map((pct, i) => (
+            <div key={i} style={{ width: `${pct}%`, height: 5, borderRadius: 2, background: `rgba(240,237,232,${0.09 - i * 0.02})` }} />
+          ))}
+        </div>
       </div>
-
-      {/* "Referenz folgt" badge */}
       <div style={{
         position: 'absolute', top: '0.85rem', right: '0.85rem',
         background: 'rgba(8,8,8,0.75)', border: '1px solid rgba(240,237,232,0.1)',
@@ -184,7 +154,104 @@ function PlaceholderArt({
   )
 }
 
-/* ── Browser chrome bar ── */
+function YourProjectArt() {
+  const shouldReduce = useReducedMotion()
+
+  return (
+    <div
+      style={{
+        width: '100%',
+        height: '100%',
+        background: '#090909',
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'center',
+        justifyContent: 'center',
+        position: 'relative',
+        overflow: 'hidden',
+      }}
+    >
+      {/* Dot grid atmosphere */}
+      <div
+        style={{
+          position: 'absolute',
+          inset: 0,
+          backgroundImage: `radial-gradient(rgba(255,255,255,0.055) 1px, transparent 1px)`,
+          backgroundSize: '22px 22px',
+          pointerEvents: 'none',
+        }}
+      />
+
+      {/* Ambient lime glow */}
+      <motion.div
+        animate={shouldReduce ? undefined : { opacity: [0.45, 0.85, 0.45], scale: [1, 1.25, 1] }}
+        transition={shouldReduce ? undefined : { duration: 4, repeat: Infinity, ease: 'easeInOut' }}
+        style={{
+          position: 'absolute',
+          width: 110,
+          height: 110,
+          borderRadius: '50%',
+          background: 'radial-gradient(circle, rgba(211,253,81,0.13), transparent 70%)',
+          filter: 'blur(18px)',
+          pointerEvents: 'none',
+        }}
+      />
+
+      {/* Outer ring — slow pulse */}
+      <motion.div
+        animate={shouldReduce ? undefined : { opacity: [0.15, 0.3, 0.15], scale: [1, 1.08, 1] }}
+        transition={shouldReduce ? undefined : { duration: 4, repeat: Infinity, ease: 'easeInOut' }}
+        style={{
+          position: 'absolute',
+          width: 72,
+          height: 72,
+          borderRadius: '50%',
+          border: '1px solid rgba(211,253,81,0.22)',
+          pointerEvents: 'none',
+        }}
+      />
+
+      {/* Inner circle with + */}
+      <motion.div
+        animate={shouldReduce ? undefined : { opacity: [0.6, 1, 0.6] }}
+        transition={shouldReduce ? undefined : { duration: 4, repeat: Infinity, ease: 'easeInOut' }}
+        style={{
+          width: 44,
+          height: 44,
+          borderRadius: '50%',
+          border: '1px solid rgba(211,253,81,0.4)',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          position: 'relative',
+          zIndex: 1,
+        }}
+      >
+        <svg width="13" height="13" viewBox="0 0 13 13" fill="none">
+          <path d="M6.5 1v11M1 6.5h11" stroke="rgba(211,253,81,0.85)" strokeWidth="1.2" strokeLinecap="round" />
+        </svg>
+      </motion.div>
+
+      {/* Label */}
+      <p
+        style={{
+          marginTop: '1rem',
+          fontFamily: 'var(--font-ui)',
+          fontSize: '0.57rem',
+          fontWeight: 400,
+          textTransform: 'uppercase',
+          letterSpacing: '0.18em',
+          color: 'rgba(211,253,81,0.4)',
+          position: 'relative',
+          zIndex: 1,
+        }}
+      >
+        Ihr Projekt
+      </p>
+    </div>
+  )
+}
+
 function BrowserChrome({ url }: { url: string }) {
   return (
     <div
@@ -198,7 +265,6 @@ function BrowserChrome({ url }: { url: string }) {
         flexShrink: 0,
       }}
     >
-      {/* Traffic lights */}
       <div style={{ display: 'flex', gap: 6, marginRight: 12 }}>
         {[
           'rgba(255,95,87,0.75)',
@@ -211,8 +277,6 @@ function BrowserChrome({ url }: { url: string }) {
           />
         ))}
       </div>
-
-      {/* URL bar */}
       <div
         style={{
           flex: 1,
@@ -241,10 +305,76 @@ function BrowserChrome({ url }: { url: string }) {
           {url}
         </span>
       </div>
-
-      {/* Right spacer — mirrors traffic lights block */}
       <div style={{ width: 52, marginLeft: 12 }} />
     </div>
+  )
+}
+
+function useCardTilt() {
+  const cardRef = useRef<HTMLDivElement>(null)
+  const rotateX = useSpring(useMotionValue(0), { stiffness: 180, damping: 22 })
+  const rotateY = useSpring(useMotionValue(0), { stiffness: 180, damping: 22 })
+  const shouldReduce = useReducedMotion()
+
+  const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
+    if (shouldReduce || !cardRef.current) return
+    const rect = cardRef.current.getBoundingClientRect()
+    rotateX.set(-((e.clientY - rect.top) / rect.height - 0.5) * 2 * 5)
+    rotateY.set(((e.clientX - rect.left) / rect.width - 0.5) * 2 * 5)
+  }
+
+  const handleMouseLeave = () => {
+    rotateX.set(0)
+    rotateY.set(0)
+  }
+
+  return { cardRef, rotateX, rotateY, handleMouseMove, handleMouseLeave }
+}
+
+function HoverAccentLine({ hovered }: { hovered: boolean }) {
+  return (
+    <motion.div
+      style={{
+        position: 'absolute', top: 0, left: 0, right: 0,
+        height: 2, background: 'var(--accent)',
+        transformOrigin: 'left', zIndex: 10,
+      }}
+      animate={{ scaleX: hovered ? 1 : 0, opacity: hovered ? 0.8 : 0 }}
+      transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
+    />
+  )
+}
+
+function HoverPill({ hovered, label }: { hovered: boolean; label: string }) {
+  return (
+    <motion.div
+      style={{
+        position: 'absolute', inset: 0,
+        display: 'flex', alignItems: 'center', justifyContent: 'center',
+      }}
+      animate={{ background: hovered ? 'rgba(8,8,8,0.45)' : 'rgba(8,8,8,0)' }}
+      transition={{ duration: 0.35 }}
+    >
+      <motion.span
+        animate={{ opacity: hovered ? 1 : 0, scale: hovered ? 1 : 0.85 }}
+        transition={{ duration: 0.3, ease: [0.16, 1, 0.3, 1] }}
+        style={{
+          background: 'var(--accent)',
+          color: 'var(--bg)',
+          fontFamily: 'var(--font-ui)',
+          fontSize: '0.75rem',
+          fontWeight: 500,
+          textTransform: 'uppercase',
+          letterSpacing: '0.1em',
+          padding: '0.65rem 1.5rem',
+          borderRadius: 100,
+          boxShadow: '0 4px 24px rgba(200,255,0,0.4)',
+          pointerEvents: 'none',
+        }}
+      >
+        {label}
+      </motion.span>
+    </motion.div>
   )
 }
 
@@ -252,24 +382,7 @@ export function ProjectCard({ project, featured = false }: ProjectCardProps) {
   const [hovered, setHovered] = useState(false)
   const [imgError, setImgError] = useState(false)
   const shouldReduce = useReducedMotion()
-  const cardRef = useRef<HTMLDivElement>(null)
-
-  const rotateX = useSpring(useMotionValue(0), { stiffness: 180, damping: 22 })
-  const rotateY = useSpring(useMotionValue(0), { stiffness: 180, damping: 22 })
-
-  const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
-    if (shouldReduce || !cardRef.current) return
-    const rect = cardRef.current.getBoundingClientRect()
-    const nx = ((e.clientX - rect.left) / rect.width - 0.5) * 2
-    const ny = ((e.clientY - rect.top) / rect.height - 0.5) * 2
-    rotateX.set(-ny * 5)
-    rotateY.set(nx * 5)
-  }
-
-  const handleMouseLeave = () => {
-    rotateX.set(0)
-    rotateY.set(0)
-  }
+  const { cardRef, rotateX, rotateY, handleMouseMove, handleMouseLeave } = useCardTilt()
 
   const showPlaceholder = !project.imageReady || imgError
   const displayUrl = project.displayUrl ?? `${project.slug}.de`
@@ -303,90 +416,32 @@ export function ProjectCard({ project, featured = false }: ProjectCardProps) {
         }}
         transition={{ duration: 0.4, ease: [0.16, 1, 0.3, 1] }}
       >
-        {/* Top accent line — sweeps in on hover */}
-        <motion.div
-          style={{
-            position: 'absolute', top: 0, left: 0, right: 0,
-            height: 2, background: 'var(--accent)',
-            transformOrigin: 'left', zIndex: 10,
-          }}
-          animate={{ scaleX: hovered ? 1 : 0, opacity: hovered ? 0.8 : 0 }}
-          transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
-        />
-
-        {/* Browser chrome */}
+        <HoverAccentLine hovered={hovered} />
         <BrowserChrome url={displayUrl} />
 
-        {/* Screenshot viewport */}
-        <div
-          style={{
-            position: 'relative',
-            aspectRatio: featured ? '16/9' : '16/10',
-            overflow: 'hidden',
-            flexShrink: 0,
-          }}
-        >
-          {/* Image / placeholder — no scale on hover */}
+        <div style={{ position: 'relative', aspectRatio: '16/9', overflow: 'hidden', flexShrink: 0 }}>
           <div style={{ position: 'absolute', inset: 0 }}>
             {showPlaceholder ? (
-              <PlaceholderArt project={project} featured={featured} />
+              <PlaceholderArt project={project} />
             ) : (
               <Image
                 src={project.coverImage}
                 alt={`Screenshot der Website für ${project.name}`}
                 fill
-                sizes={
-                  featured
-                    ? '(min-width: 1024px) 50vw, 100vw'
-                    : '(min-width: 1024px) 33vw, 100vw'
-                }
+                sizes="(min-width: 1024px) 50vw, 100vw"
                 style={{ objectFit: 'cover', objectPosition: 'top' }}
                 onError={() => setImgError(true)}
               />
             )}
           </div>
-
-          {/* Hover overlay + "Ansehen →" pill */}
-          <motion.div
-            style={{
-              position: 'absolute', inset: 0,
-              display: 'flex', alignItems: 'center', justifyContent: 'center',
-            }}
-            animate={{
-              background: hovered
-                ? 'rgba(8,8,8,0.45)'
-                : 'rgba(8,8,8,0)',
-            }}
-            transition={{ duration: 0.35 }}
-          >
-            <motion.span
-              animate={{ opacity: hovered ? 1 : 0, scale: hovered ? 1 : 0.85 }}
-              transition={{ duration: 0.3, ease: [0.16, 1, 0.3, 1] }}
-              style={{
-                background: 'var(--accent)',
-                color: 'var(--bg)',
-                fontFamily: 'var(--font-ui)',
-                fontSize: '0.75rem',
-                fontWeight: 500,
-                textTransform: 'uppercase',
-                letterSpacing: '0.1em',
-                padding: '0.65rem 1.5rem',
-                borderRadius: 100,
-                boxShadow: '0 4px 24px rgba(200,255,0,0.4)',
-                pointerEvents: 'none',
-              }}
-            >
-              Ansehen →
-            </motion.span>
-          </motion.div>
+          <HoverPill hovered={hovered} label="Ansehen →" />
         </div>
 
-        {/* Info row — translates up on hover */}
         <motion.div
           animate={{ y: hovered ? 0 : 8 }}
           transition={{ duration: 0.4, ease: [0.16, 1, 0.3, 1] }}
           style={{
-            padding: featured ? '1.25rem 1.5rem' : '0.9rem 1.25rem',
+            padding: featured ? '1.1rem 1.4rem' : '0.9rem 1.25rem',
             borderTop: '1px solid rgba(240,237,232,0.05)',
             display: 'flex',
             alignItems: 'center',
@@ -411,7 +466,7 @@ export function ProjectCard({ project, featured = false }: ProjectCardProps) {
             <h3
               style={{
                 fontFamily: 'var(--font-display)',
-                fontSize: featured ? 'clamp(1.1rem, 1.6vw, 1.35rem)' : '1rem',
+                fontSize: featured ? '1.05rem' : '1rem',
                 fontWeight: 400,
                 fontStyle: 'italic',
                 color: 'var(--text)',
@@ -421,13 +476,112 @@ export function ProjectCard({ project, featured = false }: ProjectCardProps) {
               {project.name}
             </h3>
           </div>
-
           <motion.div
             animate={{ x: hovered ? 0 : -4, opacity: hovered ? 1 : 0.3 }}
             transition={{ duration: 0.3, ease: 'easeOut' }}
             style={{ flexShrink: 0, color: 'var(--text)' }}
           >
-            <ArrowRight size={featured ? 18 : 15} />
+            <ArrowRight size={15} />
+          </motion.div>
+        </motion.div>
+      </motion.div>
+    </Link>
+  )
+}
+
+export function YourProjectSlot() {
+  const [hovered, setHovered] = useState(false)
+  const shouldReduce = useReducedMotion()
+  const { cardRef, rotateX, rotateY, handleMouseMove, handleMouseLeave } = useCardTilt()
+
+  return (
+    <Link href="/kontakt" className="block" style={{ cursor: 'pointer', perspective: 1000 }}>
+      <motion.div
+        ref={cardRef}
+        onHoverStart={() => setHovered(true)}
+        onHoverEnd={() => { setHovered(false); handleMouseLeave() }}
+        onMouseMove={handleMouseMove}
+        onMouseLeave={handleMouseLeave}
+        style={{
+          position: 'relative',
+          background: 'var(--surface)',
+          border: '1px solid var(--border)',
+          borderRadius: 8,
+          overflow: 'hidden',
+          cursor: 'pointer',
+          rotateX: shouldReduce ? 0 : rotateX,
+          rotateY: shouldReduce ? 0 : rotateY,
+          transformStyle: 'preserve-3d',
+          display: 'flex',
+          flexDirection: 'column',
+        }}
+        animate={{
+          scale: hovered ? 1.015 : 1,
+          boxShadow: hovered
+            ? '0 20px 60px rgba(0,0,0,0.5), 0 4px 16px rgba(0,0,0,0.3)'
+            : '0 2px 8px rgba(0,0,0,0.2)',
+          borderColor: hovered
+            ? 'rgba(211,253,81,0.25)'
+            : 'rgba(255,255,255,0.10)',
+        }}
+        transition={{ duration: 0.4, ease: [0.16, 1, 0.3, 1] }}
+      >
+        <HoverAccentLine hovered={hovered} />
+        <BrowserChrome url="ihr-unternehmen.de" />
+
+        <div style={{ position: 'relative', aspectRatio: '16/9', overflow: 'hidden', flexShrink: 0 }}>
+          <div style={{ position: 'absolute', inset: 0 }}>
+            <YourProjectArt />
+          </div>
+          <HoverPill hovered={hovered} label="Anfragen →" />
+        </div>
+
+        <motion.div
+          animate={{ y: hovered ? 0 : 8 }}
+          transition={{ duration: 0.4, ease: [0.16, 1, 0.3, 1] }}
+          style={{
+            padding: '0.9rem 1.25rem',
+            borderTop: '1px solid rgba(240,237,232,0.05)',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'space-between',
+            gap: '1rem',
+          }}
+        >
+          <div>
+            <p
+              style={{
+                fontSize: '0.62rem',
+                fontWeight: 400,
+                textTransform: 'uppercase',
+                letterSpacing: '0.14em',
+                color: 'var(--accent)',
+                marginBottom: '0.3rem',
+                fontFamily: 'var(--font-ui)',
+                opacity: 0.6,
+              }}
+            >
+              Ihr Unternehmen · Ihre Website
+            </p>
+            <h3
+              style={{
+                fontFamily: 'var(--font-display)',
+                fontSize: '1rem',
+                fontWeight: 400,
+                fontStyle: 'italic',
+                color: 'var(--text)',
+                lineHeight: 1.2,
+              }}
+            >
+              Das könnte Ihr Projekt sein.
+            </h3>
+          </div>
+          <motion.div
+            animate={{ x: hovered ? 0 : -4, opacity: hovered ? 1 : 0.3 }}
+            transition={{ duration: 0.3, ease: 'easeOut' }}
+            style={{ flexShrink: 0, color: 'var(--accent)' }}
+          >
+            <ArrowRight size={15} />
           </motion.div>
         </motion.div>
       </motion.div>

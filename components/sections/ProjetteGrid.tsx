@@ -3,7 +3,7 @@ import { useRef } from 'react'
 import { motion, useInView, useReducedMotion } from 'framer-motion'
 import { fadeUp, staggerContainer } from '@/lib/animations'
 import { SectionLabel } from '@/components/shared/SectionLabel'
-import { ProjectCard } from '@/components/shared/ProjectCard'
+import { ProjectCard, YourProjectSlot } from '@/components/shared/ProjectCard'
 import { projects } from '@/lib/data/projects'
 
 export function ProjetteGrid() {
@@ -21,7 +21,7 @@ export function ProjetteGrid() {
           animate={shouldReduce ? undefined : isInView ? 'visible' : 'hidden'}
         >
           {/* Header */}
-          <div style={{ marginBottom: '5rem' }}>
+          <div style={{ marginBottom: '2.5rem' }}>
             <motion.div
               variants={shouldReduce ? undefined : fadeUp}
               style={{ marginBottom: '1.25rem' }}
@@ -57,11 +57,11 @@ export function ProjetteGrid() {
             style={{
               height: 1,
               background: 'var(--border)',
-              marginBottom: '3rem',
+              marginBottom: '2rem',
             }}
           />
 
-          {/* Grid */}
+          {/* Grid — always 2 columns */}
           <motion.div
             variants={shouldReduce ? undefined : staggerContainer(0.1)}
             className="grid grid-cols-1 gap-4 md:grid-cols-2"
@@ -70,27 +70,17 @@ export function ProjetteGrid() {
               <motion.div
                 key={project.slug}
                 variants={shouldReduce ? undefined : fadeUp}
-                style={i === 0 ? { gridColumn: '1 / -1' } : undefined}
               >
                 <ProjectCard project={project} featured={i === 0} />
               </motion.div>
             ))}
-          </motion.div>
 
-          {/* Project count */}
-          <motion.p
-            variants={shouldReduce ? undefined : fadeUp}
-            style={{
-              marginTop: '2rem',
-              fontSize: '0.75rem',
-              fontWeight: 400,
-              textTransform: 'uppercase',
-              letterSpacing: '0.1em',
-              color: 'var(--muted)',
-            }}
-          >
-            {projects.length} {projects.length === 1 ? 'Projekt' : 'Projekte'} · Koblenz & Region
-          </motion.p>
+            {projects.length % 2 !== 0 && (
+              <motion.div variants={shouldReduce ? undefined : fadeUp}>
+                <YourProjectSlot />
+              </motion.div>
+            )}
+          </motion.div>
         </motion.div>
       </div>
     </section>
