@@ -97,8 +97,8 @@ html {
 body {
   background-color: var(--bg);
   background-image:
-    linear-gradient(rgba(240, 237, 232, 0.025) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(240, 237, 232, 0.025) 1px, transparent 1px);
+    linear-gradient(rgba(240, 237, 232, 0.04) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(240, 237, 232, 0.04) 1px, transparent 1px);
   background-size: 80px 80px;
   color: var(--text);
   font-family: var(--font-ui), system-ui, sans-serif;
