@@ -62,11 +62,11 @@
   --surface-glow-hot:     0 0 52px rgba(255, 255, 255, 0.06);
 
   /* Surface system: blur tiers */
-  --blur-hero:      26px;
-  --blur-primary:   18px;
-  --blur-secondary: 14px;
-  --blur-muted:     10px;
-  --blur-floating:  18px;
+  --blur-hero:      22px;
+  --blur-primary:   14px;
+  --blur-secondary: 10px;
+  --blur-muted:     8px;
+  --blur-floating:  16px;
 
   /* Surface system: radius */
   --radius-panel-lg: 32px;
