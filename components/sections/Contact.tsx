@@ -240,13 +240,13 @@ export function Contact() {
           {/* ── Left: Info panel ── */}
           <motion.div
             className="surface-secondary"
-            initial={shouldReduce ? undefined : { opacity: 0, x: -28, filter: 'blur(12px)' }}
+            initial={shouldReduce ? undefined : { opacity: 0, x: -28 }}
             animate={
               shouldReduce
                 ? undefined
                 : isPanelInView
-                ? { opacity: 1, x: 0, filter: 'blur(0px)' }
-                : { opacity: 0, x: -28, filter: 'blur(12px)' }
+                ? { opacity: 1, x: 0 }
+                : { opacity: 0, x: -28 }
             }
             transition={{ duration: 0.95, ease: EASE }}
             style={{
@@ -508,13 +508,13 @@ export function Contact() {
 
           {/* ── Right: Form panel ── */}
           <motion.div
-            initial={shouldReduce ? undefined : { opacity: 0, x: 28, filter: 'blur(12px)' }}
+            initial={shouldReduce ? undefined : { opacity: 0, x: 28 }}
             animate={
               shouldReduce
                 ? undefined
                 : isPanelInView
-                ? { opacity: 1, x: 0, filter: 'blur(0px)' }
-                : { opacity: 0, x: 28, filter: 'blur(12px)' }
+                ? { opacity: 1, x: 0 }
+                : { opacity: 0, x: 28 }
             }
             transition={{ duration: 0.95, ease: EASE, delay: 0.1 }}
           >

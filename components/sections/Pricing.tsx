@@ -142,13 +142,13 @@ function PricingCard({
 
   return (
     <motion.div
-      initial={shouldReduce ? undefined : { opacity: 0, y: 28, filter: 'blur(10px)' }}
+      initial={shouldReduce ? undefined : { opacity: 0, y: 28 }}
       animate={
         shouldReduce
           ? undefined
           : isInView
-          ? { opacity: 1, y: 0, filter: 'blur(0px)' }
-          : { opacity: 0, y: 28, filter: 'blur(10px)' }
+          ? { opacity: 1, y: 0 }
+          : { opacity: 0, y: 28 }
       }
       transition={{ duration: 0.88, ease: EASE, delay: 0.14 + index * 0.10 }}
       style={{ position: 'relative', isolation: 'isolate', display: 'flex' }}

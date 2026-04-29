@@ -70,13 +70,13 @@ function FounderCard({
   return (
     <motion.div
       ref={ref}
-      initial={shouldReduce ? undefined : { opacity: 0, x: slideFrom, filter: 'blur(12px)' }}
+      initial={shouldReduce ? undefined : { opacity: 0, x: slideFrom }}
       animate={
         shouldReduce
           ? undefined
           : isInView
-          ? { opacity: 1, x: 0, filter: 'blur(0px)' }
-          : { opacity: 0, x: slideFrom, filter: 'blur(12px)' }
+          ? { opacity: 1, x: 0 }
+          : { opacity: 0, x: slideFrom }
       }
       transition={{ duration: 0.95, ease: [0.16, 1, 0.3, 1], delay }}
       style={{ height: '100%' }}

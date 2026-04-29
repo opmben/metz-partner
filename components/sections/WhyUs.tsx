@@ -220,14 +220,14 @@ export function WhyUs() {
           <motion.div
             ref={problemRef}
             initial={
-              shouldReduce ? undefined : { opacity: 0, x: -30, filter: 'blur(10px)' }
+              shouldReduce ? undefined : { opacity: 0, x: -30 }
             }
             animate={
               shouldReduce
                 ? undefined
                 : isProblemInView
-                ? { opacity: 1, x: 0, filter: 'blur(0px)' }
-                : { opacity: 0, x: -30, filter: 'blur(10px)' }
+                ? { opacity: 1, x: 0 }
+                : { opacity: 0, x: -30 }
             }
             transition={{ duration: 0.9, ease: EASE, delay: 0.1 }}
             style={{ height: '100%' }}
@@ -257,14 +257,14 @@ export function WhyUs() {
           <motion.div
             ref={solutionRef}
             initial={
-              shouldReduce ? undefined : { opacity: 0, x: 30, filter: 'blur(10px)' }
+              shouldReduce ? undefined : { opacity: 0, x: 30 }
             }
             animate={
               shouldReduce
                 ? undefined
                 : isSolutionInView
-                ? { opacity: 1, x: 0, filter: 'blur(0px)' }
-                : { opacity: 0, x: 30, filter: 'blur(10px)' }
+                ? { opacity: 1, x: 0 }
+                : { opacity: 0, x: 30 }
             }
             transition={{ duration: 0.9, ease: EASE, delay: 0.18 }}
             style={{ height: '100%' }}
