@@ -48,9 +48,9 @@ function ComparisonItem({
       style={{
         display: 'flex',
         alignItems: 'flex-start',
-        gap: '0.75rem',
-        paddingTop: '0.85rem',
-        paddingBottom: '0.85rem',
+        gap: '0.95rem',
+        paddingTop: '0.95rem',
+        paddingBottom: '0.95rem',
       }}
     >
       {/* Icon badge */}
@@ -62,8 +62,8 @@ function ComparisonItem({
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'center',
-          width: 18,
-          height: 18,
+          width: 24,
+          height: 24,
           borderRadius: '50%',
           background:
             type === 'problem'
@@ -78,15 +78,15 @@ function ComparisonItem({
       >
         {type === 'problem' ? (
           <X
-            size={9}
-            strokeWidth={2.8}
-            style={{ color: 'rgba(255, 88, 88, 0.62)' }}
+            size={12}
+            strokeWidth={2.5}
+            style={{ color: 'rgba(255, 88, 88, 0.68)' }}
           />
         ) : (
           <Check
-            size={9}
-            strokeWidth={2.8}
-            style={{ color: 'rgba(211, 253, 81, 0.88)' }}
+            size={12}
+            strokeWidth={2.5}
+            style={{ color: 'rgba(211, 253, 81, 0.90)' }}
           />
         )}
       </span>
@@ -95,10 +95,10 @@ function ComparisonItem({
       <span
         style={{
           fontFamily: 'var(--font-ui)',
-          fontSize: '0.875rem',
-          fontWeight: 300,
-          lineHeight: 1.6,
-          color: type === 'problem' ? 'var(--muted)' : 'var(--text)',
+          fontSize: 'clamp(0.98rem, 1.15vw, 1.08rem)',
+          fontWeight: 400,
+          lineHeight: 1.58,
+          color: type === 'problem' ? 'rgba(255,255,255,0.52)' : 'var(--text)',
         }}
       >
         {text}
@@ -237,7 +237,7 @@ export function WhyUs() {
               style={{
                 height: '100%',
                 padding: 'clamp(1.75rem, 3vw, 2.5rem)',
-                opacity: 0.88,
+                opacity: 0.96,
               }}
             >
               {problems.map((text, i) => (
