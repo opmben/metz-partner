@@ -39,6 +39,6 @@ export const projects: Project[] = [
     approach:
       'Wir haben die gesamte Seite von Grund auf neu strukturiert: klare Navigation, vollständige Übersicht aller Führerscheinklassen, eine eigene Standortseite mit Öffnungszeiten und direkten Kontaktmöglichkeiten sowie ein Fahrzeugbereich. Der Handlungsaufruf — "Jetzt anrufen" — ist konsequent auf jeder Seite präsent. Technisch mobiloptimiert, schnelle Ladezeiten, strukturierte Inhalte, die Fahrschüler genau dort abholen, wo sie suchen.',
     beforeImage: '/projekte/fahrschule-da-before.jpg',
-    additionalImages: ['/projekte/fahrschule-rhein-hunsrueck.png'],
+    additionalImages: ['/projekte/fahrschule-rhein-hunsrueck.png, /projekte/Fahrschule-DA2.jpg‎, /projekte/Fahrschule-DA3.jpg, /projekte/Fahrschule-DA4.jpg, /projekte/Fahrschule-DA5.jpg, /projekte/Fahrschule-DA6.jpg‎‎‎‎'],
   },
 ]
