@@ -43,11 +43,15 @@ export function ProjetteGrid() {
                 fontWeight: 300,
                 color: 'var(--muted)',
                 lineHeight: 1.75,
-                maxWidth: 520,
+                maxWidth: 560,
               }}
             >
-              Echte Websites für echte Unternehmen aus der Region —
-              kein Hochglanz, keine Mockups. Was Sie hier sehen, ist live.
+              Webdesign aus dem Rhein-Hunsrück — für Unternehmen in Koblenz,
+              der Moselregion und ganz Rheinland-Pfalz. Keine Mockups,
+              keine Hochglanzversprechen. Was Sie hier sehen, ist live und
+              gebaut für echte Geschäftsergebnisse. Als Agentur aus Emmelshausen
+              kennen wir den Markt in der Region und was regional suchende
+              Kunden wirklich brauchen.
             </motion.p>
           </div>
 

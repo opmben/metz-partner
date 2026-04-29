@@ -229,7 +229,7 @@ export function Footer() {
                 opacity: 0.7,
               }}
             >
-              Webdesign aus Koblenz. Für die Region.
+              Webdesign aus dem Rhein-Hunsrück — für Koblenz, Mosel & Rheinland-Pfalz.
             </span>
           </div>
 

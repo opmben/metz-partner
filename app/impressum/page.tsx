@@ -5,6 +5,7 @@ import { Footer } from '@/components/shared/Footer'
 
 export const metadata: Metadata = {
   title: 'Impressum — Metz & Partner',
+  alternates: { canonical: 'https://metzundpartner.com/impressum' },
 }
 
 const sectionHeading: React.CSSProperties = {
@@ -79,7 +80,7 @@ export default function ImpressumPage() {
                 lineHeight: 1.7,
               }}
             >
-              Angaben gemäß § 5 TMG. Verantwortlich für diese Website sind Benedikt und Maximilian
+              Angaben gemäß § 5 DDG. Verantwortlich für diese Website sind Benedikt und Maximilian
               Metz.
             </p>
           </div>
@@ -97,20 +98,31 @@ export default function ImpressumPage() {
             }}
           >
             <div style={{ borderTop: '1px solid var(--border)', paddingTop: '2rem' }}>
-              <p style={sectionHeading}>Angaben gemäß § 5 TMG</p>
+              <p style={sectionHeading}>Angaben gemäß § 5 DDG</p>
               <p>
-                Benedikt Metz, Maximilian Metz & Pavel Baev GbR, Metz & Partner Webdesign
+                Benedikt Metz, Maximilian Metz & Pavel Baev GbR
                 <br />
-                Benedikt Metz & Maximilian Metz
+                Metz & Partner Webdesign
                 <br />
-                {/* TODO: Straße und Hausnummer eintragen */}
-                Koblenz, Deutschland
+                Liesenfelder Straße 64
+                <br />
+                56281 Emmelshausen
+                <br />
+                Deutschland
               </p>
             </div>
 
             <div style={{ borderTop: '1px solid var(--border)', paddingTop: '2rem' }}>
               <p style={sectionHeading}>Kontakt</p>
               <p>
+                Telefon:{' '}
+                <a
+                  href="tel:+4917647376593"
+                  style={{ color: 'var(--text)', textDecoration: 'underline' }}
+                >
+                  0176 47376593
+                </a>
+                <br />
                 E-Mail:{' '}
                 <a
                   href="mailto:anfragen@metzundpartner.com"
@@ -124,7 +136,9 @@ export default function ImpressumPage() {
             <div style={{ borderTop: '1px solid var(--border)', paddingTop: '2rem' }}>
               <p style={sectionHeading}>Verantwortlich für den Inhalt nach § 18 Abs. 2 MStV</p>
               <p>
-                Benedikt Metz & Maximilian Metz, Koblenz
+                Benedikt Metz & Maximilian Metz
+                <br />
+                Liesenfelder Straße 64, 56281 Emmelshausen
               </p>
             </div>
 
@@ -133,7 +147,7 @@ export default function ImpressumPage() {
               <p>
                 Die Inhalte dieser Website wurden mit größtmöglicher Sorgfalt erstellt. Für die
                 Richtigkeit, Vollständigkeit und Aktualität der Inhalte können wir keine Gewähr
-                übernehmen. Als Diensteanbieter sind wir gemäß § 7 Abs. 1 TMG für eigene Inhalte
+                übernehmen. Als Diensteanbieter sind wir gemäß § 7 Abs. 1 DDG für eigene Inhalte
                 auf diesen Seiten nach den allgemeinen Gesetzen verantwortlich.
               </p>
             </div>

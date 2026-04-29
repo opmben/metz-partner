@@ -5,6 +5,7 @@ import { Footer } from '@/components/shared/Footer'
 
 export const metadata: Metadata = {
   title: 'Datenschutz — Metz & Partner',
+  alternates: { canonical: 'https://metzundpartner.com/datenschutz' },
 }
 
 const sectionHeading: React.CSSProperties = {

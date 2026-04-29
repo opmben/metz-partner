@@ -7,12 +7,22 @@ import { WhyUs } from '@/components/sections/WhyUs'
 import { Services } from '@/components/sections/Services'
 import { Founders } from '@/components/sections/Founders'
 import { Pricing } from '@/components/sections/Pricing'
+import { FAQ, faqJsonLd } from '@/components/sections/FAQ'
 import { Process } from '@/components/sections/Process'
 import { Manifesto } from '@/components/sections/Manifesto'
 import { Contact } from '@/components/sections/Contact'
+import { JsonLd } from '@/components/shared/JsonLd'
+
 export default function Home() {
   return (
     <>
+      <JsonLd
+        data={{
+          '@context': 'https://schema.org',
+          '@type': 'FAQPage',
+          mainEntity: faqJsonLd,
+        }}
+      />
       <Navigation />
       <main>
         <Hero />
@@ -22,6 +32,7 @@ export default function Home() {
         <Projects />
         <WhyUs />
         <Pricing />
+        <FAQ />
         <Process />
         <Manifesto />
         <Contact />
