@@ -31,14 +31,12 @@ function ComparisonItem({
   delay,
   isInView,
   shouldReduce,
-  isLast,
 }: {
   text: string
   type: 'problem' | 'solution'
   delay: number
   isInView: boolean
   shouldReduce: boolean | null
-  isLast: boolean
 }) {
   return (
     <motion.div
@@ -51,9 +49,8 @@ function ComparisonItem({
         display: 'flex',
         alignItems: 'flex-start',
         gap: '0.75rem',
-        paddingTop: '0.72rem',
-        paddingBottom: '0.72rem',
-        borderBottom: isLast ? 'none' : '1px solid rgba(255,255,255,0.045)',
+        paddingTop: '0.85rem',
+        paddingBottom: '0.85rem',
       }}
     >
       {/* Icon badge */}
@@ -61,7 +58,7 @@ function ComparisonItem({
         aria-hidden
         style={{
           flexShrink: 0,
-          marginTop: '0.2rem',
+          marginTop: '0.18rem',
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'center',
@@ -172,7 +169,6 @@ export function WhyUs() {
       <div className="container-site" style={{ position: 'relative' }}>
         {/* ── Section header ── */}
         <div ref={headerRef} style={{ marginBottom: '3.5rem', maxWidth: 640 }}>
-          {/* Headline */}
           <div style={{ overflow: 'hidden' }}>
             <motion.h2
               className="display-section"
@@ -191,7 +187,6 @@ export function WhyUs() {
             </motion.h2>
           </div>
 
-          {/* Subcopy */}
           <motion.p
             initial={shouldReduce ? undefined : { opacity: 0, y: 14 }}
             animate={
@@ -221,7 +216,6 @@ export function WhyUs() {
           className="grid grid-cols-1 lg:grid-cols-2"
           style={{ gap: '1rem', alignItems: 'stretch' }}
         >
-
           {/* Left — Problem card */}
           <motion.div
             ref={problemRef}
@@ -246,89 +240,16 @@ export function WhyUs() {
                 opacity: 0.88,
               }}
             >
-              {/* Card header */}
-              <div style={{ marginBottom: '1.6rem' }}>
-                <div
-                  style={{
-                    display: 'inline-flex',
-                    alignItems: 'center',
-                    gap: '0.5rem',
-                    marginBottom: '0.7rem',
-                  }}
-                >
-                  <span
-                    aria-hidden
-                    style={{
-                      display: 'flex',
-                      alignItems: 'center',
-                      justifyContent: 'center',
-                      width: 22,
-                      height: 22,
-                      borderRadius: '50%',
-                      background: 'rgba(255, 75, 75, 0.08)',
-                      border: '1px solid rgba(255, 80, 80, 0.15)',
-                      flexShrink: 0,
-                    }}
-                  >
-                    <X
-                      size={11}
-                      strokeWidth={2.5}
-                      style={{ color: 'rgba(255, 88, 88, 0.58)' }}
-                    />
-                  </span>
-                  <span
-                    style={{
-                      fontFamily: 'var(--font-ui)',
-                      fontSize: '0.62rem',
-                      fontWeight: 400,
-                      textTransform: 'uppercase' as const,
-                      letterSpacing: '0.14em',
-                      color: 'rgba(255,88,88,0.42)',
-                    }}
-                  >
-                    Häufige Probleme
-                  </span>
-                </div>
-
-                <h3
-                  style={{
-                    fontFamily: 'var(--font-display)',
-                    fontSize: 'clamp(1.15rem, 2vw, 1.45rem)',
-                    fontWeight: 400,
-                    fontStyle: 'italic',
-                    color: 'var(--muted)',
-                    lineHeight: 1.18,
-                    letterSpacing: '-0.02em',
-                    margin: 0,
-                  }}
-                >
-                  Was häufig schiefläuft
-                </h3>
-              </div>
-
-              {/* Divider */}
-              <div
-                style={{
-                  height: 1,
-                  background: 'rgba(255,255,255,0.055)',
-                  marginBottom: '1.4rem',
-                }}
-              />
-
-              {/* Items */}
-              <div>
-                {problems.map((text, i) => (
-                  <ComparisonItem
-                    key={i}
-                    text={text}
-                    type="problem"
-                    delay={0.22 + i * 0.07}
-                    isInView={isProblemInView}
-                    shouldReduce={shouldReduce}
-                    isLast={i === problems.length - 1}
-                  />
-                ))}
-              </div>
+              {problems.map((text, i) => (
+                <ComparisonItem
+                  key={i}
+                  text={text}
+                  type="problem"
+                  delay={0.22 + i * 0.07}
+                  isInView={isProblemInView}
+                  shouldReduce={shouldReduce}
+                />
+              ))}
             </div>
           </motion.div>
 
@@ -356,7 +277,7 @@ export function WhyUs() {
                 position: 'relative',
               }}
             >
-              {/* Accent bloom inside card */}
+              {/* Subtle accent bloom inside card */}
               <div
                 aria-hidden
                 style={{
@@ -366,99 +287,24 @@ export function WhyUs() {
                   width: '85%',
                   height: '85%',
                   background:
-                    'radial-gradient(circle, rgba(211,253,81,0.048) 0%, transparent 65%)',
+                    'radial-gradient(circle, rgba(211,253,81,0.038) 0%, transparent 65%)',
                   filter: 'blur(36px)',
                   pointerEvents: 'none',
                   zIndex: 0,
                 }}
               />
 
-              {/* Content above bloom */}
               <div style={{ position: 'relative', zIndex: 1 }}>
-                {/* Card header */}
-                <div style={{ marginBottom: '1.6rem' }}>
-                  <div
-                    style={{
-                      display: 'inline-flex',
-                      alignItems: 'center',
-                      gap: '0.5rem',
-                      marginBottom: '0.7rem',
-                    }}
-                  >
-                    <span
-                      aria-hidden
-                      style={{
-                        display: 'flex',
-                        alignItems: 'center',
-                        justifyContent: 'center',
-                        width: 22,
-                        height: 22,
-                        borderRadius: '50%',
-                        background: 'rgba(211, 253, 81, 0.10)',
-                        border: '1px solid rgba(211, 253, 81, 0.22)',
-                        flexShrink: 0,
-                      }}
-                    >
-                      <Check
-                        size={11}
-                        strokeWidth={2.5}
-                        style={{ color: 'rgba(211, 253, 81, 0.90)' }}
-                      />
-                    </span>
-                    <span
-                      style={{
-                        fontFamily: 'var(--font-ui)',
-                        fontSize: '0.62rem',
-                        fontWeight: 400,
-                        textTransform: 'uppercase' as const,
-                        letterSpacing: '0.14em',
-                        color: 'rgba(211,253,81,0.55)',
-                      }}
-                    >
-                      Metz & Partner
-                    </span>
-                  </div>
-
-                  <h3
-                    style={{
-                      fontFamily: 'var(--font-display)',
-                      fontSize: 'clamp(1.15rem, 2vw, 1.45rem)',
-                      fontWeight: 400,
-                      fontStyle: 'italic',
-                      color: 'var(--text)',
-                      lineHeight: 1.18,
-                      letterSpacing: '-0.02em',
-                      margin: 0,
-                    }}
-                  >
-                    Was Sie bei Metz & Partner bekommen
-                  </h3>
-                </div>
-
-                {/* Accent divider */}
-                <div
-                  style={{
-                    height: 1,
-                    background:
-                      'linear-gradient(90deg, rgba(211,253,81,0.20), rgba(255,255,255,0.06) 55%, transparent)',
-                    marginBottom: '1.4rem',
-                  }}
-                />
-
-                {/* Items */}
-                <div>
-                  {solutions.map((text, i) => (
-                    <ComparisonItem
-                      key={i}
-                      text={text}
-                      type="solution"
-                      delay={0.30 + i * 0.07}
-                      isInView={isSolutionInView}
-                      shouldReduce={shouldReduce}
-                      isLast={i === solutions.length - 1}
-                    />
-                  ))}
-                </div>
+                {solutions.map((text, i) => (
+                  <ComparisonItem
+                    key={i}
+                    text={text}
+                    type="solution"
+                    delay={0.30 + i * 0.07}
+                    isInView={isSolutionInView}
+                    shouldReduce={shouldReduce}
+                  />
+                ))}
               </div>
             </div>
           </motion.div>
