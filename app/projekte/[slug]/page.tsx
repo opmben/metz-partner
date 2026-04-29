@@ -262,46 +262,6 @@ export default async function ProjectPage({ params }: Props) {
               </div>
             </div>
           )}
-
-          {/* Bottom CTA */}
-          <div
-            style={{
-              borderTop: '1px solid var(--border)',
-              paddingTop: '3.5rem',
-              display: 'flex',
-              flexDirection: 'column',
-              gap: '2rem',
-            }}
-            className="md:flex-row md:items-center md:justify-between"
-          >
-            <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
-              <p
-                style={{
-                  fontFamily: 'var(--font-display)',
-                  fontSize: 'clamp(1.4rem, 2.5vw, 2rem)',
-                  fontStyle: 'italic',
-                  color: 'var(--text)',
-                  lineHeight: 1.2,
-                }}
-              >
-                Ähnliches Projekt?{' '}
-                <span style={{ color: 'var(--muted)' }}>Sprechen wir.</span>
-              </p>
-              <p
-                style={{
-                  fontSize: '0.85rem',
-                  fontWeight: 300,
-                  color: 'var(--muted)',
-                }}
-              >
-                Kostenlos und unverbindlich — direkt mit Benedikt oder Maximilian.
-              </p>
-            </div>
-            <ProjectCTA
-              nextSlug={nextProject?.slug}
-              nextName={nextProject?.name}
-            />
-          </div>
         </div>
       </main>
       <Footer />
