@@ -182,21 +182,6 @@ function YourProjectArt() {
         }}
       />
 
-      {/* Ambient lime glow */}
-      <motion.div
-        animate={shouldReduce ? undefined : { opacity: [0.45, 0.85, 0.45], scale: [1, 1.25, 1] }}
-        transition={shouldReduce ? undefined : { duration: 4, repeat: Infinity, ease: 'easeInOut' }}
-        style={{
-          position: 'absolute',
-          width: 110,
-          height: 110,
-          borderRadius: '50%',
-          background: 'radial-gradient(circle, rgba(211,253,81,0.13), transparent 70%)',
-          filter: 'blur(18px)',
-          pointerEvents: 'none',
-        }}
-      />
-
       {/* Inner circle with + */}
       <motion.div
         animate={shouldReduce ? undefined : { opacity: [0.6, 1, 0.6] }}
