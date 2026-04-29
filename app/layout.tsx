@@ -109,6 +109,8 @@ export default function RootLayout({
                   sameAs: 'https://www.linkedin.com/in/maximilian-metz-448372221/',
                 },
               ],
+              image: 'https://metzundpartner.com/opengraph-image',
+              logo: 'https://metzundpartner.com/logo.png',
               priceRange: '€€',
             },
             {
