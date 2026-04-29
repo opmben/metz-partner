@@ -14,6 +14,7 @@ export interface Project {
   clientContext: string
   challenge: string
   approach: string
+  beforeImage?: string
   additionalImages: string[]
 }
 
@@ -37,6 +38,7 @@ export const projects: Project[] = [
       'Eine Fahrschule mit zwei Standorten, breitem Kursangebot und aktivem Schulbetrieb — aber keine Website, die das abbildete. Anfragen kamen fast ausschließlich über Empfehlungen. Besucher der alten Seite fanden weder eine strukturierte Übersicht der Führerscheinklassen noch einfache Standortinformationen. Auf Mobilgeräten war die Seite kaum nutzbar — obwohl genau dort die meisten Fahrschüler suchen.',
     approach:
       'Wir haben die gesamte Seite von Grund auf neu strukturiert: klare Navigation, vollständige Übersicht aller Führerscheinklassen, eine eigene Standortseite mit Öffnungszeiten und direkten Kontaktmöglichkeiten sowie ein Fahrzeugbereich. Der Handlungsaufruf — "Jetzt anrufen" — ist konsequent auf jeder Seite präsent. Technisch mobiloptimiert, schnelle Ladezeiten, strukturierte Inhalte, die Fahrschüler genau dort abholen, wo sie suchen.',
-    additionalImages: [],
+    beforeImage: '/projekte/fahrschule-da-before.jpg',
+    additionalImages: ['/projekte/fahrschule-rhein-hunsrueck.png'],
   },
 ]
