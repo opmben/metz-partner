@@ -62,11 +62,11 @@
   --surface-glow-hot:     0 0 52px rgba(255, 255, 255, 0.06);
 
   /* Surface system: blur tiers */
-  --blur-hero:      22px;
-  --blur-primary:   14px;
-  --blur-secondary: 10px;
-  --blur-muted:     8px;
-  --blur-floating:  16px;
+  --blur-hero:      13px;
+  --blur-primary:    8px;
+  --blur-secondary:  5px;
+  --blur-muted:      4px;
+  --blur-floating:  10px;
 
   /* Surface system: radius */
   --radius-panel-lg: 32px;
@@ -291,17 +291,15 @@ body::before {
   position: absolute;
   inset: 0;
   background:
-    radial-gradient(circle at top left, rgba(255, 255, 255, 0.032), transparent 30%),
-    linear-gradient(180deg, rgba(255, 255, 255, 0.010), transparent 24%);
+    radial-gradient(circle at top left, rgba(255, 255, 255, 0.010), transparent 30%),
+    linear-gradient(180deg, rgba(255, 255, 255, 0.004), transparent 24%);
   opacity: 0.65;
   pointer-events: none;
   z-index: -1;
 }
 
 .surface-hero {
-  background:
-    linear-gradient(180deg, rgba(255, 255, 255, 0.038), rgba(255, 255, 255, 0.016)),
-    rgba(6, 6, 6, 0.34);
+  background: rgba(6, 6, 6, 0.28);
   border-color: var(--surface-border-strong);
   border-radius: var(--radius-panel-lg);
   backdrop-filter: blur(var(--blur-hero));
@@ -317,26 +315,20 @@ body::before {
 .panel-proof,
 .panel-browser,
 .panel-process {
-  background:
-    linear-gradient(180deg, rgba(255, 255, 255, 0.044), rgba(255, 255, 255, 0.020)),
-    rgba(6, 6, 6, 0.46);
+  background: rgba(6, 6, 6, 0.30);
   border-radius: var(--radius-panel-md);
 }
 
 .surface-secondary,
 .panel-feature {
-  background:
-    linear-gradient(180deg, rgba(255, 255, 255, 0.036), rgba(255, 255, 255, 0.016)),
-    rgba(6, 6, 6, 0.44);
+  background: rgba(6, 6, 6, 0.28);
   border-radius: var(--radius-panel-sm);
   backdrop-filter: blur(var(--blur-secondary));
   -webkit-backdrop-filter: blur(var(--blur-secondary));
 }
 
 .surface-muted {
-  background:
-    linear-gradient(180deg, rgba(255, 255, 255, 0.022), rgba(255, 255, 255, 0.010)),
-    rgba(6, 6, 6, 0.32);
+  background: rgba(6, 6, 6, 0.22);
   border-radius: var(--radius-panel-sm);
   backdrop-filter: blur(var(--blur-muted));
   -webkit-backdrop-filter: blur(var(--blur-muted));
@@ -346,9 +338,7 @@ body::before {
 }
 
 .surface-floating {
-  background:
-    linear-gradient(180deg, rgba(255, 255, 255, 0.10), rgba(255, 255, 255, 0.050)),
-    rgba(6, 6, 6, 0.22);
+  background: rgba(6, 6, 6, 0.32);
   border-radius: var(--radius-pill);
   backdrop-filter: blur(var(--blur-floating));
   -webkit-backdrop-filter: blur(var(--blur-floating));
