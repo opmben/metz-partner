@@ -61,7 +61,7 @@ export function FAQ() {
               }
               transition={{ duration: 0.85, delay: 0.08, ease: EASE }}
             >
-              Was Sie wissen möchten.
+              Keine Fragen unbeantwortet.
             </motion.h2>
           </div>
 
