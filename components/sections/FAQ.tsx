@@ -1,11 +1,12 @@
 'use client'
 
 import { useRef, useState } from 'react'
-import { motion, useInView, useReducedMotion, AnimatePresence } from 'framer-motion'
+import { motion, useInView, useReducedMotion } from 'framer-motion'
 import { SectionLabel } from '@/components/shared/SectionLabel'
 import { faqs } from '@/lib/data/faqs'
 
 const EASE: [number, number, number, number] = [0.16, 1, 0.3, 1]
+const LIME = '#D3FD51'
 
 export function FAQ() {
   const ref = useRef(null)
@@ -71,18 +72,25 @@ export function FAQ() {
               display: 'flex',
               flexDirection: 'column',
               gap: '0.5rem',
-              maxWidth: 760,
+              maxWidth: 880,
+              marginLeft: 'auto',
+              marginRight: 'auto',
             }}
           >
             {faqs.map((item, i) => {
               const isOpen = openIndex === i
+              const num = String(i + 1).padStart(2, '0')
+
               return (
                 <div
                   key={i}
                   className="panel-process"
                   style={{
-                    overflow: 'hidden',
                     padding: 0,
+                    border: isOpen ? '1px solid rgba(211, 253, 81, 0.28)' : undefined,
+                    boxShadow: isOpen
+                      ? `inset 0 1px 0 rgba(211, 253, 81, 0.16), 0 18px 60px rgba(0,0,0,0.36), 0 0 40px rgba(211, 253, 81, 0.06)`
+                      : undefined,
                   }}
                 >
                   <button
@@ -95,12 +103,30 @@ export function FAQ() {
                       cursor: 'pointer',
                       display: 'flex',
                       alignItems: 'center',
-                      justifyContent: 'space-between',
-                      gap: '1.5rem',
+                      gap: '1.25rem',
                       padding: 'clamp(1rem, 2.5vw, 1.5rem) clamp(1.25rem, 3vw, 1.75rem)',
                       textAlign: 'left',
                     }}
                   >
+                    {/* Number */}
+                    <span
+                      style={{
+                        fontFamily: 'var(--font-display), Georgia, serif',
+                        fontSize: 'clamp(0.85rem, 1.4vw, 1rem)',
+                        fontStyle: 'italic',
+                        fontWeight: 400,
+                        color: isOpen ? LIME : 'rgba(255,255,255,0.30)',
+                        transition: `color ${shouldReduce ? '0s' : '0.22s'} ease`,
+                        flexShrink: 0,
+                        lineHeight: 1,
+                        minWidth: '2ch',
+                        userSelect: 'none',
+                      }}
+                    >
+                      {num}
+                    </span>
+
+                    {/* Question */}
                     <span
                       style={{
                         fontFamily: 'var(--font-ui)',
@@ -108,10 +134,13 @@ export function FAQ() {
                         fontWeight: 400,
                         color: 'var(--text)',
                         lineHeight: 1.45,
+                        flex: 1,
                       }}
                     >
                       {item.q}
                     </span>
+
+                    {/* Toggle icon */}
                     <motion.span
                       animate={{ rotate: isOpen ? 45 : 0 }}
                       transition={{ duration: 0.25, ease: EASE }}
@@ -123,51 +152,54 @@ export function FAQ() {
                         width: 24,
                         height: 24,
                         borderRadius: '50%',
-                        border: '1px solid var(--glass-border)',
-                        background: 'var(--glass)',
-                        color: 'var(--muted)',
+                        border: `1px solid ${isOpen ? 'rgba(211, 253, 81, 0.40)' : 'var(--glass-border)'}`,
+                        background: isOpen ? 'rgba(211, 253, 81, 0.10)' : 'var(--glass)',
+                        color: isOpen ? LIME : 'var(--muted)',
                         fontSize: '1rem',
                         lineHeight: 1,
+                        transition: `border-color ${shouldReduce ? '0s' : '0.22s'} ease, background ${shouldReduce ? '0s' : '0.22s'} ease, color ${shouldReduce ? '0s' : '0.22s'} ease`,
                       }}
                     >
                       +
                     </motion.span>
                   </button>
 
-                  <AnimatePresence initial={false}>
-                    {isOpen && (
+                  {/* Answer — grid-template-rows expansion (no height animation) */}
+                  <div
+                    style={{
+                      display: 'grid',
+                      gridTemplateRows: isOpen ? '1fr' : '0fr',
+                      transition: shouldReduce
+                        ? 'none'
+                        : `grid-template-rows 0.38s cubic-bezier(0.16, 1, 0.3, 1)`,
+                    }}
+                  >
+                    <div style={{ overflow: 'hidden', minHeight: 0 }}>
                       <motion.div
-                        key="answer"
-                        initial={{ height: 0, opacity: 0 }}
-                        animate={{ height: 'auto', opacity: 1 }}
-                        exit={{ height: 0, opacity: 0 }}
-                        transition={{ duration: 0.35, ease: EASE }}
-                        style={{ overflow: 'hidden' }}
+                        animate={{ opacity: isOpen ? 1 : 0 }}
+                        transition={{ duration: 0.22, ease: EASE }}
+                        style={{
+                          padding: '0 clamp(1.25rem, 3vw, 1.75rem) clamp(1rem, 2.5vw, 1.5rem)',
+                          paddingTop: 0,
+                          borderTop: '1px solid var(--glass-border)',
+                        }}
                       >
-                        <div
+                        <p
                           style={{
-                            padding: '0 clamp(1.25rem, 3vw, 1.75rem) clamp(1rem, 2.5vw, 1.5rem)',
-                            paddingTop: 0,
-                            borderTop: '1px solid var(--glass-border)',
+                            fontFamily: 'var(--font-ui)',
+                            fontSize: '0.9rem',
+                            fontWeight: 400,
+                            color: 'var(--muted)',
+                            lineHeight: 1.75,
+                            margin: 0,
+                            paddingTop: 'clamp(0.75rem, 2vw, 1.25rem)',
                           }}
                         >
-                          <p
-                            style={{
-                              fontFamily: 'var(--font-ui)',
-                              fontSize: '0.9rem',
-                              fontWeight: 300,
-                              color: 'var(--muted)',
-                              lineHeight: 1.75,
-                              margin: 0,
-                              paddingTop: 'clamp(0.75rem, 2vw, 1.25rem)',
-                            }}
-                          >
-                            {item.a}
-                          </p>
-                        </div>
+                          {item.a}
+                        </p>
                       </motion.div>
-                    )}
-                  </AnimatePresence>
+                    </div>
+                  </div>
                 </div>
               )
             })}
@@ -177,4 +209,3 @@ export function FAQ() {
     </section>
   )
 }
-
