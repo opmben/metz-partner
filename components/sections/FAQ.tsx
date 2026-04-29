@@ -37,7 +37,11 @@ export function FAQ() {
               flexDirection: 'column',
               gap: '1.25rem',
               marginBottom: 'clamp(2.5rem, 5vw, 4rem)',
-              maxWidth: 600,
+              maxWidth: 760,
+              marginLeft: 'auto',
+              marginRight: 'auto',
+              textAlign: 'center',
+              alignItems: 'center',
             }}
           >
             <motion.div
@@ -72,7 +76,7 @@ export function FAQ() {
               display: 'flex',
               flexDirection: 'column',
               gap: '0.5rem',
-              maxWidth: 880,
+              maxWidth: 960,
               marginLeft: 'auto',
               marginRight: 'auto',
             }}
