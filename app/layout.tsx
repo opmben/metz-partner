@@ -1,6 +1,7 @@
 import type { Metadata } from 'next'
 import { Instrument_Serif, DM_Sans } from 'next/font/google'
 import './globals.css'
+import { SpeedInsights } from '@vercel/speed-insights/next'
 import { PageLoader } from '@/components/shared/PageLoader'
 import { ScrollProgress } from '@/components/shared/ScrollProgress'
 import { JsonLd } from '@/components/shared/JsonLd'
@@ -128,6 +129,7 @@ export default function RootLayout({
           <ScrollProgress />
           {children}
         </div>
+        <SpeedInsights />
       </body>
     </html>
   )
