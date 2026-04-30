@@ -18,6 +18,7 @@ const schema = z.object({
   email: z.string().email('Bitte geben Sie eine gültige E-Mail-Adresse ein.'),
   message: z.string().min(20, 'Bitte beschreiben Sie Ihr Projekt kurz (mindestens 20 Zeichen).'),
   dsgvo: z.literal(true, 'Bitte stimmen Sie der Datenschutzerklärung zu.'),
+  website: z.string().optional(),
 })
 
 type FormData = z.infer<typeof schema>
@@ -724,6 +725,16 @@ export function Contact() {
                       </span>
                     </div>
                   </FormField>
+
+                  {/* Honeypot — hidden from real users, filled only by bots */}
+                  <input
+                    {...register('website')}
+                    type="text"
+                    tabIndex={-1}
+                    autoComplete="off"
+                    aria-hidden="true"
+                    style={{ position: 'absolute', left: '-9999px', width: 1, height: 1, opacity: 0 }}
+                  />
 
                   {/* DSGVO */}
                   <motion.div
