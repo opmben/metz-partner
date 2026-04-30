@@ -8,8 +8,13 @@ import {
   useMotionValue,
   useSpring,
 } from 'framer-motion'
+import dynamic from 'next/dynamic'
 import { fadeUp, blurIn, charReveal, charContainer } from '@/lib/animations'
-import { ColorBendsBackground } from '@/components/shared/ColorBendsBackground'
+
+const ColorBendsBackground = dynamic(
+  () => import('@/components/shared/ColorBendsBackground').then((m) => ({ default: m.ColorBendsBackground })),
+  { ssr: false },
+)
 
 const subscribe = () => () => {}
 const getClientSnapshot = () => true

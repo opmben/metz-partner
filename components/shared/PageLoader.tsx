@@ -1,5 +1,6 @@
 'use client'
 import { useEffect, useState } from 'react'
+import Image from 'next/image'
 import { motion, AnimatePresence, useReducedMotion } from 'framer-motion'
 
 export function PageLoader() {
@@ -10,7 +11,7 @@ export function PageLoader() {
     // Wait for fonts + initial paint
     const id = window.requestAnimationFrame(() => {
       window.requestAnimationFrame(() => {
-        setTimeout(() => setLoading(false), shouldReduce ? 0 : 900)
+        setTimeout(() => setLoading(false), shouldReduce ? 0 : 300)
       })
     })
     return () => cancelAnimationFrame(id)
@@ -56,17 +57,20 @@ export function PageLoader() {
               pointerEvents: 'none',
             }}
           >
-            <motion.img
-              src="/font2 tra 2.svg"
-              alt="Metz & Partner"
+            <motion.div
               initial={{ opacity: 0, y: 10 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.55, ease: [0.16, 1, 0.3, 1] }}
-              style={{
-                width: 'clamp(200px, 40vw, 380px)',
-                height: 'auto',
-              }}
-            />
+            >
+              <Image
+                src="/font2 tra 2.svg"
+                alt="Metz & Partner"
+                width={380}
+                height={92}
+                style={{ width: 'clamp(200px, 40vw, 380px)', height: 'auto' }}
+                priority
+              />
+            </motion.div>
           </motion.div>
         </motion.div>
       )}

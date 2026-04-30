@@ -57,13 +57,11 @@ function FounderCard({
   shouldReduce,
   delay,
   slideFrom = 28,
-  priority = false,
 }: {
   founder: (typeof founders)[0]
   shouldReduce: boolean | null
   delay: number
   slideFrom?: number
-  priority?: boolean
 }) {
   const [hovered, setHovered] = useState(false)
   const ref = useRef<HTMLDivElement>(null)
@@ -185,8 +183,7 @@ function FounderCard({
                 fill
                 style={{ objectFit: 'cover', objectPosition: '50% 18%' }}
                 sizes="(max-width: 767px) 100vw, (max-width: 1023px) 36vw, 20vw"
-                priority={priority}
-                loading={priority ? 'eager' : 'lazy'}
+                loading="lazy"
               />
             </motion.div>
 
@@ -559,7 +556,6 @@ export function Founders() {
             shouldReduce={shouldReduce}
             delay={0.14}
             slideFrom={-28}
-            priority
           />
           <FounderCard
             founder={founders[1]}
