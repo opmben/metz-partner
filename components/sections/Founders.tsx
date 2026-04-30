@@ -15,7 +15,7 @@ const founders = [
     accentBg: 'rgba(211,253,81,0.10)',
     accentBorder: 'rgba(211,253,81,0.24)',
     glowColor: 'rgba(211,253,81,0.10)',
-    portrait: '/founders/benedikt.png',
+    portrait: '/founders/benedikt enhanced-cmpr.webp',
     portraitAlt: 'Benedikt Metz – Head of Design & Struktur bei Metz & Partner',
   },
   {
@@ -27,7 +27,7 @@ const founders = [
     accentBg: 'rgba(211,253,81,0.08)',
     accentBorder: 'rgba(211,253,81,0.18)',
     glowColor: 'rgba(211,253,81,0.08)',
-    portrait: '/founders/maximilian.png',
+    portrait: '/founders/maximilian enhanced-cmpr.webp',
     portraitAlt: 'Maximilian Metz – Head of Strategie & Wachstum bei Metz & Partner',
   },
 ]
