@@ -24,8 +24,8 @@ const plans = [
     name: 'Starter',
     positioning:
       'Für kleine Unternehmen, die eine professionelle digitale Grundlage schaffen möchten',
-    monthly: '199 €',
-    setup: '890 €',
+    monthly: '149 €',
+    setup: '490 €',
     includes: null,
     features: [
       'Individuelle Website mit bis zu 5 Seiten',
@@ -49,8 +49,8 @@ const plans = [
     name: 'Growth',
     positioning:
       'Für Unternehmen, die mit ihrer Website gezielt mehr Anfragen gewinnen möchten',
-    monthly: '449 €',
-    setup: '1.290 €',
+    monthly: '349 €',
+    setup: '990 €',
     includes: 'Starter',
     features: [
       'Website mit bis zu 10 Seiten',
@@ -74,8 +74,8 @@ const plans = [
     name: 'Pro',
     positioning:
       'Für Unternehmen, die ihre Website als laufenden Wachstumshebel nutzen möchten',
-    monthly: '899 €',
-    setup: '2.290 €',
+    monthly: '799 €',
+    setup: '1.990 €',
     includes: 'Growth',
     features: [
       'Bis zu 20 Seiten und Landingpages',
