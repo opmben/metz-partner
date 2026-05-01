@@ -116,7 +116,7 @@ function FormField({
 const timelineSteps = [
   { num: '01', text: 'Wir lesen Ihre Nachricht und bereiten uns auf das Gespräch vor.' },
   { num: '02', text: 'Benedikt oder Maximilian meldet sich persönlich — innerhalb von 24h.' },
-  { num: '03', text: 'Gemeinsam klären wir, ob und wie wir helfen können. Kein Druck.' },
+  { num: '03', text: 'Danach bekommen Sie eine ehrliche Einschätzung und ein klares Angebot — kein Druck, keine Pakete.' },
 ]
 
 // ─── Contact section ──────────────────────────────────────────────────────────
@@ -290,7 +290,7 @@ export function Contact() {
                   margin: '0 0 0.55rem',
                 }}
               >
-                Kein langes Hin und Her.
+                Erzählen Sie uns kurz, worum es geht.
               </p>
               <p
                 style={{
@@ -303,7 +303,7 @@ export function Contact() {
                   maxWidth: '42ch',
                 }}
               >
-                Buchen Sie einen kostenlosen 30-Minuten-Call — oder schreiben Sie uns direkt.
+                Wir ordnen ein, ob und wie wir helfen können — per Call oder direkt schriftlich.
               </p>
             </div>
 

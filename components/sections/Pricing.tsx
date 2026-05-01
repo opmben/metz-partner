@@ -10,97 +10,113 @@ function scrollToContact(e: React.MouseEvent<HTMLAnchorElement>) {
   e.preventDefault()
   const target = document.getElementById('kontakt')
   if (!target) return
-  // Scroll to the heading block directly — nav height (72px) + small buffer
-  const offset = 0
-  const top = target.getBoundingClientRect().top + window.scrollY - offset
+  const top = target.getBoundingClientRect().top + window.scrollY
   window.scrollTo({ top, behavior: 'smooth' })
 }
 
+// ─── Types ────────────────────────────────────────────────────────────────────
+
+interface ProjectOffer {
+  kind: 'project'
+  id: string
+  name: string
+  positioning: string
+  price: string
+  priceSuffix: string
+  features: readonly string[]
+  cta: string
+  ctaHref: string
+  highlighted: true
+  badge: null
+}
+
+interface CareOption {
+  kind: 'care'
+  id: string
+  name: string
+  positioning: string
+  price: string
+  priceSuffix: string
+  features: readonly string[]
+  cta: string
+  ctaHref: string
+  highlighted: false
+  badge: string
+}
+
+interface ProcessNote {
+  kind: 'process'
+  id: string
+  name: string
+  heading: string
+  body: string
+  cta: string
+  ctaHref: string
+}
+
+type PricingItem = ProjectOffer | CareOption | ProcessNote
+
 // ─── Data ─────────────────────────────────────────────────────────────────────
 
-const plans = [
+const pricingItems: readonly PricingItem[] = [
   {
-    id: 'starter',
-    name: 'Starter',
+    kind: 'project',
+    id: 'website-projekt',
+    name: 'Website-Projekt',
     positioning:
-      'Für kleine Unternehmen, die eine professionelle digitale Grundlage schaffen möchten',
-    monthly: '149 €',
-    setup: '490 €',
-    includes: null,
+      'Konzept, Design, Entwicklung und Launch — als klares Projekt mit definiertem Umfang.',
+    price: 'ab 490 €',
+    priceSuffix: 'einmalig',
     features: [
-      'Individuelle Website mit bis zu 5 Seiten',
-      'Professionelles Design und technisches Setup',
-      'Hosting, SSL und laufende Wartung',
+      'Konzept und Seitenstruktur',
+      'Individuelles Webdesign',
+      'Technische Umsetzung',
       'Mobile Optimierung',
-      'Basis On-Page-SEO-Setup',
-      'Google Search Console Einrichtung',
-      '1 Inhaltsanpassung pro Monat',
-      'Monatlicher technischer Check',
+      'Basis On-Page SEO',
+      'Launch-Unterstützung',
     ],
-    idealFor:
-      'Handwerksbetriebe, lokale Dienstleister und junge Unternehmen, die online professionell sichtbar sein möchten',
-    cta: 'Mit Starter starten',
-    ctaHref: '#kontakt',
-    highlighted: false,
-    badge: null,
-  },
-  {
-    id: 'growth',
-    name: 'Growth',
-    positioning:
-      'Für Unternehmen, die mit ihrer Website gezielt mehr Anfragen gewinnen möchten',
-    monthly: '349 €',
-    setup: '990 €',
-    includes: 'Starter',
-    features: [
-      'Website mit bis zu 10 Seiten',
-      'Solide Local-SEO-Grundlage',
-      'Unterstützung beim Google Business Profile',
-      'Technische SEO-Optimierungen',
-      'Keyword-Tracking',
-      'Bis zu 3 Inhaltsanpassungen pro Monat',
-      'Monatliches Reporting',
-      'Priorisierte Rückmeldung',
-    ],
-    idealFor:
-      'Etablierte KMU, wachsende lokale Unternehmen und Betriebe, die ihre Sichtbarkeit aktiv ausbauen möchten',
-    cta: 'Growth wählen',
+    cta: 'Projekt anfragen',
     ctaHref: '#kontakt',
     highlighted: true,
-    badge: 'Am beliebtesten',
+    badge: null,
   },
   {
-    id: 'pro',
-    name: 'Pro',
+    kind: 'care',
+    id: 'betreuung',
+    name: 'Betreuung',
     positioning:
-      'Für Unternehmen, die ihre Website als laufenden Wachstumshebel nutzen möchten',
-    monthly: '799 €',
-    setup: '1.990 €',
-    includes: 'Growth',
+      'Optional nach Launch — für alle, die Hosting, Wartung und technischen Support in einer Hand haben möchten.',
+    price: 'ab 149 €',
+    priceSuffix: '/ Monat · optional nach Launch',
     features: [
-      'Bis zu 20 Seiten und Landingpages',
-      'Laufender SEO-Ausbau',
-      'Themen- und Inhaltsplanung',
-      'Conversion-orientierte Optimierungen',
-      'Wettbewerbsanalyse',
-      'Schnellere Reaktionszeiten',
-      'Vierteljährlicher Strategie-Call',
+      'Hosting und SSL',
+      'Technische Wartung',
+      'Kleinere Inhaltsänderungen',
+      'Monatlicher technischer Check',
+      'Direkte Rückmeldung bei Fragen',
     ],
-    idealFor:
-      'Ambitionierte Unternehmen, Betriebe mit mehreren Leistungsbereichen und Firmen, die einen langfristigen digitalen Partner suchen',
-    cta: 'Pro anfragen',
+    cta: 'Im Gespräch klären',
     ctaHref: '#kontakt',
     highlighted: false,
-    badge: null,
+    badge: 'Optional',
+  },
+  {
+    kind: 'process',
+    id: 'gespraech',
+    name: 'Erst klären, dann anbieten',
+    heading: 'Erst verstehen wir Ihr Projekt.',
+    body: 'Umfang und Anforderungen werden im Gespräch eingeordnet. Danach bekommen Sie eine ehrliche Einschätzung und ein klares Angebot — kein Druck, keine Pakete.',
+    cta: 'Kostenlos anfragen',
+    ctaHref: '#kontakt',
   },
 ] as const
 
 const trustItems = [
-  'Hosting inklusive',
-  'Laufende Wartung enthalten',
-  'Transparente Erweiterungen möglich',
+  'Keine Abo-Pflicht',
+  'Kein verstecktes Kleingedrucktes',
+  'Betreuung jederzeit kündbar',
   'Direkter Ansprechpartner',
-]
+] as const
 
 // ─── Check icon ───────────────────────────────────────────────────────────────
 
@@ -125,20 +141,20 @@ function CheckIcon({ faint }: { faint?: boolean }) {
   )
 }
 
-// ─── Pricing card ─────────────────────────────────────────────────────────────
+// ─── Offer card (project / care) ──────────────────────────────────────────────
 
-function PricingCard({
-  plan,
+function OfferCard({
+  item,
   index,
   isInView,
   shouldReduce,
 }: {
-  plan: (typeof plans)[number]
+  item: ProjectOffer | CareOption
   index: number
   isInView: boolean
   shouldReduce: boolean | null
 }) {
-  const { highlighted } = plan
+  const { highlighted } = item
 
   return (
     <motion.div
@@ -150,10 +166,10 @@ function PricingCard({
           ? { opacity: 1, y: 0 }
           : { opacity: 0, y: 28 }
       }
-      transition={{ duration: 0.88, ease: EASE, delay: 0.14 + index * 0.10 }}
+      transition={{ duration: 0.88, ease: EASE, delay: 0.14 + index * 0.1 }}
       style={{ position: 'relative', isolation: 'isolate', display: 'flex' }}
     >
-      {/* Warm atmosphere bloom — Growth only */}
+      {/* Warm atmosphere bloom — highlighted card only */}
       {highlighted && (
         <div
           aria-hidden
@@ -169,7 +185,6 @@ function PricingCard({
         />
       )}
 
-      {/* Card surface */}
       <div
         className={highlighted ? 'surface-primary' : 'surface-secondary'}
         style={{
@@ -186,7 +201,7 @@ function PricingCard({
             : {}),
         }}
       >
-        {/* Warm top edge — Growth only, stronger */}
+        {/* Warm top edge — highlighted only */}
         {highlighted && (
           <div
             aria-hidden
@@ -204,8 +219,8 @@ function PricingCard({
           />
         )}
 
-        {/* Badge */}
-        {plan.badge && (
+        {/* Badge — "Optional" for care card */}
+        {item.badge && (
           <div
             style={{
               position: 'absolute',
@@ -216,12 +231,12 @@ function PricingCard({
               gap: '0.35rem',
               padding: '0.28rem 0.75rem',
               background:
-                'linear-gradient(180deg, rgba(211,253,81,0.18), rgba(211,253,81,0.07))',
-              border: '1px solid rgba(211,253,81,0.38)',
+                'linear-gradient(180deg, rgba(255,255,255,0.09), rgba(255,255,255,0.04))',
+              border: '1px solid rgba(255,255,255,0.12)',
               borderRadius: 999,
               backdropFilter: 'blur(14px)',
               WebkitBackdropFilter: 'blur(14px)',
-              boxShadow: 'inset 0 1px 0 rgba(211,253,81,0.18), 0 0 16px rgba(211,253,81,0.10)',
+              boxShadow: 'inset 0 1px 0 rgba(255,255,255,0.08)',
             }}
           >
             <span
@@ -229,8 +244,7 @@ function PricingCard({
                 width: 4,
                 height: 4,
                 borderRadius: '50%',
-                background: 'rgba(211,253,81,0.88)',
-                boxShadow: '0 0 6px rgba(211,253,81,0.60)',
+                background: 'rgba(255,255,255,0.38)',
                 flexShrink: 0,
               }}
             />
@@ -241,10 +255,10 @@ function PricingCard({
                 fontWeight: 500,
                 letterSpacing: '0.12em',
                 textTransform: 'uppercase' as const,
-                color: 'rgba(211,253,81,0.92)',
+                color: 'rgba(255,255,255,0.50)',
               }}
             >
-              {plan.badge}
+              {item.badge}
             </span>
           </div>
         )}
@@ -261,7 +275,7 @@ function PricingCard({
             marginBottom: '0.4rem',
           }}
         >
-          {plan.name}
+          {item.name}
         </div>
 
         {/* Positioning line */}
@@ -273,13 +287,13 @@ function PricingCard({
             color: highlighted ? 'rgba(255,255,255,0.48)' : 'rgba(255,255,255,0.38)',
             lineHeight: 1.55,
             margin: '0 0 0.85rem 0',
-            paddingRight: plan.badge ? '5rem' : 0,
+            paddingRight: item.badge ? '5rem' : 0,
           }}
         >
-          {plan.positioning}
+          {item.positioning}
         </p>
 
-        {/* Price block — monthly dominant; /Monat + setup on one secondary line */}
+        {/* Price block */}
         <div
           style={{
             paddingBottom: '0.9rem',
@@ -287,8 +301,7 @@ function PricingCard({
             borderBottom: '1px solid rgba(255,255,255,0.065)',
           }}
         >
-          {/* Dominant monthly number */}
-          <div style={{ display: 'flex', alignItems: 'baseline', gap: '0' }}>
+          <div style={{ display: 'flex', alignItems: 'baseline' }}>
             <span
               style={{
                 fontFamily: 'var(--font-display)',
@@ -300,19 +313,11 @@ function PricingCard({
                 color: 'var(--text)',
               }}
             >
-              {plan.monthly}
+              {item.price}
             </span>
           </div>
 
-          {/* Unified secondary line: /Monat · zzgl. Setup — one typographic unit */}
-          <div
-            style={{
-              marginTop: '0.26rem',
-              display: 'flex',
-              alignItems: 'center',
-              gap: '0.4rem',
-            }}
-          >
+          <div style={{ marginTop: '0.26rem' }}>
             <span
               style={{
                 fontFamily: 'var(--font-ui)',
@@ -322,52 +327,12 @@ function PricingCard({
                 letterSpacing: '0.01em',
               }}
             >
-              / Monat
-            </span>
-            <span
-              aria-hidden
-              style={{
-                display: 'block',
-                width: 3,
-                height: 3,
-                borderRadius: '50%',
-                background: 'rgba(255,255,255,0.18)',
-                flexShrink: 0,
-              }}
-            />
-            <span
-              style={{
-                fontFamily: 'var(--font-ui)',
-                fontSize: '0.65rem',
-                fontWeight: 300,
-                color: 'rgba(255,255,255,0.22)',
-                letterSpacing: '0.005em',
-              }}
-            >
-              zzgl. {plan.setup} Setup
+              {item.priceSuffix}
             </span>
           </div>
         </div>
 
-        {/* Inheritance note — italic reference, not a feature */}
-        {plan.includes && (
-          <div style={{ marginBottom: '0.72rem' }}>
-            <span
-              style={{
-                fontFamily: 'var(--font-ui)',
-                fontStyle: 'italic',
-                fontSize: '0.69rem',
-                fontWeight: 300,
-                color: 'rgba(255,255,255,0.24)',
-                letterSpacing: '0.01em',
-              }}
-            >
-              ↳ Enthält alles aus {plan.includes}
-            </span>
-          </div>
-        )}
-
-        {/* Feature list — two-tier opacity for hierarchy */}
+        {/* Feature list */}
         <ul
           style={{
             listStyle: 'none',
@@ -379,7 +344,7 @@ function PricingCard({
             flexGrow: 1,
           }}
         >
-          {plan.features.map((feature, i) => {
+          {item.features.map((feature, i) => {
             const isPrimary = i < 4
             return (
               <li
@@ -392,8 +357,12 @@ function PricingCard({
                   fontSize: 'clamp(0.74rem, 0.92vw, 0.78rem)',
                   fontWeight: 300,
                   color: highlighted
-                    ? isPrimary ? 'rgba(255,255,255,0.62)' : 'rgba(255,255,255,0.38)'
-                    : isPrimary ? 'rgba(255,255,255,0.52)' : 'rgba(255,255,255,0.30)',
+                    ? isPrimary
+                      ? 'rgba(255,255,255,0.62)'
+                      : 'rgba(255,255,255,0.38)'
+                    : isPrimary
+                    ? 'rgba(255,255,255,0.52)'
+                    : 'rgba(255,255,255,0.30)',
                   lineHeight: 1.5,
                 }}
               >
@@ -404,43 +373,9 @@ function PricingCard({
           })}
         </ul>
 
-        {/* Ideal für — indented annotation */}
-        <div
-          style={{
-            marginBottom: '1.25rem',
-            paddingLeft: '0.85rem',
-          }}
-        >
-          <div
-            style={{
-              fontFamily: 'var(--font-ui)',
-              fontSize: '0.68rem',
-              fontWeight: 400,
-              textTransform: 'uppercase' as const,
-              letterSpacing: '0.13em',
-              color: 'rgba(255,255,255,0.18)',
-              marginBottom: '0.25rem',
-            }}
-          >
-            Ideal für
-          </div>
-          <p
-            style={{
-              fontFamily: 'var(--font-ui)',
-              fontSize: '0.75rem',
-              fontWeight: 300,
-              color: 'rgba(255,255,255,0.34)',
-              lineHeight: 1.55,
-              margin: 0,
-            }}
-          >
-            {plan.idealFor}
-          </p>
-        </div>
-
         {/* CTA */}
         <a
-          href={plan.ctaHref}
+          href={item.ctaHref}
           onClick={scrollToContact}
           className={highlighted ? 'button-glass-primary' : 'button-glass-secondary'}
           style={{
@@ -455,7 +390,123 @@ function PricingCard({
             justifyContent: 'center',
           }}
         >
-          {plan.cta}
+          {item.cta}
+        </a>
+      </div>
+    </motion.div>
+  )
+}
+
+// ─── Process note card ────────────────────────────────────────────────────────
+
+function ProcessNoteCard({
+  item,
+  index,
+  isInView,
+  shouldReduce,
+}: {
+  item: ProcessNote
+  index: number
+  isInView: boolean
+  shouldReduce: boolean | null
+}) {
+  return (
+    <motion.div
+      initial={shouldReduce ? undefined : { opacity: 0, y: 28 }}
+      animate={
+        shouldReduce
+          ? undefined
+          : isInView
+          ? { opacity: 1, y: 0 }
+          : { opacity: 0, y: 28 }
+      }
+      transition={{ duration: 0.88, ease: EASE, delay: 0.14 + index * 0.1 }}
+      style={{ position: 'relative', isolation: 'isolate', display: 'flex' }}
+    >
+      <div
+        className="surface-muted"
+        style={{
+          display: 'flex',
+          flexDirection: 'column',
+          width: '100%',
+          padding: 'clamp(1.25rem, 2vw, 1.875rem)',
+        }}
+      >
+        {/* Label */}
+        <div
+          style={{
+            fontFamily: 'var(--font-ui)',
+            fontSize: '0.60rem',
+            fontWeight: 400,
+            textTransform: 'uppercase' as const,
+            letterSpacing: '0.18em',
+            color: 'rgba(255,255,255,0.22)',
+            marginBottom: '1.25rem',
+          }}
+        >
+          {item.name}
+        </div>
+
+        {/* Heading */}
+        <p
+          style={{
+            fontFamily: 'var(--font-display)',
+            fontStyle: 'italic',
+            fontSize: 'clamp(1.2rem, 1.8vw, 1.55rem)',
+            fontWeight: 400,
+            color: 'rgba(255,255,255,0.72)',
+            lineHeight: 1.25,
+            margin: '0 0 1rem',
+            letterSpacing: '-0.01em',
+          }}
+        >
+          {item.heading}
+        </p>
+
+        {/* Body */}
+        <p
+          style={{
+            fontFamily: 'var(--font-ui)',
+            fontSize: 'clamp(0.78rem, 1.0vw, 0.86rem)',
+            fontWeight: 300,
+            color: 'rgba(255,255,255,0.34)',
+            lineHeight: 1.7,
+            margin: '0 0 auto',
+            paddingBottom: '1.5rem',
+          }}
+        >
+          {item.body}
+        </p>
+
+        {/* Visual divider */}
+        <div
+          aria-hidden
+          style={{
+            height: 1,
+            background:
+              'linear-gradient(90deg, rgba(255,255,255,0.07), transparent)',
+            marginBottom: '1.25rem',
+          }}
+        />
+
+        {/* CTA */}
+        <a
+          href={item.ctaHref}
+          onClick={scrollToContact}
+          className="button-ghost-glass"
+          style={{
+            textDecoration: 'none',
+            fontFamily: 'var(--font-ui)',
+            fontSize: '0.72rem',
+            fontWeight: 500,
+            textTransform: 'uppercase' as const,
+            letterSpacing: '0.12em',
+            color: 'rgba(255,255,255,0.60)',
+            width: '100%',
+            justifyContent: 'center',
+          }}
+        >
+          {item.cta}
         </a>
       </div>
     </motion.div>
@@ -554,11 +605,11 @@ export function Pricing() {
               }
               transition={{ duration: 0.92, ease: EASE, delay: 0.07 }}
               style={{
-                maxWidth: '26ch',
+                maxWidth: '30ch',
                 fontSize: 'clamp(1.55rem, 2.4vw, 2.6rem)',
               }}
             >
-              Eine professionelle Website. Klar betreut. Monatlich planbar.
+              Eine professionelle Website. Klarer Einstieg. Betreuung nur, wenn gewünscht.
             </motion.h2>
           </div>
 
@@ -582,9 +633,8 @@ export function Pricing() {
               maxWidth: '54ch',
             }}
           >
-            Design, Hosting, Wartung und SEO-Support — ein klares monatliches
-            Modell für lokale Unternehmen, die online professionell auftreten
-            möchten, ohne selbst an Technik und Pflege zu denken.
+            Konzept, Design, Entwicklung und Launch als klares Projekt. Danach kann
+            Betreuung dazukommen — muss aber nicht.
           </motion.p>
 
           <motion.p
@@ -606,21 +656,31 @@ export function Pricing() {
               margin: 0,
             }}
           >
-            Keine unklaren Einzelangebote. Kein Agenturtheater. Ein sauberes System.
+            Erst verstehen wir Ihr Projekt. Dann bekommen Sie ein klares Angebot.
           </motion.p>
         </div>
 
         {/* ── Pricing cards ── */}
         <div ref={cardsRef} className="pricing-cards-grid">
-          {plans.map((plan, i) => (
-            <PricingCard
-              key={plan.id}
-              plan={plan}
-              index={i}
-              isInView={isCardsInView}
-              shouldReduce={shouldReduce}
-            />
-          ))}
+          {pricingItems.map((item, i) =>
+            item.kind === 'process' ? (
+              <ProcessNoteCard
+                key={item.id}
+                item={item}
+                index={i}
+                isInView={isCardsInView}
+                shouldReduce={shouldReduce}
+              />
+            ) : (
+              <OfferCard
+                key={item.id}
+                item={item}
+                index={i}
+                isInView={isCardsInView}
+                shouldReduce={shouldReduce}
+              />
+            )
+          )}
         </div>
 
         {/* ── Trust strip ── */}
@@ -643,7 +703,10 @@ export function Pricing() {
           }}
         >
           {trustItems.map((item, i) => (
-            <div key={i} className={`pricing-trust-item${i > 0 ? ' pricing-trust-item--divided' : ''}`}>
+            <div
+              key={i}
+              className={`pricing-trust-item${i > 0 ? ' pricing-trust-item--divided' : ''}`}
+            >
               <div
                 style={{
                   width: 5,

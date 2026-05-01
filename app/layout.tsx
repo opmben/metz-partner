@@ -28,7 +28,7 @@ export const metadata: Metadata = {
   metadataBase: new URL(BASE_URL),
   title: 'Metz & Partner ∙ Webdesign aus Koblenz',
   description:
-    'Wir sind Benedikt und Maximilian — zwei Gründer aus Koblenz, die Websites bauen, die nicht nur gut aussehen, sondern echte Ergebnisse liefern.',
+    'Individuelle Websites für Unternehmen in Koblenz und Rhein-Hunsrück. Ab 490 € einmalig, Betreuung optional ab 149 €/Monat. Direkt mit den Gründern — kostenlos anfragen.',
   keywords: [
     'Webdesign Koblenz',
     'Website Rheinland-Pfalz',
@@ -43,7 +43,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: 'Metz & Partner ∙ Webdesign aus Koblenz',
     description:
-      'Websites, die Unternehmen wachsen lassen. Persönlich. Direkt. Aus Koblenz.',
+      'Individuelle Websites ab 490 € einmalig. Betreuung optional ab 149 €/Monat. Persönlich, direkt, aus Koblenz.',
     type: 'website',
     locale: 'de_DE',
     url: BASE_URL,
@@ -113,6 +113,37 @@ export default function RootLayout({
               image: 'https://metzundpartner.com/opengraph-image',
               logo: 'https://metzundpartner.com/logo.png',
               priceRange: '€€',
+              hasOfferCatalog: {
+                '@type': 'OfferCatalog',
+                name: 'Webdesign & Entwicklung',
+                itemListElement: [
+                  {
+                    '@type': 'Offer',
+                    name: 'Website-Projekt',
+                    description:
+                      'Konzept, Design, Entwicklung und Launch als einmaliges Projekt.',
+                    priceSpecification: {
+                      '@type': 'UnitPriceSpecification',
+                      price: '490',
+                      priceCurrency: 'EUR',
+                      description: 'Einmaliger Projektpreis ab 490 €',
+                    },
+                  },
+                  {
+                    '@type': 'Offer',
+                    name: 'Website-Betreuung',
+                    description:
+                      'Optionale monatliche Betreuung nach Launch: Hosting, Wartung und Inhaltsanpassungen.',
+                    priceSpecification: {
+                      '@type': 'UnitPriceSpecification',
+                      price: '149',
+                      priceCurrency: 'EUR',
+                      unitText: 'MONTH',
+                      description: 'Monatliche Betreuung ab 149 €, optional nach Launch',
+                    },
+                  },
+                ],
+              },
             },
             {
               '@context': 'https://schema.org',
