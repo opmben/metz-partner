@@ -33,8 +33,8 @@ export default function Home() {
         <Projects />
         <WhyUs />
         <Pricing />
-        <FAQ />
         <Process />
+        <FAQ />
         <Manifesto />
         <Contact />
       </main>
