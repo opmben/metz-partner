@@ -469,7 +469,7 @@ export function YourProjectSlot() {
   const { cardRef, rotateX, rotateY, handleMouseMove, handleMouseLeave } = useCardTilt()
 
   return (
-    <Link href="#kontakt" className="block" style={{ cursor: 'pointer', perspective: 1000 }}>
+    <Link href="/#kontakt" className="block" style={{ cursor: 'pointer', perspective: 1000 }}>
       <motion.div
         ref={cardRef}
         onHoverStart={() => setHovered(true)}
