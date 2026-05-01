@@ -11,7 +11,7 @@ function scrollToContact(e: React.MouseEvent<HTMLAnchorElement>) {
   const target = document.getElementById('kontakt')
   if (!target) return
   // Scroll to the heading block directly — nav height (72px) + small buffer
-  const offset = 60
+  const offset = 30
   const top = target.getBoundingClientRect().top + window.scrollY - offset
   window.scrollTo({ top, behavior: 'smooth' })
 }
