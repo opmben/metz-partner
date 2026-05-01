@@ -814,7 +814,7 @@ body::before {
   font-family: var(--font-ui);
   font-size: 0.72rem;
   font-weight: 300;
-  color: rgba(255, 255, 255, 0.50);
+  color: rgba(255, 255, 255, 0.58);
   line-height: 1.52;
 }
 

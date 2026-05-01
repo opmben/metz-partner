@@ -370,17 +370,11 @@ function OfferCard({
           </ul>
         )}
 
-        {/* Flexible spacer — pushes CTA to card bottom on project card */}
-        {isProject && <div style={{ flex: 1 }} aria-hidden />}
+        {/* Spacer — fixed gap between modules and CTA on project card */}
+        {isProject && <div style={{ height: '1rem' }} aria-hidden />}
 
         {/* CTA */}
-        <div
-          style={
-            isProject
-              ? { borderTop: '1px solid rgba(255,255,255,0.065)', paddingTop: '1.1rem' }
-              : {}
-          }
-        >
+        <div style={isProject ? { paddingTop: '0.5rem' } : {}}>
           <a
             href={item.ctaHref}
             onClick={scrollToContact}
