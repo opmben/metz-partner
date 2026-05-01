@@ -390,7 +390,7 @@ export function Projects() {
     <section
       id="projekte"
       style={{
-        paddingTop: 'clamp(4rem, 8vw, 4rem)',
+        paddingTop: 'clamp(4rem, 8vw, 8rem)',
         paddingBottom: 'clamp(4rem, 8vw, 8rem)',
         position: 'relative',
         overflow: 'clip',
