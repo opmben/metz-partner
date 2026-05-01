@@ -502,7 +502,7 @@ export function Contact() {
                   letterSpacing: '0.04em',
                 }}
               >
-                Antwort innerhalb von 24 Stunden
+                Antwort innerhalb von 48 Stunden
               </span>
             </div>
           </motion.div>
