@@ -1,7 +1,7 @@
 export const faqs = [
   {
     q: 'Was kostet eine Website von Metz & Partner?',
-    a: 'Unsere Pakete starten ab 890 € Einmalig plus einer monatlichen Servicepauschale ab 199 €. Was Sie genau bezahlen, hängt vom Umfang ab — aber es gibt keine versteckten Kosten. Ein erstes Gespräch ist kostenlos und unverbindlich.',
+    a: 'Unsere Pakete starten ab 490 € Einmalig plus einer monatlichen Servicepauschale ab 149 €. Was Sie genau bezahlen, hängt vom Umfang ab — aber es gibt keine versteckten Kosten. Ein erstes Gespräch ist kostenlos und unverbindlich.',
   },
   {
     q: 'Wie lange dauert die Entwicklung meiner Website?',
