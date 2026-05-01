@@ -711,6 +711,30 @@ body::before {
   .pricing-cards-grid {
     grid-template-columns: repeat(3, minmax(0, 1fr));
   }
+
+  .pricing-card--project {
+    grid-column: span 2;
+  }
+
+  .pricing-card--care {
+    grid-column: span 1;
+  }
+}
+
+.pricing-features {
+  display: flex;
+  flex-direction: column;
+  gap: 0.52rem;
+}
+
+@media (min-width: 900px) {
+  .pricing-features--project {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    row-gap: 0.52rem;
+    column-gap: 1.5rem;
+    align-items: start;
+  }
 }
 
 .pricing-trust-strip {

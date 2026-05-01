@@ -44,17 +44,7 @@ interface CareOption {
   badge: string
 }
 
-interface ProcessNote {
-  kind: 'process'
-  id: string
-  name: string
-  heading: string
-  body: string
-  cta: string
-  ctaHref: string
-}
-
-type PricingItem = ProjectOffer | CareOption | ProcessNote
+type PricingItem = ProjectOffer | CareOption
 
 // ─── Data ─────────────────────────────────────────────────────────────────────
 
@@ -95,26 +85,17 @@ const pricingItems: readonly PricingItem[] = [
       'Monatlicher technischer Check',
       'Direkte Rückmeldung bei Fragen',
     ],
-    cta: 'Im Gespräch klären',
+    cta: 'Betreuung besprechen',
     ctaHref: '#kontakt',
     highlighted: false,
     badge: 'Optional',
   },
-  {
-    kind: 'process',
-    id: 'gespraech',
-    name: 'Erst klären, dann anbieten',
-    heading: 'Erst verstehen wir Ihr Projekt.',
-    body: 'Umfang und Anforderungen werden im Gespräch eingeordnet. Danach bekommen Sie eine ehrliche Einschätzung und ein klares Angebot — kein Druck, keine Pakete.',
-    cta: 'Kostenlos anfragen',
-    ctaHref: '#kontakt',
-  },
 ] as const
 
 const trustItems = [
+  'Erst Gespräch, dann klares Angebot',
   'Keine Abo-Pflicht',
-  'Kein verstecktes Kleingedrucktes',
-  'Betreuung jederzeit kündbar',
+  'Betreuung optional',
   'Direkter Ansprechpartner',
 ] as const
 
@@ -155,9 +136,11 @@ function OfferCard({
   shouldReduce: boolean | null
 }) {
   const { highlighted } = item
+  const isProject = item.kind === 'project'
 
   return (
     <motion.div
+      className={`pricing-card pricing-card--${isProject ? 'project' : 'care'}`}
       initial={shouldReduce ? undefined : { opacity: 0, y: 28 }}
       animate={
         shouldReduce
@@ -334,13 +317,11 @@ function OfferCard({
 
         {/* Feature list */}
         <ul
+          className={isProject ? 'pricing-features pricing-features--project' : 'pricing-features'}
           style={{
             listStyle: 'none',
             margin: '0 0 1.1rem 0',
             padding: 0,
-            display: 'flex',
-            flexDirection: 'column',
-            gap: '0.52rem',
             flexGrow: 1,
           }}
         >
@@ -386,122 +367,6 @@ function OfferCard({
             textTransform: 'uppercase' as const,
             letterSpacing: '0.12em',
             color: 'var(--text)',
-            width: '100%',
-            justifyContent: 'center',
-          }}
-        >
-          {item.cta}
-        </a>
-      </div>
-    </motion.div>
-  )
-}
-
-// ─── Process note card ────────────────────────────────────────────────────────
-
-function ProcessNoteCard({
-  item,
-  index,
-  isInView,
-  shouldReduce,
-}: {
-  item: ProcessNote
-  index: number
-  isInView: boolean
-  shouldReduce: boolean | null
-}) {
-  return (
-    <motion.div
-      initial={shouldReduce ? undefined : { opacity: 0, y: 28 }}
-      animate={
-        shouldReduce
-          ? undefined
-          : isInView
-          ? { opacity: 1, y: 0 }
-          : { opacity: 0, y: 28 }
-      }
-      transition={{ duration: 0.88, ease: EASE, delay: 0.14 + index * 0.1 }}
-      style={{ position: 'relative', isolation: 'isolate', display: 'flex' }}
-    >
-      <div
-        className="surface-muted"
-        style={{
-          display: 'flex',
-          flexDirection: 'column',
-          width: '100%',
-          padding: 'clamp(1.25rem, 2vw, 1.875rem)',
-        }}
-      >
-        {/* Label */}
-        <div
-          style={{
-            fontFamily: 'var(--font-ui)',
-            fontSize: '0.60rem',
-            fontWeight: 400,
-            textTransform: 'uppercase' as const,
-            letterSpacing: '0.18em',
-            color: 'rgba(255,255,255,0.22)',
-            marginBottom: '1.25rem',
-          }}
-        >
-          {item.name}
-        </div>
-
-        {/* Heading */}
-        <p
-          style={{
-            fontFamily: 'var(--font-display)',
-            fontStyle: 'italic',
-            fontSize: 'clamp(1.2rem, 1.8vw, 1.55rem)',
-            fontWeight: 400,
-            color: 'rgba(255,255,255,0.72)',
-            lineHeight: 1.25,
-            margin: '0 0 1rem',
-            letterSpacing: '-0.01em',
-          }}
-        >
-          {item.heading}
-        </p>
-
-        {/* Body */}
-        <p
-          style={{
-            fontFamily: 'var(--font-ui)',
-            fontSize: 'clamp(0.78rem, 1.0vw, 0.86rem)',
-            fontWeight: 300,
-            color: 'rgba(255,255,255,0.34)',
-            lineHeight: 1.7,
-            margin: '0 0 auto',
-            paddingBottom: '1.5rem',
-          }}
-        >
-          {item.body}
-        </p>
-
-        {/* Visual divider */}
-        <div
-          aria-hidden
-          style={{
-            height: 1,
-            background:
-              'linear-gradient(90deg, rgba(255,255,255,0.07), transparent)',
-            marginBottom: '1.25rem',
-          }}
-        />
-
-        {/* CTA */}
-        <a
-          href={item.ctaHref}
-          onClick={scrollToContact}
-          className="button-ghost-glass"
-          style={{
-            textDecoration: 'none',
-            fontFamily: 'var(--font-ui)',
-            fontSize: '0.72rem',
-            fontWeight: 500,
-            textTransform: 'uppercase' as const,
-            letterSpacing: '0.12em',
-            color: 'rgba(255,255,255,0.60)',
             width: '100%',
             justifyContent: 'center',
           }}
@@ -662,25 +527,15 @@ export function Pricing() {
 
         {/* ── Pricing cards ── */}
         <div ref={cardsRef} className="pricing-cards-grid">
-          {pricingItems.map((item, i) =>
-            item.kind === 'process' ? (
-              <ProcessNoteCard
-                key={item.id}
-                item={item}
-                index={i}
-                isInView={isCardsInView}
-                shouldReduce={shouldReduce}
-              />
-            ) : (
-              <OfferCard
-                key={item.id}
-                item={item}
-                index={i}
-                isInView={isCardsInView}
-                shouldReduce={shouldReduce}
-              />
-            )
-          )}
+          {pricingItems.map((item, i) => (
+            <OfferCard
+              key={item.id}
+              item={item}
+              index={i}
+              isInView={isCardsInView}
+              shouldReduce={shouldReduce}
+            />
+          ))}
         </div>
 
         {/* ── Trust strip ── */}
