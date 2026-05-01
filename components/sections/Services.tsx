@@ -31,7 +31,7 @@ type Service = (typeof services)[number]
 
 function scrollToContact(e: React.MouseEvent<HTMLAnchorElement>) {
   e.preventDefault()
-  const target = document.getElementById('kontakt-heading')
+  const target = document.getElementById('kontakt')
   if (!target) return
   window.scrollTo({ top: target.getBoundingClientRect().top + window.scrollY - 80, behavior: 'smooth' })
 }
