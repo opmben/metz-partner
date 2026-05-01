@@ -8,7 +8,7 @@ const EASE: [number, number, number, number] = [0.16, 1, 0.3, 1]
 
 function scrollToContact(e: React.MouseEvent<HTMLAnchorElement>) {
   e.preventDefault()
-  const target = document.getElementById('kontakt-heading')
+  const target = document.getElementById('kontakt')
   if (!target) return
   // Scroll to the heading block directly — nav height (72px) + small buffer
   const offset = 80
