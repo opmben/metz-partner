@@ -290,8 +290,8 @@ function OfferCard({
         {/* Price block */}
         <div
           style={{
-            paddingBottom: '0.9rem',
-            marginBottom: '0.9rem',
+            paddingBottom: highlighted ? '0.75rem' : '0.9rem',
+            marginBottom: highlighted ? '0.75rem' : '0.9rem',
             borderBottom: '1px solid rgba(255,255,255,0.065)',
           }}
         >
@@ -328,35 +328,14 @@ function OfferCard({
 
         {/* Modules (project) / Feature list (care) */}
         {isProject ? (
-          <div
-            className="pricing-modules"
-            style={{ flexGrow: 1, marginBottom: '1.1rem' }}
-          >
+          <div className="pricing-project-modules">
             {(item as ProjectOffer).modules.map((mod, i) => (
-              <div key={i} className="pricing-module">
-                <div
-                  style={{
-                    fontFamily: 'var(--font-ui)',
-                    fontSize: '0.68rem',
-                    fontWeight: 500,
-                    color: 'rgba(255,255,255,0.70)',
-                    letterSpacing: '0.05em',
-                    marginBottom: '0.28rem',
-                  }}
-                >
-                  {mod.title}
+              <div key={i} className="pricing-project-module">
+                <div className="pricing-project-module-number">
+                  {String(i + 1).padStart(2, '0')}
                 </div>
-                <div
-                  style={{
-                    fontFamily: 'var(--font-ui)',
-                    fontSize: '0.71rem',
-                    fontWeight: 300,
-                    color: 'rgba(255,255,255,0.36)',
-                    lineHeight: 1.55,
-                  }}
-                >
-                  {mod.description}
-                </div>
+                <div className="pricing-project-module-title">{mod.title}</div>
+                <div className="pricing-project-module-body">{mod.description}</div>
               </div>
             ))}
           </div>
@@ -391,25 +370,36 @@ function OfferCard({
           </ul>
         )}
 
+        {/* Flexible spacer — pushes CTA to card bottom on project card */}
+        {isProject && <div style={{ flex: 1 }} aria-hidden />}
+
         {/* CTA */}
-        <a
-          href={item.ctaHref}
-          onClick={scrollToContact}
-          className={highlighted ? 'button-glass-primary' : 'button-glass-secondary'}
-          style={{
-            textDecoration: 'none',
-            fontFamily: 'var(--font-ui)',
-            fontSize: '0.72rem',
-            fontWeight: 500,
-            textTransform: 'uppercase' as const,
-            letterSpacing: '0.12em',
-            color: 'var(--text)',
-            width: '100%',
-            justifyContent: 'center',
-          }}
+        <div
+          style={
+            isProject
+              ? { borderTop: '1px solid rgba(255,255,255,0.065)', paddingTop: '1.1rem' }
+              : {}
+          }
         >
-          {item.cta}
-        </a>
+          <a
+            href={item.ctaHref}
+            onClick={scrollToContact}
+            className={highlighted ? 'button-glass-primary' : 'button-glass-secondary'}
+            style={{
+              textDecoration: 'none',
+              fontFamily: 'var(--font-ui)',
+              fontSize: '0.72rem',
+              fontWeight: 500,
+              textTransform: 'uppercase' as const,
+              letterSpacing: '0.12em',
+              color: 'var(--text)',
+              width: '100%',
+              justifyContent: 'center',
+            }}
+          >
+            {item.cta}
+          </a>
+        </div>
       </div>
     </motion.div>
   )

@@ -785,6 +785,70 @@ body::before {
   }
 }
 
+/* ─── Pricing project modules ────────────────────────────────────── */
+.pricing-project-modules {
+  display: flex;
+  flex-direction: column;
+  gap: 0.8rem;
+}
+
+.pricing-project-module-number {
+  font-family: var(--font-ui);
+  font-size: 0.54rem;
+  font-weight: 400;
+  letter-spacing: 0.18em;
+  color: rgba(211, 253, 81, 0.38);
+  margin-bottom: 0.2rem;
+}
+
+.pricing-project-module-title {
+  font-family: var(--font-ui);
+  font-size: 0.76rem;
+  font-weight: 500;
+  color: rgba(255, 255, 255, 0.82);
+  letter-spacing: 0.04em;
+  margin-bottom: 0.24rem;
+}
+
+.pricing-project-module-body {
+  font-family: var(--font-ui);
+  font-size: 0.72rem;
+  font-weight: 300;
+  color: rgba(255, 255, 255, 0.50);
+  line-height: 1.52;
+}
+
+@media (min-width: 620px) {
+  .pricing-project-modules {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 0;
+  }
+
+  .pricing-project-module {
+    position: relative;
+    padding: 0.9rem 1.2rem;
+  }
+
+  .pricing-project-module:first-child {
+    padding-left: 0;
+  }
+
+  .pricing-project-module:last-child {
+    padding-right: 0;
+  }
+
+  .pricing-project-module:not(:last-child)::after {
+    content: '';
+    position: absolute;
+    right: 0;
+    top: 22%;
+    height: 56%;
+    width: 1px;
+    background: rgba(255, 255, 255, 0.07);
+  }
+}
+
 /* ─── Contact layout ─────────────────────────────────────────────── */
 .contact-layout {
   grid-template-columns: minmax(0, 1fr);
