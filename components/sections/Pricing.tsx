@@ -16,6 +16,11 @@ function scrollToContact(e: React.MouseEvent<HTMLAnchorElement>) {
 
 // ─── Types ────────────────────────────────────────────────────────────────────
 
+interface ProjectModule {
+  title: string
+  description: string
+}
+
 interface ProjectOffer {
   kind: 'project'
   id: string
@@ -23,7 +28,7 @@ interface ProjectOffer {
   positioning: string
   price: string
   priceSuffix: string
-  features: readonly string[]
+  modules: readonly ProjectModule[]
   cta: string
   ctaHref: string
   highlighted: true
@@ -57,13 +62,19 @@ const pricingItems: readonly PricingItem[] = [
       'Konzept, Design, Entwicklung und Launch — als klares Projekt mit definiertem Umfang.',
     price: 'ab 490 €',
     priceSuffix: 'einmalig',
-    features: [
-      'Konzept und Seitenstruktur',
-      'Individuelles Webdesign',
-      'Technische Umsetzung',
-      'Mobile Optimierung',
-      'Basis On-Page SEO',
-      'Launch-Unterstützung',
+    modules: [
+      {
+        title: 'Konzept & Struktur',
+        description: 'Seitenaufbau, Inhalte und klare Nutzerführung',
+      },
+      {
+        title: 'Design & Umsetzung',
+        description: 'Individuelles Webdesign, technische Entwicklung, mobil sauber',
+      },
+      {
+        title: 'Launch & Basis-SEO',
+        description: 'Veröffentlichung, technische Grundlage und On-Page-Basics',
+      },
     ],
     cta: 'Projekt anfragen',
     ctaHref: '#kontakt',
@@ -101,7 +112,7 @@ const trustItems = [
 
 // ─── Check icon ───────────────────────────────────────────────────────────────
 
-function CheckIcon({ faint }: { faint?: boolean }) {
+function CheckIcon() {
   return (
     <svg
       width="10"
@@ -113,7 +124,7 @@ function CheckIcon({ faint }: { faint?: boolean }) {
     >
       <path
         d="M1.5 5L3.5 7.5L8.5 2.5"
-        stroke={faint ? 'rgba(211,253,81,0.30)' : 'rgba(211,253,81,0.56)'}
+        stroke="rgba(211,253,81,0.50)"
         strokeWidth="1.25"
         strokeLinecap="round"
         strokeLinejoin="round"
@@ -315,19 +326,51 @@ function OfferCard({
           </div>
         </div>
 
-        {/* Feature list */}
-        <ul
-          className={isProject ? 'pricing-features pricing-features--project' : 'pricing-features'}
-          style={{
-            listStyle: 'none',
-            margin: '0 0 1.1rem 0',
-            padding: 0,
-            flexGrow: 1,
-          }}
-        >
-          {item.features.map((feature, i) => {
-            const isPrimary = i < 4
-            return (
+        {/* Modules (project) / Feature list (care) */}
+        {isProject ? (
+          <div
+            className="pricing-modules"
+            style={{ flexGrow: 1, marginBottom: '1.1rem' }}
+          >
+            {(item as ProjectOffer).modules.map((mod, i) => (
+              <div key={i} className="pricing-module">
+                <div
+                  style={{
+                    fontFamily: 'var(--font-ui)',
+                    fontSize: '0.68rem',
+                    fontWeight: 500,
+                    color: 'rgba(255,255,255,0.70)',
+                    letterSpacing: '0.05em',
+                    marginBottom: '0.28rem',
+                  }}
+                >
+                  {mod.title}
+                </div>
+                <div
+                  style={{
+                    fontFamily: 'var(--font-ui)',
+                    fontSize: '0.71rem',
+                    fontWeight: 300,
+                    color: 'rgba(255,255,255,0.36)',
+                    lineHeight: 1.55,
+                  }}
+                >
+                  {mod.description}
+                </div>
+              </div>
+            ))}
+          </div>
+        ) : (
+          <ul
+            className="pricing-features"
+            style={{
+              listStyle: 'none',
+              margin: '0 0 1.1rem 0',
+              padding: 0,
+              flexGrow: 1,
+            }}
+          >
+            {(item as CareOption).features.map((feature, i) => (
               <li
                 key={i}
                 style={{
@@ -337,22 +380,16 @@ function OfferCard({
                   fontFamily: 'var(--font-ui)',
                   fontSize: 'clamp(0.74rem, 0.92vw, 0.78rem)',
                   fontWeight: 300,
-                  color: highlighted
-                    ? isPrimary
-                      ? 'rgba(255,255,255,0.62)'
-                      : 'rgba(255,255,255,0.38)'
-                    : isPrimary
-                    ? 'rgba(255,255,255,0.52)'
-                    : 'rgba(255,255,255,0.30)',
+                  color: i < 4 ? 'rgba(255,255,255,0.52)' : 'rgba(255,255,255,0.30)',
                   lineHeight: 1.5,
                 }}
               >
-                <CheckIcon faint={!isPrimary} />
+                <CheckIcon />
                 {feature}
               </li>
-            )
-          })}
-        </ul>
+            ))}
+          </ul>
+        )}
 
         {/* CTA */}
         <a
@@ -474,7 +511,7 @@ export function Pricing() {
                 fontSize: 'clamp(1.55rem, 2.4vw, 2.6rem)',
               }}
             >
-              Eine professionelle Website. Klarer Einstieg. Betreuung nur, wenn gewünscht.
+              Eine professionelle Website. Klarer Einstieg. Betreuung optional.
             </motion.h2>
           </div>
 

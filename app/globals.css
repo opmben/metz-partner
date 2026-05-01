@@ -727,13 +727,35 @@ body::before {
   gap: 0.52rem;
 }
 
-@media (min-width: 900px) {
-  .pricing-features--project {
+.pricing-modules {
+  display: flex;
+  flex-direction: column;
+  gap: 0.85rem;
+}
+
+.pricing-module {
+  /* mobile: plain stack */
+}
+
+@media (min-width: 620px) {
+  .pricing-modules {
     display: grid;
-    grid-template-columns: 1fr 1fr;
-    row-gap: 0.52rem;
-    column-gap: 1.5rem;
-    align-items: start;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 0;
+  }
+
+  .pricing-module {
+    padding: 0 1.1rem;
+    border-right: 1px solid rgba(255, 255, 255, 0.065);
+  }
+
+  .pricing-module:first-child {
+    padding-left: 0;
+  }
+
+  .pricing-module:last-child {
+    padding-right: 0;
+    border-right: none;
   }
 }
 
