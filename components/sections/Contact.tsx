@@ -115,8 +115,8 @@ function FormField({
 
 const timelineSteps = [
   { num: '01', text: 'Wir lesen Ihre Nachricht und bereiten uns auf das Gespräch vor.' },
-  { num: '02', text: 'Benedikt oder Maximilian meldet sich persönlich — innerhalb von 24h.' },
-  { num: '03', text: 'Danach bekommen Sie eine ehrliche Einschätzung und ein klares Angebot — kein Druck, keine Pakete.' },
+  { num: '02', text: 'Innerhalb von 48h melden wir uns persönlich bei Ihnen.' },
+  { num: '03', text: 'Anschließend erhalten Sie eine ehrliche Einschätzung und ein klares Angebot — kein Druck, keine Pakete.' },
 ]
 
 // ─── Contact section ──────────────────────────────────────────────────────────
