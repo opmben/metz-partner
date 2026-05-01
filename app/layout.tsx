@@ -94,7 +94,7 @@ export default function RootLayout({
                 { '@type': 'AdministrativeArea', name: 'Rheinland-Pfalz' },
               ],
               sameAs: [
-                'https://share.google/ZgnnSJQOb9sgEAOLP',
+                'https://www.google.com/maps/place/Metz+%26+Partner/@50.1593506,7.54734,17z/data=!4m6!3m5!1s0x47be7320c5157e09:0xe61f4be426ea7827!8m2!3d50.1593506!4d7.54734!16s%2Fg%2F11z57z6tlb',
                 'https://www.linkedin.com/in/metzbenedikt',
                 'https://www.linkedin.com/in/maximilian-metz-448372221/',
               ],
