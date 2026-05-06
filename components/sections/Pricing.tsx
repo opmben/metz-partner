@@ -87,12 +87,12 @@ const pricingItems: readonly PricingItem[] = [
     name: 'Betreuung',
     positioning:
       'Optional nach Launch — für alle, die Hosting, Wartung und technischen Support in einer Hand haben möchten.',
-    price: 'ab 149 €',
+    price: 'ab 99 €',
     priceSuffix: '/ Monat · optional nach Launch',
     features: [
       'Hosting und SSL',
       'Technische Wartung',
-      'Kleinere Inhaltsänderungen',
+      'Inhaltsänderungen',
       'Monatlicher technischer Check',
       'Direkte Rückmeldung bei Fragen',
     ],
